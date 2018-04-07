@@ -4,8 +4,8 @@
 ; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
 ;
 [subrepo]
-	remote = https://github.com/cucumber/cucumber-expressions-ruby.git
+	remote = https://github.com/cucumber/cucumber-expressions-go.git
 	branch = master
-	commit = a233639ed4cfeffee7aed990373e1458aacaefcc
-	parent = aa5deff7a8c2afd3bb492d9f2ec3475dc80cd978
+	commit = 710012644754cc51fce10932f8a8695a282d95df
 	cmdver = 0.4.0
+	parent = 6fb9420cc3e6d06877a5bd639c63c0a957dd9be2

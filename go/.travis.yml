@@ -3,12 +3,15 @@
 #
 #     source scripts/functions.sh && rsync_files
 #
+language: go
 sudo: false
-language: node_js
-node_js:
-  - "9"
-  - "8"
-  - "6"
-  - "4"
 
-script: make default
+go:
+  - "1.8"
+  - "1.9"
+  - "1.10"
+  - "tip"
+
+script:
+  - "export GOPATH=" # fixes 'local import "../" in non-local package' error
+  - "make"
