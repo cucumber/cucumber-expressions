@@ -11,12 +11,11 @@ on:
     branches:
       - master
 
-on: [push, pull_request]
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
