@@ -22,9 +22,9 @@ jobs:
         ruby: [2.5, 2.6, 2.7, '3.0']
         include:
           - os: windows-latest
-            node-version: '3.0'
+            ruby: '3.0'
           - os: macos-latest
-            node-version: '3.0'
+            ruby: '3.0'
 
     steps:
     - uses: actions/checkout@v2
