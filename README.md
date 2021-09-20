@@ -9,7 +9,7 @@ mix Cucumber Expression syntax with Regular Expression syntax in the same expres
 
 On platforms that don't have a literal syntax for regular expressions (such as Java),
 Cucumber will create a Cucumber Expression by default. To use Regular Expressions, add anchors (starting with `^` and ending with `$`) or forward slashes (`/`). For more information, see
-[Cucumber Expression - Java Heuristics](https://github.com/cucumber/cucumber/blob/master/cucumber-expressions/java/heuristics.adoc).
+[Cucumber Expression - Java Heuristics](https://github.com/cucumber/cucumber-expressions/blob/main/java/heuristics.adoc).
 
 ## Introduction
 
