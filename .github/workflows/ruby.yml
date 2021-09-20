@@ -29,13 +29,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
-      # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
-      # change this to (see https://github.com/ruby/setup-ruby#versioning):
       uses: ruby/setup-ruby@v1
-      working-directory: ./ruby
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+        working-directory: ./ruby
     - name: bundle exec rspec
       working-directory: ./ruby
       run: bundle exec rspec
