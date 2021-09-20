@@ -20,6 +20,7 @@ default-%: %
 # Need to declare these phonies to avoid errors for packages without a particular language
 .PHONY: c dotnet go java javascript objective-c perl python ruby
 
+
 update-dependencies: $(patsubst %,update-dependencies-%,$(LANGUAGES))
 .PHONY: update-dependencies
 
