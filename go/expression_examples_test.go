@@ -17,7 +17,7 @@ func TestExamples(t *testing.T) {
 
 	chunks := strings.Split(string(examples), "---")
 	for _, chunk := range chunks {
-		lines := strings.Split(strings.TrimSpace(chunk), "\n")
+		lines := strings.Split(strings.TrimSpace(chunk), "\r?\n")
 		expressionText, text, expectedArgs := lines[0], lines[1], lines[2]
 		t.Run(fmt.Sprintf("works with %s", expressionText), func(t *testing.T) {
 			args := MatchExample(t, expressionText, text)
