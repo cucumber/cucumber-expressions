@@ -3,6 +3,14 @@
 
 name: test-javascript
 
+on:
+  push:
+  pull_request:
+    types:
+      - merged
+    branches:
+      - master
+
 on: [push, pull_request]
 
 jobs:
@@ -12,9 +20,12 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
         node-version: [12.x, 14.x, 16.x]
+        include:
+          - os: windows-latest
+            node-version: 16.x
+          - os: macos-latest
+            node-version: 16.x
 
     steps:
     - uses: actions/checkout@v2
