@@ -20,7 +20,7 @@ describe('examples.txt', () => {
   const examples = fs.readFileSync('examples.txt', 'utf-8')
   const chunks = examples.split(/^---/m)
   for (const chunk of chunks) {
-    const [expressionText, text, expectedArgs] = chunk.trim().split(/\n/m)
+    const [expressionText, text, expectedArgs] = chunk.trim().split(/\r?\n/m)
     it(`Works with: ${expressionText}`, () => {
       assert.deepStrictEqual(JSON.stringify(match(expressionText, text)), expectedArgs)
     })

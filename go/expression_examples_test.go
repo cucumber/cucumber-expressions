@@ -16,8 +16,9 @@ func TestExamples(t *testing.T) {
 	require.NoError(t, err)
 
 	chunks := strings.Split(string(examples), "---")
+	newLine := regexp.MustCompile("\r?\n")
 	for _, chunk := range chunks {
-		lines := strings.Split(strings.TrimSpace(chunk), "\n")
+		lines := newLine.Split(strings.TrimSpace(chunk), -1)
 		expressionText, text, expectedArgs := lines[0], lines[1], lines[2]
 		t.Run(fmt.Sprintf("works with %s", expressionText), func(t *testing.T) {
 			args := MatchExample(t, expressionText, text)
