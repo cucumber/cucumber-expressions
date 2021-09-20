@@ -45,7 +45,7 @@ func TestCucumberExpression(t *testing.T) {
 			}
 		}
 
-		directory := "testdata/expression/"
+		directory := "../testdata/expression/"
 		files, err := ioutil.ReadDir(directory)
 		require.NoError(t, err)
 
@@ -71,7 +71,7 @@ func TestCucumberExpression(t *testing.T) {
 			require.Equal(t, expected, expression.Regexp().String())
 		}
 
-		directory = "testdata/regex/"
+		directory = "../testdata/regex/"
 		files, err = ioutil.ReadDir(directory)
 		require.NoError(t, err)
 

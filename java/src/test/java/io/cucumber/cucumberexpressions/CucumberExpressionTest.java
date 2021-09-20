@@ -36,14 +36,14 @@ class CucumberExpressionTest {
 
     private static List<Path> expression_acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("testdata", "expression")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "expression")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
 
     private static List<Path> regex_acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("testdata", "regex")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "regex")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
