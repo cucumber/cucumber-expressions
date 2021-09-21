@@ -18,7 +18,7 @@
     }
   },
   "scripts": {
-    "build:cjs": "tsc --build tsconfig.build-cjs.json",
+    "build:cjs": "tsc --build tsconfig.build-cjs.json && echo '{\"type\": \"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "tsc --build tsconfig.build-esm.json",
     "build": "npm run build:cjs && npm run build:esm",
     "test": "mocha && npm run test:cjs",
