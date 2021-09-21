@@ -5,12 +5,12 @@ for more details.
 
 A Cucumber Expression has the following AST:
 
-```
+```ebnf
 cucumber-expression :=  ( alternation | optional | parameter | text )*
 alternation := (?<=left-boundary) + alternative* + ( '/' + alternative* )+ + (?=right-boundary)
 left-boundary := whitespace | } | ^
 right-boundary := whitespace | { | $
-alternative: = optional | parameter | text 
+alternative := optional | parameter | text 
 optional := '(' + option* + ')'
 option := optional | parameter | text
 parameter := '{' + name* + '}'
@@ -19,7 +19,7 @@ text := whitespace | ')' | '}' | .
 ```
 
 The AST is constructed from the following tokens:
-```
+```ebnf
 escape := '\'
 token := whitespace | '(' | ')' | '{' | '}' | '/' | .
 . := any non-reserved codepoint
@@ -40,7 +40,7 @@ Note:
 The AST can be rewritten into a regular expression by the following production
 rules:
 
-```
+```ebnf
 cucumber-expression -> '^' + rewrite(node[0]) + ... + rewrite(node[n-1]) + '$'
 alternation -> '(?:' + rewrite(node[0]) +'|' + ...  +'|' + rewerite(node[n-1]) + ')'
 alternative -> rewrite(node[0]) + ... + rewrite(node[n-1])
