@@ -1,0 +1,46 @@
+name: test-java
+
+on:
+  push:
+  pull_request:
+    types:
+      - merged
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        java: ['11', '16']
+        include:
+          - os: windows-latest
+            java: '16'
+          - os: macos-latest
+            java: '16'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: build-${{ matrix.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            build-${{ matrix.os }}-maven-
+      - uses: AdoptOpenJDK/install-jdk@v1
+        with:
+          version: ${{ matrix.java }}
+      - name: mvn install
+        working-directory: ./java
+        run: mvn install
+      - name: mvn test
+        working-directory: ./java
+        run: mvn test
+      - name: check jar
+        working-directory: ./java
+        run: ./scripts/check-jar.sh
