@@ -33,6 +33,9 @@ jobs:
       - name: mvn install
         working-directory: ./java
         run: mvn install
+      - name: mvn test
+        working-directory: ./java
+        run: mvn test
       - name: check jar
         working-directory: ./java
         run: ./scripts/check-jar.sh
