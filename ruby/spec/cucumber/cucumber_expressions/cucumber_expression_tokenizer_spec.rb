@@ -6,7 +6,7 @@ require 'cucumber/cucumber_expressions/errors'
 module Cucumber
   module CucumberExpressions
     describe 'Cucumber expression tokenizer' do
-      Dir['testdata/tokens/*.yaml'].each do |testcase|
+      Dir['../testdata/tokens/*.yaml'].each do |testcase|
         expectation = YAML.load_file(testcase) # encoding?
         it "#{testcase}" do
           tokenizer = CucumberExpressionTokenizer.new

@@ -14,8 +14,8 @@ interface Expectation {
 }
 
 describe('CucumberExpression', () => {
-  fs.readdirSync('testdata/expression').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`testdata/expression/${testcase}`, 'utf-8')
+  fs.readdirSync('../testdata/expression').forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`../testdata/expression/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
@@ -35,8 +35,8 @@ describe('CucumberExpression', () => {
     })
   })
 
-  fs.readdirSync('testdata/regex').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`testdata/regex/${testcase}`, 'utf-8')
+  fs.readdirSync('../testdata/regex').forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`../testdata/regex/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()

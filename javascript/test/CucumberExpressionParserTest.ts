@@ -11,8 +11,8 @@ interface Expectation {
 }
 
 describe('Cucumber expression parser', () => {
-  fs.readdirSync('testdata/ast').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`testdata/ast/${testcase}`, 'utf-8')
+  fs.readdirSync('../testdata/ast').forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`../testdata/ast/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parser = new CucumberExpressionParser()

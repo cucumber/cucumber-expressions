@@ -6,7 +6,7 @@ require 'cucumber/cucumber_expressions/errors'
 module Cucumber
   module CucumberExpressions
     describe 'Cucumber expression parser' do
-      Dir['testdata/ast/*.yaml'].each do |testcase|
+      Dir['../testdata/ast/*.yaml'].each do |testcase|
         expectation = YAML.load_file(testcase) # encoding?
         it "#{testcase}" do
           parser = CucumberExpressionParser.new

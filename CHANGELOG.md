@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Support for EcmaScript modules (aka ESM).
+* [JavaScript] Support for EcmaScript modules (aka ESM).
   ([#1743](https://github.com/cucumber/common/pull/1743))
 
 ### Changed
