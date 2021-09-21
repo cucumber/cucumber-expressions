@@ -8,7 +8,7 @@ There are two parts to making a release. First, prepare the release, then make t
 
 Anyone with commit rights to `main` can prepare a release.
 
-To make a release of this action, you can use the [`changelog`](https://github.com/rcmachado/changelog) tool.
+To make these steps easier, can use the [`changelog`](https://github.com/rcmachado/changelog) tool.
 
 First, make sure your changes are detailed in the `Unreleased` section of the [CHANGELOG](./CHANGELOG.md) file.
 
