@@ -26,7 +26,7 @@ but we can also write a more generic expression, with an `int` *output parameter
 When the text is matched against that expression, the number `42` is extracted
 from the `{int}` output parameter and passed as an argument to the [step definition](https://cucumber.io/docs/cucumber/step-definitions).
 
-The following text would not match the expression:
+The following text would **not** match the expression:
 
     I have 42.5 cucumbers in my belly
 
@@ -191,60 +191,9 @@ Then this expression would match the following example:
 There is currently no way to escape a `/` character - it will always be interpreted
 as alternative text.
 
-## Grammar
+## Architecture
 
-A Cucumber Expression has the following AST:
-
-```ebnf
-cucumber-expression :=  ( alternation | optional | parameter | text )*
-alternation := (?<=left-boundary) + alternative* + ( '/' + alternative* )+ + (?=right-boundary)
-left-boundary := whitespace | } | ^
-right-boundary := whitespace | { | $
-alternative := optional | parameter | text 
-optional := '(' + option* + ')'
-option := optional | parameter | text
-parameter := '{' + name* + '}'
-name := whitespace | .
-text := whitespace | ')' | '}' | .
-```
-
-The AST is constructed from the following tokens:
-```ebnf
-escape := '\'
-token := whitespace | '(' | ')' | '{' | '}' | '/' | .
-. := any non-reserved codepoint
-```
-
-Note:
- * While `parameter` is allowed to appear as part of `alternative` and
-  `option` in the AST, such an AST is not a valid a Cucumber Expression.
- * While `optional` is allowed to appear as part of `option` in the AST,
-   such an AST is not a valid a Cucumber Expression.
- * ASTs with empty alternatives or alternatives that only
-   contain an optional are valid ASTs but invalid Cucumber Expressions.
- * All escaped tokens (tokens starting with a backslash) are rewritten to their
-   unescaped equivalent after parsing.
-
-### Production Rules
-
-The AST can be rewritten into a regular expression by the following production
-rules:
-
-```ebnf
-cucumber-expression -> '^' + rewrite(node[0]) + ... + rewrite(node[n-1]) + '$'
-alternation -> '(?:' + rewrite(node[0]) +'|' + ...  +'|' + rewerite(node[n-1]) + ')'
-alternative -> rewrite(node[0]) + ... + rewrite(node[n-1])
-optional -> '(?:' + rewrite(node[0]) + ... + rewrite(node[n-1]) + ')?'
-parameter -> {
-     parameter_name := node[0].text + ... + node[n-1].text
-     parameter_pattern := parameter_type_registry[parameter_name]
-    '((?:' + parameter_pattern[0] + ')|(?:' ... + ')|(?:' + parameter_pattern[n-1] +  '))'
-}
-text -> {
- escape_regex := escape '^', `$`, `[`, `]`, `(`, `)` `\`, `{`, `}`,  `.`, `|`, `?`, `*`, `+`
- escape_regex(token.text)
-}
-```
+See [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Acknowledgements
 
