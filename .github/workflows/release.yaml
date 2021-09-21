@@ -1,0 +1,41 @@
+# Makes an automated release
+#
+# To trigger this workflow, ensure the CHANGELOG is up to date, then push the commit 
+# to be released to a `release/*` branch.
+#
+# e.g.
+#     git checkout -b release/v1.0.0
+#     git push
+#
+name: Release
+
+on:
+  push:
+    branches: [release/*]
+
+jobs:
+  create-release:
+    name: Create GitHub Release and tag
+    runs-on: ubuntu-latest
+    environment: Release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cucumber-actions/create-release@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  
+  publish-rubygem:
+    name: Publish Ruby Gem
+    needs: create-release
+    runs-on: ubuntu-latest
+    environment: Release
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+      - uses: cucumber-actions/publish-rubygem@v1.0.0
+        with:
+          rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
