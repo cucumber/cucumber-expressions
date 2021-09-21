@@ -10,7 +10,7 @@ cucumber-expression :=  ( alternation | optional | parameter | text )*
 alternation := (?<=left-boundary) + alternative* + ( '/' + alternative* )+ + (?=right-boundary)
 left-boundary := whitespace | } | ^
 right-boundary := whitespace | { | $
-alternative: = optional | parameter | text 
+alternative := optional | parameter | text 
 optional := '(' + option* + ')'
 option := optional | parameter | text
 parameter := '{' + name* + '}'
