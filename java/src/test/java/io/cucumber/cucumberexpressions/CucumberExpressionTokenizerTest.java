@@ -24,7 +24,7 @@ class CucumberExpressionTokenizerTest {
 
     private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("testdata", "tokens")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "tokens")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }

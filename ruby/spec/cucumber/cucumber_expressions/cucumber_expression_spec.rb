@@ -7,7 +7,7 @@ module Cucumber
   module CucumberExpressions
     describe CucumberExpression do
 
-      Dir['testdata/expression/*.yaml'].each do |testcase|
+      Dir['../testdata/expression/*.yaml'].each do |testcase|
         expectation = YAML.load_file(testcase) # encoding?
         it "#{testcase}" do
           parameter_registry = ParameterTypeRegistry.new
@@ -25,7 +25,7 @@ module Cucumber
         end
       end
 
-      Dir['testdata/regex/*.yaml'].each do |testcase|
+      Dir['../testdata/regex/*.yaml'].each do |testcase|
         expectation = YAML.load_file(testcase) # encoding?
         it "#{testcase}" do
           parameter_registry = ParameterTypeRegistry.new
