@@ -39,3 +39,17 @@ jobs:
       - uses: cucumber-actions/publish-rubygem@v1.0.0
         with:
           rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
+
+  publish-npm:
+    name: Publish Ruby Gem
+    needs: create-release
+    runs-on: ubuntu-latest
+    environment: Release
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: cucumber-actions/publish-npm@v1.0.0
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          working-directory: 'javascript'
