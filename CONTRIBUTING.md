@@ -30,6 +30,6 @@ Commit and push
 Only people with rights to push to the `release/*` branches can make releases.
 
     git checkout -b release/v$next_release
-    git push
+    git push --set-upstream origin release/v$next_release
 
 This will trigger the [`release` workflow](https://github.com/cucumber/cucumber-expressions/actions/workflows/release.yaml).
