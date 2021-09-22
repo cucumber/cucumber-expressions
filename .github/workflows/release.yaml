@@ -73,3 +73,15 @@ jobs:
           nexus_password: ${{ secrets.SONATYPE_PASSWORD }}
           maven_profiles: sign-source-javadoc
           directory: java
+
+  publish-go:
+    name: Create go/* tag
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create go/* tag
+        run: |-
+          git config user.name "cukebot"
+          git config user.email "actions@users.noreply.github.com"
+          git tag "go/${{ steps.create-release.outputs.version }}"
+          git push --tags
