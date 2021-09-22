@@ -39,9 +39,10 @@ jobs:
       - uses: cucumber-actions/publish-rubygem@v1.0.0
         with:
           rubygems_api_key: ${{ secrets.RUBYGEMS_API_KEY }}
+          working_directory: 'ruby'
 
   publish-npm:
-    name: Publish Ruby Gem
+    name: Publish NPM package
     needs: create-release
     runs-on: ubuntu-latest
     environment: Release
