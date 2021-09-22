@@ -24,6 +24,7 @@ Commit and push
 
      git add .
      git commit -m "Release $next_release"
+     git push
 
 ### Making a release
 
