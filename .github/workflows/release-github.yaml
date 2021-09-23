@@ -1,12 +1,3 @@
-# Makes an automated release
-#
-# To trigger this workflow, ensure the CHANGELOG is up to date, then push the commit
-# to be released to a `release/*` branch.
-#
-# e.g.
-#     git checkout -b release/v1.0.0
-#     git push
-#
 name: Create GitHub Release
 
 on:
