@@ -23,8 +23,8 @@ The AST is constructed from the following tokens:
 
 ```ebnf
 escape = "\"
-token = whitespace | "(" | ")" | "{" | "}" | "/" | .
-. = any non-reserved codepoint
+token  = whitespace | "(" | ")" | "{" | "}" | "/" | .
+.      = any non-reserved codepoint
 ```
 
 Note:
@@ -43,17 +43,17 @@ The AST can be rewritten into a regular expression by the following production
 rules:
 
 ```
-cucumber-expression -> '^' + rewrite(node[0]) + ... + rewrite(node[n-1]) + '$'
-alternation -> '(?:' + rewrite(node[0]) + '|' + ...  + '|' + rewerite(node[n-1]) + ')'
-alternative -> rewrite(node[0]) + ... + rewrite(node[n-1])
-optional -> '(?:' + rewrite(node[0]) + ... + rewrite(node[n-1]) + ')?'
+cucumber-expression -> "^" + rewrite(node[0]) + ... + rewrite(node[n-1]) + "$"
+alternation         -> "(?:" + rewrite(node[0]) + "|" + ...  + "|" + rewerite(node[n-1]) + ")"
+alternative         -> rewrite(node[0]) + ... + rewrite(node[n-1])
+optional            -> "(?:" + rewrite(node[0]) + ... + rewrite(node[n-1]) + ")?"
 parameter -> {
      parameter_name := node[0].text + ... + node[n-1].text
      parameter_pattern := parameter_type_registry[parameter_name]
-    '((?:' + parameter_pattern[0] + ')|(?:' ... + ')|(?:' + parameter_pattern[n-1] +  '))'
+     "((?:" + parameter_pattern[0] + ")|(?:" ... + ")|(?:" + parameter_pattern[n-1] +  "))"
 }
 text -> {
- escape_regex := escape '^', `$`, `[`, `]`, `(`, `)` `\`, `{`, `}`,  `.`, `|`, `?`, `*`, `+`
- escape_regex(token.text)
+     escape_regex := escape "^", "$", "[", "]", "(", ")" "\", "{", "}", ".", "|", "?", "*", "+"
+     escape_regex(token.text)
 }
 ```
