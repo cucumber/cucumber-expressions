@@ -1,0 +1,17 @@
+name: Release Go module
+
+on:
+  push:
+    branches: [release/*]
+
+jobs:
+  publish-go:
+    name: Create go/* tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cucumber-actions/versions@1.1.0
+        id: versions
+      - name: Create go/* tag
+        run: |
+          git tag "go/${{ steps.versions.outputs.changelog-latest-version }}"
+          git push --tags

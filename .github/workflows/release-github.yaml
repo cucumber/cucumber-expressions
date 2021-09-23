@@ -1,0 +1,27 @@
+# Makes an automated release
+#
+# To trigger this workflow, ensure the CHANGELOG is up to date, then push the commit
+# to be released to a `release/*` branch.
+#
+# e.g.
+#     git checkout -b release/v1.0.0
+#     git push
+#
+name: Create GitHub Release
+
+on:
+  push:
+    branches: [release/*]
+
+jobs:
+  create-release:
+    name: Create GitHub Release and Git tag
+    runs-on: ubuntu-latest
+    environment: Release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cucumber-actions/create-release@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

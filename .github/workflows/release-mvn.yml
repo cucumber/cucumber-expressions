@@ -1,0 +1,25 @@
+name: Release Maven Package
+
+on:
+  push:
+    branches: [release/*]
+
+jobs:
+  publish-mvn:
+    name: Release Maven Package
+    runs-on: ubuntu-latest
+    environment: Release
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - uses: samuelmeuli/action-maven-publish@v1
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          nexus_username: cukebot
+          nexus_password: ${{ secrets.SONATYPE_PASSWORD }}
+          maven_profiles: sign-source-javadoc
+          directory: java
