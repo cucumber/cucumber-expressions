@@ -37,12 +37,11 @@ To make these steps easier, you can use the [`changelog`](https://github.com/cuc
 
 Only people with permission to push to `release/*` branches can make releases.
 
-1. Push to a new `release/*` branc
+1. Push to a new `release/*` branch to trigger the [`release-*` workflows](https://github.com/cucumber/cucumber-expressions/actions)
    ```
    git checkout -b release/v$next_release
    git push --set-upstream origin release/v$next_release
    ```
-   * This will trigger the [`release-*` workflow](https://github.com/cucumber/cucumber-expressions/actions).
-1. Monitor the `release-*` workflows in GitHub Actions
+1. Wait until the `release-*` workflows in GitHub Actions have passed
 1. Rerun individual workflows if they fail
 1. Consider announcing the release on Slack/Twitter/Blog
