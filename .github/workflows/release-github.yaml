@@ -14,7 +14,7 @@ on:
     branches: [release/*]
 
 jobs:
-  create-release:
+  create-github-release:
     name: Create GitHub Release and Git tag
     runs-on: ubuntu-latest
     environment: Release
@@ -22,6 +22,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v2
-      - uses: cucumber-actions/create-release@v1.1.0
+      - uses: cucumber/actions-create-github-release@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

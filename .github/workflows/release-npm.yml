@@ -5,8 +5,8 @@ on:
     branches: [release/*]
 
 jobs:
-  publish-javascript:
-    name: Release NPM module
+  publish-npm:
+    name: Publish NPM module
     runs-on: ubuntu-latest
     environment: Release
     steps:
@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: javascript/ui/package-lock.json
       - uses: cucumber/action-publish-npm@v1.0.0
         with:
           npm-token: ${{ secrets.NPM_TOKEN }}

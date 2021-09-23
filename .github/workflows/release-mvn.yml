@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish-mvn:
-    name: Release Maven Package
+    name: Publish Maven Package
     runs-on: ubuntu-latest
     environment: Release
     steps:
@@ -14,12 +14,11 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-
-      - uses: samuelmeuli/action-maven-publish@v1
+          cache: 'maven'
+      - uses: cucumber/action-publish-mvn@v1.0.0
         with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          nexus_username: cukebot
-          nexus_password: ${{ secrets.SONATYPE_PASSWORD }}
-          maven_profiles: sign-source-javadoc
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          nexus-username: cukebot
+          nexus-password: ${{ secrets.SONATYPE_PASSWORD }}
           directory: java
