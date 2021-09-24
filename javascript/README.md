@@ -1,3 +1,3 @@
 # Cucumber Expressions for JavaScript
 
-[The docs are here](https://cucumber.io/docs/cucumber/cucumber-expressions/).
+[The docs are here](https://github.com/cucumber/cucumber-expressions#readme).
