@@ -6,7 +6,7 @@ on:
     types:
       - merged
     branches:
-      - master
+      - main
 
 jobs:
   test:
@@ -36,11 +36,11 @@ jobs:
         with:
           version: ${{ matrix.java }}
       - name: mvn install
-        working-directory: ./java
+        working-directory: java
         run: mvn install
       - name: mvn test
-        working-directory: ./java
+        working-directory: java
         run: mvn test
       - name: check jar
-        working-directory: ./java
+        working-directory: java
         run: ./scripts/check-jar.sh

@@ -1,4 +1,4 @@
-name: Release Go module
+name: Release Go
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     name: Create go/* tag
     runs-on: ubuntu-latest
     steps:
-      - uses: cucumber-actions/versions@1.1.0
+      - uses: cucumber/action-get-versions@1.0.0
         id: versions
       - name: Create go/* tag
         run: |

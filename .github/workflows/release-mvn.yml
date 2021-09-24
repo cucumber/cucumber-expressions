@@ -1,4 +1,4 @@
-name: Release Maven Package
+name: Release Maven
 
 on:
   push:
@@ -21,4 +21,4 @@ jobs:
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           nexus-username: cukebot
           nexus-password: ${{ secrets.SONATYPE_PASSWORD }}
-          directory: java
+          working-directory: java

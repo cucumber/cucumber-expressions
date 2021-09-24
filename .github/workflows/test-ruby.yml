@@ -6,7 +6,7 @@ on:
     types:
       - merged
     branches:
-      - master
+      - main
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-        ruby: [2.5, 2.6, 2.7, '3.0']
+        ruby: ['2.5', '2.6', '2.7', '3.0']
         include:
           - os: windows-latest
             ruby: '3.0'
@@ -30,7 +30,7 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-        working-directory: ./ruby
+        working-directory: ruby
     - name: bundle exec rspec
-      working-directory: ./ruby
+      working-directory: ruby
       run: bundle exec rspec
