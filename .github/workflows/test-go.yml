@@ -35,3 +35,10 @@ jobs:
     - name: test
       working-directory: go
       run: go test ./...
+    - uses: cucumber/action-get-versions@v1.0.0
+      id: versions
+    - name: Echo versions
+      run: |
+        echo "released-version=${{ steps.versions.outputs.released-version }}"
+        echo "changelog-latest-version=${{ steps.versions.outputs.changelog-latest-version }}"
+        echo "is-release-required=${{ steps.versions.outputs.is-release-required }}"
