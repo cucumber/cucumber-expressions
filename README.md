@@ -1,5 +1,3 @@
-[![latest version](https://img.shields.io/maven-central/v/io.cucumber/cucumber-expressions.svg?label=version)](https://search.maven.org/search?q=g:%22io.cucumber%22%20AND%20a:%22cucumber-expressions%22)
-
 [![test-go](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-go.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-go.yml)
 [![test-java](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml)
 [![test-javascript](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml)
