@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [13.1.2] - 2021-09-24
+### Fixed
+- Fix release for the Go implementation
+- Minor fixes in the README.md links to documentation
+
 ## [13.1.1] - 2021-09-24
 ### Fixed
 - Fix misc release actions
@@ -660,7 +665,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...main
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.2...main
+[13.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...v13.1.2
 [13.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.0...v13.1.1
 [13.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.0.1...v13.1.0
 [13.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v12.1.3...v13.0.1

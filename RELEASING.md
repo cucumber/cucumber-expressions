@@ -12,7 +12,7 @@ To make these steps easier, you can use the [`changelog`](https://github.com/cuc
    * Look at `CHANGELOG.md` to see what has changed since the last relesase
    * Use [semver](https://semver.org/) to pick a version for the next release.
      ```
-     read $next_release
+     export next_release=x.y.z
      ```
 1. Modify the changelog:
    ```
@@ -24,7 +24,7 @@ To make these steps easier, you can use the [`changelog`](https://github.com/cuc
      * Add a new `[${version}]` link at the bottom
      * Update the `[Unreleased]` link at the bottom
 1. Update the version numbers in package descriptors:
-   * `java/pom.xml` (`${version}-SNAPSHOT`)
+   * `java/pom.xml` (keep the `-SNAPSHOT` suffix)
    * `javascript/package.json`
    * `ruby/VERSION`
 1. Commit and push
