@@ -40,8 +40,7 @@ Only people with permission to push to `release/*` branches can make releases.
 
 1. Push to a new `release/*` branch to trigger the [`release-*` workflows](https://github.com/cucumber/cucumber-expressions/actions)
    ```
-   git checkout -b release/v$next_release
-   git push --set-upstream origin release/v$next_release
+   git push origin main:release/v$next_release
    ```
 1. Wait until the `release-*` workflows in GitHub Actions have passed
 1. Rerun individual workflows if they fail
