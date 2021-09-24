@@ -7,18 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [13.1.1] - 2021-09-24
+### Fixed
+- Fix misc release actions
+
 ## [13.1.0] - 2021-09-24
 ### Added
 - [JavaScript] Support for EcmaScript modules (aka ESM).
 ([#1743](https://github.com/cucumber/common/pull/1743))
-
-### Changed
-
-### Deprecated
-
-### Fixed
-
-### Removed
 
 ## [13.0.1] - 2021-09-15
 ### Changed
@@ -270,8 +266,8 @@ Use `ExpressionFactory#create_expression` instead.
 ### Fixed
 - Allow parameter-types in escaped optional groups
 ([#572](https://github.com/cucumber/cucumber/pull/572),
- [#561](https://github.com/cucumber/cucumber/pull/561)
- [luke-hill](https://github.com/luke-hill), [jaysonesmith](https://github.com/jaysonesmith), [mpkorstanje](https://github.com/mpkorstanje))
+[#561](https://github.com/cucumber/cucumber/pull/561)
+[luke-hill](https://github.com/luke-hill), [jaysonesmith](https://github.com/jaysonesmith), [mpkorstanje](https://github.com/mpkorstanje))
 - Prefer expression with the longest non-empty match #580
 ([#580](https://github.com/cucumber/cucumber/pull/580),
 [#575](https://github.com/cucumber/cucumber/issues/575)
@@ -664,7 +660,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.0...main
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...main
+[13.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.0...v13.1.1
 [13.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.0.1...v13.1.0
 [13.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v12.1.3...v13.0.1
 [12.1.3]: https://github.com/cucumber/cucumber-expressions/compare/v12.1.2...v12.1.3
