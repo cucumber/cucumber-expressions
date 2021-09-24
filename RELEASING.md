@@ -7,12 +7,12 @@ There are two parts to making a release. First, prepare the release, then make t
 Anyone with permission to push to the `main` branch can prepare a release.
 To make these steps easier, you can use the [`changelog`](https://github.com/cucumber/changelog) tool.
 
-1. Make sure the CI is passing
+1. Make sure the CI badges in `README.md` indicate passing
 1. Decide what the next version number should be
    * Look at `CHANGELOG.md` to see what has changed since the last relesase
    * Use [semver](https://semver.org/) to pick a version for the next release.
      ```
-     export next_release=x.y.z
+     read $next_release
      ```
 1. Modify the changelog:
    ```
@@ -24,6 +24,7 @@ To make these steps easier, you can use the [`changelog`](https://github.com/cuc
      * Add a new `[${version}]` link at the bottom
      * Update the `[Unreleased]` link at the bottom
 1. Update the version numbers in package descriptors:
+   * `go/go.mod` (only if the major version has changed)
    * `java/pom.xml` (keep the `-SNAPSHOT` suffix)
    * `javascript/package.json`
    * `ruby/VERSION`
