@@ -7,7 +7,7 @@ There are two parts to making a release. First, prepare the release, then make t
 Anyone with permission to push to the `main` branch can prepare a release.
 To make these steps easier, you can use the [`changelog`](https://github.com/cucumber/changelog) tool.
 
-1. Make sure the CI badges in `README.md` indicate passing
+1. Make sure the CI is passing
 1. Decide what the next version number should be
    * Look at `CHANGELOG.md` to see what has changed since the last relesase
    * Use [semver](https://semver.org/) to pick a version for the next release.
