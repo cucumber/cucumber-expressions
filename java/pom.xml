@@ -22,9 +22,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/cucumber/cucumber-expressions-java.git</connection>
-        <developerConnection>scm:git:git@github.com:cucumber/cucumber-expressions-java.git</developerConnection>
-        <url>git://github.com/cucumber/cucumber-expressions-java.git</url>
+        <connection>scm:git:git://github.com/cucumber/cucumber-expressions.git</connection>
+        <developerConnection>scm:git:git@github.com:cucumber/cucumber-expressions.git</developerConnection>
+        <url>git://github.com/cucumber/cucumber-expressions.git</url>
     </scm>
 
     <dependencyManagement>
