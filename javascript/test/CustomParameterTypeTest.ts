@@ -6,9 +6,7 @@ import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import RegularExpression from '../src/RegularExpression.js'
 
 class Color {
-  /// [color-constructor]
   constructor(public readonly name: string) {}
-  /// [color-constructor]
 }
 
 class CssColor {
@@ -20,20 +18,9 @@ describe('Custom parameter type', () => {
 
   beforeEach(() => {
     parameterTypeRegistry = new ParameterTypeRegistry()
-    /* eslint-disable prettier/prettier */
-    /// [add-color-parameter-type]
     parameterTypeRegistry.defineParameterType(
-      new ParameterType(
-        'color', // name
-        /red|blue|yellow/, // regexp
-        Color, // type
-        s => new Color(s), // transformer
-        false, // useForSnippets
-        true // preferForRegexpMatch
-      )
+      new ParameterType('color', /red|blue|yellow/, Color, (s) => new Color(s), false, true)
     )
-    /// [add-color-parameter-type]
-    /* eslint-enable prettier/prettier */
   })
 
   describe('CucumberExpression', () => {
