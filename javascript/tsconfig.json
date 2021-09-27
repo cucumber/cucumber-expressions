@@ -9,9 +9,9 @@
     "noImplicitAny": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "ESNext",
     "lib": [
       "es6"
     ],

@@ -1,10 +1,10 @@
 import ParameterType from './ParameterType.js'
 
 export default class ParameterTypeMatcher {
-  private readonly match: RegExpExecArray
+  private readonly match: RegExpExecArray | null
 
   constructor(
-    public readonly parameterType: ParameterType<any>,
+    public readonly parameterType: ParameterType<unknown>,
     private readonly regexpString: string,
     private readonly text: string,
     private matchPosition: number = 0
@@ -40,6 +40,7 @@ export default class ParameterTypeMatcher {
   }
 
   get start() {
+    if (!this.match) throw new Error('No match')
     return this.matchPosition + this.match.index
   }
 
@@ -60,6 +61,7 @@ export default class ParameterTypeMatcher {
   }
 
   get group() {
+    if (!this.match) throw new Error('No match')
     return this.match[0]
   }
 

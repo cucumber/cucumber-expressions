@@ -1,8 +1,9 @@
 import assert from 'assert'
+
 import CucumberExpression from '../src/CucumberExpression.js'
-import RegularExpression from '../src/RegularExpression.js'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import ParameterType from '../src/ParameterType.js'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import RegularExpression from '../src/RegularExpression.js'
 
 class Color {
   /// [color-constructor]
@@ -45,8 +46,8 @@ describe('Custom parameter type', () => {
 
     it('matches parameters with custom parameter type', () => {
       const expression = new CucumberExpression('I have a {color} ball', parameterTypeRegistry)
-      const value = expression.match('I have a red ball')[0].getValue(null)
-      assert.strictEqual(value.name, 'red')
+      const value = expression.match('I have a red ball')?.[0].getValue<Color>(null)
+      assert.strictEqual(value?.name, 'red')
     })
 
     it('matches parameters with multiple capture groups', () => {
@@ -74,18 +75,18 @@ describe('Custom parameter type', () => {
       )
       const args = expression.match('A 5 thick line from 10,20,30 to 40,50,60')
 
-      const thick = args[0].getValue(null)
+      const thick = args?.[0].getValue<number>(null)
       assert.strictEqual(thick, 5)
 
-      const from = args[1].getValue(null)
-      assert.strictEqual(from.x, 10)
-      assert.strictEqual(from.y, 20)
-      assert.strictEqual(from.z, 30)
+      const from = args?.[1].getValue<Coordinate>(null)
+      assert.strictEqual(from?.x, 10)
+      assert.strictEqual(from?.y, 20)
+      assert.strictEqual(from?.z, 30)
 
-      const to = args[2].getValue(null)
-      assert.strictEqual(to.x, 40)
-      assert.strictEqual(to.y, 50)
-      assert.strictEqual(to.z, 60)
+      const to = args?.[2].getValue<Coordinate>(null)
+      assert.strictEqual(to?.x, 40)
+      assert.strictEqual(to?.y, 50)
+      assert.strictEqual(to?.z, 60)
     })
 
     it('matches parameters with custom parameter type using optional capture group', () => {
@@ -101,8 +102,8 @@ describe('Custom parameter type', () => {
         )
       )
       const expression = new CucumberExpression('I have a {color} ball', parameterTypeRegistry)
-      const value = expression.match('I have a dark red ball')[0].getValue(null)
-      assert.strictEqual(value.name, 'dark red')
+      const value = expression.match('I have a dark red ball')?.[0].getValue<Color>(null)
+      assert.strictEqual(value?.name, 'dark red')
     })
 
     it('defers transformation until queried from argument', () => {
@@ -123,7 +124,8 @@ describe('Custom parameter type', () => {
         'I have a {throwing} parameter',
         parameterTypeRegistry
       )
-      const args = expression.match('I have a bad parameter')
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const args = expression.match('I have a bad parameter')!
       assert.throws(() => args[0].getValue(null), {
         message: "Can't transform [bad]",
       })
@@ -160,26 +162,26 @@ describe('Custom parameter type', () => {
 
         assert.strictEqual(
           new CucumberExpression('I have a {css-color} ball', parameterTypeRegistry)
-            .match('I have a blue ball')[0]
-            .getValue(null).constructor,
+            .match('I have a blue ball')?.[0]
+            .getValue<CssColor>(null)?.constructor,
           CssColor
         )
         assert.strictEqual(
           new CucumberExpression('I have a {css-color} ball', parameterTypeRegistry)
-            .match('I have a blue ball')[0]
-            .getValue(null).name,
+            .match('I have a blue ball')?.[0]
+            .getValue<CssColor>(null)?.name,
           'blue'
         )
         assert.strictEqual(
           new CucumberExpression('I have a {color} ball', parameterTypeRegistry)
-            .match('I have a blue ball')[0]
-            .getValue(null).constructor,
+            .match('I have a blue ball')?.[0]
+            .getValue<Color>(null)?.constructor,
           Color
         )
         assert.strictEqual(
           new CucumberExpression('I have a {color} ball', parameterTypeRegistry)
-            .match('I have a blue ball')[0]
-            .getValue(null).name,
+            .match('I have a blue ball')?.[0]
+            .getValue<Color>(null)?.name,
           'blue'
         )
       })
@@ -188,7 +190,6 @@ describe('Custom parameter type', () => {
     // JavaScript-specific
     it('creates arguments using async transform', async () => {
       parameterTypeRegistry = new ParameterTypeRegistry()
-      /// [add-async-parameter-type]
       parameterTypeRegistry.defineParameterType(
         new ParameterType(
           'asyncColor',
@@ -199,12 +200,11 @@ describe('Custom parameter type', () => {
           true
         )
       )
-      /// [add-async-parameter-type]
 
       const expression = new CucumberExpression('I have a {asyncColor} ball', parameterTypeRegistry)
-      const args = await expression.match('I have a red ball')
-      const value = await args[0].getValue(null)
-      assert.strictEqual(value.name, 'red')
+      const args = expression.match('I have a red ball')
+      const value = await args?.[0].getValue<Promise<Color>>(null)
+      assert.strictEqual(value?.name, 'red')
     })
   })
 
@@ -214,9 +214,9 @@ describe('Custom parameter type', () => {
         /I have a (red|blue|yellow) ball/,
         parameterTypeRegistry
       )
-      const value = expression.match('I have a red ball')[0].getValue(null)
-      assert.strictEqual(value.constructor, Color)
-      assert.strictEqual(value.name, 'red')
+      const value = expression.match('I have a red ball')?.[0].getValue<Color>(null)
+      assert.strictEqual(value?.constructor, Color)
+      assert.strictEqual(value?.name, 'red')
     })
   })
 })

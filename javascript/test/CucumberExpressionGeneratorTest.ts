@@ -1,6 +1,7 @@
 import assert from 'assert'
-import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
+
 import CucumberExpression from '../src/CucumberExpression.js'
+import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 

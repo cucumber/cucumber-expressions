@@ -1,24 +1,17 @@
-import TreeRegexp from './TreeRegexp.js'
-import ParameterType from './ParameterType.js'
-import Group from './Group.js'
 import CucumberExpressionError from './CucumberExpressionError.js'
+import Group from './Group.js'
+import ParameterType from './ParameterType.js'
 
-export default class Argument<T> {
+export default class Argument {
   public static build(
-    treeRegexp: TreeRegexp,
-    text: string,
-    parameterTypes: readonly ParameterType<any>[]
-  ): readonly Argument<any>[] {
-    const group = treeRegexp.match(text)
-    if (!group) {
-      return null
-    }
-
+    group: Group,
+    parameterTypes: readonly ParameterType<unknown>[]
+  ): readonly Argument[] {
     const argGroups = group.children
 
     if (argGroups.length !== parameterTypes.length) {
       throw new CucumberExpressionError(
-        `Expression ${treeRegexp.regexp} has ${argGroups.length} capture groups (${argGroups.map(
+        `Group has ${argGroups.length} capture groups (${argGroups.map(
           (g) => g.value
         )}), but there were ${parameterTypes.length} parameter types (${parameterTypes.map(
           (p) => p.name
@@ -29,7 +22,7 @@ export default class Argument<T> {
     return parameterTypes.map((parameterType, i) => new Argument(argGroups[i], parameterType))
   }
 
-  constructor(public readonly group: Group, public readonly parameterType: ParameterType<T>) {
+  constructor(public readonly group: Group, public readonly parameterType: ParameterType<unknown>) {
     this.group = group
     this.parameterType = parameterType
   }
@@ -39,7 +32,7 @@ export default class Argument<T> {
    *
    * @param thisObj the object in which the transformer function is applied.
    */
-  public getValue(thisObj: any): T {
+  public getValue<T>(thisObj: unknown): T | null {
     const groupValues = this.group ? this.group.values : null
     return this.parameterType.transform(thisObj, groupValues)
   }

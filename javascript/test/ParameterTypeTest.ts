@@ -1,5 +1,6 @@
-import ParameterType from '../src/ParameterType.js'
 import * as assert from 'assert'
+
+import ParameterType from '../src/ParameterType.js'
 
 describe('ParameterType', () => {
   it('does not allow ignore flag on regexp', () => {

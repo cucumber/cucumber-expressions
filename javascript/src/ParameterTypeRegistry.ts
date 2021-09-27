@@ -1,8 +1,7 @@
-import ParameterType from './ParameterType.js'
-
+import CucumberExpressionError from './CucumberExpressionError.js'
 import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import { AmbiguousParameterTypeError } from './Errors.js'
-import CucumberExpressionError from './CucumberExpressionError.js'
+import ParameterType from './ParameterType.js'
 
 export default class ParameterTypeRegistry {
   public static readonly INTEGER_REGEXPS = [/-?\d+/, /\d+/]
@@ -11,8 +10,8 @@ export default class ParameterTypeRegistry {
   public static readonly STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/
   public static readonly ANONYMOUS_REGEXP = /.*/
 
-  private readonly parameterTypeByName = new Map<string, ParameterType<any>>()
-  private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<any>>>()
+  private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
+  private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<unknown>>>()
 
   constructor() {
     this.defineParameterType(
@@ -53,7 +52,7 @@ export default class ParameterTypeRegistry {
     )
   }
 
-  get parameterTypes(): IterableIterator<ParameterType<any>> {
+  get parameterTypes(): IterableIterator<ParameterType<unknown>> {
     return this.parameterTypeByName.values()
   }
 
@@ -65,10 +64,10 @@ export default class ParameterTypeRegistry {
     parameterTypeRegexp: string,
     expressionRegexp: RegExp,
     text: string
-  ): ParameterType<any> {
+  ): ParameterType<unknown> | undefined {
     const parameterTypes = this.parameterTypesByRegexp.get(parameterTypeRegexp)
     if (!parameterTypes) {
-      return null
+      return undefined
     }
     if (parameterTypes.length > 1 && !parameterTypes[0].preferForRegexpMatch) {
       // We don't do this check on insertion because we only want to restrict
@@ -87,7 +86,7 @@ export default class ParameterTypeRegistry {
     return parameterTypes[0]
   }
 
-  public defineParameterType(parameterType: ParameterType<any>) {
+  public defineParameterType(parameterType: ParameterType<unknown>) {
     if (parameterType.name !== undefined) {
       if (this.parameterTypeByName.has(parameterType.name)) {
         if (parameterType.name.length === 0) {
@@ -103,7 +102,8 @@ export default class ParameterTypeRegistry {
       if (!this.parameterTypesByRegexp.has(parameterTypeRegexp)) {
         this.parameterTypesByRegexp.set(parameterTypeRegexp, [])
       }
-      const parameterTypes = this.parameterTypesByRegexp.get(parameterTypeRegexp)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const parameterTypes = this.parameterTypesByRegexp.get(parameterTypeRegexp)!
       const existingParameterType = parameterTypes[0]
       if (
         parameterTypes.length > 0 &&

@@ -1,8 +1,8 @@
 import Argument from './Argument.js'
-import TreeRegexp from './TreeRegexp.js'
+import Expression from './Expression.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
-import Expression from './Expression.js'
+import TreeRegexp from './TreeRegexp.js'
 
 export default class RegularExpression implements Expression {
   private readonly treeRegexp: TreeRegexp
@@ -14,14 +14,24 @@ export default class RegularExpression implements Expression {
     this.treeRegexp = new TreeRegexp(regexp)
   }
 
-  public match(text: string): readonly Argument<any>[] {
+  public match(text: string): readonly Argument[] | null {
+    const group = this.treeRegexp.match(text)
+    if (!group) {
+      return null
+    }
+
     const parameterTypes = this.treeRegexp.groupBuilder.children.map((groupBuilder) => {
       const parameterTypeRegexp = groupBuilder.source
 
+      const parameterType = this.parameterTypeRegistry.lookupByRegexp(
+        parameterTypeRegexp,
+        this.regexp,
+        text
+      )
       return (
-        this.parameterTypeRegistry.lookupByRegexp(parameterTypeRegexp, this.regexp, text) ||
+        parameterType ||
         new ParameterType(
-          null,
+          undefined,
           parameterTypeRegexp,
           String,
           (s) => (s === undefined ? null : s),
@@ -31,7 +41,7 @@ export default class RegularExpression implements Expression {
       )
     })
 
-    return Argument.build(this.treeRegexp, text, parameterTypes)
+    return Argument.build(group, parameterTypes)
   }
 
   get source(): string {

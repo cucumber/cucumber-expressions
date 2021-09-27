@@ -6,14 +6,14 @@ const UNESCAPE_PATTERN = () => /(\\([[$.|?*+\]]))/g
 export default class ParameterType<T> {
   private transformFn: (...match: readonly string[]) => T
 
-  public static compare(pt1: ParameterType<any>, pt2: ParameterType<any>) {
+  public static compare(pt1: ParameterType<unknown>, pt2: ParameterType<unknown>) {
     if (pt1.preferForRegexpMatch && !pt2.preferForRegexpMatch) {
       return -1
     }
     if (pt2.preferForRegexpMatch && !pt1.preferForRegexpMatch) {
       return 1
     }
-    return pt1.name.localeCompare(pt2.name)
+    return (pt1.name || '').localeCompare(pt2.name || '')
   }
 
   public static checkParameterTypeName(typeName: string) {
@@ -40,9 +40,9 @@ export default class ParameterType<T> {
    * @param preferForRegexpMatch {boolean} true if this is a preferential type. Defaults to false.
    */
   constructor(
-    public readonly name: string,
+    public readonly name: string | undefined,
     regexps: readonly RegExp[] | readonly string[] | RegExp | string,
-    private readonly type: any,
+    private readonly type: unknown,
     transform: (...match: string[]) => T,
     public readonly useForSnippets: boolean,
     public readonly preferForRegexpMatch: boolean
@@ -65,7 +65,7 @@ export default class ParameterType<T> {
     this.transformFn = transform
   }
 
-  public transform(thisObj: any, groupValues: string[]) {
+  public transform(thisObj: unknown, groupValues: string[] | null) {
     return this.transformFn.apply(thisObj, groupValues)
   }
 }

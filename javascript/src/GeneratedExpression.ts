@@ -3,11 +3,11 @@ import ParameterType from './ParameterType.js'
 export default class GeneratedExpression {
   constructor(
     private readonly expressionTemplate: string,
-    public readonly parameterTypes: readonly ParameterType<any>[]
+    public readonly parameterTypes: readonly ParameterType<unknown>[]
   ) {}
 
   get source() {
-    return format(this.expressionTemplate, ...this.parameterTypes.map((t) => t.name))
+    return format(this.expressionTemplate, ...this.parameterTypes.map((t) => t.name || ''))
   }
 
   /**
@@ -17,7 +17,7 @@ export default class GeneratedExpression {
    */
   get parameterNames(): readonly string[] {
     const usageByTypeName: { [key: string]: number } = {}
-    return this.parameterTypes.map((t) => getParameterName(t.name, usageByTypeName))
+    return this.parameterTypes.map((t) => getParameterName(t.name || '', usageByTypeName))
   }
 }
 

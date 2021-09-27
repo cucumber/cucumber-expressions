@@ -1,10 +1,11 @@
 import assert from 'assert'
-import CucumberExpression from '../src/CucumberExpression.js'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
-import ParameterType from '../src/ParameterType.js'
 import fs from 'fs'
 import yaml from 'js-yaml'
+
+import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
+import ParameterType from '../src/ParameterType.js'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 
 interface Expectation {
   expression: string
@@ -19,18 +20,22 @@ describe('CucumberExpression', () => {
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
-      if (expectation.exception == undefined) {
+      if (expectation.expected !== undefined) {
         const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
         const matches = expression.match(expectation.text)
         assert.deepStrictEqual(
           JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
           JSON.parse(expectation.expected)
         )
-      } else {
+      } else if (expectation.exception !== undefined) {
         assert.throws(() => {
           const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
           expression.match(expectation.text)
         }, new CucumberExpressionError(expectation.exception))
+      } else {
+        throw new Error(
+          `Expectation must have expected or exception: ${JSON.stringify(expectation)}`
+        )
       }
     })
   })
@@ -51,7 +56,7 @@ describe('CucumberExpression', () => {
     /// [capture-match-arguments]
     const expr = 'I have {int} cuke(s)'
     const expression = new CucumberExpression(expr, parameterTypeRegistry)
-    const args = expression.match('I have 7 cukes')
+    const args = expression.match('I have 7 cukes')!
     assert.strictEqual(7, args[0].getValue(null))
     /// [capture-match-arguments]
   })
@@ -118,8 +123,8 @@ describe('CucumberExpression', () => {
 
     const world = {}
 
-    assert.deepStrictEqual(expression.match(`TLA`)[0].getValue(world), ['TLA', undefined])
-    assert.deepStrictEqual(expression.match(`123`)[0].getValue(world), [undefined, '123'])
+    assert.deepStrictEqual(expression.match(`TLA`)![0].getValue(world), ['TLA', undefined])
+    assert.deepStrictEqual(expression.match(`123`)![0].getValue(world), [undefined, '123'])
   })
 
   // JavaScript-specific
@@ -146,7 +151,7 @@ describe('CucumberExpression', () => {
       },
     }
 
-    const args = expression.match(`I have a bolt`)
+    const args = expression.match(`I have a bolt`)!
     assert.strictEqual(args[0].getValue(world), 'widget:bolt')
   })
 })

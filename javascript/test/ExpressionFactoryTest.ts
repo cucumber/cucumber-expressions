@@ -1,8 +1,9 @@
 import * as assert from 'assert'
+
+import CucumberExpression from '../src/CucumberExpression.js'
 import ExpressionFactory from '../src/ExpressionFactory.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import RegularExpression from '../src/RegularExpression.js'
-import CucumberExpression from '../src/CucumberExpression.js'
 
 describe('ExpressionFactory', () => {
   let expressionFactory: ExpressionFactory
