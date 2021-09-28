@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- TypeScript: `Argument` is no longer generic ([#16](https://github.com/cucumber/cucumber-expressions/pull/16))
 
 ## [13.1.3] - 2021-09-24
 ### Fixed

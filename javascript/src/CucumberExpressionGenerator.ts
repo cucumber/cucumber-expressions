@@ -1,13 +1,13 @@
-import ParameterTypeMatcher from './ParameterTypeMatcher.js'
-import ParameterType from './ParameterType.js'
 import CombinatorialGeneratedExpressionFactory from './CombinatorialGeneratedExpressionFactory.js'
 import GeneratedExpression from './GeneratedExpression.js'
+import ParameterType from './ParameterType.js'
+import ParameterTypeMatcher from './ParameterTypeMatcher.js'
 
 export default class CucumberExpressionGenerator {
-  constructor(private readonly parameterTypes: () => Iterable<ParameterType<any>>) {}
+  constructor(private readonly parameterTypes: () => Iterable<ParameterType<unknown>>) {}
 
   public generateExpressions(text: string): readonly GeneratedExpression[] {
-    const parameterTypeCombinations: Array<Array<ParameterType<any>>> = []
+    const parameterTypeCombinations: Array<Array<ParameterType<unknown>>> = []
     const parameterTypeMatchers = this.createParameterTypeMatchers(text)
     let expressionTemplate = ''
     let pos = 0
@@ -83,7 +83,7 @@ export default class CucumberExpressionGenerator {
   }
 
   private static createParameterTypeMatchers2(
-    parameterType: ParameterType<any>,
+    parameterType: ParameterType<unknown>,
     text: string
   ): ParameterTypeMatcher[] {
     // TODO: [].map
@@ -96,8 +96,5 @@ export default class CucumberExpressionGenerator {
 }
 
 function escape(s: string): string {
-  return s
-    .replace(/\(/g, '\\(')
-    .replace(/{/g, '\\{')
-    .replace(/\//g, '\\/')
+  return s.replace(/\(/g, '\\(').replace(/{/g, '\\{').replace(/\//g, '\\/')
 }

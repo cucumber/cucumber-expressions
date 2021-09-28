@@ -9,7 +9,7 @@ import {
 /*
  * text := whitespace | ')' | '}' | .
  */
-function parseText(expression: string, tokens: readonly Token[], current: number) {
+function parseText(expression: string, tokens: readonly Token[], current: number): Result {
   const token = tokens[current]
   switch (token.type) {
     case TokenType.whiteSpace:
@@ -28,14 +28,14 @@ function parseText(expression: string, tokens: readonly Token[], current: number
     case TokenType.beginParameter:
     default:
       // If configured correctly this will never happen
-      return { consumed: 0 }
+      return { consumed: 0, ast: [] }
   }
 }
 
 /*
  * parameter := '{' + name* + '}'
  */
-function parseName(expression: string, tokens: readonly Token[], current: number) {
+function parseName(expression: string, tokens: readonly Token[], current: number): Result {
   const token = tokens[current]
   switch (token.type) {
     case TokenType.whiteSpace:
@@ -54,7 +54,7 @@ function parseName(expression: string, tokens: readonly Token[], current: number
     case TokenType.endOfLine:
     default:
       // If configured correctly this will never happen
-      return { consumed: 0 }
+      return { consumed: 0, ast: [] }
   }
 }
 
@@ -84,9 +84,13 @@ optionalSubParsers.push(parseOptional, parseParameter, parseText)
 /*
  * alternation := alternative* + ( '/' + alternative* )+
  */
-function parseAlternativeSeparator(expression: string, tokens: readonly Token[], current: number) {
+function parseAlternativeSeparator(
+  expression: string,
+  tokens: readonly Token[],
+  current: number
+): Result {
   if (!lookingAt(tokens, current, TokenType.alternation)) {
-    return { consumed: 0 }
+    return { consumed: 0, ast: [] }
   }
   const token = tokens[current]
   return {
@@ -117,7 +121,7 @@ const parseAlternation: Parser = (expression, tokens, current) => {
       TokenType.endParameter,
     ])
   ) {
-    return { consumed: 0 }
+    return { consumed: 0, ast: [] }
   }
 
   const result = parseTokensUntil(expression, alternativeParsers, tokens, current, [
@@ -127,7 +131,7 @@ const parseAlternation: Parser = (expression, tokens, current) => {
   ])
   const subCurrent = current + result.consumed
   if (!result.ast.some((astNode) => astNode.type == NodeType.alternative)) {
-    return { consumed: 0 }
+    return { consumed: 0, ast: [] }
   }
 
   const start = tokens[current].start
@@ -170,9 +174,9 @@ interface Parser {
   (expression: string, tokens: readonly Token[], current: number): Result
 }
 
-interface Result {
+type Result = {
   readonly consumed: number
-  readonly ast?: readonly Node[]
+  readonly ast: readonly Node[]
 }
 
 function parseBetween(
@@ -183,7 +187,7 @@ function parseBetween(
 ): Parser {
   return (expression, tokens, current) => {
     if (!lookingAt(tokens, current, beginToken)) {
-      return { consumed: 0 }
+      return { consumed: 0, ast: [] }
     }
     let subCurrent = current + 1
     const result = parseTokensUntil(expression, parsers, tokens, subCurrent, [

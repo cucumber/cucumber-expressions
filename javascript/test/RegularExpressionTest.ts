@@ -1,6 +1,7 @@
 import assert from 'assert'
-import RegularExpression from '../src/RegularExpression.js'
+
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import RegularExpression from '../src/RegularExpression.js'
 
 describe('RegularExpression', () => {
   it('documents match arguments', () => {
@@ -9,7 +10,7 @@ describe('RegularExpression', () => {
     /// [capture-match-arguments]
     const expr = /I have (\d+) cukes? in my (\w+) now/
     const expression = new RegularExpression(expr, parameterRegistry)
-    const args = expression.match('I have 7 cukes in my belly now')
+    const args = expression.match('I have 7 cukes in my belly now')!
     assert.strictEqual(7, args[0].getValue(null))
     assert.strictEqual('belly', args[1].getValue(null))
     /// [capture-match-arguments]
@@ -100,7 +101,7 @@ describe('RegularExpression', () => {
       /^drawings: ([A-Z_, ()]+)$/,
       new ParameterTypeRegistry()
     )
-    const args = expression.match('drawings: ONE, TWO(ABC)')
+    const args = expression.match('drawings: ONE, TWO(ABC)')!
 
     assert.strictEqual(args[0].getValue(this), 'ONE, TWO(ABC)')
   })

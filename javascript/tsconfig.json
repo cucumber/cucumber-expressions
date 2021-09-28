@@ -9,13 +9,13 @@
     "noImplicitAny": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "experimentalDecorators": true,
-    "module": "esnext",
+    "module": "ESNext",
     "lib": [
-      "es6"
+      "ES6"
     ],
-    "target": "ESNext",
+    "target": "ES6",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noEmit": true

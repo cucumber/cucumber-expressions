@@ -1,7 +1,7 @@
-import ParameterType from './ParameterType.js'
-import GeneratedExpression from './GeneratedExpression.js'
 import { Located, Node, purposeOf, symbolOf, Token, TokenType } from './Ast.js'
 import CucumberExpressionError from './CucumberExpressionError.js'
+import GeneratedExpression from './GeneratedExpression.js'
+import ParameterType from './ParameterType.js'
 
 export function createAlternativeMayNotExclusivelyContainOptionals(
   node: Node,
@@ -147,7 +147,7 @@ export function createInvalidParameterTypeNameInNode(token: Token, expression: s
 function message(
   index: number,
   expression: string,
-  pointer: any,
+  pointer: string,
   problem: string,
   solution: string
 ): string {
@@ -180,21 +180,10 @@ function pointAtLocated(node: Located): string {
 }
 
 export class AmbiguousParameterTypeError extends CucumberExpressionError {
-  public static forConstructor(
-    keyName: string,
-    keyValue: string,
-    parameterTypes: readonly ParameterType<any>[],
-    generatedExpressions: readonly GeneratedExpression[]
-  ) {
-    return new this(
-      `parameter type with ${keyName}=${keyValue} is used by several parameter types: ${parameterTypes}, ${generatedExpressions}`
-    )
-  }
-
   public static forRegExp(
     parameterTypeRegexp: string,
     expressionRegexp: RegExp,
-    parameterTypes: readonly ParameterType<any>[],
+    parameterTypes: readonly ParameterType<unknown>[],
     generatedExpressions: readonly GeneratedExpression[]
   ) {
     return new this(
@@ -212,7 +201,7 @@ I couldn't decide which one to use. You have two options:
     )
   }
 
-  public static _parameterTypeNames(parameterTypes: readonly ParameterType<any>[]) {
+  public static _parameterTypeNames(parameterTypes: readonly ParameterType<unknown>[]) {
     return parameterTypes.map((p) => `{${p.name}}`).join('\n   ')
   }
 

@@ -1,8 +1,9 @@
+import assert from 'assert'
 import fs from 'fs'
 import yaml from 'js-yaml'
-import CucumberExpressionTokenizer from '../src/CucumberExpressionTokenizer.js'
-import assert from 'assert'
+
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
+import CucumberExpressionTokenizer from '../src/CucumberExpressionTokenizer.js'
 
 interface Expectation {
   expression: string
@@ -16,16 +17,20 @@ describe('Cucumber expression tokenizer', () => {
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const tokenizer = new CucumberExpressionTokenizer()
-      if (expectation.exception == undefined) {
+      if (expectation.expected !== undefined) {
         const tokens = tokenizer.tokenize(expectation.expression)
         assert.deepStrictEqual(
           JSON.parse(JSON.stringify(tokens)), // Removes type information.
           JSON.parse(expectation.expected)
         )
-      } else {
+      } else if (expectation.exception !== undefined) {
         assert.throws(() => {
           tokenizer.tokenize(expectation.expression)
         }, new CucumberExpressionError(expectation.exception))
+      } else {
+        throw new Error(
+          `Expectation must have expected or exception: ${JSON.stringify(expectation)}`
+        )
       }
     })
   })

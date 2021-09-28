@@ -7,7 +7,7 @@ const MAX_EXPRESSIONS = 256
 export default class CombinatorialGeneratedExpressionFactory {
   constructor(
     private readonly expressionTemplate: string,
-    private readonly parameterTypeCombinations: Array<Array<ParameterType<any>>>
+    private readonly parameterTypeCombinations: Array<Array<ParameterType<unknown>>>
   ) {
     this.expressionTemplate = expressionTemplate
   }
@@ -21,7 +21,7 @@ export default class CombinatorialGeneratedExpressionFactory {
   private generatePermutations(
     generatedExpressions: GeneratedExpression[],
     depth: number,
-    currentParameterTypes: Array<ParameterType<any>>
+    currentParameterTypes: Array<ParameterType<unknown>>
   ) {
     if (generatedExpressions.length >= MAX_EXPRESSIONS) {
       return

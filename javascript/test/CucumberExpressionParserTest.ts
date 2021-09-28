@@ -1,8 +1,9 @@
+import assert from 'assert'
 import fs from 'fs'
 import yaml from 'js-yaml'
-import assert from 'assert'
-import CucumberExpressionParser from '../src/CucumberExpressionParser.js'
+
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
+import CucumberExpressionParser from '../src/CucumberExpressionParser.js'
 
 interface Expectation {
   expression: string
@@ -16,13 +17,13 @@ describe('Cucumber expression parser', () => {
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parser = new CucumberExpressionParser()
-      if (expectation.exception == undefined) {
+      if (expectation.expected !== undefined) {
         const node = parser.parse(expectation.expression)
         assert.deepStrictEqual(
           JSON.parse(JSON.stringify(node)), // Removes type information.
           JSON.parse(expectation.expected)
         )
-      } else {
+      } else if (expectation.exception !== undefined) {
         assert.throws(() => {
           parser.parse(expectation.expression)
         }, new CucumberExpressionError(expectation.exception))

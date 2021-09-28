@@ -41,37 +41,23 @@ export interface Located {
 }
 
 export class Node {
-  readonly type: NodeType
-  readonly nodes?: readonly Node[] | undefined
-  readonly token?: string | undefined
-  readonly start: number
-  readonly end: number
-
   constructor(
-    type: NodeType,
-    nodes: readonly Node[] = undefined,
-    token: string = undefined,
-    start: number,
-    end: number
+    public readonly type: NodeType,
+    public readonly nodes: readonly Node[] | undefined,
+    private readonly token: string | undefined,
+    public readonly start: number,
+    public readonly end: number
   ) {
     if (nodes === undefined && token === undefined) {
       throw new Error('Either nodes or token must be defined')
     }
-    if (nodes === null || token === null) {
-      throw new Error('Either nodes or token may not be null')
-    }
-    this.type = type
-    this.nodes = nodes
-    this.token = token
-    this.start = start
-    this.end = end
   }
 
   text(): string {
-    if (this.nodes) {
+    if (this.nodes && this.nodes.length > 0) {
       return this.nodes.map((value) => value.text()).join('')
     }
-    return this.token
+    return this.token || ''
   }
 }
 
