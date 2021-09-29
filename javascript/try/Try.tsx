@@ -21,7 +21,7 @@ type MatchResult = {
 export const Try: React.FunctionComponent = () => {
   const reg = useMemo(() => new ParameterTypeRegistry(), [])
   const gen = useMemo(() => new CucumberExpressionGenerator(() => reg.parameterTypes), [reg])
-  const [src, setSrc] = useState('I have {int} cukes in my {word')
+  const [src, setSrc] = useState('I have {int} cukes in my {word}')
   const [text, setText] = useState('I have 42 cukes in my belly')
   const result = useMemo<ExpressionResult>(() => {
     try {
@@ -64,7 +64,7 @@ export const Try: React.FunctionComponent = () => {
         />
       </label>
 
-      {matchResult.args && (
+      {Array.isArray(matchResult.args) && (
         <div>
           <span className="text-gray-700">Arguments</span>
           <ol className="list-decimal list-inside">
@@ -76,7 +76,6 @@ export const Try: React.FunctionComponent = () => {
       )}
       {matchResult.generatedExpressions && (
         <div>
-          <span className="text-gray-700">Arguments</span>
           <ul className="list-disc list-inside">
             {matchResult.generatedExpressions.map((generatedExpression, i) => (
               <li key={i}>{generatedExpression.source}</li>

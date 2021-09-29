@@ -27,8 +27,8 @@
     "test": "mocha && npm run test:cjs",
     "test:cjs": "npm run build:cjs && mocha --no-config dist/cjs/test",
     "prepublishOnly": "npm run build",
-    "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src test",
-    "eslint": "eslint --ext ts,tsx --max-warnings 0 src test",
+    "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src test try",
+    "eslint": "eslint --ext ts,tsx --max-warnings 0 src test try",
     "upgrade": "npm-check-updates --upgrade"
   },
   "repository": {
