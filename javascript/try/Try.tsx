@@ -82,10 +82,10 @@ export const Try: React.FunctionComponent = () => {
       </div>
       <div className="col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
-        <EquivalentRegularExpression expressionResult={expressionResult} />
         <StepTextInput value={stepText} setValue={setStepText} />
         <GeneratedCucumberExpressions generatedExpressions={matchResult.generatedExpressions} />
         <Args args={matchResult.args} />
+        <EquivalentRegularExpression expressionResult={expressionResult} />
       </div>
     </div>
   )
@@ -142,9 +142,15 @@ const EquivalentRegularExpression: React.FunctionComponent<{ expressionResult: E
     return (
       <div className="mb-4">
         <span className="text-gray-700">Regular Expression</span>
-        {expressionResult.expression && <pre>/{expressionResult.expression.regexp.source}/</pre>}
+        {expressionResult.expression && (
+          <pre className="whitespace-pre-line border border-gray-500 mt-1 bg-gray-100 p-2">
+            /{expressionResult.expression.regexp.source}/
+          </pre>
+        )}
         {expressionResult.error && (
-          <pre className="p-2 border-4 border-red-500">{expressionResult.error.message}</pre>
+          <pre className="p-2 border-4 border-red-500 whitespace-pre-line">
+            {expressionResult.error.message}
+          </pre>
         )}
       </div>
     )
@@ -169,7 +175,7 @@ const ParameterTypes: React.FunctionComponent<{
 }> = ({ parameterTypes, updateParameterType }) => (
   <div className="mb-4">
     <span className="text-gray-700">Parameter Types</span>
-    <div className="table w-full border border-gray-500 border-collapse mt-1">
+    <div className="table w-full border-collapse border border-gray-500 mt-1">
       <div className="table-row-group">
         <div className="table-row">
           <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
