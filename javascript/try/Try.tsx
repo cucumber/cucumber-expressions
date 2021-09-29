@@ -14,11 +14,6 @@ type ExpressionResult = {
   error?: Error
 }
 
-type MatchResult = {
-  args?: readonly Argument[] | null
-  generatedExpressions: readonly GeneratedExpression[]
-}
-
 type UpdateParameterType = (parameterType: ParameterType<unknown>, index: number) => void
 
 function makeParameterType(name: string, regexp: RegExp) {
@@ -27,37 +22,47 @@ function makeParameterType(name: string, regexp: RegExp) {
     regexp,
     undefined,
     (...args) => (args.length === 1 ? args[0] : args),
-    false,
+    true,
     false
   )
 }
 
 export const Try: React.FunctionComponent = () => {
+  const [expressionText, setExpressionText] = useState('there are {int} flights from {airport}')
+  const [stepText, setStepText] = useState('there are 12 flights from LHR')
   const [parameterTypes, setParameterTypes] = useState<ParameterType<unknown>[]>([
     makeParameterType('airport', /[A-Z]{3}/),
   ])
-  const reg = useMemo(() => {
+
+  const registry = useMemo(() => {
     const parameterTypeRegistry = new ParameterTypeRegistry()
     for (const parameterType of parameterTypes) {
       parameterTypeRegistry.defineParameterType(parameterType)
     }
     return parameterTypeRegistry
   }, [parameterTypes])
-  const gen = useMemo(() => new CucumberExpressionGenerator(() => reg.parameterTypes), [reg])
-  const [expressionText, setExpressionText] = useState('there are {int} flights from {airport}')
-  const [stepText, setStepText] = useState('there are 12 flights from LHR')
+
+  const generator = useMemo(
+    () => new CucumberExpressionGenerator(() => registry.parameterTypes),
+    [registry]
+  )
+
   const expressionResult = useMemo<ExpressionResult>(() => {
     try {
-      return { expression: new CucumberExpression(expressionText, reg) }
+      return { expression: new CucumberExpression(expressionText, registry) }
     } catch (error) {
       return { error }
     }
-  }, [expressionText, reg])
-  const matchResult = useMemo<MatchResult>(() => {
-    const generatedExpressions = gen.generateExpressions(stepText)
-    const args = expressionResult.expression?.match(stepText)
-    return { args, generatedExpressions }
-  }, [expressionResult, stepText])
+  }, [expressionText, registry])
+
+  const args = useMemo(
+    () => expressionResult.expression?.match(stepText),
+    [expressionResult, stepText]
+  )
+
+  const generatedExpressions = useMemo(() => {
+    return generator.generateExpressions(stepText)
+  }, [stepText, generator])
 
   const updateParameterType: UpdateParameterType = (
     parameterType: ParameterType<unknown>,
@@ -76,15 +81,15 @@ export const Try: React.FunctionComponent = () => {
     <div className="grid grid-cols-3 gap-6">
       <div>
         <ParameterTypes
-          parameterTypes={[...reg.parameterTypes]}
+          parameterTypes={[...registry.parameterTypes]}
           updateParameterType={updateParameterType}
         />
       </div>
       <div className="col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
         <StepTextInput value={stepText} setValue={setStepText} />
-        <GeneratedCucumberExpressions generatedExpressions={matchResult.generatedExpressions} />
-        <Args args={matchResult.args} />
+        <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
+        <Args args={args} />
         <EquivalentRegularExpression expressionResult={expressionResult} />
       </div>
     </div>
