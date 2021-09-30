@@ -10,7 +10,7 @@ registry.defineParameterType(makeParameterType('person', /[A-Z][a-z]+/))
 
 render(
   <Try
-    initialExpressionText={'there are {int} flights from {airport'}
+    initialExpressionText={'there are {int} flights from {airport}'}
     initialStepText={'there are 12 flights from LHR'}
     initialRegistry={registry}
   />,

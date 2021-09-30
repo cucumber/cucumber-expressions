@@ -58,11 +58,11 @@ export const Try: React.FunctionComponent<Props> = ({
       </div>
       <div className="col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
+        <RegularExpression cucumberExpression={expressionResult.expression} />
         <ErrorComponent message={expressionResult.error?.message} />
         <StepTextInput value={stepText} setValue={setStepText} />
         <Args args={args} />
         <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
-        <RegularExpression cucumberExpression={expressionResult.expression} />
       </div>
     </div>
   )
@@ -72,37 +72,42 @@ const CucumberExpressionInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
 }> = ({ value, setValue }) => (
-  <label className="block mb-4">
-    <span className="text-gray-700">Cucumber Expression</span>
-    <input
-      type="text"
-      className="mt-1 block w-full"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  </label>
+  <div className="mb-4">
+    <label className="block">
+      <Label>Cucumber Expression</Label>
+      <input
+        autoFocus={true}
+        type="text"
+        className="block w-full"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </label>
+  </div>
 )
 
 const StepTextInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
 }> = ({ value, setValue }) => (
-  <label className="block mb-4">
-    <span className="text-gray-700">Step Text</span>
-    <input
-      type="text"
-      className="mt-1 block w-full"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  </label>
+  <div className="mb-4">
+    <label className="block">
+      <Label>Step Text</Label>
+      <input
+        type="text"
+        className="block w-full"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    </label>
+  </div>
 )
 const Args: React.FunctionComponent<{ args?: readonly Argument[] | null }> = ({ args }) => {
   if (Array.isArray(args)) {
     return (
       <div className="mb-4">
-        <span className="text-gray-700">Match</span>
-        <ol className="list-decimal list-inside">
+        <Label>Match</Label>
+        <ol className="list-decimal list-inside p-2 border border-green-500 bg-green-100">
           {args.map((arg, i) => (
             <li key={i}>{JSON.stringify(arg.getValue(null))}</li>
           ))}
@@ -119,18 +124,23 @@ const RegularExpression: React.FunctionComponent<{ cucumberExpression?: Cucumber
 }) => {
   if (!cucumberExpression) return null
   return (
-    <pre className="mt-1 mb-4 p-2 whitespace-pre-line border border-gray-500 bg-gray-100 ">
-      /{cucumberExpression.regexp.source}/
-    </pre>
+    <div className="mb-4">
+      <Label>Regular Expression</Label>
+      <pre className="p-2 whitespace-pre-wrap break-words border border-gray-500 bg-gray-100">
+        /{cucumberExpression.regexp.source}/
+      </pre>
+    </div>
   )
 }
 
 const ErrorComponent: React.FunctionComponent<{ message?: string }> = ({ message }) => {
   if (!message) return null
   return (
-    <pre className="mt-1 mb-4 p-2 whitespace-pre-line border border-red-500 bg-red-100">
-      {message}
-    </pre>
+    <div className="mb-4">
+      <pre className="p-2 whitespace-pre-wrap break-words border border-red-500 bg-red-100">
+        {message}
+      </pre>
+    </div>
   )
 }
 
@@ -138,8 +148,8 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
   generatedExpressions: readonly GeneratedExpression[]
 }> = ({ generatedExpressions }) => (
   <div className="mb-4">
-    <span className="text-gray-700">Generated Cucumber Expressions</span>
-    <ul className="list-disc list-inside">
+    <Label>Cucumber Expressions that match Step Text</Label>
+    <ul className="list-disc list-inside p-2 border border-gray-500 bg-gray-100">
       {generatedExpressions.map((generatedExpression, i) => (
         <li key={i}>{generatedExpression.source}</li>
       ))}
@@ -157,8 +167,8 @@ const Registry: React.FunctionComponent<{
   custom.push(makeParameterType('', /./))
   return (
     <div className="mb-4">
-      <span className="text-gray-700">Parameter Types</span>
-      <div className="table w-full border-collapse border border-gray-500 mt-1">
+      <Label>Parameter Types</Label>
+      <div className="table w-full border-collapse border border-gray-500">
         <div className="table-row-group">
           <div className="table-row">
             <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
@@ -204,16 +214,21 @@ const EditableParameterType: React.FunctionComponent<{
 
   function tryUpdateParameterType(n: string, r: string) {
     try {
-      // This can fail
-      const newParameterType = makeParameterType(n, new RegExp(r))
-
-      if (index === -1) {
-        custom.push(newParameterType)
-        setName('')
-        setRegexp('')
+      if (n === '') {
+        custom.splice(index, 1)
       } else {
-        custom.splice(index, 1, newParameterType)
+        // This can fail
+        const newParameterType = makeParameterType(n, new RegExp(r))
+
+        if (index === -1) {
+          custom.push(newParameterType)
+          setName('')
+          setRegexp('')
+        } else {
+          custom.splice(index, 1, newParameterType)
+        }
       }
+
       const newRegistry = new ParameterTypeRegistry()
       for (const parameterType of custom) {
         // This can fail
@@ -253,6 +268,10 @@ const EditableParameterType: React.FunctionComponent<{
     </div>
   )
 }
+
+const Label: React.FunctionComponent = ({ children }) => (
+  <div className="mb-1 text-gray-700">{children}</div>
+)
 
 export function makeParameterType(name: string, regexp: RegExp): ParameterType<unknown> {
   return new ParameterType(
