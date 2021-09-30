@@ -10,6 +10,7 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
+import { CopyButton, CopyStatus, useCopyToClipboard } from './useCopyToClipboard'
 
 type ExpressionResult = {
   expression?: CucumberExpression
@@ -92,23 +93,35 @@ export const Try: React.FunctionComponent<Props> = ({
   }, [stepText, generator])
 
   return (
-    <div className="grid md:grid-cols-3 md:gap-6">
-      <div>
-        <Registry
-          builtinParameterTypes={builtinParameterTypes}
-          showBuiltins={showBuiltins || false}
-          setShowBuiltins={setShowBuiltins}
-          parameters={parameters.concat([{ name: '', regexp: '' }])}
-          setParameters={setParameters}
-        />
+    <div>
+      <div className="grid md:grid-cols-3 md:gap-6">
+        <div>
+          <Registry
+            builtinParameterTypes={builtinParameterTypes}
+            showBuiltins={showBuiltins || false}
+            setShowBuiltins={setShowBuiltins}
+            parameters={parameters.concat([{ name: '', regexp: '' }])}
+            setParameters={setParameters}
+          />
+        </div>
+        <div className="md:col-span-2">
+          <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
+          <RegularExpression cucumberExpression={expressionResult.expression} />
+          <ErrorComponent message={expressionResult.error?.message} />
+          <StepTextInput value={stepText || ''} setValue={setStepText} />
+          <Args args={args} />
+          <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
+        </div>
       </div>
-      <div className="md:col-span-2">
-        <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
-        <RegularExpression cucumberExpression={expressionResult.expression} />
-        <ErrorComponent message={expressionResult.error?.message} />
-        <StepTextInput value={stepText || ''} setValue={setStepText} />
-        <Args args={args} />
-        <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
+      <div className="float-right">
+        <CopyButton
+          copyStatusText={{
+            inactive: 'Copy link',
+            copied: 'Copied!',
+            failed: 'Copy failed',
+          }}
+          copyText={() => window.location.href}
+        />
       </div>
     </div>
   )
