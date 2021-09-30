@@ -1,18 +1,22 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { QueryParamProvider } from 'use-query-params'
 
-import { ParameterTypeRegistry } from '../src'
-import { makeParameterType, Try } from './Try'
-
-const registry = new ParameterTypeRegistry()
-registry.defineParameterType(makeParameterType('airport', /[A-Z]{3}/))
-registry.defineParameterType(makeParameterType('person', /[A-Z][a-z]+/))
+import { Try } from './Try'
 
 render(
-  <Try
-    initialExpressionText={'there are {int} flights from {airport}'}
-    initialStepText={'there are 12 flights from LHR'}
-    initialRegistry={registry}
-  />,
+  <Router>
+    <QueryParamProvider ReactRouterRoute={Route}>
+      <Try
+        defaultExpressionText={'there are {int} flights from {airport}'}
+        defaultStepText={'there are 12 flights from LHR'}
+        defaultParameters={[
+          { name: 'airport', regexp: '[A-Z]{3}' },
+          { name: 'person', regexp: '[A-Z][a-z]+' },
+        ]}
+      />
+    </QueryParamProvider>
+  </Router>,
   document.querySelector('#try')
 )
