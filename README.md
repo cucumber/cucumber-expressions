@@ -8,7 +8,7 @@
 Cucumber Expressions is an alternative to [Regular Expressions](https://en.wikipedia.org/wiki/Regular_expression)
 with a more intuitive syntax.
 
-[Try Cucumber Expressions in your browser](https://cucumber.github.io/cucumber-expressions/)
+[Try Cucumber Expressions in your browser](https://cucumber.github.io/cucumber-expressions/).
 
 Cucumber supports both Cucumber Expressions and Regular Expressions for defining
 [Step Definitions](https://cucumber.io/docs/cucumber/step-definitions), but you cannot
