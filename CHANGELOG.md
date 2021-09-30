@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - TypeScript: `Argument` is no longer generic ([#16](https://github.com/cucumber/cucumber-expressions/pull/16))
 
-### Fixed
-- Try: a new interactive playground for Cucumber Expressions ([#18](https://github.com/cucumber/cucumber-expressions/pull/18))
-
 ## [13.1.3] - 2021-09-24
 ### Fixed
 - Fix release for the Go implementation
