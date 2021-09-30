@@ -154,6 +154,7 @@ const Registry: React.FunctionComponent<{
   const parameterTypes = [...registry.parameterTypes]
   const builtin = parameterTypes.filter((p) => isBuiltIn(p))
   const custom = parameterTypes.filter((p) => !isBuiltIn(p))
+  custom.push(makeParameterType('', /./))
   return (
     <div className="mb-4">
       <span className="text-gray-700">Parameter Types</span>
@@ -174,7 +175,6 @@ const Registry: React.FunctionComponent<{
               key={i}
             />
           ))}
-          <EditableParameterType registry={registry} setRegistry={setRegistry} index={-1} />
         </div>
       </div>
     </div>
