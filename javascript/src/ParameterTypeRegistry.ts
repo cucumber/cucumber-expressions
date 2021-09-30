@@ -90,9 +90,11 @@ export default class ParameterTypeRegistry {
     if (parameterType.name !== undefined) {
       if (this.parameterTypeByName.has(parameterType.name)) {
         if (parameterType.name.length === 0) {
-          throw new Error(`The anonymous parameter type has already been defined`)
+          throw new CucumberExpressionError(`The anonymous parameter type has already been defined`)
         } else {
-          throw new Error(`There is already a parameter type with name ${parameterType.name}`)
+          throw new CucumberExpressionError(
+            `There is already a parameter type with name ${parameterType.name}`
+          )
         }
       }
       this.parameterTypeByName.set(parameterType.name, parameterType)
