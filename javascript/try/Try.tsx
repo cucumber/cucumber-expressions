@@ -1,3 +1,4 @@
+import { Switch } from '@headlessui/react'
 import React, { Dispatch, SetStateAction, useMemo, useState } from 'react'
 
 import {
@@ -28,6 +29,7 @@ export const Try: React.FunctionComponent<Props> = ({
   const [expressionText, setExpressionText] = useState(initialExpressionText)
   const [stepText, setStepText] = useState(initialStepText)
   const [registry, setRegistry] = useState(initialRegistry)
+  const [showBuiltins, setShowBuiltins] = useState(false)
 
   const generator = useMemo(
     () => new CucumberExpressionGenerator(() => registry.parameterTypes),
@@ -54,7 +56,12 @@ export const Try: React.FunctionComponent<Props> = ({
   return (
     <div className="grid grid-cols-3 gap-6">
       <div>
-        <Registry registry={registry} setRegistry={setRegistry} />
+        <Registry
+          registry={registry}
+          setRegistry={setRegistry}
+          showBuiltins={showBuiltins}
+          setShowBuiltins={setShowBuiltins}
+        />
       </div>
       <div className="col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
@@ -160,23 +167,41 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
 const Registry: React.FunctionComponent<{
   registry: ParameterTypeRegistry
   setRegistry: Dispatch<SetStateAction<ParameterTypeRegistry>>
-}> = ({ registry, setRegistry }) => {
+  showBuiltins: boolean
+  setShowBuiltins: Dispatch<SetStateAction<boolean>>
+}> = ({ registry, setRegistry, showBuiltins, setShowBuiltins }) => {
   const parameterTypes = [...registry.parameterTypes]
   const builtin = parameterTypes.filter((p) => isBuiltIn(p))
   const custom = parameterTypes.filter((p) => !isBuiltIn(p))
   custom.push(makeParameterType('', /./))
   return (
     <div className="mb-4">
-      <Label>Parameter Types</Label>
+      <Label>
+        Parameter Types{' '}
+        <Switch
+          checked={showBuiltins}
+          onChange={setShowBuiltins}
+          className={`${
+            showBuiltins ? 'bg-blue-600' : 'bg-gray-200'
+          } relative inline-flex items-center h-6 rounded-full w-11 float-right`}
+        >
+          <span
+            className={`${
+              showBuiltins ? 'translate-x-6' : 'translate-x-1'
+            } inline-block w-4 h-4 transform transition ease-in-out duration-200 bg-white rounded-full`}
+          />
+        </Switch>
+      </Label>
       <div className="table w-full border-collapse border border-gray-500">
         <div className="table-row-group">
           <div className="table-row">
             <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
             <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
           </div>
-          {builtin.map((parameterType) => (
-            <ReadOnlyParameterType parameterType={parameterType} key={parameterType.name || ''} />
-          ))}
+          {showBuiltins &&
+            builtin.map((parameterType) => (
+              <ReadOnlyParameterType parameterType={parameterType} key={parameterType.name || ''} />
+            ))}
           {custom.map((parameterType, i) => (
             <EditableParameterType
               registry={registry}
