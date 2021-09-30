@@ -1,5 +1,6 @@
 import { Switch } from '@headlessui/react'
 import React, { Dispatch, SetStateAction, useMemo, useState } from 'react'
+import { BooleanParam, JsonParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import {
   Argument,
@@ -15,21 +16,55 @@ type ExpressionResult = {
   error?: Error
 }
 
+type Parameter = {
+  name: string
+  regexp: string
+}
+
 type Props = {
-  initialExpressionText: string
-  initialStepText: string
-  initialRegistry: ParameterTypeRegistry
+  defaultExpressionText: string
+  defaultStepText: string
+  defaultParameters: readonly Parameter[]
 }
 
 export const Try: React.FunctionComponent<Props> = ({
-  initialExpressionText,
-  initialStepText,
-  initialRegistry,
+  defaultExpressionText,
+  defaultStepText,
+  defaultParameters,
 }) => {
-  const [expressionText, setExpressionText] = useState(initialExpressionText)
-  const [stepText, setStepText] = useState(initialStepText)
-  const [registry, setRegistry] = useState(initialRegistry)
-  const [showBuiltins, setShowBuiltins] = useState(false)
+  const [expressionText, setExpressionText] = useQueryParam(
+    'expression',
+    withDefault(StringParam, defaultExpressionText)
+  )
+  const [stepText, setStepText] = useQueryParam('step', withDefault(StringParam, defaultStepText))
+  const [showBuiltins, setShowBuiltins] = useQueryParam(
+    'showBuiltins',
+    withDefault(BooleanParam, false)
+  )
+  const [parameters, setParameters] = useQueryParam<readonly Parameter[]>(
+    'parameters',
+    withDefault(JsonParam, defaultParameters)
+  )
+
+  const registry = useMemo(() => {
+    const newRegistry = new ParameterTypeRegistry()
+    for (const parameter of parameters) {
+      try {
+        newRegistry.defineParameterType(
+          makeParameterType(parameter.name, new RegExp(parameter.regexp))
+        )
+      } catch (error) {
+        // TODO: Set state to mark the parameter as problematic and render the error somehow
+        console.error(error.message)
+      }
+    }
+    return newRegistry
+  }, [parameters])
+
+  const builtinParameterTypes = useMemo(() => {
+    const parameterTypes = [...registry.parameterTypes]
+    return parameterTypes.filter((p) => isBuiltIn(p))
+  }, [registry.parameterTypes])
 
   const generator = useMemo(
     () => new CucumberExpressionGenerator(() => registry.parameterTypes),
@@ -37,6 +72,9 @@ export const Try: React.FunctionComponent<Props> = ({
   )
 
   const expressionResult = useMemo<ExpressionResult>(() => {
+    if (expressionText === null || expressionText === undefined) {
+      return {}
+    }
     try {
       return { expression: new CucumberExpression(expressionText, registry) }
     } catch (error) {
@@ -54,20 +92,21 @@ export const Try: React.FunctionComponent<Props> = ({
   }, [stepText, generator])
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 md:gap-6">
       <div>
         <Registry
-          registry={registry}
-          setRegistry={setRegistry}
-          showBuiltins={showBuiltins}
+          builtinParameterTypes={builtinParameterTypes}
+          showBuiltins={showBuiltins || false}
           setShowBuiltins={setShowBuiltins}
+          parameters={parameters.concat([{ name: '', regexp: '' }])}
+          setParameters={setParameters}
         />
       </div>
-      <div className="col-span-2">
+      <div className="md:col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
         <RegularExpression cucumberExpression={expressionResult.expression} />
         <ErrorComponent message={expressionResult.error?.message} />
-        <StepTextInput value={stepText} setValue={setStepText} />
+        <StepTextInput value={stepText || ''} setValue={setStepText} />
         <Args args={args} />
         <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
       </div>
@@ -165,15 +204,12 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
 )
 
 const Registry: React.FunctionComponent<{
-  registry: ParameterTypeRegistry
-  setRegistry: Dispatch<SetStateAction<ParameterTypeRegistry>>
+  builtinParameterTypes: readonly ParameterType<unknown>[]
   showBuiltins: boolean
   setShowBuiltins: Dispatch<SetStateAction<boolean>>
-}> = ({ registry, setRegistry, showBuiltins, setShowBuiltins }) => {
-  const parameterTypes = [...registry.parameterTypes]
-  const builtin = parameterTypes.filter((p) => isBuiltIn(p))
-  const custom = parameterTypes.filter((p) => !isBuiltIn(p))
-  custom.push(makeParameterType('', /./))
+  parameters: readonly Parameter[]
+  setParameters: Dispatch<SetStateAction<readonly Parameter[]>>
+}> = ({ builtinParameterTypes, showBuiltins, setShowBuiltins, parameters, setParameters }) => {
   return (
     <div className="mb-4">
       <Label>
@@ -199,13 +235,13 @@ const Registry: React.FunctionComponent<{
             <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
           </div>
           {showBuiltins &&
-            builtin.map((parameterType) => (
+            builtinParameterTypes.map((parameterType) => (
               <ReadOnlyParameterType parameterType={parameterType} key={parameterType.name || ''} />
             ))}
-          {custom.map((parameterType, i) => (
+          {parameters.map((parameterType, i) => (
             <EditableParameterType
-              registry={registry}
-              setRegistry={setRegistry}
+              parameters={parameters}
+              setParameters={setParameters}
               index={i}
               key={i}
             />
@@ -228,42 +264,18 @@ const ReadOnlyParameterType: React.FunctionComponent<{ parameterType: ParameterT
 )
 
 const EditableParameterType: React.FunctionComponent<{
-  registry: ParameterTypeRegistry
-  setRegistry: Dispatch<SetStateAction<ParameterTypeRegistry>>
+  parameters: readonly Parameter[]
+  setParameters: Dispatch<SetStateAction<readonly Parameter[]>>
   index: number
-}> = ({ registry, setRegistry, index }) => {
-  const custom = [...registry.parameterTypes].filter((p) => !isBuiltIn(p))
-
-  const [name, setName] = useState(custom[index]?.name || '')
-  const [regexp, setRegexp] = useState(custom[index]?.regexpStrings[0] || '')
+}> = ({ parameters, setParameters, index }) => {
+  const [name, setName] = useState(parameters[index]?.name || '')
+  const [regexp, setRegexp] = useState(parameters[index]?.regexp || '')
 
   function tryUpdateParameterType(n: string, r: string) {
-    try {
-      if (n === '') {
-        custom.splice(index, 1)
-      } else {
-        // This can fail
-        const newParameterType = makeParameterType(n, new RegExp(r))
-
-        if (index === -1) {
-          custom.push(newParameterType)
-          setName('')
-          setRegexp('')
-        } else {
-          custom.splice(index, 1, newParameterType)
-        }
-      }
-
-      const newRegistry = new ParameterTypeRegistry()
-      for (const parameterType of custom) {
-        // This can fail
-        newRegistry.defineParameterType(parameterType)
-      }
-
-      setRegistry(newRegistry)
-    } catch (error) {
-      console.error(error.message)
-    }
+    const newParameters = parameters.slice()
+    newParameters.splice(index, 1, { name: n, regexp: r })
+    const ps = newParameters.filter((p) => p.name !== '')
+    setParameters(ps)
   }
 
   return (
