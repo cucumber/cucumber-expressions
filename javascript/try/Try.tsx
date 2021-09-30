@@ -10,7 +10,7 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
-import { CopyButton, CopyStatus, useCopyToClipboard } from './useCopyToClipboard'
+import { CopyButton } from './useCopyToClipboard.js'
 
 type ExpressionResult = {
   expression?: CucumberExpression
