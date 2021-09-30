@@ -13,11 +13,13 @@
     "experimentalDecorators": true,
     "module": "ESNext",
     "lib": [
-      "ES6"
+      "ES6",
+      "dom"
     ],
     "target": "ES6",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react"
   }
 }
