@@ -92,7 +92,7 @@ export const Try: React.FunctionComponent<Props> = ({
   }, [stepText, generator])
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 md:gap-6">
       <div>
         <Registry
           builtinParameterTypes={builtinParameterTypes}
@@ -102,7 +102,7 @@ export const Try: React.FunctionComponent<Props> = ({
           setParameters={setParameters}
         />
       </div>
-      <div className="col-span-2">
+      <div className="md:col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
         <RegularExpression cucumberExpression={expressionResult.expression} />
         <ErrorComponent message={expressionResult.error?.message} />
