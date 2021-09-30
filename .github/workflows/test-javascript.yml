@@ -33,5 +33,7 @@ jobs:
         cache-dependency-path: javascript/package-lock.json
     - run: npm install-test
       working-directory: javascript
-    - run: npm run eslint
+    - run: |
+        git config --get core.autocrlf
+        npm run eslint
       working-directory: javascript
