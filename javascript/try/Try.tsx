@@ -14,33 +14,20 @@ type ExpressionResult = {
   error?: Error
 }
 
-type UpdateParameterType = (parameterType: ParameterType<unknown>, index: number) => void
-
-function makeParameterType(name: string, regexp: RegExp) {
-  return new ParameterType(
-    name,
-    regexp,
-    undefined,
-    (...args) => (args.length === 1 ? args[0] : args),
-    true,
-    false
-  )
+type Props = {
+  initialExpressionText: string
+  initialStepText: string
+  initialRegistry: ParameterTypeRegistry
 }
 
-export const Try: React.FunctionComponent = () => {
-  const [expressionText, setExpressionText] = useState('there are {int} flights from {airport}')
-  const [stepText, setStepText] = useState('there are 12 flights from LHR')
-  const [parameterTypes, setParameterTypes] = useState<ParameterType<unknown>[]>([
-    makeParameterType('airport', /[A-Z]{3}/),
-  ])
-
-  const registry = useMemo(() => {
-    const parameterTypeRegistry = new ParameterTypeRegistry()
-    for (const parameterType of parameterTypes) {
-      parameterTypeRegistry.defineParameterType(parameterType)
-    }
-    return parameterTypeRegistry
-  }, [parameterTypes])
+export const Try: React.FunctionComponent<Props> = ({
+  initialExpressionText,
+  initialStepText,
+  initialRegistry,
+}) => {
+  const [expressionText, setExpressionText] = useState(initialExpressionText)
+  const [stepText, setStepText] = useState(initialStepText)
+  const [registry, setRegistry] = useState(initialRegistry)
 
   const generator = useMemo(
     () => new CucumberExpressionGenerator(() => registry.parameterTypes),
@@ -64,33 +51,18 @@ export const Try: React.FunctionComponent = () => {
     return generator.generateExpressions(stepText)
   }, [stepText, generator])
 
-  const updateParameterType: UpdateParameterType = (
-    parameterType: ParameterType<unknown>,
-    index: number
-  ) => {
-    const newParameterTypes = parameterTypes.slice()
-    if (index === -1) {
-      newParameterTypes.push(parameterType)
-    } else {
-      newParameterTypes.splice(index, 1, parameterType)
-    }
-    setParameterTypes(newParameterTypes)
-  }
-
   return (
     <div className="grid grid-cols-3 gap-6">
       <div>
-        <ParameterTypes
-          parameterTypes={[...registry.parameterTypes]}
-          updateParameterType={updateParameterType}
-        />
+        <Registry registry={registry} setRegistry={setRegistry} />
       </div>
       <div className="col-span-2">
         <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
+        <ErrorComponent message={expressionResult.error?.message} />
         <StepTextInput value={stepText} setValue={setStepText} />
-        <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
         <Args args={args} />
-        <EquivalentRegularExpression expressionResult={expressionResult} />
+        <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
+        <RegularExpression cucumberExpression={expressionResult.expression} />
       </div>
     </div>
   )
@@ -138,28 +110,29 @@ const Args: React.FunctionComponent<{ args?: readonly Argument[] | null }> = ({ 
       </div>
     )
   } else {
-    return <div className="mb-4">No match</div>
+    return <ErrorComponent message="No match" />
   }
 }
 
-const EquivalentRegularExpression: React.FunctionComponent<{ expressionResult: ExpressionResult }> =
-  ({ expressionResult }) => {
-    return (
-      <div className="mb-4">
-        <span className="text-gray-700">Regular Expression</span>
-        {expressionResult.expression && (
-          <pre className="whitespace-pre-line border border-gray-500 mt-1 bg-gray-100 p-2">
-            /{expressionResult.expression.regexp.source}/
-          </pre>
-        )}
-        {expressionResult.error && (
-          <pre className="p-2 border-4 border-red-500 whitespace-pre-line">
-            {expressionResult.error.message}
-          </pre>
-        )}
-      </div>
-    )
-  }
+const RegularExpression: React.FunctionComponent<{ cucumberExpression?: CucumberExpression }> = ({
+  cucumberExpression,
+}) => {
+  if (!cucumberExpression) return null
+  return (
+    <pre className="mt-1 mb-4 p-2 whitespace-pre-line border border-gray-500 bg-gray-100 ">
+      /{cucumberExpression.regexp.source}/
+    </pre>
+  )
+}
+
+const ErrorComponent: React.FunctionComponent<{ message?: string }> = ({ message }) => {
+  if (!message) return null
+  return (
+    <pre className="mt-1 mb-4 p-2 whitespace-pre-line border border-red-500 bg-red-100">
+      {message}
+    </pre>
+  )
+}
 
 const GeneratedCucumberExpressions: React.FunctionComponent<{
   generatedExpressions: readonly GeneratedExpression[]
@@ -174,55 +147,38 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
   </div>
 )
 
-const ParameterTypes: React.FunctionComponent<{
-  parameterTypes: readonly ParameterType<unknown>[]
-  updateParameterType: UpdateParameterType
-}> = ({ parameterTypes, updateParameterType }) => (
-  <div className="mb-4">
-    <span className="text-gray-700">Parameter Types</span>
-    <div className="table w-full border-collapse border border-gray-500 mt-1">
-      <div className="table-row-group">
-        <div className="table-row">
-          <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
-          <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
+const Registry: React.FunctionComponent<{
+  registry: ParameterTypeRegistry
+  setRegistry: Dispatch<SetStateAction<ParameterTypeRegistry>>
+}> = ({ registry, setRegistry }) => {
+  const parameterTypes = [...registry.parameterTypes]
+  const builtin = parameterTypes.filter((p) => isBuiltIn(p))
+  const custom = parameterTypes.filter((p) => !isBuiltIn(p))
+  return (
+    <div className="mb-4">
+      <span className="text-gray-700">Parameter Types</span>
+      <div className="table w-full border-collapse border border-gray-500 mt-1">
+        <div className="table-row-group">
+          <div className="table-row">
+            <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
+            <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
+          </div>
+          {builtin.map((parameterType) => (
+            <ReadOnlyParameterType parameterType={parameterType} key={parameterType.name || ''} />
+          ))}
+          {custom.map((parameterType, i) => (
+            <EditableParameterType
+              registry={registry}
+              setRegistry={setRegistry}
+              index={i}
+              key={i}
+            />
+          ))}
+          <EditableParameterType registry={registry} setRegistry={setRegistry} index={-1} />
         </div>
-        {parameterTypes.map((parameterType, i) => (
-          <ParameterTypeComponent
-            parameterType={parameterType}
-            updateParameterType={updateParameterType}
-            index={5 - i}
-            key={i}
-          />
-        ))}
-        <EditableParameterType
-          initialName={''}
-          initialRegexp={''}
-          updateParameterType={updateParameterType}
-          index={-1}
-        />
       </div>
     </div>
-  </div>
-)
-
-const ParameterTypeComponent: React.FunctionComponent<{
-  parameterType: ParameterType<unknown>
-  updateParameterType: UpdateParameterType
-  index: number
-}> = ({ parameterType, updateParameterType, index }) => {
-  const name = parameterType.name || ''
-  if (['int', 'float', 'word', 'string', ''].includes(name)) {
-    return <ReadOnlyParameterType parameterType={parameterType} />
-  } else {
-    return (
-      <EditableParameterType
-        initialName={name}
-        initialRegexp={parameterType.regexpStrings[0]}
-        updateParameterType={updateParameterType}
-        index={index}
-      />
-    )
-  }
+  )
 }
 
 const ReadOnlyParameterType: React.FunctionComponent<{ parameterType: ParameterType<unknown> }> = ({
@@ -237,21 +193,34 @@ const ReadOnlyParameterType: React.FunctionComponent<{ parameterType: ParameterT
 )
 
 const EditableParameterType: React.FunctionComponent<{
-  initialName: string
-  initialRegexp: string
-  updateParameterType: UpdateParameterType
+  registry: ParameterTypeRegistry
+  setRegistry: Dispatch<SetStateAction<ParameterTypeRegistry>>
   index: number
-}> = ({ initialName, initialRegexp, updateParameterType, index }) => {
-  const [name, setName] = useState(initialName)
-  const [regexp, setRegexp] = useState(initialRegexp)
+}> = ({ registry, setRegistry, index }) => {
+  const custom = [...registry.parameterTypes].filter((p) => !isBuiltIn(p))
 
-  function submitParameterType() {
+  const [name, setName] = useState(custom[index]?.name || '')
+  const [regexp, setRegexp] = useState(custom[index]?.regexpStrings[0] || '')
+
+  function tryUpdateParameterType(n: string, r: string) {
     try {
-      updateParameterType(makeParameterType(name, new RegExp(regexp)), index)
+      // This can fail
+      const newParameterType = makeParameterType(n, new RegExp(r))
+
       if (index === -1) {
+        custom.push(newParameterType)
         setName('')
         setRegexp('')
+      } else {
+        custom.splice(index, 1, newParameterType)
       }
+      const newRegistry = new ParameterTypeRegistry()
+      for (const parameterType of custom) {
+        // This can fail
+        newRegistry.defineParameterType(parameterType)
+      }
+
+      setRegistry(newRegistry)
     } catch (error) {
       console.error(error.message)
     }
@@ -264,11 +233,9 @@ const EditableParameterType: React.FunctionComponent<{
           type="text"
           className="block w-full"
           value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              submitParameterType()
-            }
+          onChange={(e) => {
+            setName(e.target.value)
+            tryUpdateParameterType(e.target.value, regexp)
           }}
         />
       </div>
@@ -277,14 +244,27 @@ const EditableParameterType: React.FunctionComponent<{
           type="text"
           className="block w-full"
           value={regexp}
-          onChange={(e) => setRegexp(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              submitParameterType()
-            }
+          onChange={(e) => {
+            setRegexp(e.target.value)
+            tryUpdateParameterType(name, e.target.value)
           }}
         />
       </div>
     </div>
   )
+}
+
+export function makeParameterType(name: string, regexp: RegExp): ParameterType<unknown> {
+  return new ParameterType(
+    name,
+    regexp,
+    undefined,
+    (...args) => (args.length === 1 ? args[0] : args),
+    true,
+    false
+  )
+}
+
+function isBuiltIn(parameterType: ParameterType<unknown>): boolean {
+  return ['int', 'float', 'word', 'string', ''].includes(parameterType.name || '')
 }
