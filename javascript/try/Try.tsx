@@ -41,7 +41,7 @@ export const Try: React.FunctionComponent<Props> = ({
     'showBuiltins',
     withDefault(BooleanParam, false)
   )
-  const [parameters, setParameters] = useQueryParam(
+  const [parameters, setParameters] = useQueryParam<readonly Parameter[]>(
     'parameters',
     withDefault(JsonParam, defaultParameters)
   )
@@ -54,6 +54,7 @@ export const Try: React.FunctionComponent<Props> = ({
           makeParameterType(parameter.name, new RegExp(parameter.regexp))
         )
       } catch (error) {
+        // TODO: Set state to mark the parameter as problematic and render the error somehow
         console.error(error.message)
       }
     }
@@ -97,7 +98,7 @@ export const Try: React.FunctionComponent<Props> = ({
           builtinParameterTypes={builtinParameterTypes}
           showBuiltins={showBuiltins || false}
           setShowBuiltins={setShowBuiltins}
-          parameters={parameters}
+          parameters={parameters.concat([{ name: '', regexp: '' }])}
           setParameters={setParameters}
         />
       </div>
@@ -274,7 +275,6 @@ const EditableParameterType: React.FunctionComponent<{
     const newParameters = parameters.slice()
     newParameters.splice(index, 1, { name: n, regexp: r })
     const ps = newParameters.filter((p) => p.name !== '')
-    console.log(JSON.stringify(ps, null, 2))
     setParameters(ps)
   }
 

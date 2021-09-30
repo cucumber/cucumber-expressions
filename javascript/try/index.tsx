@@ -11,10 +11,7 @@ render(
       <Try
         defaultExpressionText={'there are {int} flights from {airport}'}
         defaultStepText={'there are 12 flights from LHR'}
-        defaultParameters={[
-          { name: 'airport', regexp: '[A-Z]{3}' },
-          { name: 'person', regexp: '[A-Z][a-z]+' },
-        ]}
+        defaultParameters={[{ name: 'airport', regexp: '[A-Z]{3}' }]}
       />
     </QueryParamProvider>
   </Router>,
