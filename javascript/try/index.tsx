@@ -9,7 +9,7 @@ render(
   <Router>
     <QueryParamProvider ReactRouterRoute={Route}>
       <Try
-        defaultExpressionText={'there are {int} flights from {airport}'}
+        defaultExpressionText={'there is/are {int} flight(s) from {airport}'}
         defaultStepText={'there are 12 flights from LHR'}
         defaultParameters={[{ name: 'airport', regexp: '[A-Z]{3}' }]}
       />

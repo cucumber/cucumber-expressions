@@ -10,6 +10,7 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
+import { TextEditor } from './TextEditor.js'
 import { CopyButton } from './useCopyToClipboard.js'
 
 type ExpressionResult = {
@@ -108,12 +109,12 @@ export const Try: React.FunctionComponent<Props> = ({
           <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
           <RegularExpression cucumberExpression={expressionResult.expression} />
           <ErrorComponent message={expressionResult.error?.message} />
-          <StepTextInput value={stepText || ''} setValue={setStepText} />
+          <TextInput value={stepText} setValue={setStepText} args={args} />
           <Args args={args} />
           <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
         </div>
       </div>
-      <div className="float-right">
+      <div className="flex justify-end">
         <CopyButton
           copyStatusText={{
             inactive: 'Copy link',
@@ -145,19 +146,15 @@ const CucumberExpressionInput: React.FunctionComponent<{
   </div>
 )
 
-const StepTextInput: React.FunctionComponent<{
+const TextInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
-}> = ({ value, setValue }) => (
+  args: readonly Argument[] | null | undefined
+}> = ({ value, setValue, args }) => (
   <div className="mb-4">
     <label className="block">
-      <Label>Step Text</Label>
-      <input
-        type="text"
-        className="block w-full"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <Label>Text</Label>
+      <TextEditor value={value} setValue={setValue} args={args} />
     </label>
   </div>
 )
@@ -207,7 +204,7 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
   generatedExpressions: readonly GeneratedExpression[]
 }> = ({ generatedExpressions }) => (
   <div className="mb-4">
-    <Label>Cucumber Expressions that match Step Text</Label>
+    <Label>Other Cucumber Expressions that match Text</Label>
     <ul className="list-disc list-inside p-2 border border-gray-500 bg-gray-100">
       {generatedExpressions.map((generatedExpression, i) => (
         <li key={i}>{generatedExpression.source}</li>

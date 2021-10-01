@@ -9,11 +9,12 @@
 </head>
 <body>
 <div class="antialiased text-gray-900 px-6">
-    <div class="max-w-xl mx-auto py-12 divide-y md:max-w-4xl">
+    <div class="max-w-xl mx-auto py-12 md:max-w-4xl">
         <div class="py-8 text-center">
             <h1 class="text-4xl font-bold">Cucumber Expressions</h1>
             <p class="mt-2 text-lg text-gray-600">
-                An intuitive alternative to Regular Expressions. <a class="text-lg underline" href="https://github.com/cucumber/cucumber-expressions#readme">Documentation</a>.
+                An intuitive alternative to Regular Expressions.
+                <a class="text-lg underline" href="https://github.com/cucumber/cucumber-expressions#readme">Documentation</a>.
             </p>
         </div>
         <div>
@@ -21,6 +22,17 @@
                 <div id="try"></div>
             </div>
         </div>
+        <p class="mt-4 text-gray-600">
+            <div class="mb-1 text-gray-700">More examples</div>
+            <ul class="list-disc list-inside p-2">
+                <li>
+                    <a class="text-sm underline" href='?expression=a boy named {string}&parameters=[]&step=a boy named "Sue"'>a boy named {string}</a>
+                </li>
+                <li>
+                    <a class="text-sm underline" href='?expression=flight {flight} is delayed&parameters=[{"name"%3A"flight"%2C"regexp"%3A"([A-Z]{3})-([A-Z]{3})"}]&showBuiltins=0&step=flight LHR-CDG is delayed'>flight {flight} is delayed</a>
+                </li>
+            </ul>
+        </p>
     </div>
 </div>
 <script src="index.js"></script>

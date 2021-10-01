@@ -49,6 +49,10 @@
   },
   "homepage": "https://github.com/cucumber/cucumber-expressions-javascript#readme",
   "devDependencies": {
+    "@codemirror/commands": "^0.19.5",
+    "@codemirror/rangeset": "^0.19.1",
+    "@codemirror/state": "^0.19.2",
+    "@codemirror/view": "^0.19.9",
     "@headlessui/react": "1.4.1",
     "@tailwindcss/forms": "0.3.4",
     "@types/js-yaml": "4.0.3",
