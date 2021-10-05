@@ -26,5 +26,5 @@ jobs:
       with:
         name: stryker-report
         path: |
-          reports/mutation/html/index.html
-          reports/mutation/mutation.json
+          javascript/reports/mutation/html/index.html
+          javascript/reports/mutation/mutation.json
