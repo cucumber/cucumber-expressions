@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": [
+    "html",
+    "clear-text",
+    "progress",
+    "json"
+  ],
+  "cleanTempDir": false,
+  "testRunner": "mocha",
+  "buildCommand": "npm run build:cjs",
+  "mochaOptions": {
+    "spec": [ "dist/cjs/test/**/*.js" ]
+  },
+  "coverageAnalysis": "perTest"
+}
