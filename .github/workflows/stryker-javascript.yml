@@ -1,0 +1,39 @@
+name: test-javascript
+
+on:
+  push:
+  pull_request:
+    types:
+      - merged
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        node-version: ['12.x', '14.x', '16.x']
+        include:
+          - os: windows-latest
+            node-version: '16.x'
+          - os: macos-latest
+            node-version: '16.x'
+
+    steps:
+    - name: set git core.autocrlf to 'input'
+      run: git config --global core.autocrlf input
+    - uses: actions/checkout@v2
+    - name: with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
+    - run: npm install-test
+      working-directory: javascript
+    - run: npm run eslint
+      working-directory: javascript
