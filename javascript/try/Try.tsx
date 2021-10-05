@@ -10,7 +10,7 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
-import { TextEditor } from './TextEditor.js'
+import { TextEditor } from './codemirror/TextEditor.js'
 import { CopyButton } from './useCopyToClipboard.js'
 
 type ExpressionResult = {
