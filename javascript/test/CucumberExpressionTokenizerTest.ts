@@ -4,6 +4,7 @@ import yaml from 'js-yaml'
 
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
 import CucumberExpressionTokenizer from '../src/CucumberExpressionTokenizer.js'
+import { testDataDir } from './testDataDir.js'
 
 interface Expectation {
   expression: string
@@ -12,8 +13,8 @@ interface Expectation {
 }
 
 describe('Cucumber expression tokenizer', () => {
-  fs.readdirSync('../testdata/tokens').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`../testdata/tokens/${testcase}`, 'utf-8')
+  fs.readdirSync(`${testDataDir}/tokens`).forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`${testDataDir}/tokens/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const tokenizer = new CucumberExpressionTokenizer()

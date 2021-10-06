@@ -27,6 +27,7 @@
     "build:try:css": "NODE_ENV=production postcss try/style.css --output ../docs/style.css",
     "test": "mocha && npm run test:cjs",
     "test:cjs": "npm run build:cjs && mocha --no-config dist/cjs/test",
+    "stryker": "CUCUMBER_EXPRESSIONS_TEST_DATA_DIR=$(pwd)/../testdata stryker run",
     "prepublishOnly": "npm run build",
     "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src test try",
     "eslint": "eslint --ext ts,tsx --max-warnings 0 src test try",
@@ -50,6 +51,8 @@
   "homepage": "https://github.com/cucumber/cucumber-expressions-javascript#readme",
   "devDependencies": {
     "@headlessui/react": "1.4.1",
+    "@stryker-mutator/core": "^5.4.1",
+    "@stryker-mutator/mocha-runner": "^5.4.1",
     "@tailwindcss/forms": "0.3.4",
     "@types/js-yaml": "4.0.3",
     "@types/mocha": "9.0.0",

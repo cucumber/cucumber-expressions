@@ -6,6 +6,7 @@ import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import { testDataDir } from './testDataDir.js'
 
 interface Expectation {
   expression: string
@@ -15,8 +16,8 @@ interface Expectation {
 }
 
 describe('CucumberExpression', () => {
-  fs.readdirSync('../testdata/expression').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`../testdata/expression/${testcase}`, 'utf-8')
+  fs.readdirSync(`${testDataDir}/expression`).forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`${testDataDir}/expression/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
@@ -40,8 +41,8 @@ describe('CucumberExpression', () => {
     })
   })
 
-  fs.readdirSync('../testdata/regex').forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`../testdata/regex/${testcase}`, 'utf-8')
+  fs.readdirSync(`${testDataDir}/regex`).forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`${testDataDir}/regex/${testcase}`, 'utf-8')
     const expectation = yaml.load(testCaseData) as Expectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
