@@ -3,8 +3,6 @@ name: test-javascript
 on:
   push:
   pull_request:
-    types:
-      - merged
     branches:
       - main
 
