@@ -3,8 +3,6 @@ name: test-ruby
 on:
   push:
   pull_request:
-    types:
-      - merged
     branches:
       - main
 
