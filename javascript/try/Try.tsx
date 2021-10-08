@@ -10,6 +10,8 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
+import { ExpressionEditor } from './codemirror/ExpressionEditor'
+import { TextEditor } from './codemirror/TextEditor.js'
 import { CopyButton } from './useCopyToClipboard.js'
 
 type ExpressionResult = {
@@ -38,7 +40,7 @@ export const Try: React.FunctionComponent<Props> = ({
     withDefault(StringParam, defaultExpressionText)
   )
   const [stepText, setStepText] = useQueryParam('step', withDefault(StringParam, defaultStepText))
-  const [showBuiltins, setShowBuiltins] = useQueryParam(
+  const [showAdvanced, setShowAdvanced] = useQueryParam(
     'showBuiltins',
     withDefault(BooleanParam, false)
   )
@@ -94,26 +96,27 @@ export const Try: React.FunctionComponent<Props> = ({
 
   return (
     <div>
-      <div className="grid md:grid-cols-3 md:gap-6">
-        <div>
-          <Registry
-            builtinParameterTypes={builtinParameterTypes}
-            showBuiltins={showBuiltins || false}
-            setShowBuiltins={setShowBuiltins}
-            parameters={parameters.concat([{ name: '', regexp: '' }])}
-            setParameters={setParameters}
-          />
+      <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
+      <ErrorComponent message={expressionResult.error?.message} />
+      <TextInput value={stepText} setValue={setStepText} args={args} />
+      <div className="flex justify-end">
+        <div className="py-2 pr-8">
+          <span className="pr-2">Advanced</span>
+          <Switch
+            checked={showAdvanced}
+            onChange={setShowAdvanced}
+            className={`${
+              showAdvanced ? 'bg-blue-600' : 'bg-gray-200'
+            } relative inline-flex items-center h-6 rounded-full w-11 float-right`}
+          >
+            <span
+              className={`${
+                showAdvanced ? 'translate-x-6' : 'translate-x-1'
+              } inline-block w-4 h-4 transform transition ease-in-out duration-200 bg-white rounded-full`}
+            />
+          </Switch>
         </div>
-        <div className="md:col-span-2">
-          <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
-          <RegularExpression cucumberExpression={expressionResult.expression} />
-          <ErrorComponent message={expressionResult.error?.message} />
-          <StepTextInput value={stepText || ''} setValue={setStepText} />
-          <Args args={args} />
-          <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
-        </div>
-      </div>
-      <div className="float-right">
+
         <CopyButton
           copyStatusText={{
             inactive: 'Copy link',
@@ -123,6 +126,19 @@ export const Try: React.FunctionComponent<Props> = ({
           copyText={() => window.location.href}
         />
       </div>
+
+      {showAdvanced && (
+        <>
+          <RegularExpression cucumberExpression={expressionResult.expression} />
+          <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
+          <Registry
+            builtinParameterTypes={builtinParameterTypes}
+            showBuiltins={true}
+            parameters={parameters.concat([{ name: '', regexp: '' }])}
+            setParameters={setParameters}
+          />
+        </>
+      )}
     </div>
   )
 }
@@ -134,48 +150,24 @@ const CucumberExpressionInput: React.FunctionComponent<{
   <div className="mb-4">
     <label className="block">
       <Label>Cucumber Expression</Label>
-      <input
-        autoFocus={true}
-        type="text"
-        className="block w-full"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <ExpressionEditor value={value} setValue={setValue} autoFocus={true} />
     </label>
   </div>
 )
 
-const StepTextInput: React.FunctionComponent<{
+const TextInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
-}> = ({ value, setValue }) => (
-  <div className="mb-4">
-    <label className="block">
-      <Label>Step Text</Label>
-      <input
-        type="text"
-        className="block w-full"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </label>
-  </div>
-)
-const Args: React.FunctionComponent<{ args?: readonly Argument[] | null }> = ({ args }) => {
-  if (Array.isArray(args)) {
-    return (
-      <div className="mb-4">
-        <Label>Match</Label>
-        <ol className="list-decimal list-inside p-2 border border-green-500 bg-green-100">
-          {args.map((arg, i) => (
-            <li key={i}>{JSON.stringify(arg.getValue(null))}</li>
-          ))}
-        </ol>
-      </div>
-    )
-  } else {
-    return <ErrorComponent message="No match" />
-  }
+  args: readonly Argument[] | null | undefined
+}> = ({ value, setValue, args }) => {
+  return (
+    <div className="mb-4">
+      <label className="block">
+        <Label>Text</Label>
+        <TextEditor value={value} setValue={setValue} args={args} autoFocus={false} />
+      </label>
+    </div>
+  )
 }
 
 const RegularExpression: React.FunctionComponent<{ cucumberExpression?: CucumberExpression }> = ({
@@ -207,7 +199,7 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
   generatedExpressions: readonly GeneratedExpression[]
 }> = ({ generatedExpressions }) => (
   <div className="mb-4">
-    <Label>Cucumber Expressions that match Step Text</Label>
+    <Label>Other Cucumber Expressions that match Text</Label>
     <ul className="list-disc list-inside p-2 border border-gray-500 bg-gray-100">
       {generatedExpressions.map((generatedExpression, i) => (
         <li key={i}>{generatedExpression.source}</li>
@@ -219,48 +211,37 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
 const Registry: React.FunctionComponent<{
   builtinParameterTypes: readonly ParameterType<unknown>[]
   showBuiltins: boolean
-  setShowBuiltins: Dispatch<SetStateAction<boolean>>
   parameters: readonly Parameter[]
   setParameters: Dispatch<SetStateAction<readonly Parameter[]>>
-}> = ({ builtinParameterTypes, showBuiltins, setShowBuiltins, parameters, setParameters }) => {
+}> = ({ builtinParameterTypes, showBuiltins, parameters, setParameters }) => {
   return (
     <div className="mb-4">
-      <Label>
-        Parameter Types{' '}
-        <Switch
-          checked={showBuiltins}
-          onChange={setShowBuiltins}
-          className={`${
-            showBuiltins ? 'bg-blue-600' : 'bg-gray-200'
-          } relative inline-flex items-center h-6 rounded-full w-11 float-right`}
-        >
-          <span
-            className={`${
-              showBuiltins ? 'translate-x-6' : 'translate-x-1'
-            } inline-block w-4 h-4 transform transition ease-in-out duration-200 bg-white rounded-full`}
-          />
-        </Switch>
-      </Label>
-      <div className="table w-full border-collapse border border-gray-500">
-        <div className="table-row-group">
-          <div className="table-row">
-            <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
-            <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
-          </div>
-          {showBuiltins &&
-            builtinParameterTypes.map((parameterType) => (
-              <ReadOnlyParameterType parameterType={parameterType} key={parameterType.name || ''} />
+      <label className="block">
+        <Label>Parameter Types</Label>
+        <div className="table w-full border-collapse border border-gray-500">
+          <div className="table-row-group">
+            <div className="table-row">
+              <div className="table-cell border border-gray-500 bg-gray-100 p-2">Name</div>
+              <div className="table-cell border border-gray-500 bg-gray-100 p-2">Regexp</div>
+            </div>
+            {showBuiltins &&
+              builtinParameterTypes.map((parameterType) => (
+                <ReadOnlyParameterType
+                  parameterType={parameterType}
+                  key={parameterType.name || ''}
+                />
+              ))}
+            {parameters.map((parameterType, i) => (
+              <EditableParameterType
+                parameters={parameters}
+                setParameters={setParameters}
+                index={i}
+                key={i}
+              />
             ))}
-          {parameters.map((parameterType, i) => (
-            <EditableParameterType
-              parameters={parameters}
-              setParameters={setParameters}
-              index={i}
-              key={i}
-            />
-          ))}
-        </div>
-      </div>
+          </div>
+        </div>{' '}
+      </label>
     </div>
   )
 }
