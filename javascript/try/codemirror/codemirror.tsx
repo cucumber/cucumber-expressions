@@ -19,15 +19,17 @@ export function useEditorView(
       new EditorView({
         state: EditorState.create(typeof initState === 'function' ? initState() : initState),
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
-  useEffect(() => () => view.destroy(), [])
+  useEffect(() => () => view.destroy(), [view])
   return view
 }
 
 /** adds an extension to a view and updates the extension anytime a dependency changes */
 export function useExtension(view: EditorView, extensionCreator: () => Extension, deps: unknown[]) {
   const compartment = useMemo(() => new Compartment(), [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const extension = useMemo(extensionCreator, deps)
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export function useExtension(view: EditorView, extensionCreator: () => Extension
     } else {
       view.dispatch({ effects: compartment.reconfigure(extension) })
     }
-  }, [view, extension])
+  }, [view, extension, compartment])
 }
 
 /** returns the EditorView connected to a dom node */
@@ -56,7 +58,7 @@ export const CodeMirrorElement: React.FC<{
     return () => {
       domWrapper?.firstElementChild && domWrapper?.removeChild(domWrapper.firstElementChild)
     }
-  }, [domWrapper, view])
+  }, [autoFocus, domWrapper, view])
 
   return <div ref={domWrapperNode} className={className} />
 }

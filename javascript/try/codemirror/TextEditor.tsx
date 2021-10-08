@@ -2,11 +2,11 @@ import { EditorState } from '@codemirror/state'
 import React from 'react'
 
 import { Argument } from '../../src'
-import { CodeMirrorElement, useEditorView, useExtension } from './codemirror'
-import highlightArgsExtension from './highlightArgsExtension'
-import setLinesExtension from './setStateExtension'
-import singleLineExtension from './singleLineExtension'
-import { theme } from './theme'
+import { CodeMirrorElement, useEditorView, useExtension } from './codemirror.js'
+import highlightArgsExtension from './highlightArgsExtension.js'
+import setLinesExtension from './setStateExtension.js'
+import singleLineExtension from './singleLineExtension.js'
+import { theme } from './theme.js'
 
 export const TextEditor: React.FunctionComponent<{
   value: string
