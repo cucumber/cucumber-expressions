@@ -107,9 +107,9 @@ export const Try: React.FunctionComponent<Props> = ({
         </div>
         <div className="md:col-span-2">
           <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
-          <RegularExpression cucumberExpression={expressionResult.expression} />
           <ErrorComponent message={expressionResult.error?.message} />
           <TextInput value={stepText} setValue={setStepText} args={args} />
+          <RegularExpression cucumberExpression={expressionResult.expression} />
           <Args args={args} />
           <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
         </div>
@@ -150,14 +150,17 @@ const TextInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
   args: readonly Argument[] | null | undefined
-}> = ({ value, setValue, args }) => (
-  <div className="mb-4">
-    <label className="block">
-      <Label>Text</Label>
-      <TextEditor value={value} setValue={setValue} args={args} />
-    </label>
-  </div>
-)
+}> = ({ value, setValue, args }) => {
+  return (
+    <div className="mb-4">
+      <label className="block">
+        <Label>Text</Label>
+        <TextEditor value={value} setValue={setValue} args={args} />
+      </label>
+    </div>
+  )
+}
+
 const Args: React.FunctionComponent<{ args?: readonly Argument[] | null }> = ({ args }) => {
   if (Array.isArray(args)) {
     return (

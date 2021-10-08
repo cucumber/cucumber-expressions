@@ -14,7 +14,7 @@ export const theme = EditorView.theme(
     '.cm-arg-match': {
       backgroundColor: 'rgba(209, 250, 229)',
     },
-    '.cm-param': {
+    '.cm-arg': {
       background: '#ffc010',
     },
     '.cm-no-arg-match': {
