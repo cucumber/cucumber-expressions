@@ -3,8 +3,6 @@ import { EditorView } from '@codemirror/view'
 export const baseTheme = EditorView.theme(
   {
     '&': {
-      // color: 'white',
-      // backgroundColor: '#034',
       border: 'solid',
       borderWidth: '1px',
       borderColor: '#6b7280', // text-gray-700
@@ -14,20 +12,11 @@ export const baseTheme = EditorView.theme(
     '.cm-arg': {
       background: '#ffc010',
     },
-    '.cm-content': {
-      // caretColor: '#0e9',
-    },
-    '&.cm-focused .cm-cursor': {
-      // borderLeftColor: '#0e9',
-      outline: 'none',
+    '&.cm-focused': {
+      outline: '2px solid #2563eb',
     },
     '&.cm-focused .cm-selectionBackground, ::selection': {
-      // backgroundColor: '#074'
-    },
-    '.cm-gutters': {
-      // backgroundColor: '#045',
-      // color: '#ddd',
-      border: 'none',
+      outline: '2px solid #2563eb',
     },
   },
   { dark: false }

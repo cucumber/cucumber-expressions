@@ -652,10 +652,6 @@ select {
   display: table-row;
 }
 
-.grid {
-  display: grid;
-}
-
 .h-4 {
   height: 1rem;
 }
@@ -781,10 +777,6 @@ select {
   list-style-type: disc;
 }
 
-.list-decimal {
-  list-style-type: decimal;
-}
-
 .items-center {
   align-items: center;
 }
@@ -823,11 +815,6 @@ select {
   border-color: rgba(239, 68, 68, var(--tw-border-opacity));
 }
 
-.border-green-500 {
-  --tw-border-opacity: 1;
-  border-color: rgba(16, 185, 129, var(--tw-border-opacity));
-}
-
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
@@ -846,11 +833,6 @@ select {
 .bg-red-100 {
   --tw-bg-opacity: 1;
   background-color: rgba(254, 226, 226, var(--tw-bg-opacity));
-}
-
-.bg-green-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(209, 250, 229, var(--tw-bg-opacity));
 }
 
 .bg-blue-600 {
@@ -887,6 +869,11 @@ select {
   padding-bottom: 0.25rem;
 }
 
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -904,6 +891,14 @@ select {
 
 .pr-1 {
   padding-right: 0.25rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
+}
+
+.pr-8 {
+  padding-right: 2rem;
 }
 
 .text-center {
@@ -1009,70 +1004,12 @@ select {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/*.cm-editor {*/
-
-/*    -webkit-appearance: none;*/
-
-/*    -moz-appearance: none;*/
-
-/*    appearance: none;*/
-
-/*    background-color: #fff;*/
-
-/*    border-color: #6b7280;*/
-
-/*    border-width: 1px;*/
-
-/*    border-radius: 0px;*/
-
-/*    padding-top: 0.5rem;*/
-
-/*    padding-right: 0.75rem;*/
-
-/*    padding-bottom: 0.5rem;*/
-
-/*    padding-left: 0.75rem;*/
-
-/*    font-size: 1rem;*/
-
-/*    line-height: 1.5rem;*/
-
-/*    --tw-shadow: 0 0 #0000;*/
-
-/*}*/
-
-/*.cm-editor.cm-focused {*/
-
-/*    border: 2px solid blue;*/
-
-/*    outline: none;*/
-
-/*}*/
-
-/*.cm-param {*/
-
-/*    background: pink;*/
-
-/*}*/
-
 @media (min-width: 640px) {
 }
 
 @media (min-width: 768px) {
-  .md\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .md\:max-w-4xl {
     max-width: 56rem;
-  }
-
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .md\:gap-6 {
-    gap: 1.5rem;
   }
 }
 
