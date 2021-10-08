@@ -1,35 +1,63 @@
 import { EditorView } from '@codemirror/view'
 
-export const baseTheme = EditorView.theme(
-  {
-    '&': {
-      border: 'solid',
-      borderWidth: '1px',
-      borderColor: '#6b7280', // text-gray-700
-      padding: '6px',
-      fontSize: '1rem',
-    },
-    '.cm-arg': {
-      background: '#ffc010',
-    },
-    '&.cm-focused': {
-      outline: '2px solid #2563eb',
-    },
-    '&.cm-focused .cm-selectionBackground, ::selection': {
-      outline: '2px solid #2563eb',
-    },
-  },
-  { dark: false }
-)
+/*
+IBM palette for colour-blind people
+https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%23FFB000
+*/
 
-export const matchTheme = EditorView.theme({
+export const baseTheme = EditorView.theme({
   '&': {
-    backgroundColor: 'rgba(209, 250, 229)',
+    border: 'solid',
+    borderWidth: '1px',
+    borderColor: '#000000', // text-gray-700
+    padding: '6px',
+    fontSize: '1rem',
+    color: '#ffffff',
+  },
+  '.cm-content': {
+    caretColor: '#ffffff',
+  },
+  '&.cm-focused': {
+    outline: '2px solid #000000',
+  },
+  '&.cm-focused .cm-selectionBackground, ::selection': {
+    outline: '2px solid #000000',
+    backgroundColor: '#785EF0',
+  },
+  '.cm-arg': {
+    backgroundColor: '#FE6100',
   },
 })
 
-export const noMatchTheme = EditorView.theme({
+export const okTheme = EditorView.theme({
   '&': {
-    backgroundColor: 'rgba(254, 226, 226)',
+    backgroundColor: '#648FFF',
+  },
+})
+
+export const errorTheme = EditorView.theme({
+  '&': {
+    backgroundColor: '#DC267F',
+  },
+})
+
+export const cursorTooltipBaseTheme = EditorView.baseTheme({
+  '.cm-tooltip.cm-cursor-tooltip': {
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    transform: 'translate(-50%, -7px)',
+    border: 'none',
+    padding: '2px 7px',
+    borderRadius: '10px',
+    '&:before': {
+      position: 'absolute',
+      content: '""',
+      left: '50%',
+      marginLeft: '-5px',
+      bottom: '-5px',
+      borderLeft: '5px solid transparent',
+      borderRight: '5px solid transparent',
+      borderTop: '5px solid #000000',
+    },
   },
 })

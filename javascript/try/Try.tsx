@@ -96,7 +96,11 @@ export const Try: React.FunctionComponent<Props> = ({
 
   return (
     <div>
-      <CucumberExpressionInput value={expressionText} setValue={setExpressionText} />
+      <CucumberExpressionInput
+        value={expressionText}
+        setValue={setExpressionText}
+        error={expressionResult.error !== undefined}
+      />
       <ErrorComponent message={expressionResult.error?.message} />
       <TextInput value={stepText} setValue={setStepText} args={args} />
       <div className="flex justify-end">
@@ -146,11 +150,12 @@ export const Try: React.FunctionComponent<Props> = ({
 const CucumberExpressionInput: React.FunctionComponent<{
   value: string
   setValue: Dispatch<SetStateAction<string>>
-}> = ({ value, setValue }) => (
+  error: boolean
+}> = ({ value, setValue, error }) => (
   <div className="mb-4">
     <label className="block">
       <Label>Cucumber Expression</Label>
-      <ExpressionEditor value={value} setValue={setValue} autoFocus={true} />
+      <ExpressionEditor value={value} setValue={setValue} error={error} autoFocus={true} />
     </label>
   </div>
 )
