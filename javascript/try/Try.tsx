@@ -110,7 +110,6 @@ export const Try: React.FunctionComponent<Props> = ({
           <ErrorComponent message={expressionResult.error?.message} />
           <TextInput value={stepText} setValue={setStepText} args={args} />
           <RegularExpression cucumberExpression={expressionResult.expression} />
-          <Args args={args} />
           <GeneratedCucumberExpressions generatedExpressions={generatedExpressions} />
         </div>
       </div>
@@ -159,23 +158,6 @@ const TextInput: React.FunctionComponent<{
       </label>
     </div>
   )
-}
-
-const Args: React.FunctionComponent<{ args?: readonly Argument[] | null }> = ({ args }) => {
-  if (Array.isArray(args)) {
-    return (
-      <div className="mb-4">
-        <Label>Match</Label>
-        <ol className="list-decimal list-inside p-2 border border-green-500 bg-green-100">
-          {args.map((arg, i) => (
-            <li key={i}>{JSON.stringify(arg.getValue(null))}</li>
-          ))}
-        </ol>
-      </div>
-    )
-  } else {
-    return <ErrorComponent message="No match" />
-  }
 }
 
 const RegularExpression: React.FunctionComponent<{ cucumberExpression?: CucumberExpression }> = ({

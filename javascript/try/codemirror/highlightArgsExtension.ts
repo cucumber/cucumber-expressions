@@ -6,8 +6,10 @@ export default function highlightArgsExtension(args: readonly Argument[] | null 
   return ViewPlugin.define(
     () => ({
       decorations: createArgDecorations(args),
-      update() {
-        this.decorations = createArgDecorations(args)
+      update(update) {
+        if (update.docChanged || update.viewportChanged) {
+          this.decorations = createArgDecorations(args)
+        }
       },
     }),
     {

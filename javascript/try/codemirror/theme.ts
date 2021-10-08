@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view'
 
-export const theme = EditorView.theme(
+export const baseTheme = EditorView.theme(
   {
     '&': {
       // color: 'white',
@@ -11,14 +11,8 @@ export const theme = EditorView.theme(
       padding: '6px',
       fontSize: '1rem',
     },
-    '.cm-arg-match': {
-      backgroundColor: 'rgba(209, 250, 229)',
-    },
     '.cm-arg': {
       background: '#ffc010',
-    },
-    '.cm-no-arg-match': {
-      backgroundColor: 'rgba(254, 226, 226)',
     },
     '.cm-content': {
       // caretColor: '#0e9',
@@ -38,3 +32,15 @@ export const theme = EditorView.theme(
   },
   { dark: false }
 )
+
+export const matchTheme = EditorView.theme({
+  '&': {
+    backgroundColor: 'rgba(209, 250, 229)',
+  },
+})
+
+export const noMatchTheme = EditorView.theme({
+  '&': {
+    backgroundColor: 'rgba(254, 226, 226)',
+  },
+})
