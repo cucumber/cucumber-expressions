@@ -10,7 +10,7 @@ import {
   ParameterType,
   ParameterTypeRegistry,
 } from '../src/index'
-import { ExpressionEditor } from './codemirror/ExpressionEditor'
+import { ExpressionEditor } from './codemirror/ExpressionEditor.js'
 import { TextEditor } from './codemirror/TextEditor.js'
 import { CopyButton } from './useCopyToClipboard.js'
 
@@ -41,7 +41,7 @@ export const Try: React.FunctionComponent<Props> = ({
   )
   const [stepText, setStepText] = useQueryParam('step', withDefault(StringParam, defaultStepText))
   const [showAdvanced, setShowAdvanced] = useQueryParam(
-    'showBuiltins',
+    'advanced',
     withDefault(BooleanParam, false)
   )
   const [parameters, setParameters] = useQueryParam<readonly Parameter[]>(
