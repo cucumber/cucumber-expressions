@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/cucumber/cucumber-expressions-javascript.git"
+    "url": "git://github.com/cucumber/cucumber-expressions.git"
   },
   "keywords": [
     "cucumber",
@@ -46,9 +46,9 @@
   "author": "Cucumber Limited <cukes@googlegroups.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cucumber/cucumber-expressions-javascript/issues"
+    "url": "https://github.com/cucumber/cucumber-expressions/issues"
   },
-  "homepage": "https://github.com/cucumber/cucumber-expressions-javascript#readme",
+  "homepage": "https://github.com/cucumber/cucumber-expressions#readme",
   "devDependencies": {
     "@codemirror/commands": "^0.19.5",
     "@codemirror/rangeset": "^0.19.1",
