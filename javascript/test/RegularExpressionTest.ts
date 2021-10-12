@@ -7,13 +7,11 @@ describe('RegularExpression', () => {
   it('documents match arguments', () => {
     const parameterRegistry = new ParameterTypeRegistry()
 
-    /// [capture-match-arguments]
     const expr = /I have (\d+) cukes? in my (\w+) now/
     const expression = new RegularExpression(expr, parameterRegistry)
     const args = expression.match('I have 7 cukes in my belly now')!
     assert.strictEqual(7, args[0].getValue(null))
     assert.strictEqual('belly', args[1].getValue(null))
-    /// [capture-match-arguments]
   })
 
   it('does no transform by default', () => {

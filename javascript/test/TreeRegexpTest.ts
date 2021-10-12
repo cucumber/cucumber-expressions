@@ -15,9 +15,9 @@ describe('TreeRegexp', () => {
     const tr = new TreeRegexp(/(a(?:b)?)(c)/)
     const group = tr.match('ac')!
     assert.strictEqual(group.value, 'ac')
-    assert.strictEqual(group.children[0].value, 'a')
-    assert.deepStrictEqual(group.children[0].children, [])
-    assert.strictEqual(group.children[1].value, 'c')
+    assert.strictEqual(group.children[0]!.value, 'a')
+    assert.deepStrictEqual(group.children[0]!.children, [])
+    assert.strictEqual(group.children[1]!.value, 'c')
   })
 
   it('ignores `?:` as a non-capturing group', () => {
@@ -39,7 +39,7 @@ describe('TreeRegexp', () => {
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
     assert.strictEqual(group.children.length, 1)
-    assert.strictEqual(group.children[0].value, 'bc')
+    assert.strictEqual(group.children[0]!.value, 'bc')
   })
 
   it('ignores `?<=` as a non-capturing group', () => {
@@ -47,7 +47,7 @@ describe('TreeRegexp', () => {
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
     assert.strictEqual(group.children.length, 1)
-    assert.strictEqual(group.children[0].value, 'bc')
+    assert.strictEqual(group.children[0]!.value, 'bc')
   })
 
   it('ignores `?<!` as a non-capturing group', () => {
@@ -55,7 +55,7 @@ describe('TreeRegexp', () => {
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
     assert.strictEqual(group.children.length, 1)
-    assert.strictEqual(group.children[0].value, 'bc')
+    assert.strictEqual(group.children[0]!.value, 'bc')
   })
 
   it('matches named capturing group', () => {
@@ -63,13 +63,13 @@ describe('TreeRegexp', () => {
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
     assert.strictEqual(group.children.length, 1)
-    assert.strictEqual(group.children[0].value, 'b')
+    assert.strictEqual(group.children[0]!.value, 'b')
   })
 
   it('matches optional group', () => {
     const tr = new TreeRegexp(/^Something( with an optional argument)?/)
     const group = tr.match('Something')!
-    assert.strictEqual(group.children[0].value, undefined)
+    assert.strictEqual(group.children[0], null)
   })
 
   it('matches nested groups', () => {
@@ -78,15 +78,15 @@ describe('TreeRegexp', () => {
     )
     const group = tr.match('A 5 thick line from 10,20,30 to 40,50,60')!
 
-    assert.strictEqual(group.children[0].value, '5')
-    assert.strictEqual(group.children[1].value, '10,20,30')
-    assert.strictEqual(group.children[1].children[0].value, '10')
-    assert.strictEqual(group.children[1].children[1].value, '20')
-    assert.strictEqual(group.children[1].children[2].value, '30')
-    assert.strictEqual(group.children[2].value, '40,50,60')
-    assert.strictEqual(group.children[2].children[0].value, '40')
-    assert.strictEqual(group.children[2].children[1].value, '50')
-    assert.strictEqual(group.children[2].children[2].value, '60')
+    assert.strictEqual(group.children[0]!.value, '5')
+    assert.strictEqual(group.children[1]!.value, '10,20,30')
+    assert.strictEqual(group.children[1]!.children[0]!.value, '10')
+    assert.strictEqual(group.children[1]!.children[1]!.value, '20')
+    assert.strictEqual(group.children[1]!.children[2]!.value, '30')
+    assert.strictEqual(group.children[2]!.value, '40,50,60')
+    assert.strictEqual(group.children[2]!.children[0]!.value, '40')
+    assert.strictEqual(group.children[2]!.children[1]!.value, '50')
+    assert.strictEqual(group.children[2]!.children[2]!.value, '60')
   })
 
   it('detects multiple non capturing groups', () => {
@@ -117,7 +117,7 @@ describe('TreeRegexp', () => {
     const tr = new TreeRegexp('the stdout(?: from "(.*?)")?')
     const group = tr.match('the stdout')!
     assert.strictEqual(group.value, 'the stdout')
-    assert.strictEqual(group.children[0].value, undefined)
+    assert.strictEqual(group.children[0], null)
     assert.strictEqual(group.children.length, 1)
   })
 
@@ -146,6 +146,6 @@ describe('TreeRegexp', () => {
     const group = tr.match('drawings: ONE(TWO)')!
     assert.strictEqual(group.value, 'drawings: ONE(TWO)')
     assert.strictEqual(group.children.length, 1)
-    assert.strictEqual(group.children[0].value, 'ONE(TWO)')
+    assert.strictEqual(group.children[0]!.value, 'ONE(TWO)')
   })
 })

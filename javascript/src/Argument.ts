@@ -11,8 +11,8 @@ export default class Argument {
 
     if (argGroups.length !== parameterTypes.length) {
       throw new CucumberExpressionError(
-        `Group has ${argGroups.length} capture groups (${argGroups.map(
-          (g) => g.value
+        `Group has ${argGroups.length} capture groups (${argGroups.map((g) =>
+          g ? g.value : null
         )}), but there were ${parameterTypes.length} parameter types (${parameterTypes.map(
           (p) => p.name
         )})`
@@ -22,7 +22,10 @@ export default class Argument {
     return parameterTypes.map((parameterType, i) => new Argument(argGroups[i], parameterType))
   }
 
-  constructor(public readonly group: Group, public readonly parameterType: ParameterType<unknown>) {
+  constructor(
+    public readonly group: Group | null,
+    public readonly parameterType: ParameterType<unknown>
+  ) {
     this.group = group
     this.parameterType = parameterType
   }
@@ -33,7 +36,7 @@ export default class Argument {
    * @param thisObj the object in which the transformer function is applied.
    */
   public getValue<T>(thisObj: unknown): T | null {
-    const groupValues = this.group ? this.group.values : null
+    const groupValues = this.group ? this.group.values : []
     return this.parameterType.transform(thisObj, groupValues)
   }
 

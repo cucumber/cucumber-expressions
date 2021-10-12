@@ -106,7 +106,7 @@ describe('CucumberExpression', () => {
     assert.strictEqual(new CucumberExpression(expr, new ParameterTypeRegistry()).source, expr)
   })
 
-  it('unmatched optional groups have undefined values', () => {
+  it('unmatched optional groups have null values', () => {
     const parameterTypeRegistry = new ParameterTypeRegistry()
     parameterTypeRegistry.defineParameterType(
       new ParameterType(
@@ -124,8 +124,8 @@ describe('CucumberExpression', () => {
 
     const world = {}
 
-    assert.deepStrictEqual(expression.match(`TLA`)![0].getValue(world), ['TLA', undefined])
-    assert.deepStrictEqual(expression.match(`123`)![0].getValue(world), [undefined, '123'])
+    assert.deepStrictEqual(expression.match(`TLA`)![0].getValue(world), ['TLA', null])
+    assert.deepStrictEqual(expression.match(`123`)![0].getValue(world), [null, '123'])
   })
 
   // JavaScript-specific
