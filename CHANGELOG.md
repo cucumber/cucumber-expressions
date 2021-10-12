@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
+- TypeScript: `Group#value` can no longer be `undefined` ([#16](https://github.com/cucumber/cucumber-expressions/pull/16))
 - TypeScript: `Argument` is no longer generic ([#16](https://github.com/cucumber/cucumber-expressions/pull/16))
 - Go: Module renamed to match github repository([#24](https://github.com/cucumber/cucumber-expressions/pull/24))
 
