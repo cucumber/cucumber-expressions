@@ -1,9 +1,35 @@
 import assert from 'assert'
+import fs from 'fs'
+import yaml from 'js-yaml'
 
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import RegularExpression from '../src/RegularExpression.js'
+import { testDataDir } from './testDataDir.js'
+
+interface Expectation {
+  expression: string
+  text: string
+  expected: string
+}
 
 describe('RegularExpression', () => {
+  fs.readdirSync(`${testDataDir}/regular-expression`).forEach((testcase) => {
+    const testCaseData = fs.readFileSync(`${testDataDir}/regular-expression/${testcase}`, 'utf-8')
+    const expectation = yaml.load(testCaseData) as Expectation
+    it(`${testcase}`, () => {
+      const parameterTypeRegistry = new ParameterTypeRegistry()
+      const expression = new RegularExpression(
+        new RegExp(expectation.expression),
+        parameterTypeRegistry
+      )
+      const matches = expression.match(expectation.text)
+      assert.deepStrictEqual(
+        JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
+        expectation.expected
+      )
+    })
+  })
+
   it('documents match arguments', () => {
     const parameterRegistry = new ParameterTypeRegistry()
 

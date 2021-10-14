@@ -1,9 +1,21 @@
+require 'yaml'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/parameter_type_registry'
 
 module Cucumber
   module CucumberExpressions
     describe RegularExpression do
+      Dir['../testdata/regular-expression/*.yaml'].each do |testcase|
+        expectation = YAML.load_file(testcase) # encoding?
+        it "#{testcase}" do
+          parameter_registry = ParameterTypeRegistry.new
+          expression = RegularExpression.new(Regexp.new(expectation['expression']), parameter_registry)
+          matches = expression.match(expectation['text'])
+          values = matches.map { |arg| arg.value(nil) }
+          expect(values).to eq(expectation['expected'])
+        end
+      end
+
       it "documents match arguments" do
         parameter_type_registry = ParameterTypeRegistry.new
 
