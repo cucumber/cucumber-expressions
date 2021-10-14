@@ -1,4 +1,5 @@
+---
 expression: three \\(exceptionally) \\{string} mice
 text: three \exceptionally \"blind" mice
-expected: |-
-  ["blind"]
+expected_args:
+- blind

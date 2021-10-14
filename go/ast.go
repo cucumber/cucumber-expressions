@@ -24,11 +24,11 @@ const (
 )
 
 type node struct {
-	NodeType nodeType `json:"type"`
-	Start    int      `json:"start"`
-	End      int      `json:"end"`
-	Token    string   `json:"token"`
-	Nodes    []node   `json:"nodes"`
+	NodeType nodeType `yaml:"type"`
+	Start    int      `yaml:"start"`
+	End      int      `yaml:"end"`
+	Token    string   `yaml:"token"`
+	Nodes    []node   `yaml:"nodes"`
 }
 
 func (node node) text() string {
@@ -60,10 +60,10 @@ const (
 )
 
 type token struct {
-	Text      string    `json:"text"`
-	TokenType tokenType `json:"type"`
-	Start     int       `json:"start"`
-	End       int       `json:"end"`
+	Text      string    `yaml:"text"`
+	TokenType tokenType `yaml:"type"`
+	Start     int       `yaml:"start"`
+	End       int       `yaml:"end"`
 }
 
 var nullNode = node{textNode, -1, -1, "", nil}

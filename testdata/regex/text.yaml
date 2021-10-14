@@ -1,2 +1,3 @@
-expression: "a"
-expected: ^a$
+---
+expression: a
+expected_regex: "^a$"

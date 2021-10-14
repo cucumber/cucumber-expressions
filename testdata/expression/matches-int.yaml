@@ -1,5 +1,5 @@
-expression: |-
-  {int}
+---
+expression: "{int}"
 text: '22'
-expected: |-
-  [22]
+expected_args:
+- 22

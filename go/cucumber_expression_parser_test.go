@@ -1,7 +1,6 @@
 package cucumberexpressions
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
@@ -9,11 +8,16 @@ import (
 	"testing"
 )
 
+type AstExpectation struct {
+	Expression  string `yaml:"expression"`
+	ExpectedAst node   `yaml:"expected_ast"`
+	Exception   string `yaml:"exception"`
+}
+
 func TestCucumberExpressionParser(t *testing.T) {
 	var assertAst = func(t *testing.T, expected node, expression string) {
 		ast, err := parse(expression)
 		require.NoError(t, err)
-		require.Equal(t, expected, ast)
 		require.Equal(t, expected, ast)
 	}
 	var assertThrows = func(t *testing.T, expected string, expression string) {
@@ -30,15 +34,12 @@ func TestCucumberExpressionParser(t *testing.T) {
 		contents, err := ioutil.ReadFile(directory + file.Name())
 		require.NoError(t, err)
 		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-			var expectation expectation
+			var expectation AstExpectation
 			err = yaml.Unmarshal(contents, &expectation)
 			require.NoError(t, err)
 
 			if expectation.Exception == "" {
-				var node node
-				err = json.Unmarshal([]byte(expectation.Expected), &node)
-				require.NoError(t, err)
-				assertAst(t, node, expectation.Expression)
+				assertAst(t, expectation.ExpectedAst, expectation.Expression)
 			} else {
 				assertThrows(t, expectation.Exception, expectation.Expression)
 			}

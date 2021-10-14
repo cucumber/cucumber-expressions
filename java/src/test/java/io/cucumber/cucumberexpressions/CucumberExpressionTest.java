@@ -1,8 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.hamcrest.Matchers;
+import org.hamcrest.Matcher;
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,9 +22,9 @@ import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,35 +49,37 @@ class CucumberExpressionTest {
 
     @ParameterizedTest
     @MethodSource
-    void expression_acceptance_tests_pass(@ConvertWith(FileToExpectationConverter.class) Expectation expectation) {
-        if (expectation.getException() == null) {
-            CucumberExpression expression = new CucumberExpression(expectation.getExpression(), parameterTypeRegistry);
-            List<Argument<?>> match = expression.match(expectation.getText());
+    void expression_acceptance_tests_pass(@ConvertWith(ExpressionExpectation.Converter.class) ExpressionExpectation expectation) {
+        if (expectation.exception == null) {
+            CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
+            List<Argument<?>> match = expression.match(expectation.text);
             List<?> values = match == null ? null : match.stream()
                     .map(Argument::getValue)
+                    .map(e -> e instanceof Float ? ((Float)e).doubleValue() : e)
                     .collect(Collectors.toList());
 
-            Gson gson = new GsonBuilder()
-                    .disableHtmlEscaping()
-                    .create();
-
-            assertEquals(expectation.getExpected(), gson.toJson(values));
+            assertThat(values, equalOrCloseTo(expectation.expected_args));
         } else {
             Executable executable = () -> {
-                String expr = expectation.getExpression();
-                CucumberExpression expression = new CucumberExpression(expr, parameterTypeRegistry);
-                expression.match(expectation.getText());
+                CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
+                expression.match(expectation.text);
             };
             CucumberExpressionException exception = assertThrows(CucumberExpressionException.class, executable);
-            assertThat(exception.getMessage(), equalTo(expectation.getException()));
+            assertThat(exception.getMessage(), equalTo(expectation.exception));
         }
+    }
+
+    public static Matcher<Iterable<?>> equalOrCloseTo(List<?> list) {
+        if (list == null || list.isEmpty()) return equalTo(list);
+        List<Matcher<?>> matchers = list.stream().map(e -> e instanceof Double ? closeTo(((Double) e), 0.0001) : equalTo(e)).collect(Collectors.toList());
+        return new IsIterableContainingInOrder(matchers);
     }
 
     @ParameterizedTest
     @MethodSource
-    void regex_acceptance_tests_pass(@ConvertWith(FileToExpectationConverter.class) Expectation expectation) {
-        CucumberExpression expression = new CucumberExpression(expectation.getExpression(), parameterTypeRegistry);
-        assertEquals(expectation.getExpected(), expression.getRegexp().pattern());
+    void regex_acceptance_tests_pass(@ConvertWith(RegexExpectation.Converter.class) RegexExpectation expectation) {
+        CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
+        assertEquals(expectation.expected_regex, expression.getRegexp().pattern());
     }
 
     // Misc tests
@@ -187,5 +188,4 @@ class CucumberExpressionTest {
             return list;
         }
     }
-
 }

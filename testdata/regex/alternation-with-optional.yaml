@@ -1,2 +1,3 @@
-expression: "a/b(c)"
-expected: ^(?:a|b(?:c)?)$
+---
+expression: a/b(c)
+expected_regex: "^(?:a|b(?:c)?)$"

@@ -31,19 +31,19 @@ class CucumberExpressionTokenizerTest {
 
     @ParameterizedTest
     @MethodSource
-    void acceptance_tests_pass(@ConvertWith(FileToExpectationConverter.class) Expectation expectation) {
-        if (expectation.getException() == null) {
-            String tokens = tokenizer
-                    .tokenize(expectation.getExpression())
+    void acceptance_tests_pass(@ConvertWith(TokenExpectation.Converter.class) TokenExpectation expectation) {
+        if (expectation.exception == null) {
+            List<Token> tokens = tokenizer.tokenize(expectation.expression);
+            List<Token> expectedTokens = expectation.expected_tokens
                     .stream()
-                    .map(Token::toString)
-                    .collect(Collectors.joining(",\n  ", "[\n  ","\n]"));
-            assertThat(tokens, is(expectation.getExpected()));
+                    .map(TokenExpectation.YamlableToken::toToken)
+                    .collect(Collectors.toList());
+            assertThat(tokens, is(expectedTokens));
         } else {
             CucumberExpressionException exception = assertThrows(
                     CucumberExpressionException.class,
-                    () -> tokenizer.tokenize(expectation.getExpression()));
-            assertThat(exception.getMessage(), is(expectation.getException()));
+                    () -> tokenizer.tokenize(expectation.expression));
+            assertThat(exception.getMessage(), is(expectation.exception));
         }
     }
 

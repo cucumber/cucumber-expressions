@@ -46,7 +46,6 @@ final class Ast {
             this.token = token;
             this.start = start;
             this.end = end;
-
         }
 
         enum Type {

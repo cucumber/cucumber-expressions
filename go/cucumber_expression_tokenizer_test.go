@@ -1,7 +1,6 @@
 package cucumberexpressions
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
@@ -9,11 +8,10 @@ import (
 	"testing"
 )
 
-type expectation struct {
-	Expression string `yaml:"expression"`
-	Text       string `yaml:"text"`
-	Expected   string `yaml:"expected"`
-	Exception  string `yaml:"exception"`
+type TokenExpectation struct {
+	Expression     string  `yaml:"expression"`
+	ExpectedTokens []token `yaml:"expected_tokens"`
+	Exception      string  `yaml:"exception"`
 }
 
 func TestCucumberExpressionTokenizer(t *testing.T) {
@@ -26,15 +24,12 @@ func TestCucumberExpressionTokenizer(t *testing.T) {
 		contents, err := ioutil.ReadFile(directory + file.Name())
 		require.NoError(t, err)
 		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-			var expectation expectation
+			var expectation TokenExpectation
 			err = yaml.Unmarshal(contents, &expectation)
 			require.NoError(t, err)
 
 			if expectation.Exception == "" {
-				var token []token
-				err = json.Unmarshal([]byte(expectation.Expected), &token)
-				require.NoError(t, err)
-				assertTokenizes(t, token, expectation.Expression)
+				assertTokenizes(t, expectation.ExpectedTokens, expectation.Expression)
 			} else {
 				assertThrows(t, expectation.Exception, expectation.Expression)
 			}
