@@ -1,5 +1,5 @@
-expression: |-
-  {int} rat(s)/mouse/mice
+---
+expression: "{int} rat(s)/mouse/mice"
 text: 3 rats
-expected: |-
-  [3]
+expected_args:
+- 3

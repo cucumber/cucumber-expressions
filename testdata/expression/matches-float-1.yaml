@@ -1,5 +1,5 @@
-expression: |-
-  {float}
+---
+expression: "{float}"
 text: '0.22'
-expected: |-
-  [0.22]
+expected_args:
+- 0.22

@@ -1,2 +1,3 @@
+---
 expression: "{int}"
-expected: ^((?:-?\d+)|(?:\d+))$
+expected_regex: "^((?:-?\\d+)|(?:\\d+))$"

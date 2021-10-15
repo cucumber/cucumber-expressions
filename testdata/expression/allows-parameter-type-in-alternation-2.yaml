@@ -1,4 +1,5 @@
+---
 expression: a/i{int}n/y
 text: a11y
-expected: |-
-  [11]
+expected_args:
+- 11

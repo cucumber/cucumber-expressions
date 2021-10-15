@@ -1,4 +1,4 @@
+---
 expression: 12\\/2020
 text: 12\
-expected: |-
-  []
+expected_args: []

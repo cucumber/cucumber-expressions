@@ -1,4 +1,4 @@
+---
 expression: three \(exceptionally) \{string} mice
 text: three (exceptionally) {string} mice
-expected: |-
-  []
+expected_args: []
