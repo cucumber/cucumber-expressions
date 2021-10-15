@@ -45,7 +45,7 @@ class CucumberExpressionTest {
 
     @ParameterizedTest
     @MethodSource
-    void acceptance_tests_pass(@ConvertWith(Converter.class) io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation expectation) {
+    void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
         if (expectation.exception == null) {
             CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
             List<Argument<?>> match = expression.match(expectation.text);
