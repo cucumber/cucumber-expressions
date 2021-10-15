@@ -1,11 +1,11 @@
 import assert from 'assert'
 import fs from 'fs'
+import glob from 'glob'
 import yaml from 'js-yaml'
 
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
 import CucumberExpressionTokenizer from '../src/CucumberExpressionTokenizer.js'
 import { testDataDir } from './testDataDir.js'
-import glob from 'glob'
 
 type Expectation = {
   expression: string
