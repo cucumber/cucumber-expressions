@@ -11,6 +11,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type RegularExpressionExpectation struct {
+	Expression   string        `yaml:"expression"`
+	Text         string        `yaml:"text"`
+	ExpectedArgs []interface{} `yaml:"expected_args"`
+}
+
 func TestRegularExpression(t *testing.T) {
 	directory := "../testdata/regular-expression/"
 	files, err := ioutil.ReadDir(directory)
@@ -20,7 +26,7 @@ func TestRegularExpression(t *testing.T) {
 		contents, err := ioutil.ReadFile(directory + file.Name())
 		require.NoError(t, err)
 		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-			var expectation expectation
+			var expectation RegularExpressionExpectation
 			err = yaml.Unmarshal(contents, &expectation)
 			require.NoError(t, err)
 
@@ -34,7 +40,7 @@ func TestRegularExpression(t *testing.T) {
 				values[i] = arg.GetValue()
 			}
 
-			require.Equal(t, expectation.Expected, values)
+			require.Equal(t, expectation.ExpectedArgs, values)
 		})
 	}
 
