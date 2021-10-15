@@ -1,7 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,7 +56,7 @@ class CucumberExpressionTest {
                     .map(e -> e instanceof Float ? ((Float)e).doubleValue() : e)
                     .collect(Collectors.toList());
 
-            assertThat(values, equalOrCloseTo(expectation.expected_args));
+            assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
         } else {
             Executable executable = () -> {
                 CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
@@ -67,12 +65,6 @@ class CucumberExpressionTest {
             CucumberExpressionException exception = assertThrows(CucumberExpressionException.class, executable);
             assertThat(exception.getMessage(), equalTo(expectation.exception));
         }
-    }
-
-    public static Matcher<Iterable<?>> equalOrCloseTo(List<?> list) {
-        if (list == null || list.isEmpty()) return equalTo(list);
-        List<Matcher<?>> matchers = list.stream().map(e -> e instanceof Double ? closeTo(((Double) e), 0.0001) : equalTo(e)).collect(Collectors.toList());
-        return new IsIterableContainingInOrder(matchers);
     }
 
     @ParameterizedTest

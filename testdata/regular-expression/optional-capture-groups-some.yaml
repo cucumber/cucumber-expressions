@@ -1,7 +1,7 @@
 ---
 expression: "^a (b )?c (d )?e (f )?g$"
 text: a b c e f g
-expected:
+expected_args:
 - 'b '
 -
 - 'f '
