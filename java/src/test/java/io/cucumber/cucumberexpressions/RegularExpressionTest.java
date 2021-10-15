@@ -1,12 +1,16 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ArgumentConverter;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,16 +21,14 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static io.cucumber.cucumberexpressions.CustomMatchers.equalOrCloseTo;
 import static java.nio.file.Files.newDirectoryStream;
+import static java.nio.file.Files.newInputStream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.regex.Pattern.compile;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RegularExpressionTest {
 
@@ -41,7 +43,7 @@ public class RegularExpressionTest {
 
     @ParameterizedTest
     @MethodSource
-    void acceptance_tests_pass(@ConvertWith(RegularExpressionExpectation.Converter.class) RegularExpressionExpectation expectation) {
+    void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
         RegularExpression expression = new RegularExpression(Pattern.compile(expectation.expression), parameterTypeRegistry);
         List<Argument<?>> match = expression.match(expectation.text);
         List<?> values = match == null ? null : match.stream()
@@ -50,6 +52,27 @@ public class RegularExpressionTest {
                 .collect(Collectors.toList());
 
         assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
+    }
+
+    static class Expectation {
+        public String expression;
+        public String text;
+        public List<?> expected_args;
+    }
+
+    static class Converter implements ArgumentConverter {
+        Yaml yaml = new Yaml();
+
+        @Override
+        public Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
+            try {
+                Path path = (Path) source;
+                InputStream inputStream = newInputStream(path);
+                return yaml.loadAs(inputStream, Expectation.class);
+            } catch (IOException e) {
+                throw new ArgumentConversionException("Could not load " + source, e);
+            }
+        }
     }
 
     @Test
