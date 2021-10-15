@@ -1,0 +1,15 @@
+---
+expression: "\\{string\\}"
+expected_tokens:
+- type: START_OF_LINE
+  start: 0
+  end: 0
+  text: ''
+- type: TEXT
+  start: 0
+  end: 10
+  text: "{string}"
+- type: END_OF_LINE
+  start: 10
+  end: 10
+  text: ''

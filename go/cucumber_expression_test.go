@@ -1,34 +1,33 @@
 package cucumberexpressions
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"reflect"
 	"regexp"
-	"strings"
 	"testing"
 )
+
+type CucumberExpressionMatchingExpectation struct {
+	Expression   string        `yaml:"expression"`
+	Text         string        `yaml:"text"`
+	ExpectedArgs []interface{} `yaml:"expected_args"`
+	Exception    string        `yaml:"exception"`
+}
 
 func TestCucumberExpression(t *testing.T) {
 
 	t.Run("acceptance tests pass", func(t *testing.T) {
 
-		assertMatches := func(t *testing.T, expected string, expr string, text string) {
+		assertMatches := func(t *testing.T, expectedArgs []interface{}, expr string, text string) {
 			parameterTypeRegistry := NewParameterTypeRegistry()
 			expression, err := NewCucumberExpression(expr, parameterTypeRegistry)
 			require.NoError(t, err)
 			args, err := expression.Match(text)
 			require.NoError(t, err)
-
-			values := strings.Builder{}
-			encoder := json.NewEncoder(&values)
-			encoder.SetEscapeHTML(false)
-			err = encoder.Encode(argumentValues(args))
-			require.NoError(t, err)
-			require.Equal(t, expected, strings.TrimSuffix(values.String(), "\n"))
+			require.Equal(t, expectedArgs, argumentValues(args))
 		}
 
 		assertThrows := func(t *testing.T, expected string, expr string, text string) {
@@ -45,7 +44,7 @@ func TestCucumberExpression(t *testing.T) {
 			}
 		}
 
-		directory := "../testdata/expression/"
+		directory := "../testdata/cucumber-expression/matching/"
 		files, err := ioutil.ReadDir(directory)
 		require.NoError(t, err)
 
@@ -53,36 +52,14 @@ func TestCucumberExpression(t *testing.T) {
 			contents, err := ioutil.ReadFile(directory + file.Name())
 			require.NoError(t, err)
 			t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-				var expectation expectation
+				var expectation CucumberExpressionMatchingExpectation
 				err = yaml.Unmarshal(contents, &expectation)
 				require.NoError(t, err)
 				if expectation.Exception == "" {
-					assertMatches(t, expectation.Expected, expectation.Expression, expectation.Text)
+					assertMatches(t, expectation.ExpectedArgs, expectation.Expression, expectation.Text)
 				} else {
 					assertThrows(t, expectation.Exception, expectation.Expression, expectation.Text)
 				}
-			})
-		}
-
-		assertRegex := func(t *testing.T, expected string, expr string) {
-			parameterTypeRegistry := NewParameterTypeRegistry()
-			expression, err := NewCucumberExpression(expr, parameterTypeRegistry)
-			require.NoError(t, err)
-			require.Equal(t, expected, expression.Regexp().String())
-		}
-
-		directory = "../testdata/regex/"
-		files, err = ioutil.ReadDir(directory)
-		require.NoError(t, err)
-
-		for _, file := range files {
-			contents, err := ioutil.ReadFile(directory + file.Name())
-			require.NoError(t, err)
-			t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-				var expectation expectation
-				err = yaml.Unmarshal(contents, &expectation)
-				require.NoError(t, err)
-				assertRegex(t, expectation.Expected, expectation.Expression)
 			})
 		}
 	})
@@ -90,14 +67,12 @@ func TestCucumberExpression(t *testing.T) {
 	t.Run("documents expression generation", func(t *testing.T) {
 		parameterTypeRegistry := NewParameterTypeRegistry()
 
-		/// [capture-match-arguments]
 		expr := "I have {int} cuke(s)"
 		expression, err := NewCucumberExpression(expr, parameterTypeRegistry)
 		require.NoError(t, err)
 		args, err := expression.Match("I have 7 cukes")
 		require.NoError(t, err)
 		require.Equal(t, args[0].GetValue(), 7)
-		/// [capture-match-arguments]
 	})
 
 	t.Run("matches float", func(t *testing.T) {
@@ -185,7 +160,6 @@ func TestCucumberExpression(t *testing.T) {
 		require.NoError(t, err)
 		err = parameterTypeRegistry.DefineParameterType(colorParameterType)
 
-		/// [capture-match-arguments]
 		expr := "{textAndOrNumber}"
 		expression, err := NewCucumberExpression(expr, parameterTypeRegistry)
 		require.NoError(t, err)
@@ -197,7 +171,6 @@ func TestCucumberExpression(t *testing.T) {
 		numArgs, err := expression.Match(num)
 		require.NoError(t, err)
 		require.Equal(t, numArgs[0].GetValue(), []*string{nil, &num})
-		/// [capture-match-arguments]
 	})
 }
 

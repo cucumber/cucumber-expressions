@@ -1,0 +1,5 @@
+---
+expression: three {string} mice
+text: three '' mice
+expected_args:
+- ''

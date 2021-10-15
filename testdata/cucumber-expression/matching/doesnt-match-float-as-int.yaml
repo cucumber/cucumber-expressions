@@ -1,0 +1,4 @@
+---
+expression: "{int}"
+text: '1.22'
+expected_args:

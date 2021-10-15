@@ -1,5 +1,6 @@
 import assert from 'assert'
 import fs from 'fs'
+import glob from 'glob'
 import yaml from 'js-yaml'
 
 import CucumberExpression from '../src/CucumberExpression.js'
@@ -8,25 +9,24 @@ import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import { testDataDir } from './testDataDir.js'
 
-interface Expectation {
+type Expectation = {
   expression: string
   text: string
-  expected?: string
+  expected_args?: unknown[]
   exception?: string
 }
 
 describe('CucumberExpression', () => {
-  fs.readdirSync(`${testDataDir}/expression`).forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`${testDataDir}/expression/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as Expectation
-    it(`${testcase}`, () => {
+  for (const path of glob.sync(`${testDataDir}/cucumber-expression/matching/*.yaml`)) {
+    const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
+    it(`matches ${path}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
-      if (expectation.expected !== undefined) {
+      if (expectation.expected_args !== undefined) {
         const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
         const matches = expression.match(expectation.text)
         assert.deepStrictEqual(
           JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
-          JSON.parse(expectation.expected)
+          expectation.expected_args
         )
       } else if (expectation.exception !== undefined) {
         assert.throws(() => {
@@ -39,28 +39,7 @@ describe('CucumberExpression', () => {
         )
       }
     })
-  })
-
-  fs.readdirSync(`${testDataDir}/regex`).forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`${testDataDir}/regex/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as Expectation
-    it(`${testcase}`, () => {
-      const parameterTypeRegistry = new ParameterTypeRegistry()
-      const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
-      assert.deepStrictEqual(expression.regexp.source, expectation.expected)
-    })
-  })
-
-  it('documents match arguments', () => {
-    const parameterTypeRegistry = new ParameterTypeRegistry()
-
-    /// [capture-match-arguments]
-    const expr = 'I have {int} cuke(s)'
-    const expression = new CucumberExpression(expr, parameterTypeRegistry)
-    const args = expression.match('I have 7 cukes')!
-    assert.strictEqual(7, args[0].getValue(null))
-    /// [capture-match-arguments]
-  })
+  }
 
   it('matches float', () => {
     assert.deepStrictEqual(match('{float}', ''), null)

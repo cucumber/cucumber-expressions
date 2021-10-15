@@ -1,9 +1,20 @@
 import assert from 'assert'
+import fs from 'fs'
+import glob from 'glob'
+import yaml from 'js-yaml'
 
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import RegularExpression from '../src/RegularExpression.js'
+import { testDataDir } from './testDataDir.js'
+
+interface Expectation {
+  expression: string
+  text: string
+  expected_args: string
+}
 
 describe('RegularExpression', () => {
+<<<<<<< HEAD
   it('documents match arguments', () => {
     const parameterRegistry = new ParameterTypeRegistry()
 
@@ -13,6 +24,23 @@ describe('RegularExpression', () => {
     assert.strictEqual(7, args[0].getValue(null))
     assert.strictEqual('belly', args[1].getValue(null))
   })
+=======
+  for (const path of glob.sync(`${testDataDir}/regular-expression/matching/*.yaml`)) {
+    const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
+    it(`matches ${path}`, () => {
+      const parameterTypeRegistry = new ParameterTypeRegistry()
+      const expression = new RegularExpression(
+        new RegExp(expectation.expression),
+        parameterTypeRegistry
+      )
+      const matches = expression.match(expectation.text)
+      assert.deepStrictEqual(
+        JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
+        expectation.expected_args
+      )
+    })
+  }
+>>>>>>> main
 
   it('does no transform by default', () => {
     assert.deepStrictEqual(match(/(\d\d)/, '22'), ['22'])

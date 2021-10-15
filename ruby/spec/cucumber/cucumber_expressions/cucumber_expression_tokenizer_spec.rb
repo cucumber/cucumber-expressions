@@ -1,21 +1,20 @@
 require 'yaml'
-require 'json'
 require 'cucumber/cucumber_expressions/cucumber_expression_tokenizer'
 require 'cucumber/cucumber_expressions/errors'
 
 module Cucumber
   module CucumberExpressions
-    describe 'Cucumber expression tokenizer' do
-      Dir['../testdata/tokens/*.yaml'].each do |testcase|
-        expectation = YAML.load_file(testcase) # encoding?
-        it "#{testcase}" do
+    describe CucumberExpressionTokenizer do
+      Dir['../testdata/cucumber-expression/tokenizer/*.yaml'].each do |path|
+        expectation = YAML.load_file(path)
+        it "tokenizes #{path}" do
           tokenizer = CucumberExpressionTokenizer.new
-          if expectation['exception'].nil?
+          if expectation['exception']
+            expect { tokenizer.tokenize(expectation['expression']) }.to raise_error(expectation['exception'])
+          else
             tokens = tokenizer.tokenize(expectation['expression'])
             token_hashes = tokens.map{|token| token.to_hash}
-            expect(token_hashes).to eq(JSON.parse(expectation['expected']))
-          else
-            expect { tokenizer.tokenize(expectation['expression']) }.to raise_error(expectation['exception'])
+            expect(token_hashes).to eq(expectation['expected_tokens'])
           end
         end
       end

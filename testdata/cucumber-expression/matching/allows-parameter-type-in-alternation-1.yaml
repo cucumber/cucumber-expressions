@@ -1,0 +1,5 @@
+---
+expression: a/i{int}n/y
+text: i18n
+expected_args:
+- 18

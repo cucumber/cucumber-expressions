@@ -1,0 +1,3 @@
+---
+expression: a/b(c)
+expected_regex: "^(?:a|b(?:c)?)$"
