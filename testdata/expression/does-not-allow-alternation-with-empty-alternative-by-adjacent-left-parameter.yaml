@@ -1,5 +1,5 @@
-expression: |-
-  {int}/x
+---
+expression: "{int}/x"
 text: '3'
 exception: |-
   This Cucumber Expression has a problem at column 6:
