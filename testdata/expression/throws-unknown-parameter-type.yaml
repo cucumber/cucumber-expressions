@@ -1,5 +1,5 @@
-expression: |-
-  {unknown}
+---
+expression: "{unknown}"
 text: something
 exception: |-
   This Cucumber Expression has a problem at column 1:
