@@ -1,4 +1,5 @@
+---
 expression: three {string} mice
 text: three "'blind'" mice
-expected: |-
-  ["'blind'"]
+expected_args:
+- "'blind'"

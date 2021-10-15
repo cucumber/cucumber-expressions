@@ -1,4 +1,4 @@
+---
 expression: three (brown )mice/rats
 text: three rats
-expected: |-
-  []
+expected_args: []

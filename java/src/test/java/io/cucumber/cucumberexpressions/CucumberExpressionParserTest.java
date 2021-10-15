@@ -30,15 +30,15 @@ class CucumberExpressionParserTest {
 
     @ParameterizedTest
     @MethodSource
-    void acceptance_tests_pass(@ConvertWith(FileToExpectationConverter.class) Expectation expectation) {
-        if (expectation.getException() == null) {
-            Node node = parser.parse(expectation.getExpression());
-            assertThat(node.toString(), is(expectation.getExpected()));
+    void acceptance_tests_pass(@ConvertWith(AstExpectation.Converter.class) AstExpectation expectation) {
+        if (expectation.exception == null) {
+            Node node = parser.parse(expectation.expression);
+            assertThat(node, is(expectation.expected_ast.toNode()));
         } else {
             CucumberExpressionException exception = assertThrows(
                     CucumberExpressionException.class,
-                    () -> parser.parse(expectation.getExpression()));
-            assertThat(exception.getMessage(), is(expectation.getException()));
+                    () -> parser.parse(expectation.expression));
+            assertThat(exception.getMessage(), is(expectation.exception));
         }
     }
 

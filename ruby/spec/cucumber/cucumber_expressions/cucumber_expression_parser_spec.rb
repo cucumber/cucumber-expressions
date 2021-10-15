@@ -10,12 +10,12 @@ module Cucumber
         expectation = YAML.load_file(testcase) # encoding?
         it "#{testcase}" do
           parser = CucumberExpressionParser.new
-          if expectation['exception'].nil?
+          if expectation['exception']
+            expect { parser.parse(expectation['expression']) }.to raise_error(expectation['exception'])
+          else
             node = parser.parse(expectation['expression'])
             node_hash = node.to_hash
-            expect(node_hash).to eq(JSON.parse(expectation['expected']))
-          else
-            expect { parser.parse(expectation['expression']) }.to raise_error(expectation['exception'])
+            expect(node_hash).to eq(expectation['expected_ast'])
           end
         end
       end

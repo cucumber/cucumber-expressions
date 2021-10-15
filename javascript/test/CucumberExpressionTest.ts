@@ -8,25 +8,30 @@ import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 import { testDataDir } from './testDataDir.js'
 
-interface Expectation {
+type ExpressionExpectation = {
   expression: string
   text: string
-  expected?: string
+  expected_args?: unknown[]
   exception?: string
+}
+
+type RegexExpectation = {
+  expression: string
+  expected_regex: string
 }
 
 describe('CucumberExpression', () => {
   fs.readdirSync(`${testDataDir}/expression`).forEach((testcase) => {
     const testCaseData = fs.readFileSync(`${testDataDir}/expression/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as Expectation
+    const expectation = yaml.load(testCaseData) as ExpressionExpectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
-      if (expectation.expected !== undefined) {
+      if (expectation.expected_args !== undefined) {
         const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
         const matches = expression.match(expectation.text)
         assert.deepStrictEqual(
           JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
-          JSON.parse(expectation.expected)
+          expectation.expected_args
         )
       } else if (expectation.exception !== undefined) {
         assert.throws(() => {
@@ -43,11 +48,11 @@ describe('CucumberExpression', () => {
 
   fs.readdirSync(`${testDataDir}/regex`).forEach((testcase) => {
     const testCaseData = fs.readFileSync(`${testDataDir}/regex/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as Expectation
+    const expectation = yaml.load(testCaseData) as RegexExpectation
     it(`${testcase}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
       const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
-      assert.deepStrictEqual(expression.regexp.source, expectation.expected)
+      assert.deepStrictEqual(expression.regexp.source, expectation.expected_regex)
     })
   })
 
