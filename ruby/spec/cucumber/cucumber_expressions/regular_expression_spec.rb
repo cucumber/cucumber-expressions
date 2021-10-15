@@ -1,19 +1,19 @@
+require 'yaml'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/parameter_type_registry'
 
 module Cucumber
   module CucumberExpressions
     describe RegularExpression do
-      it "documents match arguments" do
-        parameter_type_registry = ParameterTypeRegistry.new
-
-        ### [capture-match-arguments]
-        expr = /I have (\d+) cukes? in my (\w*) now/
-        expression = RegularExpression.new(expr, parameter_type_registry)
-        args = expression.match("I have 7 cukes in my belly now")
-        expect( args[0].value(nil) ).to eq(7)
-        expect( args[1].value(nil) ).to eq("belly")
-        ### [capture-match-arguments]
+      Dir['../testdata/regular-expression/matching/*.yaml'].each do |path|
+        expectation = YAML.load_file(path)
+        it "matches #{path}" do
+          parameter_registry = ParameterTypeRegistry.new
+          expression = RegularExpression.new(Regexp.new(expectation['expression']), parameter_registry)
+          matches = expression.match(expectation['text'])
+          values = matches.map { |arg| arg.value(nil) }
+          expect(values).to eq(expectation['expected_args'])
+        end
       end
 
       it "does no transform by default" do

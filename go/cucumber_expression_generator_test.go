@@ -12,20 +12,7 @@ type Currency struct {
 	ISO4217 string
 }
 
-func TestCucumberExpressionGeneratory(t *testing.T) {
-	t.Run("documents expression generation", func(t *testing.T) {
-		parameterTypeRegistry := NewParameterTypeRegistry()
-
-		/// [generate-expression]
-		generator := NewCucumberExpressionGenerator(parameterTypeRegistry)
-		undefinedStepText := "I have 2 cucumbers and 1.5 tomato"
-		generatedExpression := generator.GenerateExpressions(undefinedStepText)[0]
-		require.Equal(t, "I have {int} cucumbers and {float} tomato", generatedExpression.Source())
-		require.Equal(t, "int", generatedExpression.ParameterNames()[0])
-		require.Equal(t, "float", generatedExpression.ParameterTypes()[1].Name())
-		/// [generate-expression]
-	})
-
+func TestCucumberExpressionGenerator(t *testing.T) {
 	t.Run("generates expression for no args", func(t *testing.T) {
 		assertExpression(t, "hello", []string{}, "hello")
 	})

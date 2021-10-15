@@ -12,19 +12,20 @@ import java.util.List;
 
 import static java.nio.file.Files.newInputStream;
 
-class RegexExpectation {
+class RegularExpressionExpectation {
     public String expression;
-    public String expected_regex;
+    public String text;
+    public List<?> expected_args;
 
     static class Converter implements ArgumentConverter {
         Yaml yaml = new Yaml();
 
         @Override
-        public RegexExpectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
+        public RegularExpressionExpectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
             try {
                 Path path = (Path) source;
                 InputStream inputStream = newInputStream(path);
-                return yaml.loadAs(inputStream, RegexExpectation.class);
+                return yaml.loadAs(inputStream, RegularExpressionExpectation.class);
             } catch (IOException e) {
                 throw new ArgumentConversionException("Could not load " + source, e);
             }

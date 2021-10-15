@@ -1,22 +1,22 @@
 import assert from 'assert'
 import fs from 'fs'
+import glob from 'glob'
 import yaml from 'js-yaml'
 
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
 import CucumberExpressionParser from '../src/CucumberExpressionParser.js'
 import { testDataDir } from './testDataDir.js'
 
-type AstExpectation = {
+type Expectation = {
   expression: string
   expected_ast?: unknown
   exception?: string
 }
 
-describe('Cucumber expression parser', () => {
-  fs.readdirSync(`${testDataDir}/ast`).forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`${testDataDir}/ast/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as AstExpectation
-    it(`${testcase}`, () => {
+describe('CucumberExpressionParser', () => {
+  for (const path of glob.sync(`${testDataDir}/cucumber-expression/parser/*.yaml`)) {
+    const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
+    it(`parses ${path}`, () => {
       const parser = new CucumberExpressionParser()
       if (expectation.expected_ast !== undefined) {
         const node = parser.parse(expectation.expression)
@@ -34,5 +34,5 @@ describe('Cucumber expression parser', () => {
         )
       }
     })
-  })
+  }
 })

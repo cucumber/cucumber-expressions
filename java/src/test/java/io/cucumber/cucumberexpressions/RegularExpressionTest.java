@@ -1,22 +1,56 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import static io.cucumber.cucumberexpressions.CustomMatchers.equalOrCloseTo;
+import static java.nio.file.Files.newDirectoryStream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.regex.Pattern.compile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RegularExpressionTest {
 
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
+
+    private static List<Path> acceptance_tests_pass() throws IOException {
+        List<Path> paths = new ArrayList<>();
+        newDirectoryStream(Paths.get("..", "testdata", "regular-expression", "matching")).forEach(paths::add);
+        paths.sort(Comparator.naturalOrder());
+        return paths;
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void acceptance_tests_pass(@ConvertWith(RegularExpressionExpectation.Converter.class) RegularExpressionExpectation expectation) {
+        RegularExpression expression = new RegularExpression(Pattern.compile(expectation.expression), parameterTypeRegistry);
+        List<Argument<?>> match = expression.match(expectation.text);
+        List<?> values = match == null ? null : match.stream()
+                .map(Argument::getValue)
+                .map(e -> e instanceof Float ? ((Float)e).doubleValue() : e)
+                .collect(Collectors.toList());
+
+        assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
+    }
 
     @Test
     public void documentation_match_arguments() {

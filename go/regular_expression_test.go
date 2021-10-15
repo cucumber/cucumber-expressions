@@ -1,6 +1,9 @@
 package cucumberexpressions
 
 import (
+	"fmt"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
 	"reflect"
 	"regexp"
 	"testing"
@@ -8,18 +11,48 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+type RegularExpressionMatchingExpectation struct {
+	Expression   string        `yaml:"expression"`
+	Text         string        `yaml:"text"`
+	ExpectedArgs []interface{} `yaml:"expected_args"`
+}
+
 func TestRegularExpression(t *testing.T) {
+	directory := "../testdata/regular-expression/matching/"
+	files, err := ioutil.ReadDir(directory)
+	require.NoError(t, err)
+
+	for _, file := range files {
+		contents, err := ioutil.ReadFile(directory + file.Name())
+		require.NoError(t, err)
+		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
+			var expectation RegularExpressionMatchingExpectation
+			err = yaml.Unmarshal(contents, &expectation)
+			require.NoError(t, err)
+
+			parameterTypeRegistry := NewParameterTypeRegistry()
+			expr := regexp.MustCompile(expectation.Expression)
+			expression := NewRegularExpression(expr, parameterTypeRegistry)
+			args, err := expression.Match(expectation.Text)
+			require.NoError(t, err)
+			values := make([]interface{}, len(args))
+			for i, arg := range args {
+				values[i] = arg.GetValue()
+			}
+
+			require.Equal(t, expectation.ExpectedArgs, values)
+		})
+	}
+
 	t.Run("documents match arguments", func(t *testing.T) {
 		parameterTypeRegistry := NewParameterTypeRegistry()
 
-		/// [capture-match-arguments]
 		expr := regexp.MustCompile(`I have (\d+) cukes? in my (\w+) now`)
 		expression := NewRegularExpression(expr, parameterTypeRegistry)
 		args, err := expression.Match("I have 7 cukes in my belly now")
 		require.NoError(t, err)
 		require.Equal(t, args[0].GetValue(), 7)
 		require.Equal(t, args[1].GetValue(), "belly")
-		/// [capture-match-arguments]
 	})
 
 	t.Run("does no transform by default", func(t *testing.T) {

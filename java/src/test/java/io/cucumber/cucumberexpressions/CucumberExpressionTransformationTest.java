@@ -1,6 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Token;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
@@ -16,21 +15,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 import static java.nio.file.Files.newDirectoryStream;
 import static java.nio.file.Files.newInputStream;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CucumberExpressionTokenizerTest {
-
-    private final CucumberExpressionTokenizer tokenizer = new CucumberExpressionTokenizer();
+class CucumberExpressionTransformationTest {
+    private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
 
     private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "tokenizer")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "transformation")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
@@ -38,25 +34,13 @@ class CucumberExpressionTokenizerTest {
     @ParameterizedTest
     @MethodSource
     void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
-        if (expectation.exception == null) {
-            List<Token> tokens = tokenizer.tokenize(expectation.expression);
-            List<Token> expectedTokens = expectation.expected_tokens
-                    .stream()
-                    .map(YamlableToken::toToken)
-                    .collect(Collectors.toList());
-            assertThat(tokens, is(expectedTokens));
-        } else {
-            CucumberExpressionException exception = assertThrows(
-                    CucumberExpressionException.class,
-                    () -> tokenizer.tokenize(expectation.expression));
-            assertThat(exception.getMessage(), is(expectation.exception));
-        }
+        CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
+        assertEquals(expectation.expected_regex, expression.getRegexp().pattern());
     }
 
     static class Expectation {
         public String expression;
-        public List<YamlableToken> expected_tokens;
-        public String exception;
+        public String expected_regex;
     }
 
     static class Converter implements ArgumentConverter {
@@ -71,17 +55,6 @@ class CucumberExpressionTokenizerTest {
             } catch (IOException e) {
                 throw new ArgumentConversionException("Could not load " + source, e);
             }
-        }
-    }
-
-    static class YamlableToken {
-        public String text;
-        public Token.Type type;
-        public int start;
-        public int end;
-
-        public Token toToken() {
-            return new Token(text, type, start, end);
         }
     }
 }
