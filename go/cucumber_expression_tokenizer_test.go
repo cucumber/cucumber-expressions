@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-type TokenExpectation struct {
+type TokenizerExpectation struct {
 	Expression     string  `yaml:"expression"`
 	ExpectedTokens []token `yaml:"expected_tokens"`
 	Exception      string  `yaml:"exception"`
@@ -16,7 +16,7 @@ type TokenExpectation struct {
 
 func TestCucumberExpressionTokenizer(t *testing.T) {
 
-	directory := "../testdata/tokens/"
+	directory := "../testdata/cucumber-expression/tokenizer/"
 	files, err := ioutil.ReadDir(directory)
 	require.NoError(t, err)
 
@@ -24,7 +24,7 @@ func TestCucumberExpressionTokenizer(t *testing.T) {
 		contents, err := ioutil.ReadFile(directory + file.Name())
 		require.NoError(t, err)
 		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-			var expectation TokenExpectation
+			var expectation TokenizerExpectation
 			err = yaml.Unmarshal(contents, &expectation)
 			require.NoError(t, err)
 

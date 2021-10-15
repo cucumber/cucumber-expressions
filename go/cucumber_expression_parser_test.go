@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-type AstExpectation struct {
+type ParserExpectation struct {
 	Expression  string `yaml:"expression"`
 	ExpectedAst node   `yaml:"expected_ast"`
 	Exception   string `yaml:"exception"`
@@ -26,7 +26,7 @@ func TestCucumberExpressionParser(t *testing.T) {
 		require.Equal(t, expected, err.Error())
 	}
 
-	directory := "../testdata/ast/"
+	directory := "../testdata/cucumber-expression/parser/"
 	files, err := ioutil.ReadDir(directory)
 	require.NoError(t, err)
 
@@ -34,7 +34,7 @@ func TestCucumberExpressionParser(t *testing.T) {
 		contents, err := ioutil.ReadFile(directory + file.Name())
 		require.NoError(t, err)
 		t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-			var expectation AstExpectation
+			var expectation ParserExpectation
 			err = yaml.Unmarshal(contents, &expectation)
 			require.NoError(t, err)
 

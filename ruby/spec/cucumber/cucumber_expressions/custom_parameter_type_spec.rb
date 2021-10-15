@@ -7,12 +7,9 @@ module Cucumber
     class Color
       attr_reader :name
 
-      ### [color-constructor]
       def initialize(name)
         @name = name
       end
-
-      ### [color-constructor]
 
       def ==(other)
         other.is_a?(Color) && other.name == name
@@ -46,7 +43,6 @@ module Cucumber
     describe "Custom parameter type" do
       before do
         parameter_type_registry = ParameterTypeRegistry.new
-        ### [add-color-parameter-type]
         parameter_type_registry.define_parameter_type(ParameterType.new(
             'color',                   # name
             /red|blue|yellow/,         # regexp
@@ -55,7 +51,6 @@ module Cucumber
             true,                      # use_for_snippets
             false                      # prefer_for_regexp_match
         ))
-        ### [add-color-parameter-type]
         @parameter_type_registry = parameter_type_registry
       end
 

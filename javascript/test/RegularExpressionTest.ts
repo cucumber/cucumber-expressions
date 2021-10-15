@@ -1,5 +1,6 @@
 import assert from 'assert'
 import fs from 'fs'
+import glob from 'glob'
 import yaml from 'js-yaml'
 
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
@@ -13,10 +14,9 @@ interface Expectation {
 }
 
 describe('RegularExpression', () => {
-  fs.readdirSync(`${testDataDir}/regular-expression`).forEach((testcase) => {
-    const testCaseData = fs.readFileSync(`${testDataDir}/regular-expression/${testcase}`, 'utf-8')
-    const expectation = yaml.load(testCaseData) as Expectation
-    it(`${testcase}`, () => {
+  for (const path of glob.sync(`${testDataDir}/regular-expression/matching/*.yaml`)) {
+    const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
+    it(`matches ${path}`, () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
       const expression = new RegularExpression(
         new RegExp(expectation.expression),
@@ -28,7 +28,7 @@ describe('RegularExpression', () => {
         expectation.expected_args
       )
     })
-  })
+  }
 
   it('does no transform by default', () => {
     assert.deepStrictEqual(match(/(\d\d)/, '22'), ['22'])

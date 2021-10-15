@@ -10,16 +10,11 @@ import (
 	"testing"
 )
 
-type ExpressionExpectation struct {
+type CucumberExpressionMatchingExpectation struct {
 	Expression   string        `yaml:"expression"`
 	Text         string        `yaml:"text"`
 	ExpectedArgs []interface{} `yaml:"expected_args"`
 	Exception    string        `yaml:"exception"`
-}
-
-type RegexExpectation struct {
-	Expression    string `yaml:"expression"`
-	ExpectedRegex string `yaml:"expected_regex"`
 }
 
 func TestCucumberExpression(t *testing.T) {
@@ -49,7 +44,7 @@ func TestCucumberExpression(t *testing.T) {
 			}
 		}
 
-		directory := "../testdata/expression/"
+		directory := "../testdata/cucumber-expression/matching/"
 		files, err := ioutil.ReadDir(directory)
 		require.NoError(t, err)
 
@@ -57,7 +52,7 @@ func TestCucumberExpression(t *testing.T) {
 			contents, err := ioutil.ReadFile(directory + file.Name())
 			require.NoError(t, err)
 			t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-				var expectation ExpressionExpectation
+				var expectation CucumberExpressionMatchingExpectation
 				err = yaml.Unmarshal(contents, &expectation)
 				require.NoError(t, err)
 				if expectation.Exception == "" {
@@ -65,28 +60,6 @@ func TestCucumberExpression(t *testing.T) {
 				} else {
 					assertThrows(t, expectation.Exception, expectation.Expression, expectation.Text)
 				}
-			})
-		}
-
-		assertRegex := func(t *testing.T, expected string, expr string) {
-			parameterTypeRegistry := NewParameterTypeRegistry()
-			expression, err := NewCucumberExpression(expr, parameterTypeRegistry)
-			require.NoError(t, err)
-			require.Equal(t, expected, expression.Regexp().String())
-		}
-
-		directory = "../testdata/regex/"
-		files, err = ioutil.ReadDir(directory)
-		require.NoError(t, err)
-
-		for _, file := range files {
-			contents, err := ioutil.ReadFile(directory + file.Name())
-			require.NoError(t, err)
-			t.Run(fmt.Sprintf("%s", file.Name()), func(t *testing.T) {
-				var expectation RegexExpectation
-				err = yaml.Unmarshal(contents, &expectation)
-				require.NoError(t, err)
-				assertRegex(t, expectation.ExpectedRegex, expectation.Expression)
 			})
 		}
 	})

@@ -32,16 +32,16 @@ public class RegularExpressionTest {
 
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
 
-    private static List<Path> expression_acceptance_tests_pass() throws IOException {
+    private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "regular-expression")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "regular-expression", "matching")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
 
     @ParameterizedTest
     @MethodSource
-    void expression_acceptance_tests_pass(@ConvertWith(RegularExpressionExpectation.Converter.class) RegularExpressionExpectation expectation) {
+    void acceptance_tests_pass(@ConvertWith(RegularExpressionExpectation.Converter.class) RegularExpressionExpectation expectation) {
         RegularExpression expression = new RegularExpression(Pattern.compile(expectation.expression), parameterTypeRegistry);
         List<Argument<?>> match = expression.match(expectation.text);
         List<?> values = match == null ? null : match.stream()

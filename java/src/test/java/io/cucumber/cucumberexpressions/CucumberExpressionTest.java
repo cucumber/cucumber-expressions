@@ -1,12 +1,17 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ArgumentConverter;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,10 +24,10 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newDirectoryStream;
+import static java.nio.file.Files.newInputStream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,29 +36,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CucumberExpressionTest {
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
 
-    private static List<Path> expression_acceptance_tests_pass() throws IOException {
+    private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "expression")).forEach(paths::add);
-        paths.sort(Comparator.naturalOrder());
-        return paths;
-    }
-
-    private static List<Path> regex_acceptance_tests_pass() throws IOException {
-        List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "regex")).forEach(paths::add);
+        newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
 
     @ParameterizedTest
     @MethodSource
-    void expression_acceptance_tests_pass(@ConvertWith(ExpressionExpectation.Converter.class) ExpressionExpectation expectation) {
+    void acceptance_tests_pass(@ConvertWith(Converter.class) io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation expectation) {
         if (expectation.exception == null) {
             CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
             List<Argument<?>> match = expression.match(expectation.text);
             List<?> values = match == null ? null : match.stream()
                     .map(Argument::getValue)
-                    .map(e -> e instanceof Float ? ((Float)e).doubleValue() : e)
+                    .map(e -> e instanceof Float ? ((Float) e).doubleValue() : e)
                     .collect(Collectors.toList());
 
             assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
@@ -67,11 +65,26 @@ class CucumberExpressionTest {
         }
     }
 
-    @ParameterizedTest
-    @MethodSource
-    void regex_acceptance_tests_pass(@ConvertWith(RegexExpectation.Converter.class) RegexExpectation expectation) {
-        CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
-        assertEquals(expectation.expected_regex, expression.getRegexp().pattern());
+    static class Expectation {
+        public String expression;
+        public String text;
+        public List<?> expected_args;
+        public String exception;
+    }
+
+    static class Converter implements ArgumentConverter {
+        Yaml yaml = new Yaml();
+
+        @Override
+        public io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
+            try {
+                Path path = (Path) source;
+                InputStream inputStream = newInputStream(path);
+                return yaml.loadAs(inputStream, io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation.class);
+            } catch (IOException e) {
+                throw new ArgumentConversionException("Could not load " + source, e);
+            }
+        }
     }
 
     // Misc tests
