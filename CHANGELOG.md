@@ -675,7 +675,7 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...main
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...HEAD
 [14.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.3...v14.0.0
 [13.1.3]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.2...v13.1.3
 [13.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...v13.1.2
