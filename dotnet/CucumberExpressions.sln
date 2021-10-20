@@ -3,32 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31808.319
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CucumberExpressions", "CucumberExpressions\CucumberExpressions.csproj", "{0ECCA9AF-995C-4FC9-A304-11E22F39558D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CucumberExpressions", "CucumberExpressions\CucumberExpressions.csproj", "{0ECCA9AF-995C-4FC9-A304-11E22F39558D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CucumberExpressions.Tests", "CucumberExpressions.Tests\CucumberExpressions.Tests.csproj", "{FFDCFB98-192A-483B-9FAB-540B748B7824}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "testdata", "testdata", "{84DF1DEA-72E9-4028-8A01-E13D01C653EB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cucumber-expression", "cucumber-expression", "{155543F3-E0CD-4D1B-99CD-D81F2AD7369A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tokenizer", "tokenizer", "{945A4825-CF5F-40D2-9146-F03AAD707504}"
-	ProjectSection(SolutionItems) = preProject
-		..\testdata\cucumber-expression\tokenizer\alternation-phrase.yaml = ..\testdata\cucumber-expression\tokenizer\alternation-phrase.yaml
-		..\testdata\cucumber-expression\tokenizer\alternation.yaml = ..\testdata\cucumber-expression\tokenizer\alternation.yaml
-		..\testdata\cucumber-expression\tokenizer\empty-string.yaml = ..\testdata\cucumber-expression\tokenizer\empty-string.yaml
-		..\testdata\cucumber-expression\tokenizer\escape-non-reserved-character.yaml = ..\testdata\cucumber-expression\tokenizer\escape-non-reserved-character.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-alternation.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-alternation.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-char-has-start-index-of-text-token.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-char-has-start-index-of-text-token.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-end-of-line.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-end-of-line.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-optional.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-optional.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-parameter.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-parameter.yaml
-		..\testdata\cucumber-expression\tokenizer\escaped-space.yaml = ..\testdata\cucumber-expression\tokenizer\escaped-space.yaml
-		..\testdata\cucumber-expression\tokenizer\optional-phrase.yaml = ..\testdata\cucumber-expression\tokenizer\optional-phrase.yaml
-		..\testdata\cucumber-expression\tokenizer\optional.yaml = ..\testdata\cucumber-expression\tokenizer\optional.yaml
-		..\testdata\cucumber-expression\tokenizer\parameter-phrase.yaml = ..\testdata\cucumber-expression\tokenizer\parameter-phrase.yaml
-		..\testdata\cucumber-expression\tokenizer\parameter.yaml = ..\testdata\cucumber-expression\tokenizer\parameter.yaml
-		..\testdata\cucumber-expression\tokenizer\phrase.yaml = ..\testdata\cucumber-expression\tokenizer\phrase.yaml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +24,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{155543F3-E0CD-4D1B-99CD-D81F2AD7369A} = {84DF1DEA-72E9-4028-8A01-E13D01C653EB}
-		{945A4825-CF5F-40D2-9146-F03AAD707504} = {155543F3-E0CD-4D1B-99CD-D81F2AD7369A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5395AB64-CD7A-465D-847F-AC17D1D600B2}

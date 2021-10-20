@@ -29,4 +29,7 @@
     <ProjectReference Include="..\CucumberExpressions\CucumberExpressions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\testdata\**" />
+  </ItemGroup>
 </Project>
