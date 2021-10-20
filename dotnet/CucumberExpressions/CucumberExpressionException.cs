@@ -12,7 +12,7 @@ public class CucumberExpressionException : Exception {
     {
     }
 
-    static CucumberExpressionException createMissingEndToken(String expression, Ast.Token.Type beginToken, Ast.Token.Type endToken,
+    public static CucumberExpressionException createMissingEndToken(String expression, Ast.Token.Type beginToken, Ast.Token.Type endToken,
             Ast.Token current) {
         return new CucumberExpressionException(message(
                 current.start,
@@ -23,7 +23,7 @@ public class CucumberExpressionException : Exception {
                         .symbol() + "' to escape the " + beginToken.purpose()));
     }
 
-    static CucumberExpressionException createAlternationNotAllowedInOptional(String expression, Ast.Token current) {
+    public static CucumberExpressionException createAlternationNotAllowedInOptional(String expression, Ast.Token current) {
         return new CucumberExpressionException(message(
                 current.start,
                 expression,
@@ -102,7 +102,7 @@ public class CucumberExpressionException : Exception {
                 "If you did mean to use an '\\' you can use '\\\\' to escape it"));
     }
 
-    static CucumberExpressionException createInvalidParameterTypeName(String name) {
+    public static CucumberExpressionException createInvalidParameterTypeName(String name) {
         return new CucumberExpressionException(
                 "Illegal character in parameter name {" + name + "}. Parameter names may not contain '{', '}', '(', ')', '\\' or '/'");
     }
@@ -116,7 +116,7 @@ public class CucumberExpressionException : Exception {
      *
      * @see ExpressionFactory
      */
-    static CucumberExpressionException createInvalidParameterTypeName(Ast.Token token, String expression) {
+    public static CucumberExpressionException createInvalidParameterTypeName(Ast.Token token, String expression) {
         return new CucumberExpressionException(message(
                 token.start,
                 expression,

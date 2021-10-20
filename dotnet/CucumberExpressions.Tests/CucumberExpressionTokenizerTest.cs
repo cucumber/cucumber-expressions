@@ -13,7 +13,11 @@ public class CucumberExpressionTokenizerTest : TestBase
 
     public static IEnumerable<object[]> acceptance_tests_pass_data()
         => GetTestDataFiles("cucumber-expression", "tokenizer")
-            .Select(file => new object[] { Path.GetFileNameWithoutExtension(file), ParseYaml<Expectation>(file) });
+            .Select(file => new object[]
+            {
+                Path.GetFileNameWithoutExtension(file), 
+                ParseYaml<Expectation>(file)
+            });
 
     [Theory, MemberData(nameof(acceptance_tests_pass_data))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters", Justification = "<Pending>")]

@@ -124,7 +124,11 @@ public class Ast
 
 		private bool Equals(Node other)
 		{
-			return type == other.type && Equals(nodes, other.nodes) && token == other.token && start == other.start &&
+			return type == other.type && 
+                   (Equals(nodes, other.nodes) || 
+					nodes != null && other.nodes != null && nodes.SequenceEqual(other.nodes)) && 
+                   token == other.token && 
+                   start == other.start &&
 				   end == other.end;
 		}
 

@@ -17,7 +17,7 @@ namespace CucumberExpressions.Tests
         protected static string[] GetTestDataFiles(params string[] sections)
         {
             var testDataFolder = GetTestDataFolder(sections);
-            return Directory.GetFiles(testDataFolder);
+            return Directory.GetFiles(testDataFolder).OrderBy(f => f).ToArray();
         }
 
         protected static string GetTestDataFolder(params string[] sections)
@@ -38,6 +38,14 @@ namespace CucumberExpressions.Tests
                 .Build();
 
             return deserializer.Deserialize<T>(fileContent);
+        }
+
+        protected static string ToYaml(object obj)
+        {
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .Build();
+            return serializer.Serialize(obj);
         }
     }
 }
