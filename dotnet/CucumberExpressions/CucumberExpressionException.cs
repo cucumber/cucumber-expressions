@@ -44,7 +44,7 @@ public class CucumberExpressionException : Exception {
         ));
     }
 
-    static CucumberExpressionException createAlternativeMayNotBeEmpty(Ast.Node node, String expression) {
+    public static CucumberExpressionException createAlternativeMayNotBeEmpty(Ast.Node node, String expression) {
         return new CucumberExpressionException(message(
                 node.start,
                 expression,
@@ -53,7 +53,7 @@ public class CucumberExpressionException : Exception {
                 "If you did not mean to use an alternative you can use '\\/' to escape the the '/'"));
     }
 
-    static CucumberExpressionException createParameterIsNotAllowedInOptional(Ast.Node node, String expression) {
+    public static CucumberExpressionException createParameterIsNotAllowedInOptional(Ast.Node node, String expression) {
         return new CucumberExpressionException(message(
                 node.start,
                 expression,
@@ -61,7 +61,7 @@ public class CucumberExpressionException : Exception {
                 "An optional may not contain a parameter type",
                 "If you did not mean to use an parameter type you can use '\\{' to escape the the '{'"));
     }
-    static CucumberExpressionException createOptionalIsNotAllowedInOptional(Ast.Node node, String expression) {
+    public static CucumberExpressionException createOptionalIsNotAllowedInOptional(Ast.Node node, String expression) {
         return new CucumberExpressionException(message(
                 node.start,
                 expression,
@@ -70,7 +70,7 @@ public class CucumberExpressionException : Exception {
                 "If you did not mean to use an optional type you can use '\\(' to escape the the '('. For more complicated expressions consider using a regular expression instead."));
     }
 
-    static CucumberExpressionException createOptionalMayNotBeEmpty(Ast.Node node, String expression) {
+    public static CucumberExpressionException createOptionalMayNotBeEmpty(Ast.Node node, String expression) {
         return new CucumberExpressionException(message(
                 node.start,
                 expression,
@@ -79,7 +79,7 @@ public class CucumberExpressionException : Exception {
                 "If you did not mean to use an optional you can use '\\(' to escape the the '('"));
     }
 
-    static CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(Ast.Node node,
+    public static CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(Ast.Node node,
             String expression) {
         return new CucumberExpressionException(message(
                 node.start,
@@ -125,7 +125,7 @@ public class CucumberExpressionException : Exception {
                 "Did you mean to use a regular expression?"));
     }
 
-    static String message(int index, String expression, String pointer, String problem,
+    protected static String message(int index, String expression, String pointer, String problem,
             String solution) {
         return thisCucumberExpressionHasAProblemAt(index) +
                 "\n" +
@@ -135,7 +135,7 @@ public class CucumberExpressionException : Exception {
                 solution;
     }
 
-    static String pointAt(Ast.Located node) {
+    protected static String pointAt(Ast.Located node) {
         StringBuilder pointer = new StringBuilder(pointAt(node.start));
         if (node.start + 1 < node.end) {
             for (int i = node.start + 1; i < node.end - 1; i++) {

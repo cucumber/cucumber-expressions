@@ -12,7 +12,7 @@ namespace CucumberExpressions;
  * regexp.
  */
 public class TreeRegexp {
-    private Regex pattern { get; }
+    public Regex pattern { get; }
     private readonly GroupBuilder groupBuilder;
 
     public TreeRegexp(String regexp) : this(new Regex(regexp))

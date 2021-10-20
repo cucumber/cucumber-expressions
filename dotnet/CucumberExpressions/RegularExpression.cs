@@ -1,19 +1,12 @@
-package io.cucumber.cucumberexpressions;
+using System;
+using System.Text.RegularExpressions;
 
-import org.apiguardian.api.API;
+namespace CucumberExpressions;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import static io.cucumber.cucumberexpressions.ParameterType.createAnonymousParameterType;
-
-@API(status = API.Status.STABLE)
-public final class RegularExpression implements Expression {
-    private final Pattern expressionRegexp;
-    private final ParameterTypeRegistry parameterTypeRegistry;
-    private final TreeRegexp treeRegexp;
+public class RegularExpression : Expression {
+    private readonly Regex expressionRegexp;
+    private readonly IParameterTypeRegistry parameterTypeRegistry;
+    private readonly TreeRegexp treeRegexp;
 
     /**
      * Creates a new instance. Use this when the transform types are not known in advance,
@@ -23,13 +16,13 @@ public final class RegularExpression implements Expression {
      * @param expressionRegexp      the regular expression to use
      * @param parameterTypeRegistry used to look up parameter types
      */
-    RegularExpression(Pattern expressionRegexp, ParameterTypeRegistry parameterTypeRegistry) {
+    RegularExpression(Regex expressionRegexp, IParameterTypeRegistry parameterTypeRegistry) {
         this.expressionRegexp = expressionRegexp;
         this.parameterTypeRegistry = parameterTypeRegistry;
         this.treeRegexp = new TreeRegexp(expressionRegexp);
     }
 
-    @Override
+/*    @Override
     public List<Argument<?>> match(String text, Type... typeHints) {
         final Group group = treeRegexp.match(text);
         if (group == null) {
@@ -70,15 +63,13 @@ public final class RegularExpression implements Expression {
         }
 
         return Argument.build(group, parameterTypes);
-    }
+    }*/
 
-    @Override
-    public Pattern getRegexp() {
+    public Regex getRegexp() {
         return expressionRegexp;
     }
 
-    @Override
     public String getSource() {
-        return expressionRegexp.pattern();
+        return expressionRegexp.ToString();
     }
 }
