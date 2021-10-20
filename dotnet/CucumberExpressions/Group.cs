@@ -1,24 +1,18 @@
-package io.cucumber.cucumberexpressions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
-import org.apiguardian.api.API;
+namespace CucumberExpressions;
 
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.singletonList;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-@API(status = API.Status.STABLE)
 public class Group {
-    private final List<Group> children;
-    private final String value;
-    private final int start;
-    private final int end;
+    private readonly List<Group> children;
+    private readonly String value;
+    private readonly int start;
+    private readonly int end;
 
-    Group(String value, int start, int end, List<Group> children) {
+    public Group(String value, int start, int end, List<Group> children) {
         this.value = value;
         this.start = start;
         this.end = end;
@@ -42,10 +36,9 @@ public class Group {
     }
 
     public List<String> getValues() {
-        List<Group> groups = getChildren().isEmpty() ? singletonList(this) : getChildren();
-        return groups.stream()
-                .map(Group::getValue)
-                .collect(Collectors.toList());
+        List<Group> groups = !getChildren().Any() ? 
+            new List<Group> { this } : getChildren();
+        return groups.Select(g => g.getValue()).ToList();
     }
 
     /**
@@ -55,16 +48,16 @@ public class Group {
      * @return A collection of {@link Group}s, possibly empty but never
      *         <code>null</code>
      */
-    public static Collection<Group> parse(Pattern expression) {
+    public static List<Group> parse(Regex expression) {
         GroupBuilder builder = TreeRegexp.createGroupBuilder(expression);
         return toGroups(builder.getChildren());
     }
 
     private static List<Group> toGroups(List<GroupBuilder> children) {
-        List<Group> list = new ArrayList<>();
+        var list = new List<Group>();
         if (children != null) {
-            for (GroupBuilder child : children) {
-                list.add(new Group(child.getSource(), child.getStartIndex(), child.getEndIndex(),
+            foreach (GroupBuilder child in children) {
+                list.Add(new Group(child.getSource(), child.getStartIndex(), child.getEndIndex(),
                         toGroups(child.getChildren())));
             }
         }
