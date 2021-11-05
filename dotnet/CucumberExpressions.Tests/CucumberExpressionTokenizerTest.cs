@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CucumberExpressions.Parsing;
 using FluentAssertions;
 using Xunit;
 
@@ -9,13 +10,13 @@ namespace CucumberExpressions.Tests;
 
 public class CucumberExpressionTokenizerTest : TestBase
 {
-    private readonly CucumberExpressionTokenizer tokenizer = new();
+    private readonly CucumberExpressionTokenizer _tokenizer = new();
 
     public static IEnumerable<object[]> acceptance_tests_pass_data()
         => GetTestDataFiles("cucumber-expression", "tokenizer")
             .Select(file => new object[]
             {
-                Path.GetFileNameWithoutExtension(file), 
+                Path.GetFileNameWithoutExtension(file),
                 ParseYaml<Expectation>(file)
             });
 
@@ -25,14 +26,14 @@ public class CucumberExpressionTokenizerTest : TestBase
     {
         if (expectation.Exception == null)
         {
-            var tokens = tokenizer.tokenize(expectation.Expression);
+            var tokens = _tokenizer.Tokenize(expectation.Expression);
             var expectedTokens = expectation.ExpectedTokens
                 .Select(t => t.ToToken());
             tokens.Should().BeEquivalentTo(expectedTokens);
         }
         else
         {
-            FluentActions.Invoking(() => tokenizer.tokenize(expectation.Expression))
+            FluentActions.Invoking(() => _tokenizer.Tokenize(expectation.Expression))
                 .Should().Throw<CucumberExpressionException>().WithMessage(expectation.Exception);
         }
     }
@@ -47,7 +48,7 @@ public class CucumberExpressionTokenizerTest : TestBase
     public class YamlableToken
     {
         public string Text;
-        public Ast.Token.Type Type;
+        public Ast.TokenType Type;
         public int Start;
         public int End;
 

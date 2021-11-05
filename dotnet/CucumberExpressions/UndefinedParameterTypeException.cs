@@ -1,28 +1,24 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using CucumberExpressions.Ast;
 
 namespace CucumberExpressions;
 
-public class UndefinedParameterTypeException : CucumberExpressionException {
-    private readonly String undefinedParameterTypeName;
+public class UndefinedParameterTypeException : CucumberExpressionException
+{
+    public string UndefinedParameterTypeName { get; }
 
-    public UndefinedParameterTypeException(String message, String undefinedParameterTypeName) : base(message) {
-        this.undefinedParameterTypeName = undefinedParameterTypeName;
+    public UndefinedParameterTypeException(string message, string undefinedParameterTypeName) : base(message)
+    {
+        UndefinedParameterTypeName = undefinedParameterTypeName;
     }
 
-    public String getUndefinedParameterTypeName() {
-        return undefinedParameterTypeName;
-    }
-
-    public static CucumberExpressionException createUndefinedParameterType(Ast.Node node, String expression, String undefinedParameterTypeName) {
-        return new UndefinedParameterTypeException(message(
-                node.start,
+    internal static CucumberExpressionException CreateUndefinedParameterType(Node node, string expression, string undefinedParameterTypeName)
+    {
+        return new UndefinedParameterTypeException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
-                "Undefined parameter type '" +undefinedParameterTypeName+ "'",
-                "Please register a ParameterType for '"+undefinedParameterTypeName+"'"), undefinedParameterTypeName);
+                PointAt(node),
+                "Undefined parameter type '" + undefinedParameterTypeName + "'",
+                "Please register a ParameterType for '" + undefinedParameterTypeName + "'"), undefinedParameterTypeName);
     }
 }

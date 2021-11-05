@@ -30,19 +30,23 @@ public class CucumberExpressionTest : CucumberExpressionTestBase
 
     [Theory, MemberData(nameof(acceptance_tests_pass_data))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters", Justification = "<Pending>")]
-    public void Acceptance_tests_pass(string testCase, Expectation expectation) {
+    public void Acceptance_tests_pass(string testCase, Expectation expectation)
+    {
         _testOutputHelper.WriteLine(testCase);
         _testOutputHelper.WriteLine(ToYaml(expectation));
-        if (expectation.exception == null) {
+        if (expectation.exception == null)
+        {
             CucumberExpression expression = new CucumberExpression(expectation.expression, _parameterTypeRegistry);
-            _testOutputHelper.WriteLine(expression.getRegexp().ToString());
+            _testOutputHelper.WriteLine(expression.Regex.ToString());
             var match = MatchExpression(expression, expectation.text);
 
             var values = match == null ? null : match
                 .ToList();
 
             Assert.Equal(expectation.expected_args, values);
-        } else {
+        }
+        else
+        {
             FluentActions.Invoking(() =>
                 {
                     CucumberExpression expression = new CucumberExpression(expectation.expression, _parameterTypeRegistry);
@@ -52,11 +56,13 @@ public class CucumberExpressionTest : CucumberExpressionTestBase
         }
     }
 
-    public class Expectation {
-        public String expression;
-        public String text;
+    public class Expectation
+    {
+        public string expression;
+        public string text;
+        // ReSharper disable once InconsistentNaming
         public List<string> expected_args;
-        public String exception;
+        public string exception;
     }
 
     // Misc tests
@@ -65,6 +71,6 @@ public class CucumberExpressionTest : CucumberExpressionTestBase
     void exposes_source()
     {
         var expr = "I have {int} cuke(s)";
-        Assert.Equal(expr, new CucumberExpression(expr, _parameterTypeRegistry).getSource());
+        Assert.Equal(expr, new CucumberExpression(expr, _parameterTypeRegistry).Source);
     }
 }

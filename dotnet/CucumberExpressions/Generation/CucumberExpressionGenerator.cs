@@ -1,42 +1,50 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CucumberExpressions;
+namespace CucumberExpressions.Generation;
 
-public class CucumberExpressionGenerator {
-    private readonly IParameterTypeRegistry parameterTypeRegistry;
+public class CucumberExpressionGenerator
+{
+    private readonly IParameterTypeRegistry _parameterTypeRegistry;
 
-    public CucumberExpressionGenerator(IParameterTypeRegistry parameterTypeRegistry) {
-        this.parameterTypeRegistry = parameterTypeRegistry;
+    public CucumberExpressionGenerator(IParameterTypeRegistry parameterTypeRegistry)
+    {
+        _parameterTypeRegistry = parameterTypeRegistry;
     }
 
-    public List<GeneratedExpression> generateExpressions(String text) {
+    public GeneratedExpression[] GenerateExpressions(string text)
+    {
         var parameterTypeCombinations = new List<List<IParameterType>>();
-        var parameterTypeMatchers = createParameterTypeMatchers(text);
+        var parameterTypeMatchers = CreateParameterTypeMatchers(text);
         StringBuilder expressionTemplate = new StringBuilder();
         int pos = 0;
         int paramCount = 0;
-        while (true) {
+        while (true)
+        {
             var matchingParameterTypeMatchers = new List<ParameterTypeMatcher>();
 
-            foreach (var parameterTypeMatcher in parameterTypeMatchers) {
-                if (parameterTypeMatcher.advanceToAndFind(pos)) {
+            foreach (var parameterTypeMatcher in parameterTypeMatchers)
+            {
+                if (parameterTypeMatcher.AdvanceToAndFind(pos))
+                {
                     matchingParameterTypeMatchers.Add(parameterTypeMatcher);
                 }
             }
 
-            if (matchingParameterTypeMatchers.Any()) {
+            if (matchingParameterTypeMatchers.Any())
+            {
                 matchingParameterTypeMatchers.Sort();
 
                 // Find all the best parameter type matchers, they are all candidates.
                 var bestParameterTypeMatcher = matchingParameterTypeMatchers[0];
                 var bestParameterTypeMatchers = new List<ParameterTypeMatcher>();
-                foreach (var m in matchingParameterTypeMatchers) {
-                    if (m.CompareTo(bestParameterTypeMatcher) == 0) {
+                foreach (var m in matchingParameterTypeMatchers)
+                {
+                    if (m.CompareTo(bestParameterTypeMatcher) == 0)
+                    {
                         bestParameterTypeMatchers.Add(m);
                     }
                 }
@@ -48,8 +56,9 @@ public class CucumberExpressionGenerator {
                 // We're sorting the list so preferential parameter types are listed first.
                 // Users are most likely to want these, so they should be listed at the top.
                 var set = new HashSet<IParameterType>();
-                foreach (var parameterTypeMatcher in bestParameterTypeMatchers) {
-                    var parameterType = parameterTypeMatcher.getParameterType();
+                foreach (var parameterTypeMatcher in bestParameterTypeMatchers)
+                {
+                    var parameterType = parameterTypeMatcher.ParameterType;
                     set.Add(parameterType);
                 }
                 var parameterTypes = set.ToList();
@@ -57,42 +66,50 @@ public class CucumberExpressionGenerator {
                 parameterTypeCombinations.Add(parameterTypes);
 
                 expressionTemplate
-                        .Append(escape(text.Substring(pos, bestParameterTypeMatcher.start() - pos)))
+                        .Append(escape(text.Substring(pos, bestParameterTypeMatcher.GetMatchStart() - pos)))
                         .Append("{{{" + (paramCount++) + "}}}");
-                pos = bestParameterTypeMatcher.start() + bestParameterTypeMatcher.group().Length;
-            } else {
+                pos = bestParameterTypeMatcher.GetMatchStart() + bestParameterTypeMatcher.GetMatchValue().Length;
+            }
+            else
+            {
                 break;
             }
 
-            if (pos >= text.Length) {
+            if (pos >= text.Length)
+            {
                 break;
             }
         }
         expressionTemplate.Append(escape(text.Substring(pos)));
-        return new CombinatorialGeneratedExpressionFactory(expressionTemplate.ToString(), parameterTypeCombinations).generateExpressions();
+        return new CombinatorialGeneratedExpressionFactory(expressionTemplate.ToString(), parameterTypeCombinations).GenerateExpressions();
     }
 
-    private String escape(String s) {
+    private string escape(string s)
+    {
         return s.Replace("(", "\\(")
                 .Replace("{", "\\{{")
                 .Replace("}", "}}")
                 .Replace("/", "\\/");
     }
 
-    private List<ParameterTypeMatcher> createParameterTypeMatchers(String text) {
-        var parameterTypes = parameterTypeRegistry.getParameterTypes();
+    private List<ParameterTypeMatcher> CreateParameterTypeMatchers(string text)
+    {
+        var parameterTypes = _parameterTypeRegistry.GetParameterTypes();
         var parameterTypeMatchers = new List<ParameterTypeMatcher>();
-        foreach (var parameterType in parameterTypes) {
-            if (parameterType.useForSnippets()) {
-                parameterTypeMatchers.AddRange(createParameterTypeMatchers(parameterType, text));
+        foreach (var parameterType in parameterTypes)
+        {
+            if (parameterType.UseForSnippets)
+            {
+                parameterTypeMatchers.AddRange(CreateParameterTypeMatchers(parameterType, text));
             }
         }
         return parameterTypeMatchers;
     }
 
-    private static List<ParameterTypeMatcher> createParameterTypeMatchers(IParameterType parameterType, String text) {
+    private static List<ParameterTypeMatcher> CreateParameterTypeMatchers(IParameterType parameterType, string text)
+    {
         var result = new List<ParameterTypeMatcher>();
-        var captureGroupRegexps = parameterType.getRegexps();
+        var captureGroupRegexps = parameterType.Regexps;
         foreach (var captureGroupRegexp in captureGroupRegexps)
         {
             var regexp = new Regex("(" + captureGroupRegexp + ")");
@@ -100,5 +117,4 @@ public class CucumberExpressionGenerator {
         }
         return result;
     }
-
 }

@@ -1,94 +1,97 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
+using CucumberExpressions.Parsing;
 
 namespace CucumberExpressions;
 
-public class CucumberExpression : Expression
+public class CucumberExpression : IExpression
 {
-    private static readonly Regex ESCAPE_PATTERN = new("([\\\\^\\[({$.|?*+})\\]])");
+    private static readonly Regex EscapePatternRe = new("([\\\\^\\[({$.|?*+})\\]])");
 
-    private readonly List<IParameterType> parameterTypes = new();
-    private readonly String source;
-    private readonly TreeRegexp treeRegexp;
-    private readonly IParameterTypeRegistry parameterTypeRegistry;
+    private readonly List<IParameterType> _parameterTypes = new();
+    private readonly TreeRegexp _treeRegexp;
+    private readonly IParameterTypeRegistry _parameterTypeRegistry;
+    public string Source { get; }
 
-    public CucumberExpression(String expression, IParameterTypeRegistry parameterTypeRegistry)
+    public Regex Regex => _treeRegexp.Regex;
+    public IParameterType[] ParameterTypes => _parameterTypes.ToArray();
+
+    public CucumberExpression(string expression, IParameterTypeRegistry parameterTypeRegistry)
     {
-        this.source = expression;
-        this.parameterTypeRegistry = parameterTypeRegistry;
+        Source = expression;
+        _parameterTypeRegistry = parameterTypeRegistry;
 
         CucumberExpressionParser parser = new CucumberExpressionParser();
-        Ast.Node ast = parser.parse(expression);
-        String pattern = rewriteToRegex(ast);
-        treeRegexp = new TreeRegexp(pattern);
+        Ast.Node ast = parser.Parse(expression);
+        var pattern = RewriteToRegex(ast);
+        _treeRegexp = new TreeRegexp(pattern);
     }
 
-    private String rewriteToRegex(Ast.Node node)
+    private string RewriteToRegex(Ast.Node node)
     {
-        switch (node.type)
+        switch (node.Type)
         {
-            case Ast.Node.Type.TEXT_NODE:
-                return escapeRegex(node.text);
-            case Ast.Node.Type.OPTIONAL_NODE:
-                return rewriteOptional(node);
-            case Ast.Node.Type.ALTERNATION_NODE:
-                return rewriteAlternation(node);
-            case Ast.Node.Type.ALTERNATIVE_NODE:
-                return rewriteAlternative(node);
-            case Ast.Node.Type.PARAMETER_NODE:
-                return rewriteParameter(node);
-            case Ast.Node.Type.EXPRESSION_NODE:
-                return rewriteExpression(node);
+            case Ast.NodeType.TEXT_NODE:
+                return EscapeRegex(node.Text);
+            case Ast.NodeType.OPTIONAL_NODE:
+                return RewriteOptional(node);
+            case Ast.NodeType.ALTERNATION_NODE:
+                return RewriteAlternation(node);
+            case Ast.NodeType.ALTERNATIVE_NODE:
+                return RewriteAlternative(node);
+            case Ast.NodeType.PARAMETER_NODE:
+                return RewriteParameter(node);
+            case Ast.NodeType.EXPRESSION_NODE:
+                return RewriteExpression(node);
             default:
                 // Can't happen as long as the switch case is exhaustive
-                throw new ArgumentException(node.type.ToString(), nameof(node));
+                throw new ArgumentException(node.Type.ToString(), nameof(node));
         }
     }
 
-    private static String escapeRegex(String text)
+    private static string EscapeRegex(string text)
     {
-        return ESCAPE_PATTERN.Replace(text, match => "\\" + match.Value);
+        return EscapePatternRe.Replace(text, match => "\\" + match.Value);
     }
 
-    private String rewriteOptional(Ast.Node node)
+    private string RewriteOptional(Ast.Node node)
     {
-        assertNoParameters(node, astNode => CucumberExpressionException.createParameterIsNotAllowedInOptional(astNode, source));
-        assertNoOptionals(node, astNode => CucumberExpressionException.createOptionalIsNotAllowedInOptional(astNode, source));
-        assertNotEmpty(node, astNode => CucumberExpressionException.createOptionalMayNotBeEmpty(astNode, source));
-        return "(?:" + string.Join("", node.nodes.Select(rewriteToRegex)) +  ")?";
+        AssertNoParameters(node, astNode => CucumberExpressionException.CreateParameterIsNotAllowedInOptional(astNode, Source));
+        AssertNoOptionals(node, astNode => CucumberExpressionException.CreateOptionalIsNotAllowedInOptional(astNode, Source));
+        AssertNotEmpty(node, astNode => CucumberExpressionException.CreateOptionalMayNotBeEmpty(astNode, Source));
+        return "(?:" + string.Join("", node.Nodes.Select(RewriteToRegex)) + ")?";
     }
 
-    private String rewriteAlternation(Ast.Node node)
+    private string RewriteAlternation(Ast.Node node)
     {
         // Make sure the alternative parts aren't empty and don't contain parameter types
-        foreach (var alternative in node.nodes)
+        foreach (var alternative in node.Nodes)
         {
-            if (!alternative.nodes.Any())
+            if (!alternative.Nodes.Any())
             {
-                throw CucumberExpressionException.createAlternativeMayNotBeEmpty(alternative, source);
+                throw CucumberExpressionException.CreateAlternativeMayNotBeEmpty(alternative, Source);
             }
-            assertNotEmpty(alternative, astNode=> CucumberExpressionException.createAlternativeMayNotExclusivelyContainOptionals(astNode, source));
+            AssertNotEmpty(alternative, astNode => CucumberExpressionException.CreateAlternativeMayNotExclusivelyContainOptionals(astNode, Source));
         }
-        return "(?:" + string.Join("|", node.nodes.Select(rewriteToRegex)) + ")";
+        return "(?:" + string.Join("|", node.Nodes.Select(RewriteToRegex)) + ")";
     }
 
-    private String rewriteAlternative(Ast.Node node)
+    private string RewriteAlternative(Ast.Node node)
     {
-        return string.Join("", node.nodes.Select(rewriteToRegex));
+        return string.Join("", node.Nodes.Select(RewriteToRegex));
     }
 
-    private String rewriteParameter(Ast.Node node)
+    private string RewriteParameter(Ast.Node node)
     {
-        String name = node.text;
-        IParameterType parameterType = parameterTypeRegistry.lookupByTypeName(name);
+        string name = node.Text;
+        IParameterType parameterType = _parameterTypeRegistry.LookupByTypeName(name);
         if (parameterType == null)
         {
-            throw UndefinedParameterTypeException.createUndefinedParameterType(node, source, name);
+            throw UndefinedParameterTypeException.CreateUndefinedParameterType(node, Source, name);
         }
-        parameterTypes.Add(parameterType);
+        _parameterTypes.Add(parameterType);
         var regexps = GetParameterTypeRegexps(name, parameterType, out var shouldWrapWithCaptureGroup);
 
         var wrapGroupStart = shouldWrapWithCaptureGroup ? "(" : "(?:";
@@ -103,8 +106,7 @@ public class CucumberExpression : Expression
     protected virtual bool HandleStringType(string name, IParameterType parameterType, out string[] regexps, out bool shouldWrapWithCaptureGroup)
     {
         shouldWrapWithCaptureGroup = false;
-        regexps = parameterType
-            .getRegexps()
+        regexps = parameterType.Regexps
             .Select(RegexCaptureGroupRemover.RemoveInnerCaptureGroups)
             .ToArray();
         return true;
@@ -117,8 +119,7 @@ public class CucumberExpression : Expression
             return stringRegexps;
         }
 
-        var regexps = parameterType
-            .getRegexps()
+        var regexps = parameterType.Regexps
             .Select(RegexCaptureGroupRemover.RemoveCaptureGroups)
             .ToArray();
 
@@ -126,67 +127,35 @@ public class CucumberExpression : Expression
         return regexps;
     }
 
-    private String rewriteExpression(Ast.Node node)
+    private string RewriteExpression(Ast.Node node)
     {
-        return "^" + string.Join("", node.nodes.Select(rewriteToRegex)) + "$";
+        return "^" + string.Join("", node.Nodes.Select(RewriteToRegex)) + "$";
     }
 
-    private void assertNotEmpty(Ast.Node node,
+    private void AssertNotEmpty(Ast.Node node,
             Func<Ast.Node, CucumberExpressionException> createNodeWasNotEmptyException)
     {
-        if (node.nodes.FirstOrDefault(astNode => Ast.Node.Type.TEXT_NODE.Equals(astNode.type)) == null)
+        if (node.Nodes.FirstOrDefault(astNode => Ast.NodeType.TEXT_NODE.Equals(astNode.Type)) == null)
             throw createNodeWasNotEmptyException(node);
     }
 
-    private void assertNoParameters(Ast.Node node,
+    private void AssertNoParameters(Ast.Node node,
             Func<Ast.Node, CucumberExpressionException> createNodeContainedAParameterException)
     {
-        assertNoNodeOfType(Ast.Node.Type.PARAMETER_NODE, node, createNodeContainedAParameterException);
+        AssertNoNodeOfType(Ast.NodeType.PARAMETER_NODE, node, createNodeContainedAParameterException);
     }
 
-    private void assertNoOptionals(Ast.Node node,
+    private void AssertNoOptionals(Ast.Node node,
             Func<Ast.Node, CucumberExpressionException> createNodeContainedAnOptionalException)
     {
-        assertNoNodeOfType(Ast.Node.Type.OPTIONAL_NODE, node, createNodeContainedAnOptionalException);
+        AssertNoNodeOfType(Ast.NodeType.OPTIONAL_NODE, node, createNodeContainedAnOptionalException);
     }
 
-    private void assertNoNodeOfType(Ast.Node.Type nodeType, Ast.Node node,
+    private void AssertNoNodeOfType(Ast.NodeType nodeType, Ast.Node node,
             Func<Ast.Node, CucumberExpressionException> createException)
     {
-        var faultyNode = node.nodes.FirstOrDefault(astNode => nodeType.Equals(astNode.type));
+        var faultyNode = node.Nodes.FirstOrDefault(astNode => nodeType.Equals(astNode.Type));
         if (faultyNode != null)
             throw createException(faultyNode);
-    }
-
-/*    public List<Argument> match(String text, Type...typeHints)
-    {
-        final Group group = treeRegexp.match(text);
-        if (group == null)
-        {
-            return null;
-        }
-
-        List < ParameterType <?>> parameterTypes = new ArrayList<>(this.parameterTypes);
-        for (int i = 0; i < parameterTypes.size(); i++)
-        {
-            ParameterType <?> parameterType = parameterTypes.get(i);
-            Type type = i < typeHints.length ? typeHints[i] : String.class;
-            if (parameterType.isAnonymous()) {
-                ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
-    parameterTypes.set(i, parameterType.deAnonymize(type, arg => defaultTransformer.transform(arg, type)));
-            }
-        }
-
-        return Argument.build(group, parameterTypes);
-    }*/
-
-    public String getSource()
-    {
-        return source;
-    }
-
-    public Regex getRegexp()
-    {
-        return treeRegexp.pattern;
     }
 }

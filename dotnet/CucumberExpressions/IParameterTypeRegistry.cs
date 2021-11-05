@@ -4,6 +4,6 @@ namespace CucumberExpressions;
 
 public interface IParameterTypeRegistry
 {
-    IParameterType lookupByTypeName(string name);
-    IEnumerable<IParameterType> getParameterTypes();
+    IParameterType LookupByTypeName(string name);
+    IEnumerable<IParameterType> GetParameterTypes();
 }

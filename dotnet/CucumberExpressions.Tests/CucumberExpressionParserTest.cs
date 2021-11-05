@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CucumberExpressions.Parsing;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
@@ -11,7 +12,7 @@ namespace CucumberExpressions.Tests;
 public class CucumberExpressionParserTest : TestBase
 {
     private readonly ITestOutputHelper _testOutputHelper;
-	private readonly CucumberExpressionParser parser = new();
+	private readonly CucumberExpressionParser _parser = new();
 
     public CucumberExpressionParserTest(ITestOutputHelper testOutputHelper)
     {
@@ -33,31 +34,32 @@ public class CucumberExpressionParserTest : TestBase
 		_testOutputHelper.WriteLine(ToYaml(expectation));
 		if (expectation.exception == null)
 		{
-			Ast.Node node = parser.parse(expectation.expression);
-			node.Should().Be(expectation.expected_ast.toNode());
+			Ast.Node node = _parser.Parse(expectation.expression);
+			node.Should().Be(expectation.expected_ast.ToNode());
 		}
 		else
 		{
-			FluentActions.Invoking(() => parser.parse(expectation.expression))
+			FluentActions.Invoking(() => _parser.Parse(expectation.expression))
 				.Should().Throw<CucumberExpressionException>().WithMessage(expectation.exception);
 		}
 	}
 
 	public class Expectation
 	{
-		public String expression;
-		public YamlableNode expected_ast;
-		public String exception;
+		public string expression;
+        // ReSharper disable once InconsistentNaming
+        public YamlableNode expected_ast;
+		public string exception;
 	}
 	public class YamlableNode
 	{
-		public Ast.Node.Type type;
+		public Ast.NodeType type;
 		public List<YamlableNode> nodes;
-		public String token;
+		public string token;
 		public int start;
 		public int end;
 
-		public Ast.Node toNode()
+		public Ast.Node ToNode()
 		{
 			if (token != null)
 			{
@@ -65,7 +67,7 @@ public class CucumberExpressionParserTest : TestBase
 			}
 			else
 			{
-				return new Ast.Node(type, start, end, nodes.Select(n => n.toNode()).ToList());
+				return new Ast.Node(type, start, end, nodes.Select(n => n.ToNode()).ToArray());
 			}
 		}
 	}

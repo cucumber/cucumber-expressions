@@ -15,9 +15,9 @@ public class CucumberExpressionTransformationTest : CucumberExpressionTestBase
     public CucumberExpressionTransformationTest(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
-        var oldIntParameterType = _parameterTypeRegistry.lookupByTypeName("int");
+        var oldIntParameterType = _parameterTypeRegistry.LookupByTypeName("int");
         _parameterTypeRegistry.Remove(oldIntParameterType);
-        _parameterTypeRegistry.defineParameterType(new StubParameterType<int>(ParameterTypeConstants.IntParameterName, 
+        _parameterTypeRegistry.DefineParameterType(new StubParameterType<int>(ParameterTypeConstants.IntParameterName, 
             new []{ ParameterTypeConstants.IntParameterRegex, "\\d+" }, weight: 1000));
     }
 
@@ -37,11 +37,12 @@ public class CucumberExpressionTransformationTest : CucumberExpressionTestBase
         _testOutputHelper.WriteLine(testCase);
         _testOutputHelper.WriteLine(ToYaml(expectation));
         CucumberExpression expression = new CucumberExpression(expectation.expression, _parameterTypeRegistry);
-        Assert.Equal(expectation.expected_regex, expression.getRegexp().ToString());
+        Assert.Equal(expectation.expected_regex, expression.Regex.ToString());
     }
 
     public class Expectation {
-        public String expression;
-        public String expected_regex;
+        public string expression;
+        // ReSharper disable once InconsistentNaming
+        public string expected_regex;
     }
 }

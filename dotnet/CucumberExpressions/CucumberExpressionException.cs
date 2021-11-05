@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using CucumberExpressions.Ast;
 
 namespace CucumberExpressions;
 
@@ -12,97 +13,97 @@ public class CucumberExpressionException : Exception {
     {
     }
 
-    public static CucumberExpressionException createMissingEndToken(String expression, Ast.Token.Type beginToken, Ast.Token.Type endToken,
-            Ast.Token current) {
-        return new CucumberExpressionException(message(
-                current.start,
+    internal static CucumberExpressionException CreateMissingEndToken(string expression, TokenType beginToken, TokenType endToken,
+            Token current) {
+        return new CucumberExpressionException(GetMessage(
+                current.Start,
                 expression,
-                pointAt(current),
-                "The '" + beginToken.symbol() + "' does not have a matching '" + endToken.symbol() + "'",
-                "If you did not intend to use " + beginToken.purpose() + " you can use '\\" + beginToken
-                        .symbol() + "' to escape the " + beginToken.purpose()));
+                PointAt(current),
+                "The '" + beginToken.GetSymbol() + "' does not have a matching '" + endToken.GetSymbol() + "'",
+                "If you did not intend to use " + beginToken.GetPurpose() + " you can use '\\" + beginToken
+                        .GetSymbol() + "' to escape the " + beginToken.GetPurpose()));
     }
 
-    public static CucumberExpressionException createAlternationNotAllowedInOptional(String expression, Ast.Token current) {
-        return new CucumberExpressionException(message(
-                current.start,
+    internal static CucumberExpressionException CreateAlternationNotAllowedInOptional(string expression, Token current) {
+        return new CucumberExpressionException(GetMessage(
+                current.Start,
                 expression,
-                pointAt(current),
+                PointAt(current),
                 "An alternation can not be used inside an optional",
                 "You can use '\\/' to escape the the '/'"
         ));
     }
 
-    public static CucumberExpressionException createTheEndOfLineCanNotBeEscaped(String expression) {
+    internal static CucumberExpressionException CreateTheEndOfLineCanNotBeEscaped(string expression) {
         int index = expression.Length - 1;
-        return new CucumberExpressionException(message(
+        return new CucumberExpressionException(GetMessage(
                 index,
                 expression,
-                pointAt(index),
+                PointAt(index),
                 "The end of line can not be escaped",
                 "You can use '\\\\' to escape the the '\\'"
         ));
     }
 
-    public static CucumberExpressionException createAlternativeMayNotBeEmpty(Ast.Node node, String expression) {
-        return new CucumberExpressionException(message(
-                node.start,
+    internal static CucumberExpressionException CreateAlternativeMayNotBeEmpty(Node node, string expression) {
+        return new CucumberExpressionException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
+                PointAt(node),
                 "Alternative may not be empty",
                 "If you did not mean to use an alternative you can use '\\/' to escape the the '/'"));
     }
 
-    public static CucumberExpressionException createParameterIsNotAllowedInOptional(Ast.Node node, String expression) {
-        return new CucumberExpressionException(message(
-                node.start,
+    internal static CucumberExpressionException CreateParameterIsNotAllowedInOptional(Node node, string expression) {
+        return new CucumberExpressionException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
+                PointAt(node),
                 "An optional may not contain a parameter type",
                 "If you did not mean to use an parameter type you can use '\\{' to escape the the '{'"));
     }
-    public static CucumberExpressionException createOptionalIsNotAllowedInOptional(Ast.Node node, String expression) {
-        return new CucumberExpressionException(message(
-                node.start,
+    internal static CucumberExpressionException CreateOptionalIsNotAllowedInOptional(Node node, string expression) {
+        return new CucumberExpressionException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
+                PointAt(node),
                 "An optional may not contain an other optional",
                 "If you did not mean to use an optional type you can use '\\(' to escape the the '('. For more complicated expressions consider using a regular expression instead."));
     }
 
-    public static CucumberExpressionException createOptionalMayNotBeEmpty(Ast.Node node, String expression) {
-        return new CucumberExpressionException(message(
-                node.start,
+    internal static CucumberExpressionException CreateOptionalMayNotBeEmpty(Node node, string expression) {
+        return new CucumberExpressionException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
+                PointAt(node),
                 "An optional must contain some text",
                 "If you did not mean to use an optional you can use '\\(' to escape the the '('"));
     }
 
-    public static CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(Ast.Node node,
-            String expression) {
-        return new CucumberExpressionException(message(
-                node.start,
+    internal static CucumberExpressionException CreateAlternativeMayNotExclusivelyContainOptionals(Node node,
+            string expression) {
+        return new CucumberExpressionException(GetMessage(
+                node.Start,
                 expression,
-                pointAt(node),
+                PointAt(node),
                 "An alternative may not exclusively contain optionals",
                 "If you did not mean to use an optional you can use '\\(' to escape the the '('"));
     }
 
-    private static String thisCucumberExpressionHasAProblemAt(int index) {
+    private static string ThisCucumberExpressionHasAProblemAt(int index) {
         return "This Cucumber Expression has a problem at column " + (index + 1) + ":" + "\n";
     }
 
-    public static CucumberExpressionException createCantEscape(String expression, int index) {
-        return new CucumberExpressionException(message(
+    internal static CucumberExpressionException CreateCantEscape(string expression, int index) {
+        return new CucumberExpressionException(GetMessage(
                 index,
                 expression,
-                pointAt(index),
+                PointAt(index),
                 "Only the characters '{', '}', '(', ')', '\\', '/' and whitespace can be escaped",
                 "If you did mean to use an '\\' you can use '\\\\' to escape it"));
     }
 
-    public static CucumberExpressionException createInvalidParameterTypeName(String name) {
+    public static CucumberExpressionException CreateInvalidParameterTypeName(string name) {
         return new CucumberExpressionException(
                 "Illegal character in parameter name {" + name + "}. Parameter names may not contain '{', '}', '(', ')', '\\' or '/'");
     }
@@ -110,24 +111,24 @@ public class CucumberExpressionException : Exception {
     /**
      * Not very clear, but this message has to be language independent
      * Other languages have dedicated syntax for writing down regular expressions
-     * <p>
+     * 
      * In java a regular expression has to start with {@code ^} and end with
      * {@code $} to be recognized as one by Cucumber.
      *
      * @see ExpressionFactory
      */
-    public static CucumberExpressionException createInvalidParameterTypeName(Ast.Token token, String expression) {
-        return new CucumberExpressionException(message(
-                token.start,
+    internal static CucumberExpressionException CreateInvalidParameterTypeName(Token token, string expression) {
+        return new CucumberExpressionException(GetMessage(
+                token.Start,
                 expression,
-                pointAt(token),
+                PointAt(token),
                 "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
                 "Did you mean to use a regular expression?"));
     }
 
-    protected static String message(int index, String expression, String pointer, String problem,
-            String solution) {
-        return thisCucumberExpressionHasAProblemAt(index) +
+    protected static string GetMessage(int index, string expression, string pointer, string problem,
+            string solution) {
+        return ThisCucumberExpressionHasAProblemAt(index) +
                 "\n" +
                 expression + "\n" +
                 pointer + "\n" +
@@ -135,10 +136,10 @@ public class CucumberExpressionException : Exception {
                 solution;
     }
 
-    protected static String pointAt(Ast.Located node) {
-        StringBuilder pointer = new StringBuilder(pointAt(node.start));
-        if (node.start + 1 < node.end) {
-            for (int i = node.start + 1; i < node.end - 1; i++) {
+    protected static string PointAt(ILocated node) {
+        StringBuilder pointer = new StringBuilder(PointAt(node.Start));
+        if (node.Start + 1 < node.End) {
+            for (int i = node.Start + 1; i < node.End - 1; i++) {
                 pointer.Append("-");
             }
             pointer.Append("^");
@@ -146,7 +147,7 @@ public class CucumberExpressionException : Exception {
         return pointer.ToString();
     }
 
-    private static String pointAt(int index) {
+    private static string PointAt(int index) {
         StringBuilder pointer = new StringBuilder();
         for (int i = 0; i < index; i++) {
             pointer.Append(" ");

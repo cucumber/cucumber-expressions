@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using CucumberExpressions.Generation;
 using FluentAssertions;
 using Xunit;
 
 namespace CucumberExpressions.Tests;
 
-public class CombinatorialGeneratedExpressionFactoryTest : CucumberExpressionTestBase {
-
-    private const String WORD = "\\w+";
+public class CombinatorialGeneratedExpressionFactoryTest : CucumberExpressionTestBase
+{
+    private const string WORD = "\\w+";
 
     [Fact]
-    public void generates_multiple_expressions() {
+    public void Generates_multiple_expressions()
+    {
         var first = new List<IParameterType>();
         first.Add(new StubParameterType<Color>("color", WORD));
         first.Add(new StubParameterType<CssColor>("csscolor", WORD));
@@ -28,13 +30,14 @@ public class CombinatorialGeneratedExpressionFactoryTest : CucumberExpressionTes
                 "I bought a {{{0}}} ball on {{{1}}}",
                 parameterTypeCombinations
         );
-        var generatedExpressions = factory.generateExpressions();
-        var expressions = new List<String>();
-        foreach (var generatedExpression in generatedExpressions) {
-            var source = generatedExpression.getSource();
+        var generatedExpressions = factory.GenerateExpressions();
+        var expressions = new List<string>();
+        foreach (var generatedExpression in generatedExpressions)
+        {
+            var source = generatedExpression.GetSource();
             expressions.Add(source);
         }
-        expressions.Should().BeEquivalentTo(new [] {
+        expressions.Should().BeEquivalentTo(new[] {
                 "I bought a {color} ball on {date}",
                 "I bought a {color} ball on {datetime}",
                 "I bought a {color} ball on {timestamp}",
@@ -44,21 +47,15 @@ public class CombinatorialGeneratedExpressionFactoryTest : CucumberExpressionTes
         });
     }
 
-    public class Color {
-        Color(String s) {
-            Assert.NotNull(s);
-        }
+    public class Color
+    {
     }
 
-    public class CssColor {
-        CssColor(String s) {
-            Assert.NotNull(s);
-        }
+    public class CssColor
+    {
     }
 
-    public class Date {
-        Date(String s) {
-            Assert.NotNull(s);
-        }
+    public class Date
+    {
     }
 }

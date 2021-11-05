@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CucumberExpressions
+namespace CucumberExpressions.Parsing
 {
     internal static class RegexCaptureGroupRemover
     {
@@ -21,8 +21,8 @@ namespace CucumberExpressions
             if (!regex.Contains("("))
                 return regex; // surely no groups
             var treeRegexp = new TreeRegexp(regex);
-            var rootGroupBuilder = treeRegexp.getGroupBuilder();
-            if (!rootGroupBuilder.getChildren().Any())
+            var rootGroupBuilder = treeRegexp.GroupBuilder;
+            if (!rootGroupBuilder.Children.Any())
                 return regex;
 
             var result = new StringBuilder(regex);
@@ -38,10 +38,10 @@ namespace CucumberExpressions
 
         private static IEnumerable<int> GetGroupStarts(GroupBuilder groupBuilder, int skipLevels, int level)
         {
-            foreach (var innerBuilder in groupBuilder.getChildren())
+            foreach (var innerBuilder in groupBuilder.Children)
             {
                 if (level >= skipLevels)
-                    yield return innerBuilder.getStartIndex();
+                    yield return innerBuilder.StartIndex;
                 foreach (var groupStart in GetGroupStarts(innerBuilder, skipLevels, level + 1))
                     yield return groupStart;
             }

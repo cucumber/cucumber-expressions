@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CucumberExpressions;
@@ -10,30 +7,34 @@ namespace CucumberExpressions;
 /// Creates a {@link CucumberExpression} or {@link RegularExpression} from a {@link String}
 /// using heuristics. 
 /// </summary>
-public class ExpressionFactory {
+public class ExpressionFactory
+{
+    private static readonly Regex BeginAnchorRe = new("^\\^.*");
+    private static readonly Regex EndAnchorRe = new(".*\\$$");
+    private static readonly Regex ScriptStyleRegexpRe = new("^/(?<inner>.*)/$");
+    private static readonly Regex ParameterPatternRe = new("((?:\\\\){0,2})\\{([^}]*)\\}");
 
-    private static readonly Regex BEGIN_ANCHOR = new("^\\^.*");
-    private static readonly Regex END_ANCHOR = new(".*\\$$");
-    private static readonly Regex SCRIPT_STYLE_REGEXP = new("^/(?<inner>.*)/$");
-    private static readonly Regex PARAMETER_PATTERN = new("((?:\\\\){0,2})\\{([^}]*)\\}");
+    private readonly IParameterTypeRegistry _parameterTypeRegistry;
 
-    private readonly IParameterTypeRegistry parameterTypeRegistry;
-
-    public ExpressionFactory(IParameterTypeRegistry parameterTypeRegistry) {
-        this.parameterTypeRegistry = parameterTypeRegistry;
+    public ExpressionFactory(IParameterTypeRegistry parameterTypeRegistry)
+    {
+        _parameterTypeRegistry = parameterTypeRegistry;
     }
 
-    public Expression createExpression(String expressionString) {
-        if (BEGIN_ANCHOR.IsMatch(expressionString) || END_ANCHOR.IsMatch(expressionString)) {
+    public IExpression CreateExpression(String expressionString)
+    {
+        if (BeginAnchorRe.IsMatch(expressionString) || EndAnchorRe.IsMatch(expressionString))
+        {
             return createRegularExpressionWithAnchors(expressionString);
         }
-        var m = SCRIPT_STYLE_REGEXP.Match(expressionString);
-        if (m.Success) {
-            return new RegularExpression(new(m.Groups["inner"].Value), parameterTypeRegistry);
+        var scriptStyleRegexpMatch = ScriptStyleRegexpRe.Match(expressionString);
+        if (scriptStyleRegexpMatch.Success)
+        {
+            return new RegularExpression(new(scriptStyleRegexpMatch.Groups["inner"].Value));
         }
         if (IsRegularExpression(expressionString))
             return createRegularExpressionWithAnchors(expressionString);
-        return new CucumberExpression(expressionString, parameterTypeRegistry);
+        return new CucumberExpression(expressionString, _parameterTypeRegistry);
     }
 
     protected virtual bool IsRegularExpression(string expressionString)
@@ -41,11 +42,16 @@ public class ExpressionFactory {
         return false; // additional heuristics can be implemented in derived classes
     }
 
-    private RegularExpression createRegularExpressionWithAnchors(String expressionString) {
-        try {
-            return new RegularExpression(new(expressionString), parameterTypeRegistry);
-        } catch (ArgumentException e) {
-            if (PARAMETER_PATTERN.IsMatch(expressionString)) {
+    private RegularExpression createRegularExpressionWithAnchors(string expressionString)
+    {
+        try
+        {
+            return new RegularExpression(new(expressionString));
+        }
+        catch (ArgumentException e)
+        {
+            if (ParameterPatternRe.IsMatch(expressionString))
+            {
                 throw new CucumberExpressionException("You cannot use anchors (^ or $) in Cucumber Expressions. Please remove them from " + expressionString, e);
             }
             throw new CucumberExpressionException($"Invalid regular expression: '{expressionString}'", e);
