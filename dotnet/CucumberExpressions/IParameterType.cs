@@ -6,4 +6,8 @@ namespace CucumberExpressions;
 public interface IParameterType
 {
     string[] getRegexps();
+    string getName();
+    Type getType();
+    int weight();
+    bool useForSnippets();
 }

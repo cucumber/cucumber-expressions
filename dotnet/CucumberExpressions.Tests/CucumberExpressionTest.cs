@@ -8,40 +8,8 @@ using Xunit.Abstractions;
 
 namespace CucumberExpressions.Tests;
 
-public class CucumberExpressionTest : TestBase {
-
-    class StubParameterType : IParameterType
-    {
-        private readonly string[] _regexps;
-
-        public StubParameterType(params string[] regexps)
-        {
-            this._regexps = regexps == null || regexps.Length == 0 ? new []{ ".*" } : regexps;
-        }
-
-        public string[] getRegexps()
-        {
-            return _regexps.ToArray();
-        }
-    }
-    class StubParameterTypeRegistry : IParameterTypeRegistry
-    {
-        public IParameterType lookupByTypeName(string name)
-        {
-            switch (name)
-            {
-                case "int":
-                    return new StubParameterType("-?\\d+");
-                case "string":
-                    return new StubParameterType("\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"", "'([^'\\\\]*(\\\\.[^'\\\\]*)*)'");
-                case "unknown":
-                    return null;
-            }
-
-            return new StubParameterType();
-        }
-    }
-
+public class CucumberExpressionTest : CucumberExpressionTestBase
+{
     private readonly IParameterTypeRegistry _parameterTypeRegistry = new StubParameterTypeRegistry();
     private readonly ITestOutputHelper _testOutputHelper;
 
@@ -59,18 +27,6 @@ public class CucumberExpressionTest : TestBase {
                 ParseYaml<Expectation>(file)
             });
 
-    public string[] MatchExpression(Expression expression, string text)
-    {
-        var match = expression.getRegexp().Match(text);
-        if (!match.Success)
-            return null;
-        return match.Groups.OfType<System.Text.RegularExpressions.Group>().Skip(1)
-            .Where(g => g.Success)
-            .Select(c => c.Value)
-            .Select(v => v.StartsWith(".") ? "0" + v : v) // simulate float parsing with leading dot (.123)
-            .Select(v => v.Replace(@"\""", @"""").Replace(@"\'", @"'")) // simulate quote masking
-            .ToArray();
-    }
 
     [Theory, MemberData(nameof(acceptance_tests_pass_data))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1026:Theory methods should use all of their parameters", Justification = "<Pending>")]
