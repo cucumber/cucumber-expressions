@@ -26,7 +26,7 @@ public class CombinatorialGeneratedExpressionFactoryTest : CucumberExpressionTes
             first, second
         };
 
-        CombinatorialGeneratedExpressionFactory factory = new CombinatorialGeneratedExpressionFactory(
+        var factory = new CombinatorialGeneratedExpressionFactory(
                 "I bought a {{{0}}} ball on {{{1}}}",
                 parameterTypeCombinations
         );
