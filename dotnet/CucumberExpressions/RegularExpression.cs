@@ -16,7 +16,7 @@ public class RegularExpression : Expression {
      * @param expressionRegexp      the regular expression to use
      * @param parameterTypeRegistry used to look up parameter types
      */
-    RegularExpression(Regex expressionRegexp, IParameterTypeRegistry parameterTypeRegistry) {
+    public RegularExpression(Regex expressionRegexp, IParameterTypeRegistry parameterTypeRegistry) {
         this.expressionRegexp = expressionRegexp;
         this.parameterTypeRegistry = parameterTypeRegistry;
         this.treeRegexp = new TreeRegexp(expressionRegexp);
