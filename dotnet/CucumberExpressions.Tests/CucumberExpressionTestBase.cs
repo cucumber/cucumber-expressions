@@ -65,6 +65,11 @@ public abstract class CucumberExpressionTestBase : TestBase
         {
             _parameterTypes.Add(parameterType);
         }
+
+        public void Remove(IParameterType parameterType)
+        {
+            _parameterTypes.Remove(parameterType);
+        }
     }
     public string[] MatchExpression(Expression expression, string text)
     {
