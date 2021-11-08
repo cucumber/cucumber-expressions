@@ -13,7 +13,13 @@ export default class ParameterTypeRegistry {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
   private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<unknown>>>()
 
-  constructor() {
+  constructor(withDefaultParameterTypes = true) {
+    if (withDefaultParameterTypes) {
+      this.defineDefaultParameterTypes()
+    }
+  }
+
+  public defineDefaultParameterTypes() {
     this.defineParameterType(
       new ParameterType(
         'int',
@@ -42,7 +48,7 @@ export default class ParameterTypeRegistry {
         'string',
         ParameterTypeRegistry.STRING_REGEXP,
         String,
-        (s1, s2) => (s1 || s2 || '').replace(/\\"/g, '"').replace(/\\'/g, "'"),
+        (s1, s2) => (s1 || s2 || '').replace(/\\"/g, '"').replace(/\\'/g, '\''),
         true,
         false
       )
@@ -114,7 +120,7 @@ export default class ParameterTypeRegistry {
       ) {
         throw new CucumberExpressionError(
           'There can only be one preferential parameter type per regexp. ' +
-            `The regexp /${parameterTypeRegexp}/ is used for two preferential parameter types, {${existingParameterType.name}} and {${parameterType.name}}`
+          `The regexp /${parameterTypeRegexp}/ is used for two preferential parameter types, {${existingParameterType.name}} and {${parameterType.name}}`
         )
       }
       if (parameterTypes.indexOf(parameterType) === -1) {

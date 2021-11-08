@@ -55,4 +55,12 @@ describe('ParameterTypeRegistry', () => {
       person
     )
   })
+
+  it('can be instantiated without default parameter types', () => {
+    registry = new ParameterTypeRegistry(false)
+
+    const parameterType = new ParameterType('int', /\d+/, Number, (s) => +s, true, true)
+    registry.defineParameterType(parameterType)
+    assert.strictEqual(registry.lookupByTypeName('int'), parameterType)
+  })
 })
