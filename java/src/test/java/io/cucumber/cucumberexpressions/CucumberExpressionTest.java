@@ -76,11 +76,11 @@ class CucumberExpressionTest {
         Yaml yaml = new Yaml();
 
         @Override
-        public io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
+        public Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
             try {
                 Path path = (Path) source;
                 InputStream inputStream = newInputStream(path);
-                return yaml.loadAs(inputStream, io.cucumber.cucumberexpressions.CucumberExpressionTest.Expectation.class);
+                return yaml.loadAs(inputStream, Expectation.class);
             } catch (IOException e) {
                 throw new ArgumentConversionException("Could not load " + source, e);
             }
