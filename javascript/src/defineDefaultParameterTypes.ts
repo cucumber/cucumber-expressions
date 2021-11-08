@@ -1,0 +1,47 @@
+import ParameterType from './ParameterType.js'
+import { DefinesParameterType } from './types.js'
+
+const INTEGER_REGEXPS = [/-?\d+/, /\d+/]
+const FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?/
+const WORD_REGEXP = /[^\s]+/
+const STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/
+const ANONYMOUS_REGEXP = /.*/
+
+export default function defineDefaultParameterTypes(registry: DefinesParameterType) {
+  registry.defineParameterType(
+    new ParameterType(
+      'int',
+      INTEGER_REGEXPS,
+      Number,
+      (s) => (s === undefined ? null : Number(s)),
+      true,
+      true
+    )
+  )
+  registry.defineParameterType(
+    new ParameterType(
+      'float',
+      FLOAT_REGEXP,
+      Number,
+      (s) => (s === undefined ? null : parseFloat(s)),
+      true,
+      false
+    )
+  )
+  registry.defineParameterType(
+    new ParameterType('word', WORD_REGEXP, String, (s) => s, false, false)
+  )
+  registry.defineParameterType(
+    new ParameterType(
+      'string',
+      STRING_REGEXP,
+      String,
+      (s1, s2) => (s1 || s2 || '').replace(/\\"/g, '"').replace(/\\'/g, "'"),
+      true,
+      false
+    )
+  )
+  registry.defineParameterType(
+    new ParameterType('', ANONYMOUS_REGEXP, String, (s) => s, false, true)
+  )
+}

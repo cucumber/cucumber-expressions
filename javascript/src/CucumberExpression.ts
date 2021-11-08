@@ -10,7 +10,7 @@ import {
   createParameterIsNotAllowedInOptional,
   createUndefinedParameterType,
 } from './Errors.js'
-import Expression from './Expression.js'
+import { Expression } from './types.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import TreeRegexp from './TreeRegexp.js'

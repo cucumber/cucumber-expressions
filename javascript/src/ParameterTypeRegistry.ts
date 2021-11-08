@@ -1,61 +1,18 @@
 import CucumberExpressionError from './CucumberExpressionError.js'
 import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
+import defineDefaultParameterTypes from './defineDefaultParameterTypes.js'
 import { AmbiguousParameterTypeError } from './Errors.js'
 import ParameterType from './ParameterType.js'
+import { DefinesParameterType } from './types'
 
-export default class ParameterTypeRegistry {
-  public static readonly INTEGER_REGEXPS = [/-?\d+/, /\d+/]
-  public static readonly FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?/
-  public static readonly WORD_REGEXP = /[^\s]+/
-  public static readonly STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/
-  public static readonly ANONYMOUS_REGEXP = /.*/
-
+export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
   private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<unknown>>>()
 
   constructor(withDefaultParameterTypes = true) {
     if (withDefaultParameterTypes) {
-      this.defineDefaultParameterTypes()
+      defineDefaultParameterTypes(this)
     }
-  }
-
-  public defineDefaultParameterTypes() {
-    this.defineParameterType(
-      new ParameterType(
-        'int',
-        ParameterTypeRegistry.INTEGER_REGEXPS,
-        Number,
-        (s) => (s === undefined ? null : Number(s)),
-        true,
-        true
-      )
-    )
-    this.defineParameterType(
-      new ParameterType(
-        'float',
-        ParameterTypeRegistry.FLOAT_REGEXP,
-        Number,
-        (s) => (s === undefined ? null : parseFloat(s)),
-        true,
-        false
-      )
-    )
-    this.defineParameterType(
-      new ParameterType('word', ParameterTypeRegistry.WORD_REGEXP, String, (s) => s, false, false)
-    )
-    this.defineParameterType(
-      new ParameterType(
-        'string',
-        ParameterTypeRegistry.STRING_REGEXP,
-        String,
-        (s1, s2) => (s1 || s2 || '').replace(/\\"/g, '"').replace(/\\'/g, "'"),
-        true,
-        false
-      )
-    )
-    this.defineParameterType(
-      new ParameterType('', ParameterTypeRegistry.ANONYMOUS_REGEXP, String, (s) => s, false, true)
-    )
   }
 
   get parameterTypes(): IterableIterator<ParameterType<unknown>> {
