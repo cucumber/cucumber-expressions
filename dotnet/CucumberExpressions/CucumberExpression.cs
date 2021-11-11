@@ -106,7 +106,7 @@ public class CucumberExpression : IExpression
     protected virtual bool HandleStringType(string name, IParameterType parameterType, out string[] regexps, out bool shouldWrapWithCaptureGroup)
     {
         shouldWrapWithCaptureGroup = false;
-        regexps = parameterType.Regexps
+        regexps = parameterType.RegexStrings
             .Select(RegexCaptureGroupRemover.RemoveInnerCaptureGroups)
             .ToArray();
         return true;
@@ -119,7 +119,7 @@ public class CucumberExpression : IExpression
             return stringRegexps;
         }
 
-        var regexps = parameterType.Regexps
+        var regexps = parameterType.RegexStrings
             .Select(RegexCaptureGroupRemover.RemoveCaptureGroups)
             .ToArray();
 

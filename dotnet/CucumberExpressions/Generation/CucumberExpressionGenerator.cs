@@ -109,7 +109,7 @@ public class CucumberExpressionGenerator
     private static List<ParameterTypeMatcher> CreateParameterTypeMatchers(IParameterType parameterType, string text)
     {
         var result = new List<ParameterTypeMatcher>();
-        var captureGroupRegexps = parameterType.Regexps;
+        var captureGroupRegexps = parameterType.RegexStrings;
         foreach (var captureGroupRegexp in captureGroupRegexps)
         {
             var regexp = new Regex("(" + captureGroupRegexp + ")");

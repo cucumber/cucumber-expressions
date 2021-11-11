@@ -26,7 +26,7 @@ public abstract class CucumberExpressionTestBase : TestBase
             _weight = weight;
         }
 
-        public string[] Regexps => _regexps;
+        public string[] RegexStrings => _regexps;
         public string Name => _name;
         public Type ParameterType => typeof(T);
         public int Weight => _weight;

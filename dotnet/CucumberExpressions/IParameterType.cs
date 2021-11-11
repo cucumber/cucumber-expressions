@@ -4,7 +4,7 @@ namespace CucumberExpressions;
 
 public interface IParameterType
 {
-    string[] Regexps { get; }
+    string[] RegexStrings { get; }
     string Name { get; }
     Type ParameterType { get; }
     int Weight { get; }
