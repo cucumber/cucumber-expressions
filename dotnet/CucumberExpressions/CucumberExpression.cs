@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CucumberExpressions.Ast;
 using CucumberExpressions.Parsing;
 
 namespace CucumberExpressions;
@@ -83,7 +84,7 @@ public class CucumberExpression : IExpression
         return string.Join("", node.Nodes.Select(RewriteToRegex));
     }
 
-    private string RewriteParameter(Ast.Node node)
+    protected virtual string RewriteParameter(Ast.Node node)
     {
         string name = node.Text;
         IParameterType parameterType = _parameterTypeRegistry.LookupByTypeName(name);
@@ -94,7 +95,14 @@ public class CucumberExpression : IExpression
         _parameterTypes.Add(parameterType);
         var regexps = GetParameterTypeRegexps(name, parameterType, out var shouldWrapWithCaptureGroup);
 
-        var wrapGroupStart = shouldWrapWithCaptureGroup ? "(" : "(?:";
+        string wrapGroupStart;
+        if (shouldWrapWithCaptureGroup)
+        {
+            var groupName = GetGroupName(node, parameterType);
+            wrapGroupStart = groupName != null ? $"(?<{groupName}>" : "(";
+        }
+        else
+            wrapGroupStart = "(?:";
 
         if (regexps.Length == 1)
         {
@@ -103,13 +111,13 @@ public class CucumberExpression : IExpression
         return wrapGroupStart + "(?:" + string.Join(")|(?:", regexps) + "))";
     }
 
+    protected virtual string GetGroupName(Node node, IParameterType parameterType) => null;
+
     protected virtual bool HandleStringType(string name, IParameterType parameterType, out string[] regexps, out bool shouldWrapWithCaptureGroup)
     {
-        shouldWrapWithCaptureGroup = false;
-        regexps = parameterType.RegexStrings
-            .Select(RegexCaptureGroupRemover.RemoveInnerCaptureGroups)
-            .ToArray();
-        return true;
+        regexps = null;
+        shouldWrapWithCaptureGroup = true;
+        return false;
     }
 
     protected virtual string[] GetParameterTypeRegexps(string name, IParameterType parameterType, out bool shouldWrapWithCaptureGroup)

@@ -8,10 +8,12 @@ public abstract class CucumberExpressionTestBase : TestBase
 {
     public class StubParameterType<T> : IParameterType
     {
-        private readonly string _name;
-        private readonly string[] _regexps;
-        private readonly bool _useForSnippets;
-        private readonly int _weight;
+        public string[] RegexStrings { get; }
+        public string Name { get; }
+        public int Weight { get; }
+        public bool UseForSnippets { get; }
+
+        public Type ParameterType => typeof(T);
 
         public StubParameterType(string name, params string[] regexps) : this(name, regexps, true)
         {
@@ -20,22 +22,16 @@ public abstract class CucumberExpressionTestBase : TestBase
 
         public StubParameterType(string name, string[] regexps, bool useForSnippets = true, int weight = 0)
         {
-            _name = name;
-            _regexps = regexps;
-            _useForSnippets = useForSnippets;
-            _weight = weight;
+            Name = name;
+            RegexStrings = regexps;
+            UseForSnippets = useForSnippets;
+            Weight = weight;
         }
-
-        public string[] RegexStrings => _regexps;
-        public string Name => _name;
-        public Type ParameterType => typeof(T);
-        public int Weight => _weight;
-        public bool UseForSnippets => _useForSnippets;
     }
 
     public class StubParameterTypeRegistry : IParameterTypeRegistry
     {
-        private readonly List<IParameterType> _parameterTypes = new List<IParameterType>()
+        private readonly List<IParameterType> _parameterTypes = new()
         {
             new StubParameterType<int>(ParameterTypeConstants.IntParameterName, ParameterTypeConstants.IntParameterRegexps, weight: 1000),
             new StubParameterType<string>(ParameterTypeConstants.StringParameterName, ParameterTypeConstants.StringParameterRegexps),
@@ -71,6 +67,16 @@ public abstract class CucumberExpressionTestBase : TestBase
             _parameterTypes.Remove(parameterType);
         }
     }
+
+    private string TrimQuotes(string s)
+    {
+        if (s.Length >= 2 &&
+            ((s[0] == '"' && s[^1] == '"') ||
+             (s[0] == '\'' && s[^1] == '\'')))
+            return s.Substring(1, s.Length - 2).Replace(@"\" + s[0], s[0].ToString());
+        return s;
+    }
+
     public string[] MatchExpression(IExpression expression, string text)
     {
         var match = expression.Regex.Match(text);
@@ -81,6 +87,7 @@ public abstract class CucumberExpressionTestBase : TestBase
             .Select(c => c.Value)
             .Select(v => v.StartsWith(".") ? "0" + v : v) // simulate float parsing with leading dot (.123)
             .Select(v => v.Replace(@"\""", @"""").Replace(@"\'", @"'")) // simulate quote masking
+            .Select(TrimQuotes)
             .ToArray();
     }
 }
