@@ -7,6 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CucumberExpressions", "Cucu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CucumberExpressions.Tests", "CucumberExpressions.Tests\CucumberExpressions.Tests.csproj", "{FFDCFB98-192A-483B-9FAB-540B748B7824}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{A63CE1D7-957D-4D8C-890D-051A754AFD0A}"
+	ProjectSection(SolutionItems) = preProject
+		..\CHANGELOG.md = ..\CHANGELOG.md
+		..\README.md = ..\README.md
+		..\.github\workflows\test-dotnet.yml = ..\.github\workflows\test-dotnet.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

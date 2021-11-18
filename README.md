@@ -2,6 +2,7 @@
 [![test-java](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml)
 [![test-javascript](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml)
 [![test-ruby](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml)
+[![test-dotnet](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml)
 
 # Cucumber Expressions
 
@@ -141,6 +142,18 @@ ParameterType(
   transformer: ->(s) { Color.new(s) }
 )
 ```
+
+#### .NET / SpecFlow
+
+```CSharp
+[StepArgumentTransformation("(red|blue|yellow)")]
+public Color ConvertColor(string colorValue)
+{
+    return new Color(colorValue);
+}
+```
+
+*Note: Currently the parameter name cannot be customized, so the custom paramters can only be used with the type name, e.g. `{Color}`.*
 
 ## Optional text
 
