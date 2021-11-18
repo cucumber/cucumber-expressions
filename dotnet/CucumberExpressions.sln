@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{A63CE1D7-9
 	ProjectSection(SolutionItems) = preProject
 		..\CHANGELOG.md = ..\CHANGELOG.md
 		..\README.md = ..\README.md
+		..\.github\workflows\release-dotnet.yml = ..\.github\workflows\release-dotnet.yml
 		..\.github\workflows\test-dotnet.yml = ..\.github\workflows\test-dotnet.yml
 	EndProjectSection
 EndProject

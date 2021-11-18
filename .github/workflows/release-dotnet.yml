@@ -1,0 +1,28 @@
+name: Release .NET to NuGet
+
+on:
+  push:
+    branches: [release/*]
+
+jobs:
+  publish-dotnet-nuget:
+    name: Publish NuGet package
+    runs-on: ubuntu-latest
+    environment: Release
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Build
+        run: dotnet build --configuration Release
+        working-directory: dotnet
+      - name: Pack
+        run: dotnet pack --configuration Release --no-build --output .
+        working-directory: dotnet
+      - name: Push
+        run: dotnet nuget push CucumberExpressions.*.nupkg --api-key ${NUGET_API_KEY}
+        working-directory: dotnet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
