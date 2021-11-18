@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Deterministic Condition="'$(Configuration)' == 'Release'">false</Deterministic>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\CucucmberExpressions.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Version">
+		<VersionNumber>1.0.0</VersionNumber>
+		<Version Condition="'$(SnapshotSuffix)' != ''">$(VersionNumber)-$(SnapshotSuffix)</Version>
+		<Version Condition="'$(SnapshotSuffix)' == ''">$(VersionNumber)</Version>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Package Properties">
+		<Product>Cucumber Expressions</Product>
+		<PackageId>CucumberExpressions</PackageId>
+		<Authors>Cucumber Ltd, Gaspar Nagy</Authors>
+		<Copyright>Copyright © Cucumber Ltd, Gaspar Nagy</Copyright>
+		<Description>Cucumber Expressions implementation for .NET.</Description>
+		<PackageTags>specflow cucumber</PackageTags>
+		<PackageProjectUrl>https://github.com/cucumber/cucumber-expressions/tree/main/dotnet</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cucumber/cucumber-expressions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>cucumber-mark-green-128.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageOutputPath>bin/$(Configuration)/NuGet</PackageOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)\Resources\cucumber-mark-green-128.png">
+			<Pack>True</Pack>
+			<PackagePath>.</PackagePath>
+			<Visible>true</Visible>
+		</None>
+	</ItemGroup>
+
+</Project>
