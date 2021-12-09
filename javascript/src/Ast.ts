@@ -133,7 +133,7 @@ export class Token {
 export enum TokenType {
   startOfLine = 'START_OF_LINE',
   endOfLine = 'END_OF_LINE',
-  whiteSpace = 'WHITE_SPACE',
+  whiteSpace = 'WHITE_SPACE', // TODO: Rename to Space
   beginOptional = 'BEGIN_OPTIONAL',
   endOptional = 'END_OPTIONAL',
   beginParameter = 'BEGIN_PARAMETER',
