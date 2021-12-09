@@ -1,5 +1,4 @@
 import assert from 'assert'
-import { isSetIterator } from 'util/types'
 
 import { Token, TokenType } from '../src/Ast.js'
 
