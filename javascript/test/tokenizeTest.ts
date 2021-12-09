@@ -28,27 +28,16 @@ const tokenize: (input: string) => Token[] = (input) => {
     // moving into a string?
     if (previousTokenType !== TokenType.text && tokenType === TokenType.text) {
       startOfWord = currentIndex
+    } 
+    
+    if (
+      previousTokenType !== undefined &&
+      previousTokenType !== tokenType &&
+      tokenType !== TokenType.text
+    ) {
+      const subString = input.slice(startOfWord, currentIndex)
+      tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
     }
-
-    // moving out of a string?
-    //
-    // ' '
-    //  ^
-    // if (
-    //   previousTokenType !== undefined &&
-    //   previousTokenType !== tokenType &&
-    //   tokenType !== TokenType.text
-    // ) {
-    //   const subString = input.slice(startOfWord, currentIndex)
-    //   tokens.push(
-    //     new Token(
-    //       previousTokenType,
-    //       subString,
-    //       startOfWord,
-    //       startOfWord + subString.length
-    //     )
-    //   )
-    // }
 
     if (tokenType !== TokenType.text) {
       tokens.push(new Token(tokenType, input[currentIndex], currentIndex, currentIndex + 1))
@@ -62,7 +51,7 @@ const tokenize: (input: string) => Token[] = (input) => {
   currentIndex++
   if (tokenType === TokenType.text) {
     const subString = input.slice(startOfWord, currentIndex)
-    tokens.push(new Token(tokenType, subString, startOfWord, startOfWord + subString.length))
+    tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
   }
 
   return tokens
@@ -89,7 +78,7 @@ describe(tokenize.name, () => {
     assert.deepEqual(result, [new Token(TokenType.whiteSpace, ' ', 0, 1)])
   })
 
-  it('two consecutive spaces', () => {
+  it.only('two consecutive spaces', () => {
     const result = tokenize('  ')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
@@ -97,7 +86,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it('a single-character word followed by a space', () => {
+  it.only('a single-character word followed by a space', () => {
     const result = tokenize('a ')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'a', 0, 1),
@@ -105,7 +94,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it('a space followed by a single-character word', () => {
+  it.only('a space followed by a single-character word', () => {
     const result = tokenize(' b')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
@@ -113,12 +102,12 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it('a word', () => {
+  it.only('a word', () => {
     const result = tokenize('abc')
     assert.deepEqual(result, [new Token(TokenType.text, 'abc', 0, 3)])
   })
 
-  it('a word followed by a space', () => {
+  it.only('a word followed by a space', () => {
     const result = tokenize('ab ')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'ab', 0, 2),
@@ -126,7 +115,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it('word - space - word', () => {
+  it.only('word - space - word', () => {
     const result = tokenize('a c')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'a', 0, 1),
@@ -135,7 +124,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it('space - word', () => {
+  it.only('space - word', () => {
     const result = tokenize(' bc')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
