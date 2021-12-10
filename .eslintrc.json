@@ -1,6 +1,6 @@
 {
   "parserOptions": {
     "project": "./tsconfig.json",
-    "tsconfigRootDir": ""
+    "tsconfigRootDir": "javascript"
   }
 }
