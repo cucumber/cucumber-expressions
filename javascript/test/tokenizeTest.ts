@@ -2,27 +2,6 @@ import assert from 'assert'
 
 import { Token, TokenType } from '../src/Ast.js'
 
-type EmitsTokens = (token: Token) => void
-
-class ReadingSingleCharacter {
-  constructor(
-    private readonly tokenType: TokenType,
-    private readonly input: string,
-    private readonly currentIndex: number
-  ) {}
-
-  emit(fn: EmitsTokens) {
-    fn(
-      new Token(
-        this.tokenType,
-        this.input[this.currentIndex],
-        this.currentIndex,
-        this.currentIndex + 1
-      )
-    )
-  }
-}
-
 class Cursor {
   constructor(public readonly input: string, public readonly currentIndex: number) {}
 
@@ -78,18 +57,26 @@ const tokenize: (input: string) => Token[] = (input) => {
   // curentType
 
   let currentIndex = 0
+  let cursor = new Cursor(input, currentIndex)
 
   while (currentIndex < input.length) {
-    const cursor = new Cursor(input, currentIndex)
+    cursor = new Cursor(input, currentIndex)
 
     if (cursor.isAtStartOfWord) {
-      const subString = input.slice(currentIndex, cursor.endOfCurrentWord)
-      tokens.push(new Token(TokenType.text, subString, currentIndex, cursor.endOfCurrentWord))
+      const word = input.slice(cursor.currentIndex, cursor.endOfCurrentWord)
+      tokens.push(new Token(TokenType.text, word, cursor.currentIndex, cursor.endOfCurrentWord))
       currentIndex = cursor.endOfCurrentWord
     }
 
     if (cursor.isAtEndOfSingleCharacter) {
-      tokens.push(new Token(cursor.tokenType, input[currentIndex], currentIndex, currentIndex + 1))
+      tokens.push(
+        new Token(
+          cursor.tokenType,
+          cursor.input[cursor.currentIndex],
+          cursor.currentIndex,
+          cursor.currentIndex + 1
+        )
+      )
       currentIndex++
     }
   }
