@@ -79,17 +79,18 @@ const tokenize: (input: string) => Token[] = (input) => {
 
   let currentIndex = 0
 
-  for (currentIndex; currentIndex < input.length; currentIndex++) {
+  while (currentIndex < input.length) {
     const cursor = new Cursor(input, currentIndex)
 
     if (cursor.isAtStartOfWord) {
       const subString = input.slice(currentIndex, cursor.endOfCurrentWord)
       tokens.push(new Token(TokenType.text, subString, currentIndex, cursor.endOfCurrentWord))
-      currentIndex = cursor.endOfCurrentWord - 1
+      currentIndex = cursor.endOfCurrentWord
     }
 
     if (cursor.isAtEndOfSingleCharacter) {
       tokens.push(new Token(cursor.tokenType, input[currentIndex], currentIndex, currentIndex + 1))
+      currentIndex++
     }
   }
 
