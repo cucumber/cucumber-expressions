@@ -2,13 +2,24 @@ import assert from 'assert'
 
 import { Token, TokenType } from '../src/Ast.js'
 
-type EmitsTokens = (token: Token)=> void
+type EmitsTokens = (token: Token) => void
 
-class ReadingSingleCharacter { 
-  constructor(private readonly tokenType: TokenType, private readonly input: string, private readonly currentIndex: number) {}
+class ReadingSingleCharacter {
+  constructor(
+    private readonly tokenType: TokenType,
+    private readonly input: string,
+    private readonly currentIndex: number
+  ) {}
 
   emit(fn: EmitsTokens) {
-    fn(new Token(this.tokenType, this.input[this.currentIndex], this.currentIndex, this.currentIndex + 1))
+    fn(
+      new Token(
+        this.tokenType,
+        this.input[this.currentIndex],
+        this.currentIndex,
+        this.currentIndex + 1
+      )
+    )
   }
 }
 

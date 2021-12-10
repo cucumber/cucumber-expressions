@@ -1,3 +1,1 @@
-export default class Tokenizer {
-	
-}
+export default class Tokenizer {}
