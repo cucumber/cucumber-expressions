@@ -39,11 +39,7 @@ const tokenize: (input: string) => Token[] = (input) => {
 
   for (currentIndex; currentIndex < input.length; currentIndex++) {
     previousTokenType = tokenType
-    if (input[currentIndex] === ' ') {
-      tokenType = TokenType.whiteSpace
-    } else {
-      tokenType = TokenType.text
-    }
+    tokenType = Token.typeOf(input[currentIndex])
 
     // moving into a string?
     if (previousTokenType !== TokenType.text && tokenType === TokenType.text) {
