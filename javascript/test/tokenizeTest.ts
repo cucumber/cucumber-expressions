@@ -79,27 +79,27 @@ const tokenize: (input: string) => Token[] = (input) => {
 }
 
 describe(tokenize.name, () => {
-  it.only('empty string', () => {
+  it('empty string', () => {
     const result = tokenize('')
     assert.deepEqual(result, [])
   })
 
-  it.only('single-character word', () => {
+  it('single-character word', () => {
     const result = tokenize('a')
     assert.deepEqual(result, [new Token(TokenType.text, 'a', 0, 1)])
   })
 
-  it.only('two-character word', () => {
+  it('two-character word', () => {
     const result = tokenize('ab')
     assert.deepEqual(result, [new Token(TokenType.text, 'ab', 0, 2)])
   })
 
-  it.only('a space', () => {
+  it('a space', () => {
     const result = tokenize(' ')
     assert.deepEqual(result, [new Token(TokenType.whiteSpace, ' ', 0, 1)])
   })
 
-  it.only('two consecutive spaces', () => {
+  it('two consecutive spaces', () => {
     const result = tokenize('  ')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
@@ -107,7 +107,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it.only('a single-character word followed by a space', () => {
+  it('a single-character word followed by a space', () => {
     const result = tokenize('a ')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'a', 0, 1),
@@ -115,7 +115,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it.only('a space followed by a single-character word', () => {
+  it('a space followed by a single-character word', () => {
     const result = tokenize(' b')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
@@ -123,12 +123,12 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it.only('a word', () => {
+  it('a word', () => {
     const result = tokenize('abc')
     assert.deepEqual(result, [new Token(TokenType.text, 'abc', 0, 3)])
   })
 
-  it.only('a word followed by a space', () => {
+  it('a word followed by a space', () => {
     const result = tokenize('ab ')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'ab', 0, 2),
@@ -136,7 +136,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it.only('word - space - word', () => {
+  it('word - space - word', () => {
     const result = tokenize('a c')
     assert.deepEqual(result, [
       new Token(TokenType.text, 'a', 0, 1),
@@ -145,7 +145,7 @@ describe(tokenize.name, () => {
     ])
   })
 
-  it.only('space - word', () => {
+  it('space - word', () => {
     const result = tokenize(' bc')
     assert.deepEqual(result, [
       new Token(TokenType.whiteSpace, ' ', 0, 1),
