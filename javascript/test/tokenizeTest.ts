@@ -88,9 +88,8 @@ const tokenize: (input: string) => Token[] = (input) => {
       currentIndex = cursor.endOfCurrentWord - 1
     }
 
-    if (cursor.isAtEndOfSingleCharacter && cursor.tokenType) {
-      const state = new ReadingSingleCharacter(cursor.tokenType, input, currentIndex)
-      state.emit((token) => tokens.push(token))
+    if (cursor.isAtEndOfSingleCharacter) {
+      tokens.push(new Token(cursor.tokenType, input[currentIndex], currentIndex, currentIndex + 1))
     }
   }
 
