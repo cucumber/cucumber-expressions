@@ -61,10 +61,6 @@ class Cursor {
 const tokenize: (input: string) => Token[] = (input) => {
   const tokens: Array<Token> = []
 
-  if (input.length == 0) {
-    return []
-  }
-
   let cursor = new Cursor(input, 0)
   while (!cursor.atEndOfInput) {
     cursor = cursor.scan((token) => tokens.push(token))
