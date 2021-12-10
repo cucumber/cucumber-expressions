@@ -27,7 +27,8 @@ class ReadingSingleCharacter {
 class Cursor {
   constructor(public readonly input: string, public readonly currentIndex: number) {}
 
-  get tokenType(): TokenType {
+  get tokenType(): TokenType | undefined {
+    if (this.input.length === 0) return undefined
     return Token.typeOf(this.input[this.currentIndex])
   }
 
@@ -44,10 +45,13 @@ class Cursor {
 
   get isAtEndOfWord(): boolean {
     return (
-      this.previousTokenType !== undefined &&
-      this.previousTokenType !== this.tokenType &&
-      this.tokenType !== TokenType.text
+      (this.previousTokenType === TokenType.text && this.tokenType !== TokenType.text) ||
+      (this.currentIndex == this.input.length && this.previousTokenType == TokenType.text)
     )
+  }
+
+  get isAtEndOfSingleCharacter() {
+    return this.tokenType !== TokenType.text && this.tokenType !== undefined
   }
 }
 
@@ -62,11 +66,9 @@ const tokenize: (input: string) => Token[] = (input) => {
 
   let startOfWord = -1
   let currentIndex = 0
-  let tokenType: TokenType | undefined = undefined
 
-  for (currentIndex; currentIndex < input.length; currentIndex++) {
+  for (currentIndex; currentIndex < input.length + 1; currentIndex++) {
     const cursor = new Cursor(input, currentIndex)
-    tokenType = cursor.tokenType
 
     // moving into a string?
     if (cursor.isAtStartOfWord) {
@@ -78,20 +80,10 @@ const tokenize: (input: string) => Token[] = (input) => {
       tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
     }
 
-    if (tokenType !== TokenType.text) {
-      const state = new ReadingSingleCharacter(tokenType, input, currentIndex)
+    if (cursor.isAtEndOfSingleCharacter && cursor.tokenType) {
+      const state = new ReadingSingleCharacter(cursor.tokenType, input, currentIndex)
       state.emit((token) => tokens.push(token))
     }
-  }
-
-  //  "hello world" --> 3 tokens
-  //  "hello"  --> 4 tokens
-  //       ^
-
-  currentIndex++
-  if (tokenType === TokenType.text) {
-    const subString = input.slice(startOfWord, currentIndex)
-    tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
   }
 
   return tokens
