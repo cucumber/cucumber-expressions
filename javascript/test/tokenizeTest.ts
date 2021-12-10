@@ -1,4 +1,5 @@
 import assert from 'assert'
+import { cursorTo } from 'readline'
 
 import { Token, TokenType } from '../src/Ast.js'
 
@@ -23,6 +24,33 @@ class ReadingSingleCharacter {
   }
 }
 
+class Cursor {
+  constructor(public readonly input: string, public readonly currentIndex: number) {}
+
+  get tokenType(): TokenType {
+    return Token.typeOf(this.input[this.currentIndex])
+  }
+
+  get previousTokenType(): TokenType | undefined {
+    if (this.currentIndex === 0) {
+      return undefined
+    }
+    return Token.typeOf(this.input[this.currentIndex - 1])
+  }
+
+  get isAtStartOfWord(): boolean {
+    return this.previousTokenType !== TokenType.text && this.tokenType === TokenType.text
+  }
+
+  get isAtEndOfWord(): boolean {
+    return (
+      this.previousTokenType !== undefined &&
+      this.previousTokenType !== this.tokenType &&
+      this.tokenType !== TokenType.text
+    )
+  }
+}
+
 const tokenize: (input: string) => Token[] = (input) => {
   const tokens: Array<Token> = []
 
@@ -35,22 +63,17 @@ const tokenize: (input: string) => Token[] = (input) => {
   let startOfWord = -1
   let currentIndex = 0
   let tokenType: TokenType | undefined = undefined
-  let previousTokenType: TokenType | undefined
 
   for (currentIndex; currentIndex < input.length; currentIndex++) {
-    previousTokenType = tokenType
-    tokenType = Token.typeOf(input[currentIndex])
+    const cursor = new Cursor(input, currentIndex)
+    tokenType = cursor.tokenType
 
     // moving into a string?
-    if (previousTokenType !== TokenType.text && tokenType === TokenType.text) {
+    if (cursor.isAtStartOfWord) {
       startOfWord = currentIndex
     }
 
-    if (
-      previousTokenType !== undefined &&
-      previousTokenType !== tokenType &&
-      tokenType !== TokenType.text
-    ) {
+    if (cursor.isAtEndOfWord) {
       const subString = input.slice(startOfWord, currentIndex)
       tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
     }
