@@ -1,5 +1,4 @@
 import assert from 'assert'
-import { cursorTo } from 'readline'
 
 import { Token, TokenType } from '../src/Ast.js'
 
@@ -79,23 +78,15 @@ const tokenize: (input: string) => Token[] = (input) => {
   // firstIndex
   // curentType
 
-  let startOfWord = -1
-  let endOfWord = -1
   let currentIndex = 0
 
-  for (currentIndex; currentIndex < input.length + 1; currentIndex++) {
+  for (currentIndex; currentIndex < input.length; currentIndex++) {
     const cursor = new Cursor(input, currentIndex)
 
-    // moving into a string?
     if (cursor.isAtStartOfWord) {
-      startOfWord = currentIndex
-      endOfWord = cursor.endOfCurrentWord
-    }
-
-    if (cursor.isAtEndOfWord) {
-      const subString = input.slice(startOfWord, currentIndex)
-      assert.equal(currentIndex, endOfWord)
-      tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
+      const subString = input.slice(currentIndex, cursor.endOfCurrentWord)
+      tokens.push(new Token(TokenType.text, subString, currentIndex, cursor.endOfCurrentWord))
+      currentIndex = cursor.endOfCurrentWord - 1
     }
 
     if (cursor.isAtEndOfSingleCharacter && cursor.tokenType) {
