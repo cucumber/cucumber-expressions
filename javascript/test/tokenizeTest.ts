@@ -26,8 +26,7 @@ class ReadingSingleCharacter {
 class Cursor {
   constructor(public readonly input: string, public readonly currentIndex: number) {}
 
-  get tokenType(): TokenType | undefined {
-    if (this.input.length === 0) return undefined
+  get tokenType(): TokenType {
     return Token.typeOf(this.input[this.currentIndex])
   }
 
@@ -43,10 +42,7 @@ class Cursor {
   }
 
   get isAtEndOfWord(): boolean {
-    return (
-      (this.previousTokenType === TokenType.text && this.tokenType !== TokenType.text) ||
-      (this.currentIndex == this.input.length && this.previousTokenType == TokenType.text)
-    )
+    return this.previousTokenType === TokenType.text && this.tokenType !== TokenType.text
   }
 
   get atEndOfInput(): boolean {
@@ -71,6 +67,9 @@ class Cursor {
 
 const tokenize: (input: string) => Token[] = (input) => {
   const tokens: Array<Token> = []
+  if (input.length == 0) {
+    return []
+  }
 
   //  "hello world" --> 3 tokens
   //  "hello  world"  --> 4 tokens
