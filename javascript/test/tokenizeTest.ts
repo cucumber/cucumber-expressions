@@ -50,6 +50,21 @@ class Cursor {
     )
   }
 
+  get atEndOfInput(): boolean {
+    return this.currentIndex == this.input.length
+  }
+
+  get endOfCurrentWord(): number {
+    let cursor = new Cursor(this.input, this.currentIndex)
+    while (!cursor.atEndOfInput) {
+      cursor = new Cursor(this.input, cursor.currentIndex + 1)
+      if (cursor.isAtEndOfWord) {
+        return cursor.currentIndex
+      }
+    }
+    return this.input.length
+  }
+
   get isAtEndOfSingleCharacter() {
     return this.tokenType !== TokenType.text && this.tokenType !== undefined
   }
@@ -65,6 +80,7 @@ const tokenize: (input: string) => Token[] = (input) => {
   // curentType
 
   let startOfWord = -1
+  let endOfWord = -1
   let currentIndex = 0
 
   for (currentIndex; currentIndex < input.length + 1; currentIndex++) {
@@ -73,10 +89,12 @@ const tokenize: (input: string) => Token[] = (input) => {
     // moving into a string?
     if (cursor.isAtStartOfWord) {
       startOfWord = currentIndex
+      endOfWord = cursor.endOfCurrentWord
     }
 
     if (cursor.isAtEndOfWord) {
       const subString = input.slice(startOfWord, currentIndex)
+      assert.equal(currentIndex, endOfWord)
       tokens.push(new Token(TokenType.text, subString, startOfWord, startOfWord + subString.length))
     }
 
