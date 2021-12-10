@@ -1,9 +1,6 @@
-import { StateEffect } from '@codemirror/state'
 import assert from 'assert'
-import internal from 'stream'
 
 import { Token, TokenType } from '../src/Ast.js'
-
 
 type EmitsTokens = (token: Token)=> void
 
@@ -40,8 +37,8 @@ const tokenize: (input: string) => Token[] = (input) => {
     // moving into a string?
     if (previousTokenType !== TokenType.text && tokenType === TokenType.text) {
       startOfWord = currentIndex
-    } 
-    
+    }
+
     if (
       previousTokenType !== undefined &&
       previousTokenType !== tokenType &&
@@ -53,7 +50,7 @@ const tokenize: (input: string) => Token[] = (input) => {
 
     if (tokenType !== TokenType.text) {
       const state = new ReadingSingleCharacter(tokenType, input, currentIndex)
-      state.emit(token => tokens.push(token))
+      state.emit((token) => tokens.push(token))
     }
   }
 
