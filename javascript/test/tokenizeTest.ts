@@ -16,11 +16,11 @@ class Cursor {
     return Token.typeOf(this.input[this.currentIndex - 1])
   }
 
-  get isAtStartOfWord(): boolean {
+  get atStartOfWord(): boolean {
     return this.previousTokenType !== TokenType.text && this.tokenType === TokenType.text
   }
 
-  get isAtEndOfWord(): boolean {
+  get atEndOfWord(): boolean {
     return this.previousTokenType === TokenType.text && this.tokenType !== TokenType.text
   }
 
@@ -32,53 +32,42 @@ class Cursor {
     let cursor = new Cursor(this.input, this.currentIndex)
     while (!cursor.atEndOfInput) {
       cursor = new Cursor(this.input, cursor.currentIndex + 1)
-      if (cursor.isAtEndOfWord) {
+      if (cursor.atEndOfWord) {
         return cursor.currentIndex
       }
     }
     return this.input.length
   }
 
-  get isAtEndOfSingleCharacter() {
-    return this.tokenType !== TokenType.text && this.tokenType !== undefined
+  scan(emit: (token: Token) => void): Cursor {
+    if (this.atStartOfWord) {
+      const word = this.input.slice(this.currentIndex, this.endOfCurrentWord)
+      emit(new Token(TokenType.text, word, this.currentIndex, this.endOfCurrentWord))
+      return new Cursor(this.input, this.endOfCurrentWord)
+    }
+
+    emit(
+      new Token(
+        this.tokenType,
+        this.input[this.currentIndex],
+        this.currentIndex,
+        this.currentIndex + 1
+      )
+    )
+    return new Cursor(this.input, this.currentIndex + 1)
   }
 }
 
 const tokenize: (input: string) => Token[] = (input) => {
   const tokens: Array<Token> = []
+
   if (input.length == 0) {
     return []
   }
 
-  //  "hello world" --> 3 tokens
-  //  "hello  world"  --> 4 tokens
-  //       ^
-  // firstIndex
-  // curentType
-
-  let currentIndex = 0
-  let cursor = new Cursor(input, currentIndex)
-
-  while (currentIndex < input.length) {
-    cursor = new Cursor(input, currentIndex)
-
-    if (cursor.isAtStartOfWord) {
-      const word = input.slice(cursor.currentIndex, cursor.endOfCurrentWord)
-      tokens.push(new Token(TokenType.text, word, cursor.currentIndex, cursor.endOfCurrentWord))
-      currentIndex = cursor.endOfCurrentWord
-    }
-
-    if (cursor.isAtEndOfSingleCharacter) {
-      tokens.push(
-        new Token(
-          cursor.tokenType,
-          cursor.input[cursor.currentIndex],
-          cursor.currentIndex,
-          cursor.currentIndex + 1
-        )
-      )
-      currentIndex++
-    }
+  let cursor = new Cursor(input, 0)
+  while (!cursor.atEndOfInput) {
+    cursor = cursor.scan((token) => tokens.push(token))
   }
 
   return tokens
