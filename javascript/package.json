@@ -58,7 +58,7 @@
     "@headlessui/react": "1.4.2",
     "@stryker-mutator/core": "^5.4.1",
     "@stryker-mutator/mocha-runner": "^5.4.1",
-    "@tailwindcss/forms": "0.3.4",
+    "@tailwindcss/forms": "0.4.0",
     "@types/glob": "^7.1.4",
     "@types/js-yaml": "4.0.5",
     "@types/mocha": "9.0.0",
