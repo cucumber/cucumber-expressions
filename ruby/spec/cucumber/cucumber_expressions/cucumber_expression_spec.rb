@@ -18,7 +18,10 @@ module Cucumber
           else
             cucumber_expression = CucumberExpression.new(expectation['expression'], parameter_registry)
             matches = cucumber_expression.match(expectation['text'])
-            values = matches.nil? ? nil : matches.map { |arg| arg.value(nil) }
+            values = matches.nil? ? nil : matches.map do |arg|
+              value = arg.value(nil)
+              BigDecimal === value ? value.to_s('f') : value
+            end
             expect(values).to eq(expectation['expected_args'])
           end
         end

@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [.NET] Implemenation of Cucumber Expressions by porting the Java parser
+- [Ruby] Add `bigdecimal` parameter type
+- [.NET] Implementation of Cucumber Expressions by porting the Java parser
 ([#1743](https://github.com/cucumber/cucumber-expressions/pull/45))
 
 ## [14.0.0] - 2021-10-12
