@@ -32,8 +32,8 @@ public class CustomMatchers {
         public boolean matches(Object actual) {
             if(actual instanceof BigDecimal) {
                 return new IsEqual(this.expectedValue).matches(actual.toString());
-            } else if(actual instanceof Double) {
-                return new IsCloseTo(((Double)this.expectedValue), 0.0001).matches(actual);
+            } else if(actual instanceof Double || actual instanceof Float) {
+                return new IsCloseTo(((Double)this.expectedValue), 0.0001).matches(((Number)actual).doubleValue());
             } else if(actual instanceof Number || actual instanceof String || actual == null) {
                 return new IsEqual(this.expectedValue).matches(actual);
             }

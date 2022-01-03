@@ -41,7 +41,6 @@ class CucumberExpressionTest {
         newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
-//        return singletonList(Paths.get("..", "testdata", "cucumber-expression", "matching", "matches-bigdecimal-with-integer-part.yaml"));
     }
 
     @ParameterizedTest
@@ -52,7 +51,6 @@ class CucumberExpressionTest {
             List<Argument<?>> match = expression.match(expectation.text);
             List<?> values = match == null ? null : match.stream()
                     .map(Argument::getValue)
-                    .map(e -> e instanceof Float ? ((Float) e).doubleValue() : e)
                     .collect(Collectors.toList());
 
             assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
