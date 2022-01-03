@@ -41,6 +41,7 @@ class CucumberExpressionTest {
         newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
         return paths;
+//        return singletonList(Paths.get("..", "testdata", "cucumber-expression", "matching", "matches-bigdecimal-with-integer-part.yaml"));
     }
 
     @ParameterizedTest
