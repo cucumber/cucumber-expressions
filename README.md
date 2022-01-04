@@ -52,20 +52,22 @@ the following built-in parameter types:
 
 | Parameter Type  | Description |
 | --------------- | ----------- |
-| `{int}`         | Matches integers, for example `71` or `-19`. |
-| `{float}`       | Matches floats, for example `3.6`, `.8` or `-9.2`. |
+| `{int}`         | Matches integers, for example `71` or `-19`. Converts to a 32-bit signed integer if the platform supports it.|
+| `{float}`       | Matches floats, for example `3.6`, `.8` or `-9.2`. Converts to a 32 bit float if the platform supports it. |
 | `{word}`        | Matches words without whitespace, for example `banana` (but not `banana split`). |
 | `{string}`      | Matches single-quoted or double-quoted strings, for example `"banana split"` or `'banana split'` (but not `banana split`). Only the text between the quotes will be extracted. The quotes themselves are discarded. Empty pairs of quotes are valid and will be matched and passed to step code as empty strings. |
 | `{}` anonymous  | Matches anything (`/.*/`). |
+| `{bigdecimal}`  | Matches the same as `{float}`, but converts to a `BigDecimal` if the platform supports it. |
+| `{double}`      | Matches the same as `{float}`, but converts to a 64 bit float if the platform supports it. |
+| `{biginteger}`  | Matches the same as `{int}`, but converts to a `BigInteger` if the platform supports it. |
+| `{byte}`        | Matches the same as `{int}`, but converts to an 8 bit signed integer if the platform supports it. |
+| `{short}`       | Matches the same as `{int}`, but converts to a 16 bit signed integer if the platform supports it. |
+| `{long}`        | Matches the same as `{int}`, but converts to a 64 bit signed integer if the platform supports it. |
 
-### Cucumber-JVM additions
+### Cucumber-JVM
 
-On the JVM, there are additional parameter types for `biginteger`, `bigdecimal`,
-`byte`, `short`, `long` and `double`.
-
-The anonymous parameter type will be converted to the parameter type of the step definition using an object mapper.
-Cucumber comes with a built-in object mapper that can handle most basic types. Aside from `Enum` it supports conversion
-to `BigInteger`, `BigDecimal`, `Boolean`, `Byte`, `Short`, `Integer`, `Long`, `Float`, `Double` and `String`.
+The *anonymous* parameter type will be converted to the parameter type of the step definition using an object mapper.
+Cucumber comes with a built-in object mapper that can handle all numeric types as well as. `Enum`.
 
 To automatically convert to other types it is recommended to install an object mapper. See [configuration](https://cucumber.io/docs/cucumber/configuration)
 to learn how.
@@ -153,7 +155,7 @@ public Color ConvertColor(string colorValue)
 }
 ```
 
-*Note: Currently the parameter name cannot be customized, so the custom paramters can only be used with the type name, e.g. `{Color}`.*
+*Note: Currently the parameter name cannot be customized, so the custom parameters can only be used with the type name, e.g. `{Color}`.*
 
 ## Optional text
 
