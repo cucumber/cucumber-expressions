@@ -40,7 +40,6 @@ class CucumberExpressionTest {
         List<Path> paths = new ArrayList<>();
         newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
         paths.sort(Comparator.naturalOrder());
-//        return paths;
         return singletonList(Paths.get("..", "testdata", "cucumber-expression", "matching", "matches-byte.yaml"));
     }
 
