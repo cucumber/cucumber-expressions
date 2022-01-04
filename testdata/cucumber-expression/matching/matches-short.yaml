@@ -1,0 +1,5 @@
+---
+expression: "{short}"
+text: '32767'
+expected_args:
+- 32767

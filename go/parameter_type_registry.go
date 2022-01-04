@@ -37,6 +37,7 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		parameterTypesByRegexp: map[string][]*ParameterType{},
 		defaultTransformer:     transformer,
 	}
+
 	intParameterType, err := NewParameterType(
 		"int",
 		INTEGER_REGEXPS,
@@ -55,13 +56,40 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 	if err != nil {
 		panic(err)
 	}
-	result.DefineParameterType(intParameterType)
+	err = result.DefineParameterType(intParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	bigintParameterType, err := NewParameterType(
+		"biginteger",
+		INTEGER_REGEXPS,
+		"int",
+		func(args ...*string) interface{} {
+			i, err := transformer.Transform(*args[0], BigIntKind)
+			if err != nil {
+				panic(err)
+			}
+			return i
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(bigintParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	floatParameterType, err := NewParameterType(
 		"float",
 		FLOAT_REGEXPS,
-		"float",
+		"float32",
 		func(args ...*string) interface{} {
-			f, err := transformer.Transform(*args[0], reflect.Float64)
+			f, err := transformer.Transform(*args[0], reflect.Float32)
 			if err != nil {
 				panic(err)
 			}
@@ -74,7 +102,126 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 	if err != nil {
 		panic(err)
 	}
-	result.DefineParameterType(floatParameterType)
+	err = result.DefineParameterType(floatParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	doubleParameterType, err := NewParameterType(
+		"double",
+		FLOAT_REGEXPS,
+		"float64",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Float64)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(doubleParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	byteParameterType, err := NewParameterType(
+		"byte",
+		FLOAT_REGEXPS,
+		"int8",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int8)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(byteParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	shortParameterType, err := NewParameterType(
+		"short",
+		FLOAT_REGEXPS,
+		"int16",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int16)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(shortParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	longParameterType, err := NewParameterType(
+		"long",
+		FLOAT_REGEXPS,
+		"int32",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int64)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(longParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	bigdecimalParameterType, err := NewParameterType(
+		"bigdecimal",
+		FLOAT_REGEXPS,
+		"BigFloat",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], BigFloatKind)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(bigdecimalParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	wordParameterType, err := NewParameterType(
 		"word",
 		WORD_REGEXPS,
@@ -93,7 +240,11 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 	if err != nil {
 		panic(err)
 	}
-	result.DefineParameterType(wordParameterType)
+	err = result.DefineParameterType(wordParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	stringParameterType, err := NewParameterType(
 		"string",
 		STRING_REGEXPS,
@@ -124,13 +275,19 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 	if err != nil {
 		panic(err)
 	}
-	result.DefineParameterType(stringParameterType)
-
-	anonymouseParameterType, err := createAnonymousParameterType(ANONYMOUS_REGEXPS)
+	err = result.DefineParameterType(stringParameterType)
 	if err != nil {
 		panic(err)
 	}
-	result.DefineParameterType(anonymouseParameterType)
+
+	anonymousParameterType, err := createAnonymousParameterType(ANONYMOUS_REGEXPS)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(anonymousParameterType)
+	if err != nil {
+		panic(err)
+	}
 
 	return result
 }
