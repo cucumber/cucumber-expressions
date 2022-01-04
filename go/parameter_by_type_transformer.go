@@ -33,7 +33,7 @@ func (s BuiltInParameterTransformer) Transform(fromValue string, toValueType int
 	return nil, createError(fromValue, toValueType)
 }
 
-func transformKind(fromValue string, toValueKind interface{String() string}) (interface{}, error) {
+func transformKind(fromValue string, toValueKind interface{ String() string }) (interface{}, error) {
 	switch toValueKind {
 	case reflect.String:
 		return fromValue, nil
