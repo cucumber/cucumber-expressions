@@ -61,6 +61,29 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		panic(err)
 	}
 
+	bigintParameterType, err := NewParameterType(
+		"biginteger",
+		INTEGER_REGEXPS,
+		"int",
+		func(args ...*string) interface{} {
+			i, err := transformer.Transform(*args[0], BigIntKind)
+			if err != nil {
+				panic(err)
+			}
+			return i
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(bigintParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	floatParameterType, err := NewParameterType(
 		"float",
 		FLOAT_REGEXPS,

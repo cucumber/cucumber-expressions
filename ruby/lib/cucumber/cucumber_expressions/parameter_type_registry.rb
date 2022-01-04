@@ -22,6 +22,7 @@ module Cucumber
         define_parameter_type(ParameterType.new('string', STRING_REGEXP, String, lambda { |s1, s2| arg = s1 != nil ? s1 : s2; arg.gsub(/\\"/, '"').gsub(/\\'/, "'")}, true, false))
         define_parameter_type(ParameterType.new('', ANONYMOUS_REGEXP, String, lambda {|s = nil| s}, false, true))
         define_parameter_type(ParameterType.new('bigdecimal', FLOAT_REGEXP, BigDecimal, lambda {|s = nil| BigDecimal(s)}, false, false))
+        define_parameter_type(ParameterType.new('biginteger', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
       end
 
       def lookup_by_type_name(name)

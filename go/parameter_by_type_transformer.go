@@ -1,7 +1,6 @@
 package cucumberexpressions
 
 import (
-	"errors"
 	"fmt"
 	"math/big"
 	"reflect"
@@ -12,6 +11,7 @@ import (
 const uintSize = 32 << (^uint(0) >> 32 & 1) // 32 or 64
 
 const BigDecimalKind = reflect.Invalid + 1000
+const BigIntKind = reflect.Invalid + 1001
 
 type ParameterByTypeTransformer interface {
 	// toValueType accepts either reflect.Type or reflect.Kind
@@ -106,14 +106,20 @@ func transformKind(fromValue string, toValueKind interface{String() string}) (in
 	case BigDecimalKind:
 		floatVal, _, err := big.ParseFloat(fromValue, 10, 1024, big.ToNearestEven)
 		return floatVal, err
+	case BigIntKind:
+		floatVal, success := new(big.Int).SetString(fromValue, 10)
+		if !success {
+			return nil, fmt.Errorf("Could not parse bigint: %s", fromValue)
+		}
+		return floatVal, nil
 	default:
 		return nil, createError(fromValue, toValueKind.String())
 	}
 }
 
 func createError(fromValue string, toValueType interface{}) error {
-	return errors.New(fmt.Sprintf("Can't transform '%s' to %s. "+
+	return fmt.Errorf("Can't transform '%s' to %s. "+
 		"BuiltInParameterTransformer only supports a limited number of types. "+
 		"Consider using a different object mapper or register a parameter type for %s",
-		fromValue, toValueType, toValueType))
+		fromValue, toValueType, toValueType)
 }

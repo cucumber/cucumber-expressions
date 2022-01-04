@@ -20,7 +20,16 @@ module Cucumber
             matches = cucumber_expression.match(expectation['text'])
             values = matches.nil? ? nil : matches.map do |arg|
               value = arg.value(nil)
-              BigDecimal === value ? value.to_s('f') : value
+              case value
+              when BigDecimal
+                # Format {bigdecimal} as string (because it must be a string in matches-bigdecimal.yaml)
+                value.to_s('f')
+              when Integer
+                # Format {bigint} as string (because it must be a string in matches-bigint.yaml)
+                value.bit_length > 64 ? value.to_s : value
+              else
+                value
+              end
             end
             expect(values).to eq(expectation['expected_args'])
           end

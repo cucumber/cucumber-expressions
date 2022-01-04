@@ -45,14 +45,23 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
     new ParameterType('', ANONYMOUS_REGEXP, String, (s) => s, false, true)
   )
 
-  // TODO: conditionally define this
-
   registry.defineParameterType(
     new ParameterType(
       'bigdecimal',
       FLOAT_REGEXP,
       Number,
       (s) => (s === undefined ? null : s),
+      false,
+      false
+    )
+  )
+
+  registry.defineParameterType(
+    new ParameterType(
+      'biginteger',
+      INTEGER_REGEXPS,
+      Number,
+      (s) => (s === undefined ? null : BigInt(s)),
       false,
       false
     )

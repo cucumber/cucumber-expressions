@@ -194,6 +194,8 @@ func argumentValues(args []*Argument) []interface{} {
 		switch v := value.(type) {
 		case *big.Float:
 			result[i] = fmt.Sprintf("%v", v)
+		case *big.Int:
+			result[i] = fmt.Sprintf("%v", v)
 		default:
 			result[i] = value
 		}
