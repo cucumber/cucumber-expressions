@@ -9,10 +9,8 @@ export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
   private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<unknown>>>()
 
-  constructor(withDefaultParameterTypes = true) {
-    if (withDefaultParameterTypes) {
-      defineDefaultParameterTypes(this)
-    }
+  constructor() {
+    defineDefaultParameterTypes(this)
   }
 
   get parameterTypes(): IterableIterator<ParameterType<unknown>> {
