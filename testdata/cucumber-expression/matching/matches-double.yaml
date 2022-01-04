@@ -1,0 +1,5 @@
+---
+expression: "{double}"
+text: '3.141592653589793'
+expected_args:
+- 3.141592653589793

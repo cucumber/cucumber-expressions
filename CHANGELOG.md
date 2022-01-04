@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Go] Parameters of type `{float}` are now parsed as `float32` (previously it was `float64`).
+  Use `{double}` if you need `float64`. ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
+
 ### Added
 - [Ruby,JavaScript,Go] Add `bigdecimal`, `biginteger` parameter types ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
 - [.NET] Implementation of Cucumber Expressions by porting the Java parser

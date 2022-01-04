@@ -24,6 +24,9 @@ module Cucumber
         define_parameter_type(ParameterType.new('bigdecimal', FLOAT_REGEXP, BigDecimal, lambda {|s = nil| BigDecimal(s)}, false, false))
         define_parameter_type(ParameterType.new('biginteger', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
         define_parameter_type(ParameterType.new('byte', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('short', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('long', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('double', FLOAT_REGEXP, Float, lambda {|s = nil| s && s.to_f}, false, false))
       end
 
       def lookup_by_type_name(name)

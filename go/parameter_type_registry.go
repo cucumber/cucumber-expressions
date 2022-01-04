@@ -87,9 +87,9 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 	floatParameterType, err := NewParameterType(
 		"float",
 		FLOAT_REGEXPS,
-		"float",
+		"float32",
 		func(args ...*string) interface{} {
-			f, err := transformer.Transform(*args[0], reflect.Float64)
+			f, err := transformer.Transform(*args[0], reflect.Float32)
 			if err != nil {
 				panic(err)
 			}
@@ -107,10 +107,33 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		panic(err)
 	}
 
+	doubleParameterType, err := NewParameterType(
+		"double",
+		FLOAT_REGEXPS,
+		"float64",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Float64)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(doubleParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	byteParameterType, err := NewParameterType(
 		"byte",
 		FLOAT_REGEXPS,
-		"byte",
+		"int8",
 		func(args ...*string) interface{} {
 			f, err := transformer.Transform(*args[0], reflect.Int8)
 			if err != nil {
@@ -130,10 +153,56 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		panic(err)
 	}
 
+	shortParameterType, err := NewParameterType(
+		"short",
+		FLOAT_REGEXPS,
+		"int16",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int16)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(shortParameterType)
+	if err != nil {
+		panic(err)
+	}
+
+	longParameterType, err := NewParameterType(
+		"long",
+		FLOAT_REGEXPS,
+		"int32",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int64)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(longParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	bigdecimalParameterType, err := NewParameterType(
 		"bigdecimal",
 		FLOAT_REGEXPS,
-		"float",
+		"BigFloat",
 		func(args ...*string) interface{} {
 			f, err := transformer.Transform(*args[0], BigDecimalKind)
 			if err != nil {

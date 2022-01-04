@@ -47,10 +47,54 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
 
   registry.defineParameterType(
     new ParameterType(
+      'double',
+      FLOAT_REGEXP,
+      Number,
+      (s) => (s === undefined ? null : parseFloat(s)),
+      false,
+      false
+    )
+  )
+
+  registry.defineParameterType(
+    new ParameterType(
       'bigdecimal',
       FLOAT_REGEXP,
       Number,
       (s) => (s === undefined ? null : s),
+      false,
+      false
+    )
+  )
+
+  registry.defineParameterType(
+    new ParameterType(
+      'byte',
+      INTEGER_REGEXPS,
+      Number,
+      (s) => (s === undefined ? null : Number(s)),
+      false,
+      false
+    )
+  )
+
+  registry.defineParameterType(
+    new ParameterType(
+      'short',
+      INTEGER_REGEXPS,
+      Number,
+      (s) => (s === undefined ? null : Number(s)),
+      false,
+      false
+    )
+  )
+
+  registry.defineParameterType(
+    new ParameterType(
+      'long',
+      INTEGER_REGEXPS,
+      Number,
+      (s) => (s === undefined ? null : Number(s)),
       false,
       false
     )

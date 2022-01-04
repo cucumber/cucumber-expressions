@@ -1,0 +1,5 @@
+---
+expression: "{float}"
+text: '3.141593'
+expected_args:
+- 3.141593
