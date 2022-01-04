@@ -10,7 +10,7 @@ import (
 // can be imported from "math/bits". Not yet supported in go 1.8
 const uintSize = 32 << (^uint(0) >> 32 & 1) // 32 or 64
 
-const BigDecimalKind = reflect.Invalid + 1000
+const BigFloatKind = reflect.Invalid + 1000
 const BigIntKind = reflect.Invalid + 1001
 
 type ParameterByTypeTransformer interface {
@@ -103,7 +103,7 @@ func transformKind(fromValue string, toValueKind interface{String() string}) (in
 		return nil, err
 	case reflect.Float64:
 		return strconv.ParseFloat(fromValue, 64)
-	case BigDecimalKind:
+	case BigFloatKind:
 		floatVal, _, err := big.ParseFloat(fromValue, 10, 1024, big.ToNearestEven)
 		return floatVal, err
 	case BigIntKind:

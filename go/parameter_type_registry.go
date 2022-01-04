@@ -204,7 +204,7 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		FLOAT_REGEXPS,
 		"BigFloat",
 		func(args ...*string) interface{} {
-			f, err := transformer.Transform(*args[0], BigDecimalKind)
+			f, err := transformer.Transform(*args[0], BigFloatKind)
 			if err != nil {
 				panic(err)
 			}

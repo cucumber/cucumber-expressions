@@ -2,6 +2,7 @@ package cucumberexpressions
 
 import (
 	"github.com/stretchr/testify/require"
+	"math/big"
 	"reflect"
 	"testing"
 )
@@ -28,7 +29,7 @@ func TestConvert(t *testing.T) {
 		assertTransforms(t, int64(42), "42", reflect.Int64)
 	})
 
-	t.Run("converts to kind unit", func(t *testing.T) {
+	t.Run("converts to kind uint", func(t *testing.T) {
 		assertTransforms(t, uint(42), "42", reflect.Uint)
 		assertTransforms(t, uint8(42), "42", reflect.Uint8)
 		assertTransforms(t, uint16(42), "42", reflect.Uint16)
@@ -43,6 +44,19 @@ func TestConvert(t *testing.T) {
 		assertTransforms(t, float64(4.2), "4.2", reflect.Float64)
 		assertTransforms(t, float32(4.2e+12), "4.2E12", reflect.Float32)
 		assertTransforms(t, float64(4.2e+12), "4.2e12", reflect.Float64)
+	})
+
+	t.Run("converts to custom kind BigFloatKind", func(t *testing.T) {
+		pi := "3.1415926535897932384626433832795028841971693993751"
+		bigFloat, _, err := big.ParseFloat(pi, 10, 1024, big.ToNearestEven)
+		require.NoError(t, err)
+		assertTransforms(t, bigFloat, pi, BigFloatKind)
+	})
+
+	t.Run("converts to custom kind BigIntKind", func(t *testing.T) {
+		b := "31415926535897932384626433832795028841971693993751"
+		bigInt, _ := new(big.Int).SetString(b, 10)
+		assertTransforms(t, bigInt, b, BigIntKind)
 	})
 
 	t.Run("errors un supported kind", func(t *testing.T) {
