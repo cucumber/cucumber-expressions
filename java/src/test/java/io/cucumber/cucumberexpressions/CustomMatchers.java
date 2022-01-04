@@ -37,6 +37,8 @@ public class CustomMatchers {
                 return new IsEqual(this.expectedValue).matches(actual.toString());
             } else if(actual instanceof Double || actual instanceof Float) {
                 return new IsCloseTo(((Double)this.expectedValue), 0.0001).matches(((Number)actual).doubleValue());
+            } else if(actual instanceof Byte) {
+                return new IsEqual(((Integer)this.expectedValue).byteValue()).matches(actual);
             } else if(actual instanceof Number || actual instanceof String || actual == null) {
                 return new IsEqual(this.expectedValue).matches(actual);
             }

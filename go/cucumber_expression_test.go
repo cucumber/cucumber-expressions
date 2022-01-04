@@ -196,6 +196,8 @@ func argumentValues(args []*Argument) []interface{} {
 			result[i] = fmt.Sprintf("%v", v)
 		case *big.Int:
 			result[i] = fmt.Sprintf("%v", v)
+		case int8:
+			result[i] = int(v)
 		default:
 			result[i] = value
 		}

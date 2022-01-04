@@ -107,6 +107,29 @@ func NewParameterTypeRegistry() *ParameterTypeRegistry {
 		panic(err)
 	}
 
+	byteParameterType, err := NewParameterType(
+		"byte",
+		FLOAT_REGEXPS,
+		"byte",
+		func(args ...*string) interface{} {
+			f, err := transformer.Transform(*args[0], reflect.Int8)
+			if err != nil {
+				panic(err)
+			}
+			return f
+		},
+		false,
+		false,
+		false,
+	)
+	if err != nil {
+		panic(err)
+	}
+	err = result.DefineParameterType(byteParameterType)
+	if err != nil {
+		panic(err)
+	}
+
 	bigdecimalParameterType, err := NewParameterType(
 		"bigdecimal",
 		FLOAT_REGEXPS,

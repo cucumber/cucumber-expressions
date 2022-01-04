@@ -23,6 +23,7 @@ module Cucumber
         define_parameter_type(ParameterType.new('', ANONYMOUS_REGEXP, String, lambda {|s = nil| s}, false, true))
         define_parameter_type(ParameterType.new('bigdecimal', FLOAT_REGEXP, BigDecimal, lambda {|s = nil| BigDecimal(s)}, false, false))
         define_parameter_type(ParameterType.new('biginteger', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('byte', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
       end
 
       def lookup_by_type_name(name)
