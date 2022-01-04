@@ -3,12 +3,15 @@ package cucumberexpressions
 import (
 	"errors"
 	"fmt"
+	"math/big"
 	"reflect"
 	"strconv"
 )
 
 // can be imported from "math/bits". Not yet supported in go 1.8
 const uintSize = 32 << (^uint(0) >> 32 & 1) // 32 or 64
+
+const BigDecimalKind = reflect.Invalid + 1000
 
 type ParameterByTypeTransformer interface {
 	// toValueType accepts either reflect.Type or reflect.Kind
@@ -30,7 +33,7 @@ func (s BuiltInParameterTransformer) Transform(fromValue string, toValueType int
 	return nil, createError(fromValue, toValueType)
 }
 
-func transformKind(fromValue string, toValueKind reflect.Kind) (interface{}, error) {
+func transformKind(fromValue string, toValueKind interface{String() string}) (interface{}, error) {
 	switch toValueKind {
 	case reflect.String:
 		return fromValue, nil
@@ -100,6 +103,9 @@ func transformKind(fromValue string, toValueKind reflect.Kind) (interface{}, err
 		return nil, err
 	case reflect.Float64:
 		return strconv.ParseFloat(fromValue, 64)
+	case BigDecimalKind:
+		floatVal, _, err := big.ParseFloat(fromValue, 10, 1024, big.ToNearestEven)
+		return floatVal, err
 	default:
 		return nil, createError(fromValue, toValueKind.String())
 	}

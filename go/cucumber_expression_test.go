@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"math/big"
 	"reflect"
 	"regexp"
 	"testing"
@@ -189,7 +190,13 @@ func argumentValues(args []*Argument) []interface{} {
 	}
 	result := make([]interface{}, len(args))
 	for i, arg := range args {
-		result[i] = arg.GetValue()
+		value := arg.GetValue()
+		switch v := value.(type) {
+		case *big.Float:
+			result[i] = fmt.Sprintf("%v", v)
+		default:
+			result[i] = value
+		}
 	}
 	return result
 }
