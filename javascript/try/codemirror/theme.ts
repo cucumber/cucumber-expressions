@@ -17,11 +17,10 @@ export const baseTheme = EditorView.theme({
   '.cm-content': {
     caretColor: '#ffffff',
   },
-  '&.cm-focused': {
-    outline: '2px solid #000000',
+  '&.cm-editor.cm-focused': {
+    outline: '3px solid #000000',
   },
   '&.cm-focused .cm-selectionBackground, ::selection': {
-    outline: '2px solid #000000',
     backgroundColor: '#785EF0',
   },
   '.cm-arg': {
