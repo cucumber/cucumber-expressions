@@ -50,10 +50,10 @@
   },
   "homepage": "https://github.com/cucumber/cucumber-expressions#readme",
   "devDependencies": {
-    "@codemirror/commands": "0.19.6",
+    "@codemirror/commands": "0.19.7",
     "@codemirror/rangeset": "0.19.6",
     "@codemirror/state": "0.19.6",
-    "@codemirror/tooltip": "0.19.10",
+    "@codemirror/tooltip": "0.19.12",
     "@codemirror/view": "0.19.39",
     "@headlessui/react": "1.4.2",
     "@stryker-mutator/core": "5.6.0",
