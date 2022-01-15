@@ -1,0 +1,65 @@
+from __future__ import annotations
+
+from Cucumber.CucumberExpressions.parameter_type import ParameterType
+
+
+class ParameterTypeMatcher:
+    def __init__(
+        self, parameter_type: ParameterType, regexp, text: str, match_position: int = 0
+    ):
+        self.parameter_type = parameter_type
+        self.regexp = regexp
+        self.text = text
+        self.match_position = match_position
+        _matches = self.regexp.search(self.text[self.match_position :])
+        self.match = list(set(_matches.regs))[0] if _matches else None
+
+    def advance_to(self, new_match_position: int):
+        for advanced_position in range(new_match_position, len(self.text)):
+            matcher = ParameterTypeMatcher(
+                self.parameter_type, self.regexp, self.text, advanced_position
+            )
+            if matcher.find and matcher.full_word:
+                return matcher
+        return ParameterTypeMatcher(
+            self.parameter_type, self.regexp, self.text, len(self.text)
+        )
+
+    @property
+    def find(self) -> bool:
+        return self.match and self.group
+
+    @property
+    def full_word(self) -> bool:
+        return self.match_start_word() and self.match_end_word()
+
+    @property
+    def start(self):
+        return self.match_position + self.match[0]
+
+    @property
+    def end(self):
+        return self.start + len(self.group)
+
+    @property
+    def group(self):
+        return self.text[self.match_position :][self.match[0] : self.match[1]]
+
+    @staticmethod
+    def compare(a: ParameterTypeMatcher, b: ParameterTypeMatcher):
+        pos_comparison = a.start - b.start
+        if pos_comparison != 0:
+            return pos_comparison
+        length_comparison = len(b.group) - len(a.group)
+        if length_comparison != 0:
+            return length_comparison
+        return 0
+
+    def match_start_word(self):
+        return self.start == 0 or not self.text[self.start - 1 : self.start].isalnum()
+
+    def match_end_word(self):
+        return (
+            self.end == len(self.text)
+            or not self.text[self.end : self.end + 1].isalnum()
+        )
