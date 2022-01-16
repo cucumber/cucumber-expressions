@@ -1,9 +1,9 @@
 import re
 from typing import Optional
 
-from Cucumber.CucumberExpressions.argument import Argument
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.tree_regexp import TreeRegexp
+from cucumber_expressions.argument import Argument
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.tree_regexp import TreeRegexp
 
 
 class RegularExpression:
@@ -33,7 +33,7 @@ class RegularExpression:
             if _possible_regexp:
                 parameter_types.append(_possible_regexp)
             else:
-                from Cucumber.CucumberExpressions.parameter_type import ParameterType
+                from cucumber_expressions.parameter_type import ParameterType
 
                 parameter_types.append(
                     ParameterType(

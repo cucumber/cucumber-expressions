@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import NamedTuple, Optional, Callable
 
-from Cucumber.CucumberExpressions.ast import Token, TokenType, Node, NodeType
-from Cucumber.CucumberExpressions.cucumber_expression_tokenizer import (
+from cucumber_expressions.ast import Token, TokenType, Node, NodeType
+from cucumber_expressions.cucumber_expression_tokenizer import (
     CucumberExpressionTokenizer,
 )
-from Cucumber.CucumberExpressions.exceptions.errors import (
+from cucumber_expressions.errors import (
     AlternationNotAllowedInOptional,
     InvalidParameterTypeNameInNode,
     MissingEndToken,

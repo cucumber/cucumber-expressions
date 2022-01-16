@@ -2,10 +2,10 @@ import os
 
 import pytest
 
-from Cucumber.CucumberExpressions.cucumber_expression import CucumberExpression
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.definitions import TESTDATA_ROOT_DIR
+from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from test.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

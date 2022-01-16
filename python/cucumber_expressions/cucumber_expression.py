@@ -1,13 +1,13 @@
 from typing import Optional
 
-from Cucumber.CucumberExpressions.argument import Argument
-from Cucumber.CucumberExpressions.ast import Node, NodeType
-from Cucumber.CucumberExpressions.cucumber_expression_parser import (
+from cucumber_expressions.argument import Argument
+from cucumber_expressions.ast import Node, NodeType
+from cucumber_expressions.cucumber_expression_parser import (
     CucumberExpressionParser,
 )
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.tree_regexp import TreeRegexp
-from Cucumber.CucumberExpressions.exceptions.errors import (
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.tree_regexp import TreeRegexp
+from cucumber_expressions.errors import (
     UndefinedParameterTypeError,
     ParameterIsNotAllowedInOptional,
     OptionalIsNotAllowedInOptional,

@@ -1,8 +1,8 @@
 import functools
 from typing import Optional
 
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.exceptions.errors import (
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.errors import (
     CucumberExpressionError,
     AmbiguousParameterTypeError,
 )
@@ -62,7 +62,7 @@ class ParameterTypeRegistry:
         if not parameter_types:
             return None
         if len(parameter_types) > 1 and not parameter_types[0].prefer_for_regexp_match:
-            from Cucumber.CucumberExpressions.cucumber_expression_generator import (
+            from cucumber_expressions.cucumber_expression_generator import (
                 CucumberExpressionGenerator,
             )
 

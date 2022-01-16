@@ -2,11 +2,11 @@ import os
 
 import pytest
 
-from Cucumber.CucumberExpressions.cucumber_expression_tokenizer import (
+from cucumber_expressions.cucumber_expression_tokenizer import (
     CucumberExpressionTokenizer,
 )
-from Cucumber.CucumberExpressions.definitions import TESTDATA_ROOT_DIR
-from Cucumber.CucumberExpressions.exceptions.errors import (
+from test.definitions import TESTDATA_ROOT_DIR
+from cucumber_expressions.errors import (
     CantEscape,
     TheEndOfLineCannotBeEscaped,
 )

@@ -1,13 +1,13 @@
 import functools
 import re
 
-from Cucumber.CucumberExpressions.generated_expression import GeneratedExpression
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.parameter_type_matcher import ParameterTypeMatcher
-from Cucumber.CucumberExpressions.combinatorial_generated_expression_factory import (
+from cucumber_expressions.generated_expression import GeneratedExpression
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type_matcher import ParameterTypeMatcher
+from cucumber_expressions.combinatorial_generated_expression_factory import (
     CombinatorialGeneratedExpressionFactory,
 )
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
 class CucumberExpressionGenerator:

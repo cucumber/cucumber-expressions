@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type import ParameterType
 
 
 class ParameterTypeMatcher:

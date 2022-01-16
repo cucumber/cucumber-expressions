@@ -1,6 +1,6 @@
 import re
 
-from Cucumber.CucumberExpressions.tree_regexp import TreeRegexp
+from cucumber_expressions.tree_regexp import TreeRegexp
 
 
 class TestTreeRegexp:

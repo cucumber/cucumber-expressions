@@ -1,4 +1,4 @@
-from Cucumber.CucumberExpressions.ast import Token
+from cucumber_expressions.ast import Token
 
 
 def generate_message(

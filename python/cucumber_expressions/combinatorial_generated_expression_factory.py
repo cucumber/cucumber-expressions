@@ -1,5 +1,5 @@
-from Cucumber.CucumberExpressions.generated_expression import GeneratedExpression
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
+from cucumber_expressions.generated_expression import GeneratedExpression
+from cucumber_expressions.parameter_type import ParameterType
 
 
 class CombinatorialGeneratedExpressionFactory:

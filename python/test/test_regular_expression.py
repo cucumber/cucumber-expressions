@@ -3,9 +3,9 @@ from typing import Optional
 
 import pytest
 
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.regular_expression import RegularExpression
-from Cucumber.CucumberExpressions.definitions import TESTDATA_ROOT_DIR
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.regular_expression import RegularExpression
+from test.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

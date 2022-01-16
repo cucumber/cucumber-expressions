@@ -4,7 +4,7 @@ import locale
 import re
 from typing.re import Pattern
 
-from Cucumber.CucumberExpressions.exceptions.errors import CucumberExpressionError
+from cucumber_expressions.errors import CucumberExpressionError
 
 ILLEGAL_PARAMETER_NAME_PATTERN = r"([\[\]()$.|?*+])"
 UNESCAPE_PATTERN = r"(\\([\[$.|?*+\]]))"

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from Cucumber.CucumberExpressions.group import Group
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.tree_regexp import TreeRegexp
-from Cucumber.CucumberExpressions.exceptions.errors import CucumberExpressionError
+from cucumber_expressions.group import Group
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.tree_regexp import TreeRegexp
+from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Argument:

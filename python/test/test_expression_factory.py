@@ -1,9 +1,9 @@
 import re
 
-from Cucumber.CucumberExpressions.cucumber_expression import CucumberExpression
-from Cucumber.CucumberExpressions.expression_factory import ExpressionFactory
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.regular_expression import RegularExpression
+from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.expression_factory import ExpressionFactory
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.regular_expression import RegularExpression
 
 
 class TestExpressionFactory:

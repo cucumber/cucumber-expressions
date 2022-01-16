@@ -2,11 +2,11 @@ import re
 
 import pytest
 
-from Cucumber.CucumberExpressions.cucumber_expression import CucumberExpression
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.regular_expression import RegularExpression
-from Cucumber.CucumberExpressions.exceptions.errors import CucumberExpressionError
+from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.regular_expression import RegularExpression
+from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Color:

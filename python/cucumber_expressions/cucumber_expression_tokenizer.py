@@ -1,5 +1,5 @@
-from Cucumber.CucumberExpressions.ast import TokenType, Token
-from Cucumber.CucumberExpressions.exceptions.errors import (
+from cucumber_expressions.ast import TokenType, Token
+from cucumber_expressions.errors import (
     TheEndOfLineCannotBeEscaped,
     CantEscape,
 )

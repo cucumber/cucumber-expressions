@@ -1,11 +1,11 @@
 import pytest
 
-from Cucumber.CucumberExpressions.cucumber_expression import CucumberExpression
-from Cucumber.CucumberExpressions.cucumber_expression_generator import (
+from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.cucumber_expression_generator import (
     CucumberExpressionGenerator,
 )
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
 class ParameterRegistry:

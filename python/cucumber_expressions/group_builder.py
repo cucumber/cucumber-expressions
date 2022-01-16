@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from Cucumber.CucumberExpressions.group import Group
+from cucumber_expressions.group import Group
 
 
 class GroupBuilder:

@@ -1,7 +1,7 @@
 import re
 
-from Cucumber.CucumberExpressions.ast import EscapeCharacters
-from Cucumber.CucumberExpressions.group_builder import GroupBuilder
+from cucumber_expressions.ast import EscapeCharacters
+from cucumber_expressions.group_builder import GroupBuilder
 
 
 class TreeRegexp:

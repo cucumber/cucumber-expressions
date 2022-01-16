@@ -1,7 +1,7 @@
-from Cucumber.CucumberExpressions.combinatorial_generated_expression_factory import (
+from cucumber_expressions.combinatorial_generated_expression_factory import (
     CombinatorialGeneratedExpressionFactory,
 )
-from Cucumber.CucumberExpressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type import ParameterType
 
 
 class Color:

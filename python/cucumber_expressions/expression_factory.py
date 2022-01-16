@@ -1,8 +1,8 @@
 from typing import Union, Pattern
 
-from Cucumber.CucumberExpressions.cucumber_expression import CucumberExpression
-from Cucumber.CucumberExpressions.regular_expression import RegularExpression
-from Cucumber.CucumberExpressions.exceptions.errors import CucumberExpressionError
+from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.regular_expression import RegularExpression
+from cucumber_expressions.errors import CucumberExpressionError
 
 
 class ExpressionFactory:

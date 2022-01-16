@@ -1,6 +1,6 @@
-from Cucumber.CucumberExpressions.argument import Argument
-from Cucumber.CucumberExpressions.parameter_type_registry import ParameterTypeRegistry
-from Cucumber.CucumberExpressions.tree_regexp import TreeRegexp
+from cucumber_expressions.argument import Argument
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from cucumber_expressions.tree_regexp import TreeRegexp
 
 
 class TestArgument:
