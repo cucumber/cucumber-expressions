@@ -20,16 +20,16 @@ class ParameterTypeRegistry:
         self.parameter_types_by_regexp = {}
         self.define_parameter_type(
             ParameterType(
-                "int", INTEGER_REGEXPS, int, lambda s=None: s and int(s), True, True
+                "int", INTEGER_REGEXPS, int, lambda s: s and int(s), True, True
             )
         )
         self.define_parameter_type(
             ParameterType(
-                "float", FLOAT_REGEXP, float, lambda s=None: s and float(s), True, False
+                "float", FLOAT_REGEXP, float, lambda s: s and float(s), True, False
             )
         )
         self.define_parameter_type(
-            ParameterType("word", WORD_REGEXP, str, lambda s=None: s, False, False)
+            ParameterType("word", WORD_REGEXP, str, lambda s: s, False, False)
         )
         self.define_parameter_type(
             ParameterType(
@@ -44,7 +44,7 @@ class ParameterTypeRegistry:
             )
         )
         self.define_parameter_type(
-            ParameterType("", ANONYMOUS_REGEXP, int, lambda s=None: s, False, True)
+            ParameterType("", ANONYMOUS_REGEXP, int, lambda s: s, False, True)
         )
 
     @property
@@ -77,9 +77,7 @@ class ParameterTypeRegistry:
             )
         return parameter_types[0]
 
-    def define_parameter_type(
-        self, parameter_type: ParameterType
-    ) -> list[ParameterType]:
+    def define_parameter_type(self, parameter_type: ParameterType) -> None:
         if parameter_type.name is not None:
             if parameter_type.name in self.parameter_type_by_name:
                 if not len(parameter_type.name):
@@ -92,7 +90,6 @@ class ParameterTypeRegistry:
                     )
             self.parameter_type_by_name[parameter_type.name] = parameter_type
 
-        parameter_types: list[ParameterType] = []
         for parameter_type_regexp in parameter_type.regexps:
             if parameter_type_regexp not in self.parameter_types_by_regexp:
                 self.parameter_types_by_regexp[parameter_type_regexp] = []

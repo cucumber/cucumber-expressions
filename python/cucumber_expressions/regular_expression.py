@@ -44,10 +44,6 @@ class RegularExpression:
 
     @property
     def regexp(self):
-        return self.expression_regexp
-
-    @property
-    def source(self):
         return self.expression_regexp.pattern
 
     def __str__(self):

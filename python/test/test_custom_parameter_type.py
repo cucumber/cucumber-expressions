@@ -45,7 +45,7 @@ class TestCustomParameterType:
     _parameter_type_registry.define_parameter_type(
         ParameterType(
             "color",
-            re.compile("red|blue|yellow"),
+            r"red|blue|yellow",
             Color,
             lambda s: Color(s),
             True,
@@ -99,8 +99,8 @@ class TestCustomParameterType:
             ParameterType(
                 "color",
                 [
-                    re.compile(r"red|blue|yellow"),
-                    re.compile(r"(?:dark|light) (?:red|blue|yellow)"),
+                    r"red|blue|yellow",
+                    r"(?:dark|light) (?:red|blue|yellow)",
                 ],
                 Color,
                 lambda s: Color(s),
@@ -122,7 +122,7 @@ class TestCustomParameterType:
             self._parameter_type_registry.define_parameter_type(
                 ParameterType(
                     "throwing",
-                    re.compile("bad"),
+                    "bad",
                     CssColor,
                     lambda s: (_ for _ in ()).throw(
                         TestException(f"Can't transform [{s}]")
@@ -144,7 +144,7 @@ class TestCustomParameterType:
             assert self._parameter_type_registry.define_parameter_type(
                 ParameterType(
                     "color",
-                    re.compile(r".*"),
+                    r".*",
                     CssColor,
                     lambda s: CssColor(s),
                     True,
@@ -158,7 +158,7 @@ class TestCustomParameterType:
         self._parameter_type_registry.define_parameter_type(
             ParameterType(
                 "css-color",
-                re.compile(r"red|blue|yellow"),
+                r"red|blue|yellow",
                 CssColor,
                 lambda s: CssColor(s),
                 True,
@@ -185,7 +185,7 @@ class TestCustomParameterType:
         parameter_type_registry.define_parameter_type(
             ParameterType(
                 None,
-                re.compile(r"red|blue|yellow"),
+                r"red|blue|yellow",
                 Color,
                 lambda s: Color(s),
                 True,

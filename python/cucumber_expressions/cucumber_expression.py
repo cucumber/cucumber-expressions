@@ -24,10 +24,9 @@ class CucumberExpression:
         self.expression = expression
         self.parameter_type_registry = parameter_type_registry
         self.parameter_types: list[ParameterType] = []
-        parser = CucumberExpressionParser()
-        _ast = parser.parse(expression)
-        pattern = self.rewrite_to_regex(_ast)
-        self.tree_regexp = TreeRegexp(pattern)
+        self.tree_regexp = TreeRegexp(
+            self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression))
+        )
 
     def match(self, text: str) -> Optional[list[Argument]]:
         return Argument.build(self.tree_regexp, text, self.parameter_types)
@@ -76,7 +75,7 @@ class CucumberExpression:
         if self.are_nodes_empty(node):
             raise OptionalMayNotBeEmpty(node, self.expression)
         regex = "".join([self.rewrite_to_regex(_node) for _node in node.nodes])
-        return f"(?:{regex})?"
+        return rf"(?:{regex})?"
 
     def rewrite_alternation(self, node: Node):
         for alternative in node.nodes:
@@ -103,12 +102,12 @@ class CucumberExpression:
 
         regexps = parameter_type.regexps
         if len(regexps) == 1:
-            return f"({regexps[0]})"
-        return f"((?:{')|(?:'.join(regexps)}))"
+            return rf"({regexps[0]})"
+        return rf"((?:{')|(?:'.join(regexps)}))"
 
     def rewrite_expression(self, node: Node):
         regex = "".join([self.rewrite_to_regex(_node) for _node in node.nodes])
-        return f"^{regex}$"
+        return rf"^{regex}$"
 
     @staticmethod
     def are_nodes_empty(node: Node) -> bool:

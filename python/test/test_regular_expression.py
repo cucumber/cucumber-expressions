@@ -55,7 +55,7 @@ class TestRegularExpression:
             r'^a user( named "([^"]*)")?$', 'a user named "Charlie"'
         ) == ["Charlie"]
 
-    def test_ignores_non_capturing_group(self):
+    def test_ignores_non_capturing_groups(self):
         assert (
             self._match(
                 r"(\S+) ?(can|cannot) (?:delete|cancel) the (\d+)(?:st|nd|rd|th) (attachment|slide) ?(?:upload)?",
@@ -64,10 +64,25 @@ class TestRegularExpression:
             == ["I", "can", 1, "slide"]
         )
 
+    def test_matches_capture_group_nested_in_optional_one(self):
+        regexp = r"^a (pre-commercial transaction |pre buyer fee model )?purchase(?: for \$(\d+))?$"
+        assert self._match(regexp, "a purchase") == [None, None]
+        assert self._match(regexp, "a purchase for $33") == [None, 33]
+        assert self._match(regexp, "a pre buyer fee model purchase") == [
+            "pre buyer fee model ",
+            None,
+        ]
+
+    def test_works_with_escaped_parentheses(self):
+        assert self._match(r"Across the line\(s\)", "Across the line(s)") == []
+
+    def test_exposes_regexp(self):
+        regexp = r"I have (\d+) cukes? in my (\+) now"
+        expression = RegularExpression(regexp, ParameterTypeRegistry())
+        assert expression.regexp == regexp
+
     @staticmethod
     def _match(expression: str, text: str) -> Optional[list[str]]:
         regular_expression = RegularExpression(expression, ParameterTypeRegistry())
         arguments = regular_expression.match(text)
-        if not arguments:
-            return None
-        return [arg.value for arg in arguments]
+        return arguments if arguments is None else [arg.value for arg in arguments]

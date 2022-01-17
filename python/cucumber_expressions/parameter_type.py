@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import locale
 import re
-from typing.re import Pattern
 
 from cucumber_expressions.errors import CucumberExpressionError
 
@@ -21,33 +19,24 @@ class ParameterType:
     def is_valid_parameter_type_name(type_name):
         return not bool(re.compile(ILLEGAL_PARAMETER_NAME_PATTERN).match(type_name))
 
-    def compare_to(self, other):
-        return (self > other) - (self < other)
-
     def transform(self, group_values: list[str]):
         return self.transformer(*group_values)
 
     @staticmethod
-    def compare(a: ParameterType, b: ParameterType):
-        if a.prefer_for_regexp_match and not b.prefer_for_regexp_match:
+    def compare(pt1: ParameterType, pt2: ParameterType):
+        if pt1.prefer_for_regexp_match and not pt2.prefer_for_regexp_match:
             return -1
-        if b.prefer_for_regexp_match and not a.prefer_for_regexp_match:
+        if pt2.prefer_for_regexp_match and not pt1.prefer_for_regexp_match:
             return 1
+        _a_name = len(pt1.name if pt1.name else "")
+        _b_name = len(pt2.name if pt2.name else "")
 
-        def is_equivalent(str1, str2):
-            return locale.strxfrm(str2[:-1]) < locale.strxfrm(str1) <= locale.strxfrm(
-                str2
-            ) < locale.strxfrm(str1 + "0") or locale.strxfrm(
-                str1[:-1]
-            ) < locale.strxfrm(
-                str2
-            ) <= locale.strxfrm(
-                str1
-            ) < locale.strxfrm(
-                str2 + "0"
-            )
-
-        return is_equivalent(a.name if a.name else "", b.name if b.name else "")
+        if _a_name < _b_name:
+            return -1
+        elif _a_name > _b_name:
+            return 1
+        else:
+            return 0
 
     # Create a new Parameter
     #
@@ -93,13 +82,6 @@ class ParameterType:
     def use_for_snippets(self, value: bool):
         self._use_for_snippets = value
 
-    def string_array(self, regexps: str):
-        array = regexps if isinstance(regexps, list) else [regexps]
-        return [
-            regexp if isinstance(regexp, str) else self.regexp_source(regexp)
-            for regexp in array
-        ]
-
     @staticmethod
-    def regexp_source(regexp: Pattern):
-        return regexp.pattern
+    def string_array(regexps: str):
+        return regexps if isinstance(regexps, list) else [regexps]
