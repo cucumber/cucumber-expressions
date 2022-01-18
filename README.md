@@ -153,7 +153,18 @@ public Color ConvertColor(string colorValue)
 }
 ```
 
-*Note: Currently the parameter name cannot be customized, so the custom paramters can only be used with the type name, e.g. `{Color}`.*
+#### Python
+
+```python
+ParameterType(
+  name=        'color',
+  regexp=      "red|blue|yellow",
+  type=        Color,
+  transformer= lambda s: Color()
+)
+```
+
+*Note: Currently the parameter name cannot be customized, so the custom parameters can only be used with the type name, e.g. `{Color}`.*
 
 ## Optional text
 
