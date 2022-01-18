@@ -24,7 +24,7 @@ def match(
 ):
     cucumber_expression = CucumberExpression(expression, parameter_registry)
     matches = cucumber_expression.match(match_text)
-    return None if matches is None else [arg.value for arg in matches]
+    return matches and [arg.value for arg in matches]
 
 
 class TestCucumberExpression:

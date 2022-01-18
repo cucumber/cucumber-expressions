@@ -26,9 +26,5 @@ class Group:
 
     @property
     def values(self):
-        if not self.children:
-            groups: list[Group] = [self]
-        else:
-            groups: list[Group] = self.children
-
+        groups = self.children or [self]
         return [v.value for v in groups]

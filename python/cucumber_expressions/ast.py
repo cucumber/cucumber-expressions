@@ -76,10 +76,7 @@ class Node:
 
     @property
     def text(self) -> str:
-        if not self.token:
-            return "".join([node_value.text for node_value in self.nodes])
-        else:
-            return self.token
+        return self.token or "".join([node_value.text for node_value in self.nodes])
 
     def to_json(self):
         json_obj = {"type": self.ast_type.value}
@@ -129,12 +126,11 @@ class Token:
 
         if char.isspace():
             return True
-        elif any(
-            char == escape_char for escape_char in _escape_chars + _demarcation_chars
-        ):
-            return True
         else:
-            return False
+            return any(
+                char == escape_char
+                for escape_char in _escape_chars + _demarcation_chars
+            )
 
     @staticmethod
     def type_of(codepoint: int) -> TokenType:

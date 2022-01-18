@@ -109,26 +109,17 @@ class CucumberExpression:
         regex = "".join([self.rewrite_to_regex(_node) for _node in node.nodes])
         return rf"^{regex}$"
 
-    @staticmethod
-    def are_nodes_empty(node: Node) -> bool:
-        return not bool(
-            [ast_node for ast_node in node.nodes if ast_node.ast_type == NodeType.TEXT]
-        )
+    def are_nodes_empty(self, node: Node) -> bool:
+        return not self.get_nodes_with_ast_type(node, NodeType.TEXT)
 
-    @staticmethod
-    def get_possible_node_with_parameters(node: Node) -> Optional[Node]:
-        results = [
-            ast_node
-            for ast_node in node.nodes
-            if ast_node.ast_type == NodeType.PARAMETER
-        ]
+    def get_possible_node_with_parameters(self, node: Node) -> Optional[Node]:
+        results = self.get_nodes_with_ast_type(node, NodeType.PARAMETER)
+        return results[0] if results else None
+
+    def get_possible_node_with_optionals(self, node: Node) -> Optional[Node]:
+        results = self.get_nodes_with_ast_type(node, NodeType.OPTIONAL)
         return results[0] if results else None
 
     @staticmethod
-    def get_possible_node_with_optionals(node: Node) -> Optional[Node]:
-        results = [
-            ast_node
-            for ast_node in node.nodes
-            if ast_node.ast_type == NodeType.OPTIONAL
-        ]
-        return results[0] if results else None
+    def get_nodes_with_ast_type(node: Node, ast_type: NodeType):
+        return [ast_node for ast_node in node.nodes if ast_node.ast_type == ast_type]

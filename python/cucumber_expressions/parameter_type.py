@@ -28,8 +28,8 @@ class ParameterType:
             return -1
         if pt2.prefer_for_regexp_match and not pt1.prefer_for_regexp_match:
             return 1
-        _a_name = len(pt1.name if pt1.name else "")
-        _b_name = len(pt2.name if pt2.name else "")
+        _a_name = len(pt1.name or "")
+        _b_name = len(pt2.name or "")
 
         if _a_name < _b_name:
             return -1

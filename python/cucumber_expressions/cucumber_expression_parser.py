@@ -221,7 +221,7 @@ class CucumberExpressionParser:
     ) -> Result:
         for parser in parsers:
             consumed, ast = parser(Parser(expression, tokens, start_at))
-            if not consumed == 0:
+            if consumed:
                 return Result(consumed, ast)
         # If configured correctly this will never happen
         raise Exception("No eligible parsers for " + str(tokens))

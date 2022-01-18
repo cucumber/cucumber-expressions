@@ -17,7 +17,7 @@ class GeneratedExpression:
 
     @staticmethod
     def get_parameter_name(type_name, usage_by_type_name):
-        count = usage_by_type_name.get(type_name)
-        count = count + 1 if count else 1
+        count = usage_by_type_name.get(type_name) or 0
+        count = count + 1
         usage_by_type_name[type_name] = count
         return type_name if count == 1 else f"{type_name}{count}"

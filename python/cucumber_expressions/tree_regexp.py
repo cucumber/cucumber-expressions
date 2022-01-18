@@ -41,7 +41,7 @@ class TreeRegexp:
                 if not gb:
                     raise Exception("Empty stack!")
                 group_start = group_start_stack.pop()
-                group_start = group_start if group_start else 0
+                group_start = group_start or 0
                 if gb.capturing:
                     gb.source = source[(group_start + 1) : index]
                     stack[len(stack) - 1].add(gb)

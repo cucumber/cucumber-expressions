@@ -85,4 +85,4 @@ class TestRegularExpression:
     def _match(expression: str, text: str) -> Optional[list[str]]:
         regular_expression = RegularExpression(expression, ParameterTypeRegistry())
         arguments = regular_expression.match(text)
-        return arguments if arguments is None else [arg.value for arg in arguments]
+        return arguments and [arg.value for arg in arguments]

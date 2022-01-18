@@ -1,13 +1,14 @@
 from cucumber_expressions.generated_expression import GeneratedExpression
 from cucumber_expressions.parameter_type import ParameterType
 
+# 256 generated expressions ought to be enough for anybody
+MAX_EXPRESSIONS = 256
+
 
 class CombinatorialGeneratedExpressionFactory:
     def __init__(self, expression_template, parameter_type_combinations):
         self.expression_template = expression_template
         self.parameter_type_combinations = parameter_type_combinations
-        # 256 generated expressions ought to be enough for anybody
-        self.MAX_EXPRESSIONS = 256
 
     def generate_expressions(self) -> list[GeneratedExpression]:
         generated_expressions = []
@@ -20,7 +21,7 @@ class CombinatorialGeneratedExpressionFactory:
         depth: int,
         current_parameter_types: list[ParameterType],
     ):
-        if len(generated_expressions) >= self.MAX_EXPRESSIONS:
+        if len(generated_expressions) >= MAX_EXPRESSIONS:
             return
         if depth == len(self.parameter_type_combinations):
             generated_expressions.append(
@@ -28,7 +29,7 @@ class CombinatorialGeneratedExpressionFactory:
             )
             return
         for i in range(0, len(self.parameter_type_combinations[depth])):
-            if len(generated_expressions) >= self.MAX_EXPRESSIONS:
+            if len(generated_expressions) >= MAX_EXPRESSIONS:
                 return
             new_current_parameter_types = current_parameter_types.copy()
             new_current_parameter_types.append(
