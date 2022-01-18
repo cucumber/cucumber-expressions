@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - [.NET] Implemenation of Cucumber Expressions by porting the Java parser
 ([#1743](https://github.com/cucumber/cucumber-expressions/pull/45))
+- [Python] Added Python Cucumber Expressions
 
 ## [14.0.0] - 2021-10-12
 ### Changed
