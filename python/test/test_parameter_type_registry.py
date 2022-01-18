@@ -28,19 +28,17 @@ class TestParameterTypeRegistration:
     ):
         registry = ParameterTypeRegistry()
         registry.define_parameter_type(
-            ParameterType(
-                "name", CAPITALISED_WORD, Name(), lambda s: Name(), True, True
-            )
+            ParameterType("name", CAPITALISED_WORD, Name, lambda s: Name(), True, True)
         )
         registry.define_parameter_type(
             ParameterType(
-                "person", CAPITALISED_WORD, Person(), lambda s: Person(), True, False
+                "person", CAPITALISED_WORD, Person, lambda s: Person(), True, False
             )
         )
         with pytest.raises(CucumberExpressionError):
             registry.define_parameter_type(
                 ParameterType(
-                    "place", CAPITALISED_WORD, Place(), lambda s: Place(), True, True
+                    "place", CAPITALISED_WORD, Place, lambda s: Place(), True, True
                 )
             )
 
@@ -48,13 +46,13 @@ class TestParameterTypeRegistration:
         registry = ParameterTypeRegistry()
 
         name = ParameterType(
-            "name", CAPITALISED_WORD, Name(), lambda s: Name(), True, False
+            "name", CAPITALISED_WORD, Name, lambda s: Name(), True, False
         )
         person = ParameterType(
-            "person", CAPITALISED_WORD, Person(), lambda s: Person(), True, True
+            "person", CAPITALISED_WORD, Person, lambda s: Person(), True, True
         )
         place = ParameterType(
-            "place", CAPITALISED_WORD, Place(), lambda s: Place(), True, False
+            "place", CAPITALISED_WORD, Place, lambda s: Place(), True, False
         )
 
         registry.define_parameter_type(name)
@@ -74,13 +72,13 @@ class TestParameterTypeRegistration:
         registry = ParameterTypeRegistry()
 
         name = ParameterType(
-            "name", CAPITALISED_WORD, Name(), lambda s: Name(), True, False
+            "name", CAPITALISED_WORD, Name, lambda s: Name(), True, False
         )
         person = ParameterType(
-            "person", CAPITALISED_WORD, Person(), lambda s: Person(), True, False
+            "person", CAPITALISED_WORD, Person, lambda s: Person(), True, False
         )
         place = ParameterType(
-            "place", CAPITALISED_WORD, Place(), lambda s: Place(), True, False
+            "place", CAPITALISED_WORD, Place, lambda s: Place(), True, False
         )
 
         registry.define_parameter_type(name)
