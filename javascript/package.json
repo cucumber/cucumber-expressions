@@ -80,7 +80,7 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "glob": "7.2.0",
     "js-yaml": "4.1.0",
-    "mocha": "9.1.4",
+    "mocha": "9.2.0",
     "npm-check-updates": "12.2.1",
     "postcss": "8.4.5",
     "postcss-cli": "9.1.0",
