@@ -113,34 +113,27 @@ class Token:
         return self._end
 
     @staticmethod
-    def is_escape_character(codepoint: int) -> bool:
-        if chr(codepoint) == EscapeCharacters.ESCAPE_CHARACTER.value:
-            return True
-        return False
+    def is_escape_character(char: str) -> bool:
+        return char == EscapeCharacters.ESCAPE_CHARACTER.value
 
     @staticmethod
-    def can_escape(codepoint: int) -> bool:
-        char = chr(codepoint)
+    def can_escape(char: str) -> bool:
+        if char.isspace():
+            return True
+
         _escape_chars = [e.value for e in EscapeCharacters]
         _demarcation_chars = [e.value for e in DemarcationCharacters]
-
-        if char.isspace():
-            return True
-        else:
-            return any(
-                char == escape_char
-                for escape_char in _escape_chars + _demarcation_chars
-            )
+        return any(
+            char == escape_char for escape_char in _escape_chars + _demarcation_chars
+        )
 
     @staticmethod
-    def type_of(codepoint: int) -> TokenType:
-        char = chr(codepoint)
+    def type_of(char: str) -> TokenType:
         if char.isspace():
             return TokenType.WHITE_SPACE
-        possible_demarcation_match = [
+        if possible_demarcation_match := [
             e.name for e in DemarcationCharacters if e.value == char
-        ]
-        if possible_demarcation_match:
+        ]:
             _key = possible_demarcation_match[0].replace("_CHARACTER", "")
             return TokenType(_key)
         else:
@@ -148,11 +141,8 @@ class Token:
 
     @staticmethod
     def symbol_of(token: TokenType):
-        possible_token_character_key = token.name + "_CHARACTER"
-        if [
-            e.name
-            for e in DemarcationCharacters
-            if e.name == possible_token_character_key
+        if (possible_token_character_key := token.name + "_CHARACTER") in [
+            e.name for e in DemarcationCharacters
         ]:
             return DemarcationCharacters[possible_token_character_key].value
         else:

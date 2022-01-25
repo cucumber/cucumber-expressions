@@ -7,10 +7,7 @@ class TestTreeRegexp:
     @staticmethod
     def test_exposes_group_source():
         tr = TreeRegexp("(a(?:b)?)(c)")
-        _list = []
-        for gb in tr.group_builder.children:
-            source = gb.source
-            _list.append(source)
+        _list = [gb.source for gb in tr.group_builder.children]
         assert ["a(?:b)?", "c"] == _list
 
     @staticmethod

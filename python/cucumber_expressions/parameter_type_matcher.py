@@ -12,9 +12,9 @@ class ParameterTypeMatcher:
         self.text = text
         self.match_position = match_position
         _matches = self.regexp.search(self.text[self.match_position :])
-        self.match = list(set(_matches.regs))[0] if _matches else None
+        self.match = _matches.regs[0] if _matches else None
 
-    def advance_to(self, new_match_position: int):
+    def advance_to(self, new_match_position: int) -> ParameterTypeMatcher:
         for advanced_position in range(new_match_position, len(self.text)):
             matcher = ParameterTypeMatcher(
                 self.parameter_type, self.regexp, self.text, advanced_position
@@ -27,18 +27,18 @@ class ParameterTypeMatcher:
 
     @property
     def find(self) -> bool:
-        return self.match and self.group
+        return bool(self.match and self.group)
 
     @property
     def full_word(self) -> bool:
-        return self.match_start_word() and self.match_end_word()
+        return bool(self.match_start_word() and self.match_end_word())
 
     @property
-    def start(self):
+    def start(self) -> int:
         return self.match_position + self.match[0]
 
     @property
-    def end(self):
+    def end(self) -> int:
         return self.start + len(self.group)
 
     @property
@@ -46,7 +46,7 @@ class ParameterTypeMatcher:
         return self.text[self.match_position :][self.match[0] : self.match[1]]
 
     @staticmethod
-    def compare(a: ParameterTypeMatcher, b: ParameterTypeMatcher):
+    def compare(a: ParameterTypeMatcher, b: ParameterTypeMatcher) -> int:
         pos_comparison = a.start - b.start
         if pos_comparison != 0:
             return pos_comparison
@@ -55,11 +55,13 @@ class ParameterTypeMatcher:
             return length_comparison
         return 0
 
-    def match_start_word(self):
-        return self.start == 0 or not self.text[self.start - 1 : self.start].isalnum()
+    def match_start_word(self) -> bool:
+        return bool(
+            self.start == 0 or not self.text[self.start - 1 : self.start].isalnum()
+        )
 
-    def match_end_word(self):
-        return (
+    def match_end_word(self) -> bool:
+        return bool(
             self.end == len(self.text)
             or not self.text[self.end : self.end + 1].isalnum()
         )

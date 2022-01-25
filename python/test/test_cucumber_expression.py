@@ -33,10 +33,7 @@ class TestCucumberExpression:
         expectation = load_test_yamls
         if "exception" in expectation:
             with pytest.raises(Exception) as excinfo:
-                match(
-                    expectation["expression"],
-                    expectation["text"] if "text" in expectation else "",
-                )
+                match(expectation["expression"], expectation.get("text", ""))
             assert excinfo.value.args[0] == expectation["exception"]
         else:
             values = match(expectation["expression"], expectation["text"])

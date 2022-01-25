@@ -26,5 +26,4 @@ class Group:
 
     @property
     def values(self):
-        groups = self.children or [self]
-        return [v.value for v in groups]
+        return [v.value for v in self.children or [self]]

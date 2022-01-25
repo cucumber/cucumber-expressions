@@ -70,17 +70,9 @@ class ParameterType:
     def prefer_for_regexp_match(self):
         return self._prefer_for_regexp_match
 
-    @prefer_for_regexp_match.setter
-    def prefer_for_regexp_match(self, value: bool):
-        self._prefer_for_regexp_match = value
-
     @property
     def use_for_snippets(self):
         return self._use_for_snippets
-
-    @use_for_snippets.setter
-    def use_for_snippets(self, value: bool):
-        self._use_for_snippets = value
 
     @staticmethod
     def string_array(regexps: str):

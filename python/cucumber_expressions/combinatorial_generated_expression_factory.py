@@ -28,13 +28,11 @@ class CombinatorialGeneratedExpressionFactory:
                 GeneratedExpression(self.expression_template, current_parameter_types)
             )
             return
-        for i in range(0, len(self.parameter_type_combinations[depth])):
+        for parameter_type_combination in self.parameter_type_combinations[depth]:
             if len(generated_expressions) >= MAX_EXPRESSIONS:
                 return
             new_current_parameter_types = current_parameter_types.copy()
-            new_current_parameter_types.append(
-                self.parameter_type_combinations[depth][i]
-            )
+            new_current_parameter_types.append(parameter_type_combination)
             self.generate_permutations(
                 generated_expressions, depth + 1, new_current_parameter_types
             )

@@ -15,7 +15,7 @@ class TreeRegexp:
         matches = re.search(self.regexp, string)
         if not matches:
             return None
-        group_indices = range(0, len(matches.groups()) + 1)
+        group_indices = range(len(matches.groups()) + 1)
         return self.group_builder.build(matches, iter(group_indices))
 
     def create_group_builder(self, regexp):
@@ -32,8 +32,7 @@ class TreeRegexp:
             elif char == "(" and not escaping and not char_class:
                 group_start_stack.append(index)
                 group_builder = GroupBuilder()
-                non_capturing = self.is_non_capturing(source, index)
-                if non_capturing:
+                if self.is_non_capturing(source, index):
                     group_builder.capturing = False
                 stack.append(group_builder)
             elif char == ")" and not escaping and not char_class:
@@ -44,13 +43,10 @@ class TreeRegexp:
                 group_start = group_start or 0
                 if gb.capturing:
                     gb.source = source[(group_start + 1) : index]
-                    stack[len(stack) - 1].add(gb)
+                    stack[-1].add(gb)
                 else:
-                    gb.move_children_to(stack[len(stack) - 1])
-                gb.end_index = index
-            escaping = (char == EscapeCharacters.ESCAPE_CHARACTER.value) and (
-                not escaping
-            )
+                    gb.move_children_to(stack[-1])
+            escaping = not escaping and char == EscapeCharacters.ESCAPE_CHARACTER.value
         return stack.pop()
 
     @staticmethod

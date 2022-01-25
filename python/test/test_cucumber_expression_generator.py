@@ -132,7 +132,7 @@ class TestCucumberExpression:
         assert expression.source == "I reach Stage {int}: {optional-flight} {int} hotel"
 
     def test_generates_at_most_256_expressions(self):
-        for i in range(0, 3):
+        for i in range(3):
             self.parameter_type_registry.define_parameter_type(
                 ParameterType(
                     f"my-type-{i}", r"([a-z] )*?[a-z]", str, lambda s: s, True, False

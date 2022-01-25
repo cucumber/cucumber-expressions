@@ -6,7 +6,7 @@ def generate_message(
 ):
     return "\n".join(
         [
-            f"This Cucumber Expression has a problem at column {str(index + 1)}:",
+            f"This Cucumber Expression has a problem at column {index + 1}:",
             "",
             expression,
             pointer,

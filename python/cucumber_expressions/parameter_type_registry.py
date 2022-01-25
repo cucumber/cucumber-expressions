@@ -48,7 +48,7 @@ class ParameterTypeRegistry:
         )
 
     @property
-    def parameter_types(self):
+    def parameter_types(self) -> list:
         return list(self.parameter_type_by_name.values())
 
     def lookup_by_type_name(self, name: str) -> Optional[ParameterType]:
@@ -80,7 +80,7 @@ class ParameterTypeRegistry:
     def define_parameter_type(self, parameter_type: ParameterType) -> None:
         if parameter_type.name is not None:
             if parameter_type.name in self.parameter_type_by_name:
-                if not len(parameter_type.name):
+                if not parameter_type.name:
                     raise CucumberExpressionError(
                         "The anonymous parameter type has already been defined"
                     )
@@ -94,7 +94,7 @@ class ParameterTypeRegistry:
             if parameter_type_regexp not in self.parameter_types_by_regexp:
                 self.parameter_types_by_regexp[parameter_type_regexp] = []
             parameter_types = self.parameter_types_by_regexp[parameter_type_regexp]
-            if (
+            if bool(
                 parameter_types
                 and parameter_types[0].prefer_for_regexp_match
                 and parameter_type.prefer_for_regexp_match

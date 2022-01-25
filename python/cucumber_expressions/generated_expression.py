@@ -5,7 +5,7 @@ class GeneratedExpression:
 
     @property
     def source(self):
-        return self.expression_template % tuple([p.name for p in self.parameter_types])
+        return self.expression_template % tuple(p.name for p in self.parameter_types)
 
     @property
     def parameter_names(self):

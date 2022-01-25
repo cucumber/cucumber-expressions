@@ -11,9 +11,8 @@ class GroupBuilder:
         self._end_index = None
         self._children: list[GroupBuilder] = []
 
-    def add(self, group_builder: GroupBuilder) -> list[GroupBuilder]:
+    def add(self, group_builder: GroupBuilder):
         self._group_builders.append(group_builder)
-        return self._group_builders
 
     def build(self, match, group_indices) -> Group:
         group_index = next(group_indices)
@@ -50,11 +49,3 @@ class GroupBuilder:
     @source.setter
     def source(self, source: str):
         self._source = source
-
-    @property
-    def end_index(self) -> int:
-        return self._end_index
-
-    @end_index.setter
-    def end_index(self, end_index: int):
-        self._end_index = end_index

@@ -41,14 +41,12 @@ class CucumberExpressionParser:
             )
         elif token.ast_type == TokenType.ALTERNATION:
             raise AlternationNotAllowedInOptional(parser.expression, token)
-        elif token.ast_type in [
+        elif token.ast_type not in [
             TokenType.BEGIN_PARAMETER,
             TokenType.START_OF_LINE,
             TokenType.END_OF_LINE,
             TokenType.BEGIN_OPTIONAL,
         ]:
-            pass
-        else:
             # If configured correctly this will never happen
             return Result(0, None)
 
@@ -76,7 +74,6 @@ class CucumberExpressionParser:
             return Result(0, None)
 
     def parse(self, expression: str) -> Node:
-
         # parameter := '{' + name* + '}'
         parse_parameter = self.parse_between(
             NodeType.PARAMETER,
@@ -252,10 +249,9 @@ class CucumberExpressionParser:
     def looking_at_any(
         self, tokens: list[Token], at: int, token_types: list[TokenType]
     ) -> bool:
-        for token_type in token_types:
-            if self.looking_at(tokens, at, token_type):
-                return True
-        return False
+        return any(
+            self.looking_at(tokens, at, token_type) for token_type in token_types
+        )
 
     @staticmethod
     def looking_at(tokens: list[Token], at: int, token_type: TokenType) -> bool:
@@ -282,42 +278,34 @@ class CucumberExpressionParser:
             else:
                 alternative.append(n)
         alternatives.append(alternative)
-        return self.create_alternative_nodes(start, end, separators, alternatives)
+        return list(self.create_alternative_nodes(start, end, separators, alternatives))
 
     @staticmethod
     def create_alternative_nodes(
         start: int, end: int, separators: list, alternatives: list
     ) -> list[Node]:
-        nodes: list[Node] = []
         for index, alternative in enumerate(alternatives):
             if index == 0:
                 right_separator = separators[index]
-                nodes.append(
-                    Node(
-                        NodeType.ALTERNATIVE,
-                        alternative,
-                        None,
-                        start,
-                        right_separator.start,
-                    )
+                yield Node(
+                    NodeType.ALTERNATIVE,
+                    alternative,
+                    None,
+                    start,
+                    right_separator.start,
                 )
             elif index == len(alternatives) - 1:
                 left_separator = separators[index - 1]
-                nodes.append(
-                    Node(
-                        NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
-                    )
+                yield Node(
+                    NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
                 )
             else:
                 left_separator = separators[index - 1]
                 right_separator = separators[index]
-                nodes.append(
-                    Node(
-                        NodeType.ALTERNATIVE,
-                        alternative,
-                        None,
-                        left_separator.end,
-                        right_separator.start,
-                    )
+                yield Node(
+                    NodeType.ALTERNATIVE,
+                    alternative,
+                    None,
+                    left_separator.end,
+                    right_separator.start,
                 )
-        return nodes
