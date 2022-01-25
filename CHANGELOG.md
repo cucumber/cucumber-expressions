@@ -6,10 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [15.0.1] - 2022-01-04
+### Fixed
+- Fixed release scripts
+
+## [15.0.0] - 2022-01-04
 ### Added
-- [.NET] Implemenation of Cucumber Expressions by porting the Java parser
+- [Ruby,JavaScript,Go] Add `bigdecimal`, `biginteger` parameter types ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
+- [.NET] Implementation of Cucumber Expressions by porting the Java parser
 ([#1743](https://github.com/cucumber/cucumber-expressions/pull/45))
 - [Python] Added Python Cucumber Expressions
+
+### Changed
+- [Go] Parameters of type `{float}` are now parsed as `float32` (previously it was `float64`).
+Use `{double}` if you need `float64`. ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
 
 ## [14.0.0] - 2021-10-12
 ### Changed
@@ -679,7 +690,9 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.1...HEAD
+[15.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.0...v15.0.1
+[15.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...v15.0.0
 [14.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.3...v14.0.0
 [13.1.3]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.2...v13.1.3
 [13.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...v13.1.2
@@ -692,7 +705,6 @@ by [brasmusson](https://github.com/brasmusson))
 [12.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v12.0.1...v12.1.0
 [12.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.2...v12.0.0
-[11.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.1...v11.0.2
 [11.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.0...v11.0.1
 [11.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v10.3.0...v11.0.0
 [10.3.0]: https://github.com/cucumber/cucumber-expressions/compare/v10.2.2...v10.3.0
@@ -711,7 +723,6 @@ by [brasmusson](https://github.com/brasmusson))
 [8.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v8.0.0...v8.0.1
 [8.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.2...v8.0.0
 [7.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.1...v7.0.2
-[7.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.0...v7.0.1
 [7.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.3...v7.0.0
 [6.2.3]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.2...v6.2.3
 [6.2.2]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.1...v6.2.2
@@ -721,7 +732,6 @@ by [brasmusson](https://github.com/brasmusson))
 [6.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.0.1...v6.1.1
 [6.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.0.0...v6.0.1
 [6.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.19...v6.0.0
-[5.0.19]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.18...v5.0.19
 [5.0.18]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.16...v5.0.18
 [5.0.16]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.15...v5.0.16
 [5.0.15]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.14...v5.0.15
@@ -745,3 +755,4 @@ by [brasmusson](https://github.com/brasmusson))
 [1.0.3]: https://github.com/cucumber/cucumber-expressions/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/cucumber/cucumber/releases/tag/v1.0.1
+ber/cucumber/releases/tag/v1.0.1

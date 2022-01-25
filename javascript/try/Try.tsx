@@ -9,7 +9,7 @@ import {
   GeneratedExpression,
   ParameterType,
   ParameterTypeRegistry,
-} from '../src/index'
+} from '../src/index.js'
 import { ExpressionEditor } from './codemirror/ExpressionEditor.js'
 import { TextEditor } from './codemirror/TextEditor.js'
 import { CopyButton } from './useCopyToClipboard.js'

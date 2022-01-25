@@ -1,0 +1,5 @@
+---
+expression: "{byte}"
+text: '127'
+expected_args:
+- 127

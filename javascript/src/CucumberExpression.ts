@@ -10,10 +10,10 @@ import {
   createParameterIsNotAllowedInOptional,
   createUndefinedParameterType,
 } from './Errors.js'
-import Expression from './Expression.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import TreeRegexp from './TreeRegexp.js'
+import { Expression } from './types.js'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 

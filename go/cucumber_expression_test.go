@@ -5,8 +5,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"math/big"
 	"reflect"
 	"regexp"
+	"strconv"
 	"testing"
 )
 
@@ -27,7 +29,7 @@ func TestCucumberExpression(t *testing.T) {
 			require.NoError(t, err)
 			args, err := expression.Match(text)
 			require.NoError(t, err)
-			require.Equal(t, expectedArgs, argumentValues(args))
+			require.Equal(t, expectedArgs, convertToYamlValues(args))
 		}
 
 		assertThrows := func(t *testing.T, expected string, expr string, text string) {
@@ -73,6 +75,10 @@ func TestCucumberExpression(t *testing.T) {
 		args, err := expression.Match("I have 7 cukes")
 		require.NoError(t, err)
 		require.Equal(t, args[0].GetValue(), 7)
+	})
+
+	t.Run("matches double", func(t *testing.T) {
+		require.Equal(t, MatchCucumberExpression(t, "{double}", "0.1"), []interface{}{0.1})
 	})
 
 	t.Run("matches float", func(t *testing.T) {
@@ -180,16 +186,33 @@ func MatchCucumberExpression(t *testing.T, expr string, text string, typeHints .
 	require.NoError(t, err)
 	args, err := expression.Match(text, typeHints...)
 	require.NoError(t, err)
-	return argumentValues(args)
+	return convertToYamlValues(args)
 }
 
-func argumentValues(args []*Argument) []interface{} {
+func convertToYamlValues(args []*Argument) []interface{} {
 	if args == nil {
 		return nil
 	}
 	result := make([]interface{}, len(args))
 	for i, arg := range args {
-		result[i] = arg.GetValue()
+		value := arg.GetValue()
+		switch v := value.(type) {
+		case *big.Float:
+			result[i] = fmt.Sprintf("%v", v)
+		case *big.Int:
+			result[i] = fmt.Sprintf("%v", v)
+		case int8:
+			result[i] = int(v)
+		case int16:
+			result[i] = int(v)
+		case int64:
+			result[i] = int(v)
+		case float32:
+			f, _ := strconv.ParseFloat(fmt.Sprint(v), 64)
+			result[i] = f
+		default:
+			result[i] = value
+		}
 	}
 	return result
 }
