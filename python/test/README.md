@@ -5,7 +5,7 @@ The test suite uses `pytest` as its testing Framework.
 
 ## Preparing to run the tests
 
-Ensure that you have `python` installed that you have setup virtual environment for this tutorial by installing `python3-venv` package.
+Ensure that you have `python` installed that you have set up virtual environment by installing `python3-venv` package.
 
 Create a Python environment.
 
@@ -13,7 +13,7 @@ Create a Python environment.
 python3 -m venv <env_name>
 ```
 
-Install the needed modules i.e `pytest`, `pytest` and so forth using the `requirements.txt` file (instructions from project root dir)
+Install the needed dependency modules by using the `requirements.txt` file (instructions from project root dir)
 
 ``` python
 pip3 install -r tests/requirements.txt
@@ -21,12 +21,15 @@ pip3 install -r tests/requirements.txt
 
 ## Running the tests
 
-`pytest` automatically picks up files in the currect/sub directory that have the prefix or suffix of `test_*.py` or `*_test.py`, respectively, unless stated explicitly which files to run. And, it requires test function names to start with `test` otherwise it won't treat those functions as test functions and this applies to classes.
+`pytest` automatically picks up files in the current directory or any subdirectories that have the prefix or suffix of `test_*.py`.
+Test function names must start with `test*`.
+Test class names must start with `Test*`.
 
 To run all tests:
 
 ``` python
-pytest ./test -v # execute all tests in verbose mode
+pytest # execute all tests
+pytest -v # execute all tests in verbose mode
 pytest <filename> -v # to execute specific test file
 ```
 
