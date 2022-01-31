@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal
 
 import pytest
 
@@ -24,7 +25,15 @@ def match(
 ):
     cucumber_expression = CucumberExpression(expression, parameter_registry)
     matches = cucumber_expression.match(match_text)
-    return matches and [arg.value for arg in matches]
+
+    def transform_value(value):
+        if isinstance(value, int):
+            return str(value) if value.bit_length() > 64 else value
+        elif isinstance(value, Decimal):
+            return str(value)
+        else:
+            return value
+    return matches and [transform_value(arg.value) for arg in matches]
 
 
 class TestCucumberExpression:

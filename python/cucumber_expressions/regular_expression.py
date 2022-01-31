@@ -33,8 +33,8 @@ class RegularExpression:
                 from cucumber_expressions.parameter_type import ParameterType
 
                 yield possible_regexp or ParameterType(
-                    None, parameter_type_regexp, str, lambda *s: s[0], False, False
-                )
+                        None, parameter_type_regexp, str, lambda *s: s[0], False, False
+                    )
 
         return Argument.build(self.tree_regexp, text, list(generate_parameter_types()))
 

@@ -288,24 +288,24 @@ class CucumberExpressionParser:
             if index == 0:
                 right_separator = separators[index]
                 yield Node(
-                    NodeType.ALTERNATIVE,
-                    alternative,
-                    None,
-                    start,
-                    right_separator.start,
-                )
+                        NodeType.ALTERNATIVE,
+                        alternative,
+                        None,
+                        start,
+                        right_separator.start,
+                    )
             elif index == len(alternatives) - 1:
                 left_separator = separators[index - 1]
                 yield Node(
-                    NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
-                )
+                        NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
+                    )
             else:
                 left_separator = separators[index - 1]
                 right_separator = separators[index]
                 yield Node(
-                    NodeType.ALTERNATIVE,
-                    alternative,
-                    None,
-                    left_separator.end,
-                    right_separator.start,
-                )
+                        NodeType.ALTERNATIVE,
+                        alternative,
+                        None,
+                        left_separator.end,
+                        right_separator.start,
+                    )

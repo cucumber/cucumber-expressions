@@ -1,4 +1,5 @@
 import functools
+from decimal import Decimal
 from typing import Optional
 
 from cucumber_expressions.parameter_type import ParameterType
@@ -46,6 +47,12 @@ class ParameterTypeRegistry:
         self.define_parameter_type(
             ParameterType("", ANONYMOUS_REGEXP, int, lambda s: s, False, True)
         )
+        self.define_parameter_type(ParameterType('bigdecimal', FLOAT_REGEXP, Decimal, lambda s: Decimal(s), False, False))
+        self.define_parameter_type(ParameterType('biginteger', INTEGER_REGEXPS, int, lambda s: int(s), False, False))
+        self.define_parameter_type(ParameterType('byte', INTEGER_REGEXPS, int, lambda s: int(s), False, False))
+        self.define_parameter_type(ParameterType('short', INTEGER_REGEXPS, int, lambda s: int(s), False, False))
+        self.define_parameter_type(ParameterType('long', INTEGER_REGEXPS, int, lambda s: int(s), False, False))
+        self.define_parameter_type(ParameterType('double', FLOAT_REGEXP, float, lambda s: float(s), False, False))
 
     @property
     def parameter_types(self) -> list:
