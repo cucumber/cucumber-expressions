@@ -14,7 +14,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-        python-version: [ '3.x', 'pypy-3.6', 'pypy-3.7',  'pypy-3.8', 'pypy-3.9', 'pypy-3.10']
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
 
     steps:
     - uses: actions/checkout@v2
@@ -22,11 +22,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: x64
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r test/requirements.txt
+        pip install -r python/test/requirements.txt
     - name: test
-      working-directory: test
+      working-directory: python
       run: pytest
