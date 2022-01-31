@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import Optional, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
@@ -23,7 +23,7 @@ class RegularExpression:
      * @param parameterTypeRegistry used to look up parameter types
      """
 
-    def match(self, text) -> Optional[list[Argument]]:
+    def match(self, text) -> Optional[List[Argument]]:
         def generate_parameter_types():
             for group_builder in self.tree_regexp.group_builder.children:
                 parameter_type_regexp = group_builder.source

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 
 class NodeType(Enum):
@@ -41,7 +41,7 @@ class Node:
     def __init__(
         self,
         ast_type: NodeType,
-        nodes: Optional[list[Node]],
+        nodes: Optional[List[Node]],
         token: Optional[str],
         start: int,
         end: int,
@@ -59,7 +59,7 @@ class Node:
         return self._ast_type
 
     @property
-    def nodes(self) -> list[Node]:
+    def nodes(self) -> List[Node]:
         return self._nodes
 
     @property
@@ -131,9 +131,10 @@ class Token:
     def type_of(char: str) -> TokenType:
         if char.isspace():
             return TokenType.WHITE_SPACE
-        if possible_demarcation_match := [
+        possible_demarcation_match = [
             e.name for e in DemarcationCharacters if e.value == char
-        ]:
+        ]
+        if possible_demarcation_match:
             _key = possible_demarcation_match[0].replace("_CHARACTER", "")
             return TokenType(_key)
         else:
@@ -141,9 +142,12 @@ class Token:
 
     @staticmethod
     def symbol_of(token: TokenType):
-        if (possible_token_character_key := token.name + "_CHARACTER") in [
-            e.name for e in DemarcationCharacters
-        ]:
+        possible_token_character_key = token.name + "_CHARACTER"
+        if any(
+            e.name
+            for e in DemarcationCharacters
+            if e.name == possible_token_character_key
+        ):
             return DemarcationCharacters[possible_token_character_key].value
         else:
             return ""

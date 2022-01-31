@@ -16,8 +16,8 @@ class Argument:
 
     @staticmethod
     def build(
-        tree_regexp: TreeRegexp, text: str, parameter_types: list
-    ) -> Optional[list[Argument]]:
+        tree_regexp: TreeRegexp, text: str, parameter_types: List
+    ) -> Optional[List[Argument]]:
         group = tree_regexp.match(text)
         if not group:
             return None

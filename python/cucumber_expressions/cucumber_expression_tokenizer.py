@@ -1,3 +1,5 @@
+from typing import List
+
 from cucumber_expressions.ast import TokenType, Token
 from cucumber_expressions.errors import (
     TheEndOfLineCannotBeEscaped,
@@ -8,11 +10,11 @@ from cucumber_expressions.errors import (
 class CucumberExpressionTokenizer:
     def __init__(self):
         self.expression: str = ""
-        self.buffer: list[str] = []
+        self.buffer: List[str] = []
         self.escaped: int = 0
         self.buffer_start_index: int = 0
 
-    def tokenize(self, expression: str, to_json: bool = False) -> list[Token]:
+    def tokenize(self, expression: str, to_json: bool = False) -> List[Token]:
         self.expression = expression
         tokens = []
         previous_token_type = TokenType.START_OF_LINE
@@ -48,7 +50,7 @@ class CucumberExpressionTokenizer:
 
         tokens.append(Token(TokenType.END_OF_LINE, "", len(chars), len(chars)))
 
-        def convert_to_json_format(_tokens: list[Token]) -> list:
+        def convert_to_json_format(_tokens: List[Token]) -> list:
             return [
                 {
                     "type": t.ast_type.value,

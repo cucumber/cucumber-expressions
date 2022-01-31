@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
@@ -23,12 +23,12 @@ class CucumberExpression:
     def __init__(self, expression, parameter_type_registry):
         self.expression = expression
         self.parameter_type_registry = parameter_type_registry
-        self.parameter_types: list[ParameterType] = []
+        self.parameter_types: List[ParameterType] = []
         self.tree_regexp = TreeRegexp(
             self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression))
         )
 
-    def match(self, text: str) -> Optional[list[Argument]]:
+    def match(self, text: str) -> Optional[List[Argument]]:
         return Argument.build(self.tree_regexp, text, self.parameter_types)
 
     @property
@@ -64,11 +64,13 @@ class CucumberExpression:
         return expression.translate({i: "\\" + chr(i) for i in ESCAPE_PATTERN})
 
     def rewrite_optional(self, node: Node):
-        if _possible_node_with_params := self.get_possible_node_with_parameters(node):
+        _possible_node_with_params = self.get_possible_node_with_parameters(node)
+        if _possible_node_with_params:
             raise ParameterIsNotAllowedInOptional(
                 _possible_node_with_params, self.expression
             )
-        if _possible_node_with_optionals := self.get_possible_node_with_optionals(node):
+        _possible_node_with_optionals = self.get_possible_node_with_optionals(node)
+        if _possible_node_with_optionals:
             raise OptionalIsNotAllowedInOptional(
                 _possible_node_with_optionals, self.expression
             )

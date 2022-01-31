@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, List
 
 import pytest
 
@@ -82,7 +82,7 @@ class TestRegularExpression:
         assert expression.regexp == regexp
 
     @staticmethod
-    def _match(expression: str, text: str) -> Optional[list[str]]:
+    def _match(expression: str, text: str) -> Optional[List[str]]:
         regular_expression = RegularExpression(expression, ParameterTypeRegistry())
         arguments = regular_expression.match(text)
         return arguments and [arg.value for arg in arguments]
