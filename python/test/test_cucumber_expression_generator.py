@@ -45,7 +45,7 @@ class TestCucumberExpression:
             generated_expression.source == "I have {int} cucumbers and {float} tomato"
         )
         assert generated_expression.parameter_names[0] == "int"
-        assert generated_expression.parameter_types[1].param_type == float
+        assert generated_expression.parameter_types[1].type == float
 
     def test_generates_expression_for_no_args(self):
         self._assert_expression("hello", [], "hello")
@@ -109,7 +109,7 @@ class TestCucumberExpression:
         expression = self.generator.generate_expressions("I have 2 cukes and 1.5 euro")[
             0
         ]
-        types = [e.param_type for e in expression.parameter_types]
+        types = [e.type for e in expression.parameter_types]
         assert types == [int, float]
 
     def test_matches_parameter_types_with_optional_capture_groups(self):

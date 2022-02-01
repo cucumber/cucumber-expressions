@@ -20,7 +20,7 @@ class CucumberExpressionTokenizer:
         previous_token_type = TokenType.START_OF_LINE
         treat_as_text = False
 
-        chars = [c for c in self.expression]
+        chars = list(self.expression)
 
         if not chars:
             tokens.append(Token(TokenType.START_OF_LINE, "", 0, 0))
@@ -50,7 +50,7 @@ class CucumberExpressionTokenizer:
 
         tokens.append(Token(TokenType.END_OF_LINE, "", len(chars), len(chars)))
 
-        def convert_to_json_format(_tokens: List[Token]) -> list:
+        def convert_to_json_format(_tokens: List[Token]) -> List:
             return [
                 {
                     "type": t.ast_type.value,
@@ -72,7 +72,7 @@ class CucumberExpressionTokenizer:
         consumed_index = self.buffer_start_index + len(self.buffer) + escape_tokens
         t = Token(
             token_type,
-            "".join(list(self.buffer)),
+            "".join(self.buffer),
             self.buffer_start_index,
             consumed_index,
         )

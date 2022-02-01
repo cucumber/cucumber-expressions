@@ -18,7 +18,7 @@ class CucumberExpressionGenerator:
     def generate_expressions(self, text: str) -> List[GeneratedExpression]:
         parameter_type_combinations = []
         parameter_type_matchers = self.create_parameter_type_matchers(text)
-        expression_template: str = ""
+        expression_template: List[str] = []
         pos = 0
 
         while True:
@@ -58,21 +58,18 @@ class CucumberExpressionGenerator:
             parameter_type_combinations.append(
                 sorted(parameter_types, key=functools.cmp_to_key(ParameterType.compare))
             )
-            expression_template = "".join(
-                [
-                    expression_template,
-                    self.escape(text[pos : best_parameter_type_matcher.start]),
-                ]
+            expression_template.append(
+                self.escape(text[pos : best_parameter_type_matcher.start])
             )
-            expression_template += "{%s}"
+            expression_template.append("{%s}")
             pos = best_parameter_type_matcher.start + len(
                 best_parameter_type_matcher.group
             )
             if pos >= len(text):
                 break
-        expression_template += self.escape(text[pos:])
+        expression_template.append(self.escape(text[pos:]))
         return CombinatorialGeneratedExpressionFactory(
-            expression_template, parameter_type_combinations
+            "".join(expression_template), parameter_type_combinations
         ).generate_expressions()
 
     @staticmethod
@@ -97,8 +94,7 @@ class CucumberExpressionGenerator:
     def create_parameter_type_matchers_with_type(
         parameter_type, text
     ) -> List[ParameterTypeMatcher]:
-        regexps = parameter_type.regexps
         return [
             ParameterTypeMatcher(parameter_type, re.compile(f"({regexp})"), text, 0)
-            for regexp in regexps
+            for regexp in parameter_type.regexps
         ]

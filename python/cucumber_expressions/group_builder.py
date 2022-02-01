@@ -1,22 +1,24 @@
 from __future__ import annotations
 
+from typing import List
+
 from cucumber_expressions.group import Group
 
 
 class GroupBuilder:
     def __init__(self):
-        self._group_builders: list[GroupBuilder] = []
+        self._group_builders: List[GroupBuilder] = []
         self._capturing = True
         self._source: str = ""
         self._end_index = None
-        self._children: list[GroupBuilder] = []
+        self._children: List[GroupBuilder] = []
 
     def add(self, group_builder: GroupBuilder):
         self._group_builders.append(group_builder)
 
     def build(self, match, group_indices) -> Group:
         group_index = next(group_indices)
-        children: list[Group] = [
+        children: List[Group] = [
             gb.build(match, group_indices) for gb in self._group_builders
         ]
         return Group(

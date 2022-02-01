@@ -38,20 +38,26 @@ class ParameterType:
         else:
             return 0
 
-    # Create a new Parameter
-    #
-    # @param name the name of the parameter type
-    # @param regexp [Array] list of regexps for capture groups. A single regexp can also be used
-    # @param type the return type of the transformed
-    # @param transformer lambda that transforms a String to (possibly) another type
-    # @param use_for_snippets true if this should be used for snippet generation
-    # @param prefer_for_regexp_match true if this should be preferred over similar types
-    #
+    """Creates a new Parameter
+    :param name: name of the parameter type
+    :type name: str
+    :param regexp: regexp or list of regexps for capture groups
+    :type regexp: list[str] or str
+    :param type: the return type of the transformed
+    :type type: class
+    :param transformer: transforms a str to (possibly) another type
+    :type transformer: lambda
+    :param use_for_snippets: if this should be used for snippet generation
+    :type use_for_snippets: bool
+    :param prefer_for_regexp_match: if this should be preferred over similar types
+    :type prefer_for_regexp_match: bool
+    """
+
     def __init__(
         self,
         name,
         regexp,
-        param_type,
+        type,
         transformer,
         use_for_snippets,
         prefer_for_regexp_match,
@@ -60,7 +66,7 @@ class ParameterType:
         if self.name:
             self.check_parameter_type_name(self.name)
         self.regexp = regexp
-        self.param_type = param_type
+        self.type = type
         self.transformer = transformer
         self._use_for_snippets = use_for_snippets
         self._prefer_for_regexp_match = prefer_for_regexp_match

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Callable
+from typing import NamedTuple, Optional, Callable, List
 
 from cucumber_expressions.ast import Token, TokenType, Node, NodeType
 from cucumber_expressions.cucumber_expression_tokenizer import (
@@ -20,7 +20,7 @@ class Result(NamedTuple):
 
 class Parser(NamedTuple):
     expression: str
-    tokens: list[Token]
+    tokens: List[Token]
     current: int
 
 
@@ -179,7 +179,7 @@ class CucumberExpressionParser:
         ast_type: NodeType,
         begin_token: TokenType,
         end_token: TokenType,
-        parsers: list,
+        parsers: List,
     ) -> Callable[[Parser], Result | tuple[int, Node]]:
         def _parse_between(parser: Parser):
             if not self.looking_at(parser.tokens, parser.current, begin_token):
@@ -214,7 +214,7 @@ class CucumberExpressionParser:
 
     @staticmethod
     def parse_token(
-        expression, parsers: list, tokens: list[Token], start_at: int
+        expression, parsers: List, tokens: List[Token], start_at: int
     ) -> Result:
         for parser in parsers:
             consumed, ast = parser(Parser(expression, tokens, start_at))
@@ -226,14 +226,14 @@ class CucumberExpressionParser:
     def parse_tokens_until(
         self,
         expression,
-        parsers: list,
-        tokens: list[Token],
+        parsers: List,
+        tokens: List[Token],
         start_at: int,
-        end_tokens: list[TokenType],
-    ) -> tuple[int, list[Node]]:
+        end_tokens: List[TokenType],
+    ) -> tuple[int, List[Node]]:
         current = start_at
         size = len(tokens)
-        ast: list[Node] = []
+        ast: List[Node] = []
         while current < size:
             if self.looking_at_any(tokens, current, end_tokens):
                 break
@@ -247,14 +247,14 @@ class CucumberExpressionParser:
         return current - start_at, ast
 
     def looking_at_any(
-        self, tokens: list[Token], at: int, token_types: list[TokenType]
+        self, tokens: List[Token], at: int, token_types: List[TokenType]
     ) -> bool:
         return any(
             self.looking_at(tokens, at, token_type) for token_type in token_types
         )
 
     @staticmethod
-    def looking_at(tokens: list[Token], at: int, token_type: TokenType) -> bool:
+    def looking_at(tokens: List[Token], at: int, token_type: TokenType) -> bool:
         if at < 0:
             # If configured correctly this will never happen
             # Keep for completeness
@@ -265,8 +265,8 @@ class CucumberExpressionParser:
             return tokens[at].ast_type == token_type
 
     def split_alternatives(
-        self, start: int, end: int, alternation: list[Node]
-    ) -> list[Node]:
+        self, start: int, end: int, alternation: List[Node]
+    ) -> List[Node]:
         separators = []
         alternatives = []
         alternative = []
@@ -282,30 +282,30 @@ class CucumberExpressionParser:
 
     @staticmethod
     def create_alternative_nodes(
-        start: int, end: int, separators: list, alternatives: list
-    ) -> list[Node]:
+        start: int, end: int, separators: List, alternatives: List
+    ) -> List[Node]:
         for index, alternative in enumerate(alternatives):
             if index == 0:
                 right_separator = separators[index]
                 yield Node(
-                        NodeType.ALTERNATIVE,
-                        alternative,
-                        None,
-                        start,
-                        right_separator.start,
-                    )
+                    NodeType.ALTERNATIVE,
+                    alternative,
+                    None,
+                    start,
+                    right_separator.start,
+                )
             elif index == len(alternatives) - 1:
                 left_separator = separators[index - 1]
                 yield Node(
-                        NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
-                    )
+                    NodeType.ALTERNATIVE, alternative, None, left_separator.end, end
+                )
             else:
                 left_separator = separators[index - 1]
                 right_separator = separators[index]
                 yield Node(
-                        NodeType.ALTERNATIVE,
-                        alternative,
-                        None,
-                        left_separator.end,
-                        right_separator.start,
-                    )
+                    NodeType.ALTERNATIVE,
+                    alternative,
+                    None,
+                    left_separator.end,
+                    right_separator.start,
+                )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, List
 
 from cucumber_expressions.group import Group
 from cucumber_expressions.parameter_type import ParameterType
@@ -12,17 +12,16 @@ class Argument:
     def __init__(self, group, parameter_type):
         self._group: Group = group
         self.parameter_type: ParameterType = parameter_type
-        self._value = None
 
     @staticmethod
     def build(
         tree_regexp: TreeRegexp, text: str, parameter_types: List
     ) -> Optional[List[Argument]]:
-        group = tree_regexp.match(text)
-        if not group:
+        match_group = tree_regexp.match(text)
+        if not match_group:
             return None
 
-        arg_groups = group.children
+        arg_groups = match_group.children
 
         if len(arg_groups) != len(parameter_types):
             raise CucumberExpressionError(
@@ -36,8 +35,7 @@ class Argument:
 
     @property
     def value(self):
-        group_values = self.group.values
-        return self.parameter_type.transform(group_values)
+        return self.parameter_type.transform(self.group.values if self.group else None)
 
     @property
     def group(self):

@@ -24,19 +24,21 @@ class RegularExpression:
      """
 
     def match(self, text) -> Optional[List[Argument]]:
-        def generate_parameter_types():
-            for group_builder in self.tree_regexp.group_builder.children:
-                parameter_type_regexp = group_builder.source
-                possible_regexp = self.parameter_type_registry.lookup_by_regexp(
-                    parameter_type_regexp, self.expression_regexp, text
-                )
-                from cucumber_expressions.parameter_type import ParameterType
+        return Argument.build(
+            self.tree_regexp, text, list(self.generate_parameter_types(text))
+        )
 
-                yield possible_regexp or ParameterType(
-                        None, parameter_type_regexp, str, lambda *s: s[0], False, False
-                    )
+    def generate_parameter_types(self, text):
+        for group_builder in self.tree_regexp.group_builder.children:
+            parameter_type_regexp = group_builder.source
+            possible_regexp = self.parameter_type_registry.lookup_by_regexp(
+                parameter_type_regexp, self.expression_regexp, text
+            )
+            from cucumber_expressions.parameter_type import ParameterType
 
-        return Argument.build(self.tree_regexp, text, list(generate_parameter_types()))
+            yield possible_regexp or ParameterType(
+                None, parameter_type_regexp, str, lambda *s: s[0], False, False
+            )
 
     @property
     def regexp(self):

@@ -39,9 +39,6 @@ class CucumberExpression:
     def regexp(self):
         return self.tree_regexp.regexp
 
-    def __str__(self):
-        self.source()
-
     def rewrite_to_regex(self, node: Node):
         if node.ast_type == NodeType.TEXT:
             return self.escape_regex(node.text)
@@ -60,7 +57,7 @@ class CucumberExpression:
             raise Exception(node.ast_type)
 
     @staticmethod
-    def escape_regex(expression):
+    def escape_regex(expression) -> str:
         return expression.translate({i: "\\" + chr(i) for i in ESCAPE_PATTERN})
 
     def rewrite_optional(self, node: Node):
@@ -112,7 +109,7 @@ class CucumberExpression:
         return rf"^{regex}$"
 
     def are_nodes_empty(self, node: Node) -> bool:
-        return not self.get_nodes_with_ast_type(node, NodeType.TEXT)
+        return not any(self.get_nodes_with_ast_type(node, NodeType.TEXT))
 
     def get_possible_node_with_parameters(self, node: Node) -> Optional[Node]:
         results = self.get_nodes_with_ast_type(node, NodeType.PARAMETER)
@@ -123,5 +120,5 @@ class CucumberExpression:
         return results[0] if results else None
 
     @staticmethod
-    def get_nodes_with_ast_type(node: Node, ast_type: NodeType):
+    def get_nodes_with_ast_type(node: Node, ast_type: NodeType) -> List[Node]:
         return [ast_node for ast_node in node.nodes if ast_node.ast_type == ast_type]
