@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 from typing import Optional, List
 
 from tests.definitions import TESTDATA_ROOT_DIR
@@ -10,11 +10,11 @@ from cucumber_expressions.regular_expression import RegularExpression
 
 
 def get_expectation_yamls():
-    yaml_dir = os.path.join(TESTDATA_ROOT_DIR, "regular-expression", "matching")
+    yaml_dir = Path(TESTDATA_ROOT_DIR) / "regular-expression" / "matching"
     return [
-        os.path.join(yaml_dir, file)
-        for file in os.listdir(yaml_dir)
-        if file.endswith(".yaml")
+        Path(yaml_dir) / file
+        for file in Path(yaml_dir).iterdir()
+        if file.suffix == ".yaml"
     ]
 
 

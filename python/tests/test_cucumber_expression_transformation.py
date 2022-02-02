@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 import pytest
 
@@ -9,11 +9,11 @@ from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
 def get_expectation_yamls():
-    yaml_dir = os.path.join(TESTDATA_ROOT_DIR, "cucumber-expression", "transformation")
+    yaml_dir = Path(TESTDATA_ROOT_DIR) / "cucumber-expression" / "transformation"
     return [
-        os.path.join(yaml_dir, file)
-        for file in os.listdir(yaml_dir)
-        if file.endswith(".yaml")
+        Path(yaml_dir) / file
+        for file in Path(yaml_dir).iterdir()
+        if file.suffix == ".yaml"
     ]
 
 
