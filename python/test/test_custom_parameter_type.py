@@ -88,8 +88,8 @@ class TestCustomParameterType:
         _from = args[1].value
         assert _from == Coordinate(10, 20, 30)
 
-        to = args[2].value
-        assert to == Coordinate(40, 50, 60)
+        _to = args[2].value
+        assert _to == Coordinate(40, 50, 60)
 
     def test_matches_parameters_with_custom_parameter_type_using_optional_capture_group(
         self,

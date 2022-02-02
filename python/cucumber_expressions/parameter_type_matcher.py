@@ -46,11 +46,13 @@ class ParameterTypeMatcher:
         return self.text[self.match_position :][self.match[0] : self.match[1]]
 
     @staticmethod
-    def compare(a: ParameterTypeMatcher, b: ParameterTypeMatcher) -> int:
-        pos_comparison = a.start - b.start
+    def compare(
+        this_object: ParameterTypeMatcher, that_object: ParameterTypeMatcher
+    ) -> int:
+        pos_comparison = this_object.start - that_object.start
         if pos_comparison != 0:
             return pos_comparison
-        length_comparison = len(b.group) - len(a.group)
+        length_comparison = len(that_object.group) - len(this_object.group)
         if length_comparison != 0:
             return length_comparison
         return 0

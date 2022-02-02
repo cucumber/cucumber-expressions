@@ -42,19 +42,18 @@ class CucumberExpression:
     def rewrite_to_regex(self, node: Node):
         if node.ast_type == NodeType.TEXT:
             return self.escape_regex(node.text)
-        elif node.ast_type == NodeType.OPTIONAL:
+        if node.ast_type == NodeType.OPTIONAL:
             return self.rewrite_optional(node)
-        elif node.ast_type == NodeType.ALTERNATION:
+        if node.ast_type == NodeType.ALTERNATION:
             return self.rewrite_alternation(node)
-        elif node.ast_type == NodeType.ALTERNATIVE:
+        if node.ast_type == NodeType.ALTERNATIVE:
             return self.rewrite_alternative(node)
-        elif node.ast_type == NodeType.PARAMETER:
+        if node.ast_type == NodeType.PARAMETER:
             return self.rewrite_parameter(node)
-        elif node.ast_type == NodeType.EXPRESSION:
+        if node.ast_type == NodeType.EXPRESSION:
             return self.rewrite_expression(node)
-        else:
-            # Can't happen as long as the switch case is exhaustive
-            raise Exception(node.ast_type)
+        # Can't happen as long as the switch case is exhaustive
+        raise Exception(node.ast_type)
 
     @staticmethod
     def escape_regex(expression) -> str:
@@ -78,7 +77,7 @@ class CucumberExpression:
 
     def rewrite_alternation(self, node: Node):
         for alternative in node.nodes:
-            if not len(alternative.nodes):
+            if not alternative.nodes:
                 raise AlternativeMayNotBeEmpty(alternative, self.expression)
             if self.are_nodes_empty(alternative):
                 raise AlternativeMayNotExclusivelyContainOptionals(

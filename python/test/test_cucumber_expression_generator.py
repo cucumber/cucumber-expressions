@@ -8,13 +8,9 @@ from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
-class ParameterRegistry:
-    pass
-
-
 class Currency:
-    def __init__(self, s: str):
-        self.s = s
+    def __init__(self, currency: str):
+        self.currency = currency
 
 
 class TestCucumberExpression:
@@ -95,7 +91,12 @@ class TestCucumberExpression:
     def test_numbers_only_second_argument_when_type_is_not_reserved_keyword(self):
         self.parameter_type_registry.define_parameter_type(
             ParameterType(
-                "currency", "[A-Z]{3}", Currency, lambda s: Currency(s), True, True
+                "currency",
+                "[A-Z]{3}",
+                Currency,
+                lambda currency: Currency(currency),
+                True,
+                True,
             )
         )
 
@@ -158,12 +159,12 @@ class TestCucumberExpression:
 
     @pytest.fixture(autouse=True)
     def direction_parameter_type_registry_generator(self):
-        self.direction_parameter_type_registry = self.parameter_type_registry
-        self.direction_parameter_type_registry.define_parameter_type(
+        direction_parameter_type_registry = self.parameter_type_registry
+        direction_parameter_type_registry.define_parameter_type(
             ParameterType("direction", r"(up|down)", str, lambda s: s, True, False)
         )
         self.direction_generator = CucumberExpressionGenerator(
-            self.direction_parameter_type_registry
+            direction_parameter_type_registry
         )
 
     def test_does_not_suggest_parameter_when_match_is_at_the_beginning_of_a_word(self):

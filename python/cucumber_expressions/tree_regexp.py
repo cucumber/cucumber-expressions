@@ -37,16 +37,16 @@ class TreeRegexp:
                     group_builder.capturing = False
                 stack.append(group_builder)
             elif char == ")" and not escaping and not char_class:
-                gb = stack.pop()
-                if not gb:
+                group_builder = stack.pop()
+                if not group_builder:
                     raise Exception("Empty stack!")
                 group_start = group_start_stack.pop()
                 group_start = group_start or 0
-                if gb.capturing:
-                    gb.source = source[(group_start + 1) : index]
-                    stack[-1].add(gb)
+                if group_builder.capturing:
+                    group_builder.source = source[(group_start + 1) : index]
+                    stack[-1].add(group_builder)
                 else:
-                    gb.move_children_to(stack[-1])
+                    group_builder.move_children_to(stack[-1])
             escaping = not escaping and char == EscapeCharacters.ESCAPE_CHARACTER.value
         return stack.pop()
 

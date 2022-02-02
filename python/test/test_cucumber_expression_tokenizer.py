@@ -1,11 +1,12 @@
 import os
 
+from test.definitions import TESTDATA_ROOT_DIR
+
 import pytest
 
 from cucumber_expressions.cucumber_expression_tokenizer import (
     CucumberExpressionTokenizer,
 )
-from test.definitions import TESTDATA_ROOT_DIR
 from cucumber_expressions.errors import (
     CantEscape,
     TheEndOfLineCannotBeEscaped,
@@ -13,10 +14,10 @@ from cucumber_expressions.errors import (
 
 
 def get_expectation_yamls():
-    YAML_DIR = os.path.join(TESTDATA_ROOT_DIR, "cucumber-expression", "tokenizer")
+    yaml_dir = os.path.join(TESTDATA_ROOT_DIR, "cucumber-expression", "tokenizer")
     return [
-        os.path.join(YAML_DIR, file)
-        for file in os.listdir(YAML_DIR)
+        os.path.join(yaml_dir, file)
+        for file in os.listdir(yaml_dir)
         if file.endswith(".yaml")
     ]
 

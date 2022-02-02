@@ -1,19 +1,20 @@
 import os
 from decimal import Decimal
 
+from test.definitions import TESTDATA_ROOT_DIR
+
 import pytest
 
 from cucumber_expressions.cucumber_expression import CucumberExpression
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
-from test.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():
-    YAML_DIR = os.path.join(TESTDATA_ROOT_DIR, "cucumber-expression", "matching")
+    yaml_dir = os.path.join(TESTDATA_ROOT_DIR, "cucumber-expression", "matching")
     return [
-        os.path.join(YAML_DIR, file)
-        for file in os.listdir(YAML_DIR)
+        os.path.join(yaml_dir, file)
+        for file in os.listdir(yaml_dir)
         if file.endswith(".yaml")
     ]
 
@@ -29,10 +30,9 @@ def match(
     def transform_value(value):
         if isinstance(value, int):
             return str(value) if value.bit_length() > 64 else value
-        elif isinstance(value, Decimal):
+        if isinstance(value, Decimal):
             return str(value)
-        else:
-            return value
+        return value
 
     return matches and [transform_value(arg.value) for arg in matches]
 

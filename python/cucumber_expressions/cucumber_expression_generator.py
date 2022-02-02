@@ -8,11 +8,10 @@ from cucumber_expressions.parameter_type_matcher import ParameterTypeMatcher
 from cucumber_expressions.combinatorial_generated_expression_factory import (
     CombinatorialGeneratedExpressionFactory,
 )
-from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
 class CucumberExpressionGenerator:
-    def __init__(self, parameter_type_registry: ParameterTypeRegistry):
+    def __init__(self, parameter_type_registry):
         self.parameter_type_registry = parameter_type_registry
 
     def generate_expressions(self, text: str) -> List[GeneratedExpression]:

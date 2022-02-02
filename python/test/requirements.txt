@@ -1,3 +1,0 @@
-# Required only for testing
-pytest==6.2.5
-PyYAML==6.0

@@ -1,18 +1,19 @@
 import os
 from typing import Optional, List
 
+from test.definitions import TESTDATA_ROOT_DIR
+
 import pytest
 
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 from cucumber_expressions.regular_expression import RegularExpression
-from test.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():
-    YAML_DIR = os.path.join(TESTDATA_ROOT_DIR, "regular-expression", "matching")
+    yaml_dir = os.path.join(TESTDATA_ROOT_DIR, "regular-expression", "matching")
     return [
-        os.path.join(YAML_DIR, file)
-        for file in os.listdir(YAML_DIR)
+        os.path.join(yaml_dir, file)
+        for file in os.listdir(yaml_dir)
         if file.endswith(".yaml")
     ]
 

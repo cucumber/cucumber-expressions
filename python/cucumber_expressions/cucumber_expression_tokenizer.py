@@ -70,7 +70,7 @@ class CucumberExpressionTokenizer:
             self.escaped = 0
 
         consumed_index = self.buffer_start_index + len(self.buffer) + escape_tokens
-        t = Token(
+        token = Token(
             token_type,
             "".join(self.buffer),
             self.buffer_start_index,
@@ -79,18 +79,17 @@ class CucumberExpressionTokenizer:
 
         self.buffer = []
         self.buffer_start_index = consumed_index
-        return t
+        return token
 
     def token_type_of(self, char: str, treat_as_text) -> TokenType:
         if not treat_as_text:
             return Token.type_of(char)
-        elif Token.can_escape(char):
+        if Token.can_escape(char):
             return TokenType.TEXT
-        else:
-            raise CantEscape(
-                self.expression,
-                self.buffer_start_index + len(self.buffer) + self.escaped,
-            )
+        raise CantEscape(
+            self.expression,
+            self.buffer_start_index + len(self.buffer) + self.escaped,
+        )
 
     @staticmethod
     def should_create_new_token(

@@ -137,8 +137,7 @@ class Token:
         if possible_demarcation_match:
             _key = possible_demarcation_match[0].replace("_CHARACTER", "")
             return TokenType(_key)
-        else:
-            return TokenType.TEXT
+        return TokenType.TEXT
 
     @staticmethod
     def symbol_of(token: TokenType):
@@ -149,16 +148,15 @@ class Token:
             if e.name == possible_token_character_key
         ):
             return DemarcationCharacters[possible_token_character_key].value
-        else:
-            return ""
+        return ""
 
     @staticmethod
     def purpose_of(token: TokenType):
         if token in [TokenType.BEGIN_OPTIONAL, TokenType.END_OPTIONAL]:
             return "optional text"
-        elif token in [TokenType.BEGIN_PARAMETER, TokenType.END_PARAMETER]:
+        if token in [TokenType.BEGIN_PARAMETER, TokenType.END_PARAMETER]:
             return "a parameter"
-        elif token == TokenType.ALTERNATION:
+        if token == TokenType.ALTERNATION:
             return "alternation"
         return ""
 

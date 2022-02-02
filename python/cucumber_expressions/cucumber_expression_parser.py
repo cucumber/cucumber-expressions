@@ -39,16 +39,10 @@ class CucumberExpressionParser:
             return Result(
                 1, Node(NodeType.TEXT, None, token.text, token.start, token.end)
             )
-        elif token.ast_type == TokenType.ALTERNATION:
+        if token.ast_type == TokenType.ALTERNATION:
             raise AlternationNotAllowedInOptional(parser.expression, token)
-        elif token.ast_type not in [
-            TokenType.BEGIN_PARAMETER,
-            TokenType.START_OF_LINE,
-            TokenType.END_OF_LINE,
-            TokenType.BEGIN_OPTIONAL,
-        ]:
-            # If configured correctly this will never happen
-            return Result(0, None)
+        # If configured correctly this will never happen
+        return Result(0, None)
 
     # name == whitespace | .
     @staticmethod
@@ -58,7 +52,7 @@ class CucumberExpressionParser:
             return Result(
                 1, Node(NodeType.TEXT, None, token.text, token.start, token.end)
             )
-        elif token.ast_type in [
+        if token.ast_type in [
             TokenType.BEGIN_PARAMETER,
             TokenType.END_PARAMETER,
             TokenType.BEGIN_OPTIONAL,
@@ -66,12 +60,11 @@ class CucumberExpressionParser:
             TokenType.ALTERNATION,
         ]:
             raise InvalidParameterTypeNameInNode(parser.expression, token)
-        elif token.ast_type in [TokenType.START_OF_LINE, TokenType.END_OF_LINE]:
+        if token.ast_type in [TokenType.START_OF_LINE, TokenType.END_OF_LINE]:
             # If configured correctly this will never happen
             return Result(0, None)
-        else:
-            # If configured correctly this will never happen
-            return Result(0, None)
+        # If configured correctly this will never happen
+        return Result(0, None)
 
     def parse(self, expression: str) -> Node:
         # parameter := '{' + name* + '}'
@@ -259,10 +252,9 @@ class CucumberExpressionParser:
             # If configured correctly this will never happen
             # Keep for completeness
             return token_type == TokenType.START_OF_LINE
-        elif at >= len(tokens):
+        if at >= len(tokens):
             return token_type == TokenType.END_OF_LINE
-        else:
-            return tokens[at].ast_type == token_type
+        return tokens[at].ast_type == token_type
 
     def split_alternatives(
         self, start: int, end: int, alternation: List[Node]
@@ -270,13 +262,13 @@ class CucumberExpressionParser:
         separators = []
         alternatives = []
         alternative = []
-        for n in alternation:
-            if NodeType.ALTERNATIVE == n.ast_type:
-                separators.append(n)
+        for node in alternation:
+            if NodeType.ALTERNATIVE == node.ast_type:
+                separators.append(node)
                 alternatives.append(alternative)
                 alternative = []
             else:
-                alternative.append(n)
+                alternative.append(node)
         alternatives.append(alternative)
         return list(self.create_alternative_nodes(start, end, separators, alternatives))
 

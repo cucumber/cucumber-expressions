@@ -2,6 +2,9 @@ import functools
 from decimal import Decimal
 from typing import Optional, List
 
+from cucumber_expressions.cucumber_expression_generator import (
+    CucumberExpressionGenerator,
+)
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.errors import (
     CucumberExpressionError,
@@ -87,10 +90,6 @@ class ParameterTypeRegistry:
         if not parameter_types:
             return None
         if len(parameter_types) > 1 and not parameter_types[0].prefer_for_regexp_match:
-            from cucumber_expressions.cucumber_expression_generator import (
-                CucumberExpressionGenerator,
-            )
-
             generated_expressions = CucumberExpressionGenerator(
                 self
             ).generate_expressions(text)
@@ -109,10 +108,9 @@ class ParameterTypeRegistry:
                     raise CucumberExpressionError(
                         "The anonymous parameter type has already been defined"
                     )
-                else:
-                    raise CucumberExpressionError(
-                        f"There is already a parameter with name {parameter_type.name}"
-                    )
+                raise CucumberExpressionError(
+                    f"There is already a parameter with name {parameter_type.name}"
+                )
             self.parameter_type_by_name[parameter_type.name] = parameter_type
 
         for parameter_type_regexp in parameter_type.regexps:

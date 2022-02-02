@@ -9,6 +9,21 @@ UNESCAPE_PATTERN = r"(\\([\[$.|?*+\]]))"
 
 
 class ParameterType:
+    """Creates a new Parameter
+    :param name: name of the parameter type
+    :type name: Optional[str]
+    :param regexp: regexp or list of regexps for capture groups
+    :type regexp: list[str] or str
+    :param type: the return type of the transformed
+    :type type: class
+    :param transformer: transforms a str to (possibly) another type
+    :type transformer: lambda
+    :param use_for_snippets: if this should be used for snippet generation
+    :type use_for_snippets: bool
+    :param prefer_for_regexp_match: if this should be preferred over similar types
+    :type prefer_for_regexp_match: bool
+    """
+
     def check_parameter_type_name(self, type_name):
         if not self.is_valid_parameter_type_name(type_name):
             raise CucumberExpressionError(
@@ -33,25 +48,9 @@ class ParameterType:
 
         if _a_name < _b_name:
             return -1
-        elif _a_name > _b_name:
+        if _a_name > _b_name:
             return 1
-        else:
-            return 0
-
-    """Creates a new Parameter
-    :param name: name of the parameter type
-    :type name: str
-    :param regexp: regexp or list of regexps for capture groups
-    :type regexp: list[str] or str
-    :param type: the return type of the transformed
-    :type type: class
-    :param transformer: transforms a str to (possibly) another type
-    :type transformer: lambda
-    :param use_for_snippets: if this should be used for snippet generation
-    :type use_for_snippets: bool
-    :param prefer_for_regexp_match: if this should be preferred over similar types
-    :type prefer_for_regexp_match: bool
-    """
+        return 0
 
     def __init__(
         self,
