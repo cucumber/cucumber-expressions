@@ -34,6 +34,7 @@ jobs:
     defaults:
       run:
         working-directory: python
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
