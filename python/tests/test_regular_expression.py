@@ -1,7 +1,7 @@
 import os
 from typing import Optional, List
 
-from test.definitions import TESTDATA_ROOT_DIR
+from tests.definitions import TESTDATA_ROOT_DIR
 
 import pytest
 
