@@ -1,19 +1,19 @@
 import re
-from typing import List
+from typing import List, Pattern
 
 from cucumber_expressions.ast import EscapeCharacters
 from cucumber_expressions.group_builder import GroupBuilder
 
 
 class TreeRegexp:
-    def __init__(self, regexp):
-        self.regexp = regexp
+    def __init__(self, regexp: str):
+        self.regexp = regexp if isinstance(regexp, Pattern) else re.compile(regexp)
         self._group_builder = None
         if not self._group_builder:
-            self._group_builder = self.create_group_builder(re.compile(self.regexp))
+            self._group_builder = self.create_group_builder(self.regexp)
 
     def match(self, string: str):
-        matches = re.search(self.regexp, string)
+        matches = self.regexp.match(string)
         if not matches:
             return None
         group_indices = range(len(matches.groups()) + 1)

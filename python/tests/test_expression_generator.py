@@ -1,7 +1,7 @@
 import pytest
 
-from cucumber_expressions.cucumber_expression import CucumberExpression
-from cucumber_expressions.cucumber_expression_generator import (
+from cucumber_expressions.expression import CucumberExpression
+from cucumber_expressions.expression_generator import (
     CucumberExpressionGenerator,
 )
 from cucumber_expressions.parameter_type import ParameterType

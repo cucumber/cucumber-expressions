@@ -2,9 +2,7 @@ from typing import Optional, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
-from cucumber_expressions.cucumber_expression_parser import (
-    CucumberExpressionParser,
-)
+from cucumber_expressions.expression_parser import CucumberExpressionParser
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp
 from cucumber_expressions.errors import (
@@ -16,7 +14,7 @@ from cucumber_expressions.errors import (
     AlternativeMayNotExclusivelyContainOptionals,
 )
 
-ESCAPE_PATTERN = b"([\\^\[({$.|?*+})\]])"  # noqa W605
+ESCAPE_PATTERN = rb"([\\^\[({$.|?*+})\]])"
 
 
 class CucumberExpression:
@@ -36,8 +34,8 @@ class CucumberExpression:
         return self.expression
 
     @property
-    def regexp(self):
-        return self.tree_regexp.regexp
+    def regexp(self) -> str:
+        return self.tree_regexp.regexp.pattern
 
     def rewrite_to_regex(self, node: Node):
         if node.ast_type == NodeType.TEXT:

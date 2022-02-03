@@ -4,7 +4,7 @@ from tests.definitions import TESTDATA_ROOT_DIR
 
 import pytest
 
-from cucumber_expressions.cucumber_expression_parser import (
+from cucumber_expressions.expression_parser import (
     CucumberExpressionParser,
 )
 

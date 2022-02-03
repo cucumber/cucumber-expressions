@@ -2,9 +2,7 @@ import functools
 from decimal import Decimal
 from typing import Optional, List
 
-from cucumber_expressions.cucumber_expression_generator import (
-    CucumberExpressionGenerator,
-)
+from cucumber_expressions.expression_generator import CucumberExpressionGenerator
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.errors import (
     CucumberExpressionError,

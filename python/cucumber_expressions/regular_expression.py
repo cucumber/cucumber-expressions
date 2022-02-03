@@ -10,19 +10,22 @@ from cucumber_expressions.tree_regexp import TreeRegexp
 class RegularExpression:
     """Creates a new instance. Use this when the transform types are not known in advance,
     and should be determined by the regular expression's capture groups. Use this with
-    dynamically typed languages.
-    :param expression_regexp: the regular expression to use
-    :type expression_regexp: Pattern
-    :param parameter_type_registry: used to look up parameter types
-    :type parameter_type_registry: ParameterTypeRegistry
-    """
+    dynamically typed languages."""
 
     def __init__(
         self, expression_regexp, parameter_type_registry: ParameterTypeRegistry
     ):
+        """Creates a new instance. Use this when the transform types are not known in advance,
+        and should be determined by the regular expression's capture groups. Use this with
+        dynamically typed languages.
+        :param expression_regexp: the regular expression to use
+        :type expression_regexp: Pattern
+        :param parameter_type_registry: used to look up parameter types
+        :type parameter_type_registry: ParameterTypeRegistry
+        """
         self.expression_regexp = re.compile(expression_regexp)
         self.parameter_type_registry = parameter_type_registry
-        self.tree_regexp: TreeRegexp = TreeRegexp(self.expression_regexp)
+        self.tree_regexp: TreeRegexp = TreeRegexp(self.expression_regexp.pattern)
 
     def match(self, text) -> Optional[List[Argument]]:
         return Argument.build(

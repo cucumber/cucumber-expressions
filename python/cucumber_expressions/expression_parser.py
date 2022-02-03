@@ -3,14 +3,12 @@ from __future__ import annotations
 from typing import NamedTuple, Optional, Callable, List
 
 from cucumber_expressions.ast import Token, TokenType, Node, NodeType
-from cucumber_expressions.cucumber_expression_tokenizer import (
-    CucumberExpressionTokenizer,
-)
 from cucumber_expressions.errors import (
     AlternationNotAllowedInOptional,
     InvalidParameterTypeNameInNode,
     MissingEndToken,
 )
+from cucumber_expressions.expression_tokenizer import CucumberExpressionTokenizer
 
 
 class Result(NamedTuple):
@@ -240,21 +238,21 @@ class CucumberExpressionParser:
         return current - start_at, ast
 
     def looking_at_any(
-        self, tokens: List[Token], at: int, token_types: List[TokenType]
+        self, tokens: List[Token], position: int, token_types: List[TokenType]
     ) -> bool:
         return any(
-            self.looking_at(tokens, at, token_type) for token_type in token_types
+            self.looking_at(tokens, position, token_type) for token_type in token_types
         )
 
     @staticmethod
-    def looking_at(tokens: List[Token], at: int, token_type: TokenType) -> bool:
-        if at < 0:
+    def looking_at(tokens: List[Token], position: int, token_type: TokenType) -> bool:
+        if position < 0:
             # If configured correctly this will never happen
             # Keep for completeness
             return token_type == TokenType.START_OF_LINE
-        if at >= len(tokens):
+        if position >= len(tokens):
             return token_type == TokenType.END_OF_LINE
-        return tokens[at].ast_type == token_type
+        return tokens[position].ast_type == token_type
 
     def split_alternatives(
         self, start: int, end: int, alternation: List[Node]

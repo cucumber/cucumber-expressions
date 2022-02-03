@@ -1,8 +1,6 @@
-import re
-
 import pytest
 
-from cucumber_expressions.cucumber_expression import CucumberExpression
+from cucumber_expressions.expression import CucumberExpression
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 from cucumber_expressions.regular_expression import RegularExpression
@@ -55,7 +53,7 @@ class TestCustomParameterType:
 
     def test_throws_exception_for_illegal_character_in_parameter_name(self):
         with pytest.raises(CucumberExpressionError):
-            ParameterType("[string]", re.compile(r".*"), str, lambda s: s, True, False)
+            ParameterType("[string]", r".*", str, lambda s: s, True, False)
 
     def test_matches_parameters_with_custom_parameter_type(self):
         expression = CucumberExpression(

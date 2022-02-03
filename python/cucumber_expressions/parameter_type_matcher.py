@@ -1,14 +1,24 @@
 from __future__ import annotations
 
+import re
+from re import Pattern
+from typing import Union
+
 from cucumber_expressions.parameter_type import ParameterType
 
 
 class ParameterTypeMatcher:
     def __init__(
-        self, parameter_type: ParameterType, regexp, text: str, match_position: int = 0
+        self,
+        parameter_type: ParameterType,
+        regexp: Union[str, Pattern],
+        text: str,
+        match_position: int = 0,
     ):
         self.parameter_type = parameter_type
-        self.regexp = regexp
+        self.regexp: Pattern = (
+            regexp if isinstance(regexp, Pattern) else re.compile(regexp)
+        )
         self.text = text
         self.match_position = match_position
         _matches = self.regexp.search(self.text[self.match_position :])
