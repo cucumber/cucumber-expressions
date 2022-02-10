@@ -12,7 +12,7 @@ export const CopyButton: React.FunctionComponent<{
 
   return (
     <button
-      className="inline-flex items-center px-2.5 py-1.5 border border-gray-500 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50"
+      className="inline-flex items-center rounded border border-gray-500 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50"
       onClick={copy}
     >
       <svg
