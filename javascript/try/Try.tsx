@@ -111,12 +111,12 @@ export const Try: React.FunctionComponent<Props> = ({
             onChange={setShowAdvanced}
             className={`${
               showAdvanced ? 'bg-blue-600' : 'bg-gray-200'
-            } relative inline-flex items-center h-6 rounded-full w-11 float-right`}
+            } relative float-right inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
               className={`${
                 showAdvanced ? 'translate-x-6' : 'translate-x-1'
-              } inline-block w-4 h-4 transform transition ease-in-out duration-200 bg-white rounded-full`}
+              } inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out`}
             />
           </Switch>
         </div>
@@ -182,7 +182,7 @@ const RegularExpression: React.FunctionComponent<{ cucumberExpression?: Cucumber
   return (
     <div className="mb-4">
       <Label>Regular Expression</Label>
-      <pre className="p-2 whitespace-pre-wrap break-words border border-gray-500 bg-gray-100">
+      <pre className="whitespace-pre-wrap break-words border border-gray-500 bg-gray-100 p-2">
         /{cucumberExpression.regexp.source}/
       </pre>
     </div>
@@ -193,7 +193,7 @@ const ErrorComponent: React.FunctionComponent<{ message?: string }> = ({ message
   if (!message) return null
   return (
     <div className="mb-4">
-      <pre className="p-2 whitespace-pre-wrap break-words border border-red-500 bg-red-100">
+      <pre className="whitespace-pre-wrap break-words border border-red-500 bg-red-100 p-2">
         {message}
       </pre>
     </div>
@@ -205,7 +205,7 @@ const GeneratedCucumberExpressions: React.FunctionComponent<{
 }> = ({ generatedExpressions }) => (
   <div className="mb-4">
     <Label>Other Cucumber Expressions that match Text</Label>
-    <ul className="list-disc list-inside p-2 border border-gray-500 bg-gray-100">
+    <ul className="list-inside list-disc border border-gray-500 bg-gray-100 p-2">
       {generatedExpressions.map((generatedExpression, i) => (
         <li key={i}>{generatedExpression.source}</li>
       ))}
