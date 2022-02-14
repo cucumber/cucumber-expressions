@@ -53,7 +53,7 @@
     "@codemirror/commands": "0.19.8",
     "@codemirror/rangeset": "0.19.6",
     "@codemirror/state": "0.19.7",
-    "@codemirror/tooltip": "0.19.13",
+    "@codemirror/tooltip": "0.19.14",
     "@codemirror/view": "0.19.42",
     "@headlessui/react": "1.4.3",
     "@stryker-mutator/core": "5.6.1",
