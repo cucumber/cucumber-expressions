@@ -51,7 +51,7 @@
   "homepage": "https://github.com/cucumber/cucumber-expressions#readme",
   "devDependencies": {
     "@codemirror/commands": "0.19.8",
-    "@codemirror/rangeset": "0.19.7",
+    "@codemirror/rangeset": "0.19.8",
     "@codemirror/state": "0.19.9",
     "@codemirror/tooltip": "0.19.15",
     "@codemirror/view": "0.19.44",
