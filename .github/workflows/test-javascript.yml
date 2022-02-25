@@ -26,7 +26,7 @@ jobs:
       run: git config --global core.autocrlf input
     - uses: actions/checkout@v2
     - name: with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
