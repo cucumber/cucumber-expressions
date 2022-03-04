@@ -89,7 +89,7 @@ a parameter type.
 | ------------- | ----------- |
 | `name`        | The name the parameter type will be recognised by in output parameters.
 | `regexp`      | A regexp that will match the parameter. May include capture groups.
-| `type`        | The return type of the transformer {{% stepdef-body %}}.
+| `type`        | The return type of the transformer.
 | `transformer` | A function or method that transforms the match from the regexp. Must have arity 1 if the regexp doesn't have any capture groups. Otherwise the arity must match the number of capture groups in `regexp`. |
 | `useForSnippets` / `use_for_snippets` | Defaults to `true`. That means this parameter type will be used to generate snippets for undefined steps. If the `regexp` frequently matches text you don't intend to be used as arguments, disable its use for snippets with `false`. |
 | `preferForRegexpMatch` / `prefer_for_regexp_match` | Defaults to `false`. Set to `true` if you have step definitions that use regular expressions, and you want this parameter type to take precedence over others during a match. |
@@ -153,6 +153,17 @@ public Color ConvertColor(string colorValue)
 {
     return new Color(colorValue);
 }
+```
+
+#### Python
+
+```python
+ParameterType(
+  name=        'color',
+  regexp=      "red|blue|yellow",
+  type=  Color,
+  transformer= lambda s: Color(),
+)
 ```
 
 *Note: Currently the parameter name cannot be customized, so the custom parameters can only be used with the type name, e.g. `{Color}`.*
