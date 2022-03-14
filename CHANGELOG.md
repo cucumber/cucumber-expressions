@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Add missing `name` field in CommonJS package file ([#87](https://github.com/cucumber/cucumber-expressions/pull/87))
 
 ## [15.0.1] - 2022-01-04
 ### Fixed
