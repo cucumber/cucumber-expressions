@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [15.0.2] - 2022-03-15
 ### Fixed
 - Add missing `name` field in CommonJS package file ([#87](https://github.com/cucumber/cucumber-expressions/pull/87))
 
@@ -693,7 +695,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.2...HEAD
+[15.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.1...v15.0.2
 [15.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.0...v15.0.1
 [15.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...v15.0.0
 [14.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.3...v14.0.0
@@ -758,4 +761,3 @@ by [brasmusson](https://github.com/brasmusson))
 [1.0.3]: https://github.com/cucumber/cucumber-expressions/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/cucumber/cucumber/releases/tag/v1.0.1
-ber/cucumber/releases/tag/v1.0.1
