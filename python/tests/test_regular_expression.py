@@ -57,13 +57,10 @@ class TestRegularExpression:
         ) == ["Charlie"]
 
     def test_ignores_non_capturing_groups(self):
-        assert (
-            self._match(
-                r"(\S+) ?(can|cannot) (?:delete|cancel) the (\d+)(?:st|nd|rd|th) (attachment|slide) ?(?:upload)?",
-                "I can cancel the 1st slide upload",
-            )
-            == ["I", "can", 1, "slide"]
-        )
+        assert self._match(
+            r"(\S+) ?(can|cannot) (?:delete|cancel) the (\d+)(?:st|nd|rd|th) (attachment|slide) ?(?:upload)?",
+            "I can cancel the 1st slide upload",
+        ) == ["I", "can", 1, "slide"]
 
     def test_matches_capture_group_nested_in_optional_one(self):
         regexp = r"^a (pre-commercial transaction |pre buyer fee model )?purchase(?: for \$(\d+))?$"
