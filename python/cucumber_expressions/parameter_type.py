@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import re
-from typing import List, Pattern
+from typing import List, Pattern, Union
 
 from cucumber_expressions.errors import CucumberExpressionError
 
-ILLEGAL_PARAMETER_NAME_PATTERN = r"([\[\]()$.|?*+])"
-UNESCAPE_PATTERN = r"(\\([\[$.|?*+\]]))"
+ILLEGAL_PARAMETER_NAME_PATTERN = re.compile(r"([\[\]()$.|?*+])")
 
 
 class ParameterType:
@@ -21,7 +20,7 @@ class ParameterType:
 
     @staticmethod
     def _is_valid_parameter_type_name(type_name):
-        return not bool(re.compile(ILLEGAL_PARAMETER_NAME_PATTERN).match(type_name))
+        return not bool(ILLEGAL_PARAMETER_NAME_PATTERN.match(type_name))
 
     def transform(self, group_values: list[str]):
         """Transform values according to the lambda expression provided"""
@@ -56,7 +55,7 @@ class ParameterType:
         :param name: name of the parameter type
         :type name: Optional[str]
         :param regexp: regexp or list of regexps for capture groups
-        :type regexp: list[str] or str
+        :type regexp: list[str], str, list[Pattern] or Pattern
         :param type: the return type of the transformed
         :type type: class
         :param transformer: transforms a str to (possibly) another type
@@ -73,7 +72,7 @@ class ParameterType:
         self.transformer = transformer
         self._use_for_snippets = use_for_snippets
         self._prefer_for_regexp_match = prefer_for_regexp_match
-        self.regexps = self.string_array(regexp)
+        self.regexps = self.to_array(regexp)
 
     @property
     def prefer_for_regexp_match(self):
@@ -87,14 +86,20 @@ class ParameterType:
     def _get_regexp_source(regexp_pattern: Pattern) -> str:
         invalid_flags = [re.I, re.M]
         for invalid_flag in invalid_flags:
-            if invalid_flag in regexp_pattern.flags:
+            _regexp_flags = regexp_pattern.flags
+            _regexp_flags = (
+                _regexp_flags if isinstance(_regexp_flags, list) else [_regexp_flags]
+            )
+            if invalid_flag.real in _regexp_flags:
                 raise CucumberExpressionError(
-                    f"ParameterType Regexps can't use flag: {invalid_flag}"
+                    f"ParameterType Regexps can't use flag: {str(invalid_flag)}"
                 )
         return regexp_pattern.pattern
 
-    def string_array(self, regexps):
-        """Make a list of string regexps if not already"""
+    def to_array(
+        self, regexps: Union[List[str], str, List[Pattern], Pattern]
+    ) -> List[str]:
+        """Make a list of regexps if not already"""
         array: List = regexps if isinstance(regexps, list) else [regexps]
         return [
             regexp if isinstance(regexp, str) else self._get_regexp_source(regexp)
