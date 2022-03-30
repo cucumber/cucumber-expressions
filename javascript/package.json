@@ -54,7 +54,7 @@
     "@codemirror/rangeset": "0.19.9",
     "@codemirror/state": "0.19.9",
     "@codemirror/tooltip": "0.19.16",
-    "@codemirror/view": "0.19.47",
+    "@codemirror/view": "0.19.48",
     "@headlessui/react": "1.5.0",
     "@stryker-mutator/core": "5.6.1",
     "@stryker-mutator/mocha-runner": "5.6.1",
