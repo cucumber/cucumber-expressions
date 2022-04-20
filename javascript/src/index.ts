@@ -1,5 +1,5 @@
-import Argument from './Argument.js'
 import AbstractCompiler from './AbstractCompiler.js'
+import Argument from './Argument.js'
 import CucumberExpression from './CucumberExpression.js'
 import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import ExpressionFactory from './ExpressionFactory.js'
@@ -11,8 +11,8 @@ import RegularExpression from './RegularExpression.js'
 import { Expression } from './types.js'
 
 export {
-  Argument,
   AbstractCompiler,
+  Argument,
   CucumberExpression,
   CucumberExpressionGenerator,
   Expression,
