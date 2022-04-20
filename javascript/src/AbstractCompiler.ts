@@ -11,7 +11,7 @@ import {
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 
-export default abstract class Compiler<T> {
+export default abstract class AbstractCompiler<T> {
   constructor(
     private readonly expression: string,
     private readonly parameterTypeRegistry: ParameterTypeRegistry

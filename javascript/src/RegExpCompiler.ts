@@ -1,10 +1,10 @@
-import Compiler from './Compiler.js'
+import AbstractCompiler from './AbstractCompiler.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 
-export default class RegExpCompiler extends Compiler<string> {
+export default class RegExpCompiler extends AbstractCompiler<string> {
   constructor(
     expression: string,
     parameterTypeRegistry: ParameterTypeRegistry,
