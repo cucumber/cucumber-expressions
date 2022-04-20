@@ -1,5 +1,5 @@
 import Argument from './Argument.js'
-import { Node } from './ast.js'
+import { Node } from './Ast.js'
 import CucumberExpressionParser from './CucumberExpressionParser.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
