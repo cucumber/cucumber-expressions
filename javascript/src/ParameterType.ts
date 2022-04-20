@@ -42,7 +42,7 @@ export default class ParameterType<T> {
   constructor(
     public readonly name: string | undefined,
     regexps: readonly RegExp[] | readonly string[] | RegExp | string,
-    private readonly type: unknown,
+    public readonly type: unknown,
     transform: (...match: string[]) => T,
     public readonly useForSnippets: boolean,
     public readonly preferForRegexpMatch: boolean
