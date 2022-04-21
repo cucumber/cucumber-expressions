@@ -1,4 +1,5 @@
 import Argument from './Argument.js'
+import { Located, Node, NodeType, Token, TokenType } from './Ast.js'
 import CucumberExpression from './CucumberExpression.js'
 import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import ExpressionFactory from './ExpressionFactory.js'
@@ -17,7 +18,12 @@ export {
   ExpressionFactory,
   GeneratedExpression,
   Group,
+  Located,
+  Node,
+  NodeType,
   ParameterType,
   ParameterTypeRegistry,
   RegularExpression,
+  Token,
+  TokenType,
 }

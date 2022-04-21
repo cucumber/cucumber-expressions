@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- [JavaScript] Add `CucumberExpression.ast` and expose the AST types. 
+
 ## [15.0.2] - 2022-03-15
 ### Fixed
 - Add missing `name` field in CommonJS package file ([#87](https://github.com/cucumber/cucumber-expressions/pull/87))
