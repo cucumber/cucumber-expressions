@@ -1,4 +1,5 @@
 import functools
+import re
 from decimal import Decimal
 from typing import Optional, List
 
@@ -9,11 +10,14 @@ from cucumber_expressions.errors import (
     AmbiguousParameterTypeError,
 )
 
-INTEGER_REGEXPS = [r"-?\d+", r"\d+"]
-FLOAT_REGEXP = r"(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?"
-WORD_REGEXP = r"[^\s]+"
-STRING_REGEXPS = [r'"([^\"\\]*(\\.[^\"\\]*)*)"', r"'([^'\\]*(\\.[^'\\]*)*)'"]
-ANONYMOUS_REGEXP = r".*"
+INTEGER_REGEXPS = [re.compile(r"-?\d+"), re.compile(r"\d+")]
+FLOAT_REGEXP = re.compile(r"(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?")
+WORD_REGEXP = re.compile(r"[^\s]+")
+STRING_REGEXPS = [
+    re.compile(r'"([^\"\\]*(\\.[^\"\\]*)*)"'),
+    re.compile(r"'([^'\\]*(\\.[^'\\]*)*)'"),
+]
+ANONYMOUS_REGEXP = re.compile(r".*")
 
 
 class ParameterTypeRegistry:
