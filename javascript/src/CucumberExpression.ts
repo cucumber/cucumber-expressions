@@ -20,7 +20,7 @@ const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 export default class CucumberExpression implements Expression {
   private readonly parameterTypes: Array<ParameterType<unknown>> = []
   private readonly treeRegexp: TreeRegexp
-  private readonly ast: Node
+  public readonly ast: Node
 
   /**
    * @param expression
