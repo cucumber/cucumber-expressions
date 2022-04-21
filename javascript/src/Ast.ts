@@ -40,7 +40,7 @@ export interface Located {
   readonly end: number
 }
 
-export class Node {
+export class Node implements Located {
   constructor(
     public readonly type: NodeType,
     public readonly nodes: readonly Node[] | undefined,
@@ -70,7 +70,7 @@ export enum NodeType {
   expression = 'EXPRESSION_NODE',
 }
 
-export class Token {
+export class Token implements Located {
   readonly type: TokenType
   readonly text: string
   readonly start: number
