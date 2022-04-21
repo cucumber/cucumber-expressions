@@ -21,29 +21,20 @@ jobs:
           python-version: "3.10"
 
       - name: Install Poetry
-        run: python install-poetry.py -y
+        uses: snok/install-poetry@v1
+        with: 
+          version: 1.1.13
+          
+      - name: Install dependencies
+        run: poetry install
 
-      - name: Update PATH
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Build project for distribution
+      - name: Build
         run: poetry build
 
-      - name: Check Version
-        id: check-version
+      - name: Config for PyPI release
         run: |
-          [[ "$(poetry version --short)" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] \
-            || echo ::set-output name=prerelease::true
+          poetry config pypi-token.pypi "${{ secrets.PYPI_TOKEN }}"
 
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/*"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          draft: false
-          prerelease: steps.check-version.outputs.prerelease == 'true'
-
-      - name: Publish to PyPI
-        env:
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-        run: poetry publish
+      - name: Publish
+        run: |
+          poetry publish
