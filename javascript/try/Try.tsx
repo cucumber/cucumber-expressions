@@ -1,5 +1,5 @@
 import { Switch } from '@headlessui/react'
-import React, { Dispatch, SetStateAction, useMemo, useState } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction, useMemo, useState } from 'react'
 import { BooleanParam, JsonParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import {
@@ -305,7 +305,7 @@ const EditableParameterType: React.FunctionComponent<{
   )
 }
 
-const Label: React.FunctionComponent = ({ children }) => (
+const Label: React.FunctionComponent<{ children?: ReactNode }> = ({ children }) => (
   <div className="mb-1 text-gray-700">{children}</div>
 )
 
