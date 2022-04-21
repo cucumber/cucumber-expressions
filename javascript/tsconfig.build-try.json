@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "dist-try",
+    "target": "ES5",
+    "module": "CommonJS",
+  },
+  "include": [
+    "try",
+    "src"
+  ]
+}
