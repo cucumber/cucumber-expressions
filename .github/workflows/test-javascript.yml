@@ -24,14 +24,16 @@ jobs:
     steps:
     - name: set git core.autocrlf to 'input'
       run: git config --global core.autocrlf input
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - run: npm install-test
+      working-directory: javascript
+    - run: npm run build:try
       working-directory: javascript
     - run: npm run eslint
       working-directory: javascript

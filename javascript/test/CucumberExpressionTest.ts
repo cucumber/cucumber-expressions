@@ -25,7 +25,14 @@ describe('CucumberExpression', () => {
         const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
         const matches = expression.match(expectation.text)
         assert.deepStrictEqual(
-          JSON.parse(JSON.stringify(matches ? matches.map((value) => value.getValue(null)) : null)), // Removes type information.
+          JSON.parse(
+            JSON.stringify(
+              matches ? matches.map((value) => value.getValue(null)) : null,
+              (key, value) => {
+                return typeof value === 'bigint' ? value.toString() : value
+              }
+            )
+          ), // Removes type information.
           expectation.expected_args
         )
       } else if (expectation.exception !== undefined) {

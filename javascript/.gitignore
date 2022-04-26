@@ -1,4 +1,5 @@
 dist/
+dist-try/
 .idea/
 .nyc_output/
 coverage/

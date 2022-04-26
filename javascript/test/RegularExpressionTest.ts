@@ -46,20 +46,6 @@ describe('RegularExpression', () => {
     assert.deepStrictEqual(match(/(\d+)/, '22'), [22])
   })
 
-  it('transforms float without integer part', () => {
-    assert.deepStrictEqual(
-      match(new RegExp(`(${ParameterTypeRegistry.FLOAT_REGEXP.source})`), '.22'),
-      [0.22]
-    )
-  })
-
-  it('transforms float with sign', () => {
-    assert.deepStrictEqual(
-      match(new RegExp(`(${ParameterTypeRegistry.FLOAT_REGEXP.source})`), '-1.22'),
-      [-1.22]
-    )
-  })
-
   it('returns null when there is no match', () => {
     assert.strictEqual(match(/hello/, 'world'), null)
   })
