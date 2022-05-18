@@ -82,7 +82,7 @@
     "js-yaml": "4.1.0",
     "mocha": "10.0.0",
     "npm-check-updates": "13.0.1",
-    "postcss": "8.4.13",
+    "postcss": "8.4.14",
     "postcss-cli": "9.1.0",
     "prettier": "2.6.2",
     "pretty-quick": "3.1.3",
