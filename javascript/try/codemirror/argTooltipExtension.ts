@@ -1,5 +1,5 @@
 import { EditorState, StateField } from '@codemirror/state'
-import { showTooltip, Tooltip } from '@codemirror/tooltip'
+import { showTooltip, Tooltip } from '@codemirror/view'
 
 import { Argument } from '../../src'
 

@@ -95,6 +95,11 @@ module Cucumber
         expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).source).to eq(expr)
       end
 
+      it "exposes source via #to_s" do
+        expr = "I have {int} cuke(s)"
+        expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).to_s).to eq(expr.inspect)
+      end
+
       it "unmatched optional groups have undefined values" do
         parameter_type_registry = ParameterTypeRegistry.new
         parameter_type_registry.define_parameter_type(
