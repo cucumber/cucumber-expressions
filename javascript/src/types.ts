@@ -9,3 +9,9 @@ export interface Expression {
   readonly source: string
   match(text: string): readonly Argument[] | null
 }
+
+export type ParameterInfo = {
+  name: string
+  nameSuffix: string
+  type: string | null
+}

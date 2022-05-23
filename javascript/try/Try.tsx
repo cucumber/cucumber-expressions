@@ -313,7 +313,7 @@ export function makeParameterType(name: string, regexp: RegExp): ParameterType<u
   return new ParameterType(
     name,
     regexp,
-    undefined,
+    null,
     (...args) => (args.length === 1 ? args[0] : args),
     true,
     false

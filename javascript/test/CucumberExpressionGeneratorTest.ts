@@ -4,6 +4,7 @@ import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import { ParameterInfo } from '../src/types.js'
 
 class Currency {
   constructor(public readonly s: string) {}
@@ -15,11 +16,11 @@ describe('CucumberExpressionGenerator', () => {
 
   function assertExpression(
     expectedExpression: string,
-    expectedArgumentNames: string[],
+    expectedParameterInfo: ParameterInfo[],
     text: string
   ) {
     const generatedExpression = generator.generateExpressions(text)[0]
-    assert.deepStrictEqual(generatedExpression.parameterNames, expectedArgumentNames)
+    assert.deepStrictEqual(generatedExpression.parameterInfos, expectedParameterInfo)
     assert.strictEqual(generatedExpression.source, expectedExpression)
 
     const cucumberExpression = new CucumberExpression(
@@ -32,7 +33,7 @@ describe('CucumberExpressionGenerator', () => {
         `Expected text '${text}' to match generated expression '${generatedExpression.source}'`
       )
     }
-    assert.strictEqual(match.length, expectedArgumentNames.length)
+    assert.strictEqual(match.length, expectedParameterInfo.length)
   }
 
   beforeEach(() => {
@@ -63,13 +64,44 @@ describe('CucumberExpressionGenerator', () => {
   })
 
   it('generates expression with escaped slashes', () => {
-    assertExpression('The {int}\\/{int}\\/{int} hey', ['int', 'int2', 'int3'], 'The 1814/05/17 hey')
+    assertExpression(
+      'The {int}\\/{int}\\/{int} hey',
+      [
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '',
+        },
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '2',
+        },
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '3',
+        },
+      ],
+      'The 1814/05/17 hey'
+    )
   })
 
   it('generates expression for int float arg', () => {
     assertExpression(
       'I have {int} cukes and {float} euro',
-      ['int', 'float'],
+      [
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '',
+        },
+        {
+          type: 'Number',
+          name: 'float',
+          nameSuffix: '',
+        },
+      ],
       'I have 2 cukes and 1.5 euro'
     )
   })
@@ -77,23 +109,65 @@ describe('CucumberExpressionGenerator', () => {
   it('generates expression for strings', () => {
     assertExpression(
       'I like {string} and {string}',
-      ['string', 'string2'],
+      [
+        {
+          type: 'String',
+          name: 'string',
+          nameSuffix: '',
+        },
+        {
+          type: 'String',
+          name: 'string',
+          nameSuffix: '2',
+        },
+      ],
       'I like "bangers" and \'mash\''
     )
   })
 
   it('generates expression with % sign', () => {
-    assertExpression('I am {int}%% foobar', ['int'], 'I am 20%% foobar')
+    assertExpression(
+      'I am {int}%% foobar',
+      [
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '',
+        },
+      ],
+      'I am 20%% foobar'
+    )
   })
 
   it('generates expression for just int', () => {
-    assertExpression('{int}', ['int'], '99999')
+    assertExpression(
+      '{int}',
+      [
+        {
+          type: 'Number',
+          name: 'int',
+          nameSuffix: '',
+        },
+      ],
+      '99999'
+    )
   })
 
   it('numbers only second argument when builtin type is not reserved keyword', () => {
     assertExpression(
       'I have {float} cukes and {float} euro',
-      ['float', 'float2'],
+      [
+        {
+          type: 'Number',
+          name: 'float',
+          nameSuffix: '',
+        },
+        {
+          type: 'Number',
+          name: 'float',
+          nameSuffix: '2',
+        },
+      ],
       'I have 2.5 cukes and 1.5 euro'
     )
   })
@@ -103,18 +177,38 @@ describe('CucumberExpressionGenerator', () => {
       new ParameterType('currency', /[A-Z]{3}/, Currency, (s) => new Currency(s), true, false)
     )
 
-    assertExpression('I have a {currency} account', ['currency'], 'I have a EUR account')
+    assertExpression(
+      'I have a {currency} account',
+      [
+        {
+          type: 'Currency',
+          name: 'currency',
+          nameSuffix: '',
+        },
+      ],
+      'I have a EUR account'
+    )
   })
 
   it('prefers leftmost match when there is overlap', () => {
     parameterTypeRegistry.defineParameterType(
-      new ParameterType<Currency>('currency', /c d/, Currency, (s) => new Currency(s), true, false)
+      new ParameterType('currency', /c d/, Currency, (s) => new Currency(s), true, false)
     )
     parameterTypeRegistry.defineParameterType(
       new ParameterType('date', /b c/, Date, (s) => new Date(s), true, false)
     )
 
-    assertExpression('a {date} d e f g', ['date'], 'a b c d e f g')
+    assertExpression(
+      'a {date} d e f g',
+      [
+        {
+          type: 'Date',
+          name: 'date',
+          nameSuffix: '',
+        },
+      ],
+      'a b c d e f g'
+    )
   })
 
   // TODO: prefers widest match

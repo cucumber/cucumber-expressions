@@ -3,8 +3,15 @@ import CucumberExpressionError from './CucumberExpressionError.js'
 const ILLEGAL_PARAMETER_NAME_PATTERN = /([[\]()$.|?*+])/
 const UNESCAPE_PATTERN = () => /(\\([[$.|?*+\]]))/g
 
+interface Constructor<T> extends Function {
+  new (...args: unknown[]): T
+  prototype: T
+}
+
+type Factory<T> = (...args: unknown[]) => T
+
 export default class ParameterType<T> {
-  private transformFn: (...match: readonly string[]) => T
+  private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
 
   public static compare(pt1: ParameterType<unknown>, pt2: ParameterType<unknown>) {
     if (pt1.preferForRegexpMatch && !pt2.preferForRegexpMatch) {
@@ -42,8 +49,8 @@ export default class ParameterType<T> {
   constructor(
     public readonly name: string | undefined,
     regexps: readonly RegExp[] | readonly string[] | RegExp | string,
-    private readonly type: unknown,
-    transform: (...match: string[]) => T,
+    public readonly type: Constructor<T> | Factory<T> | string | null,
+    transform: (...match: string[]) => T | PromiseLike<T>,
     public readonly useForSnippets: boolean,
     public readonly preferForRegexpMatch: boolean
   ) {
