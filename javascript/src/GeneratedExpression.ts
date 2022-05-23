@@ -17,7 +17,7 @@ export default class GeneratedExpression {
    * @returns {ReadonlyArray.<String>}
    */
   get parameterNames(): readonly string[] {
-    return this.parameterInfos.map((i) => `${i.name}${i.nameSuffix}`)
+    return this.parameterInfos.map((i) => `${i.name}${i.counter === 1 ? '' : i.counter.toString()}`)
   }
 
   /**
@@ -34,9 +34,9 @@ function getParameterInfo(
   usageByName: { [key: string]: number }
 ): ParameterInfo {
   const name = parameterType.name || ''
-  let count = usageByName[name]
-  count = count ? count + 1 : 1
-  usageByName[name] = count
+  let counter = usageByName[name]
+  counter = counter ? counter + 1 : 1
+  usageByName[name] = counter
   let type: string | null
   if (parameterType.type) {
     if (typeof parameterType.type === 'string') {
@@ -50,9 +50,9 @@ function getParameterInfo(
     type = null
   }
   return {
-    name,
-    nameSuffix: count === 1 ? '' : count.toString(),
     type,
+    name,
+    counter,
   }
 }
 

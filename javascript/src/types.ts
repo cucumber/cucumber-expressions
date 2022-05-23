@@ -11,7 +11,16 @@ export interface Expression {
 }
 
 export type ParameterInfo = {
-  name: string
-  nameSuffix: string
+  /**
+   * The string representation of the original PArameterType#type property
+   */
   type: string | null
+  /**
+   * The parameter type name
+   */
+  name: string
+  /**
+   * The number of times this name has been used so far
+   */
+  counter: number
 }

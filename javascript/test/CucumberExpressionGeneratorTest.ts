@@ -70,17 +70,17 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '',
+          counter: 1,
         },
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '2',
+          counter: 2,
         },
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '3',
+          counter: 3,
         },
       ],
       'The 1814/05/17 hey'
@@ -94,12 +94,12 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '',
+          counter: 1,
         },
         {
           type: 'Number',
           name: 'float',
-          nameSuffix: '',
+          counter: 1,
         },
       ],
       'I have 2 cukes and 1.5 euro'
@@ -113,12 +113,12 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'String',
           name: 'string',
-          nameSuffix: '',
+          counter: 1,
         },
         {
           type: 'String',
           name: 'string',
-          nameSuffix: '2',
+          counter: 2,
         },
       ],
       'I like "bangers" and \'mash\''
@@ -132,7 +132,7 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '',
+          counter: 1,
         },
       ],
       'I am 20%% foobar'
@@ -146,7 +146,7 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Number',
           name: 'int',
-          nameSuffix: '',
+          counter: 1,
         },
       ],
       '99999'
@@ -160,12 +160,12 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Number',
           name: 'float',
-          nameSuffix: '',
+          counter: 1,
         },
         {
           type: 'Number',
           name: 'float',
-          nameSuffix: '2',
+          counter: 2,
         },
       ],
       'I have 2.5 cukes and 1.5 euro'
@@ -183,7 +183,7 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Currency',
           name: 'currency',
-          nameSuffix: '',
+          counter: 1,
         },
       ],
       'I have a EUR account'
@@ -204,7 +204,7 @@ describe('CucumberExpressionGenerator', () => {
         {
           type: 'Date',
           name: 'date',
-          nameSuffix: '',
+          counter: 1,
         },
       ],
       'a b c d e f g'
