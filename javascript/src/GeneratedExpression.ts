@@ -17,7 +17,7 @@ export default class GeneratedExpression {
    * @returns {ReadonlyArray.<String>}
    */
   get parameterNames(): readonly string[] {
-    return this.parameterInfos.map((i) => `${i.name}${i.counter === 1 ? '' : i.counter.toString()}`)
+    return this.parameterInfos.map((i) => `${i.name}${i.count === 1 ? '' : i.count.toString()}`)
   }
 
   /**
@@ -52,7 +52,7 @@ function getParameterInfo(
   return {
     type,
     name,
-    counter,
+    count: counter,
   }
 }
 

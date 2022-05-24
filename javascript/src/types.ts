@@ -22,5 +22,5 @@ export type ParameterInfo = {
   /**
    * The number of times this name has been used so far
    */
-  counter: number
+  count: number
 }
