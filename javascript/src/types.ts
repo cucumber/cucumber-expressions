@@ -12,7 +12,7 @@ export interface Expression {
 
 export type ParameterInfo = {
   /**
-   * The string representation of the original PArameterType#type property
+   * The string representation of the original ParameterType#type property
    */
   type: string | null
   /**
