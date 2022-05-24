@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- [.NET] Fix casing in "word" parameter type constant
 
 ## [15.1.1] - 2022-04-21
 ### Fixed

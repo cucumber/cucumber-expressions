@@ -32,7 +32,7 @@ module Cucumber
       end
 
       def to_s
-        @source.inspect
+        source.inspect
       end
 
       private
