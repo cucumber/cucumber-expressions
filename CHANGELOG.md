@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [.NET] Fix casing in "word" parameter type constant
 
+### Added
+- [JavaScript] Add `ParameterInfo` ([#124](https://github.com/cucumber/cucumber-expressions/pull/124))
+
 ## [15.1.1] - 2022-04-21
 ### Fixed
 - [JavaScript] Make `CucumberExpression.ast` public (it was accidentally private in 15.1.0)
