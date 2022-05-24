@@ -60,7 +60,7 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
     new ParameterType(
       'bigdecimal',
       FLOAT_REGEXP,
-      Number,
+      String,
       (s) => (s === undefined ? null : s),
       false,
       false
@@ -104,7 +104,7 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
     new ParameterType(
       'biginteger',
       INTEGER_REGEXPS,
-      Number,
+      BigInt,
       (s) => (s === undefined ? null : BigInt(s)),
       false,
       false

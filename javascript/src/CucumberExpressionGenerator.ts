@@ -86,12 +86,9 @@ export default class CucumberExpressionGenerator {
     parameterType: ParameterType<unknown>,
     text: string
   ): ParameterTypeMatcher[] {
-    // TODO: [].map
-    const result = []
-    for (const regexp of parameterType.regexpStrings) {
-      result.push(new ParameterTypeMatcher(parameterType, regexp, text))
-    }
-    return result
+    return parameterType.regexpStrings.map(
+      (regexp) => new ParameterTypeMatcher(parameterType, regexp, text)
+    )
   }
 }
 
