@@ -6,11 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Fixed
-- [.NET] Fix casing in "word" parameter type constant
 
+## [15.2.0] - 2022-05-24
 ### Added
 - [JavaScript] Add `ParameterInfo` ([#124](https://github.com/cucumber/cucumber-expressions/pull/124))
+
+### Fixed
+- [.NET] Fix casing in "word" parameter type constant
 
 ## [15.1.1] - 2022-04-21
 ### Fixed
@@ -708,7 +710,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...HEAD
+[15.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...v15.2.0
 [15.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.0...v15.1.1
 [15.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.2...v15.1.0
 [15.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.1...v15.0.2

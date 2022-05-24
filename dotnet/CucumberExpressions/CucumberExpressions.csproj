@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Version">
-		<VersionNumber>15.1.1</VersionNumber>
+		<VersionNumber>15.2.0</VersionNumber>
 		<Version Condition="'$(SnapshotSuffix)' != ''">$(VersionNumber)-$(SnapshotSuffix)</Version>
 		<Version Condition="'$(SnapshotSuffix)' == ''">$(VersionNumber)</Version>
 	</PropertyGroup>
@@ -18,7 +18,7 @@
 		<Product>Cucumber Expressions</Product>
 		<PackageId>Cucumber.CucumberExpressions</PackageId>
 		<Authors>Cucumber Ltd, Gaspar Nagy</Authors>
-		<Copyright>Copyright © Cucumber Ltd, Gaspar Nagy</Copyright>
+		<Copyright>Copyright &#xA9; Cucumber Ltd, Gaspar Nagy</Copyright>
 		<Description>Cucumber Expressions implementation for .NET.</Description>
 		<PackageTags>specflow cucumber</PackageTags>
 		<PackageProjectUrl>https://github.com/cucumber/cucumber-expressions/tree/main/dotnet</PackageProjectUrl>
