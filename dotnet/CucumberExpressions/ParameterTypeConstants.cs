@@ -27,7 +27,7 @@ public static class ParameterTypeConstants
     public static readonly string FloatParameterRegexEn = GetFloatParameterRegex(CultureInfo.InvariantCulture);
     public static readonly string[] FloatParameterRegexpsEn = { FloatParameterRegexEn };
 
-    public const string WordParameterName = "Word";
+    public const string WordParameterName = "word";
     public const string WordParameterRegex = "[^\\s]+";
     public static readonly string[] WordParameterRegexps = { WordParameterRegex };
 
