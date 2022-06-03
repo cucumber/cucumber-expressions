@@ -12,7 +12,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CustomMatchers {
@@ -39,6 +38,8 @@ public class CustomMatchers {
                 return new IsCloseTo(((Double)this.expectedValue), 0.0001).matches(((Number)actual).doubleValue());
             } else if(actual instanceof Byte) {
                 return new IsEqual(((Integer)this.expectedValue).byteValue()).matches(actual);
+            } else if(actual instanceof Short) {
+                return new IsEqual(((Integer)this.expectedValue).shortValue()).matches(actual);
             } else if(actual instanceof Number || actual instanceof String || actual == null) {
                 return new IsEqual(this.expectedValue).matches(actual);
             }
