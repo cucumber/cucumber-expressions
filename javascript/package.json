@@ -70,7 +70,7 @@
     "autoprefixer": "10.4.7",
     "cross-env": "7.0.3",
     "esbuild": "0.14.42",
-    "eslint": "8.16.0",
+    "eslint": "8.17.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-node": "11.1.0",
