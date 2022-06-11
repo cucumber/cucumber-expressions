@@ -10,8 +10,8 @@ interface Constructor<T> extends Function {
 
 type Factory<T> = (...args: unknown[]) => T
 
-type Regexps = StringOrRegExp | readonly StringOrRegExp[]
-type StringOrRegExp = string | RegExp
+export type Regexps = StringOrRegExp | readonly StringOrRegExp[]
+export type StringOrRegExp = string | RegExp
 
 export default class ParameterType<T> {
   private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
