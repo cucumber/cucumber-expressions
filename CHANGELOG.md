@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Changed
-- [JavaScript] The `ParameterType` constructor's `regexp` parameter has a new type: `type Regexps = StringOrRegExp | readonly StringOrRegExp[]; type StringOrRegExp = string | RegExp`.
+- [JavaScript] The `ParameterType` constructor's `regexps` parameter has a new type: `type Regexps = StringOrRegExp | readonly StringOrRegExp[]; type StringOrRegExp = string | RegExp`.
 
 ## [15.2.0] - 2022-05-24
 ### Added
