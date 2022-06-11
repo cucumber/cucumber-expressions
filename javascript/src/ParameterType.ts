@@ -10,6 +10,9 @@ interface Constructor<T> extends Function {
 
 type Factory<T> = (...args: unknown[]) => T
 
+type Regexps = StringOrRegExp | readonly StringOrRegExp[]
+type StringOrRegExp = string | RegExp
+
 export default class ParameterType<T> {
   private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
 
@@ -40,7 +43,7 @@ export default class ParameterType<T> {
 
   /**
    * @param name {String} the name of the type
-   * @param regexps {Array.<RegExp>,RegExp,Array.<String>,String} that matches the type
+   * @param regexps {Array.<RegExp | String>,RegExp,String} that matche the type
    * @param type {Function} the prototype (constructor) of the type. May be null.
    * @param transform {Function} function transforming string to another type. May be null.
    * @param useForSnippets {boolean} true if this should be used for snippets. Defaults to true.
@@ -48,8 +51,8 @@ export default class ParameterType<T> {
    */
   constructor(
     public readonly name: string | undefined,
-    regexps: readonly RegExp[] | readonly string[] | RegExp | string,
-    public readonly type: Constructor<T> | Factory<T> | string | null,
+    regexps: Regexps,
+    public readonly type: Constructor<T> | Factory<T> | null,
     transform: (...match: string[]) => T | PromiseLike<T>,
     public readonly useForSnippets: boolean,
     public readonly preferForRegexpMatch: boolean
@@ -77,11 +80,8 @@ export default class ParameterType<T> {
   }
 }
 
-type StringOrRegexp = string | RegExp
-
-function stringArray(regexps: readonly StringOrRegexp[] | StringOrRegexp): string[] {
-  // @ts-ignore
-  const array: StringOrRegexp[] = Array.isArray(regexps) ? regexps : [regexps]
+function stringArray(regexps: Regexps): string[] {
+  const array: StringOrRegExp[] = Array.isArray(regexps) ? regexps : [regexps]
   return array.map((r) => (r instanceof RegExp ? regexpSource(r) : r))
 }
 
