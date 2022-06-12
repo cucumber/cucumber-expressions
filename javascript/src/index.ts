@@ -5,7 +5,7 @@ import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import ExpressionFactory from './ExpressionFactory.js'
 import GeneratedExpression from './GeneratedExpression.js'
 import Group from './Group.js'
-import ParameterType from './ParameterType.js'
+import ParameterType, { StringOrRegExp, RegExps } from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import RegularExpression from './RegularExpression.js'
 import { Expression } from './types.js'
@@ -23,7 +23,9 @@ export {
   NodeType,
   ParameterType,
   ParameterTypeRegistry,
+  RegExps,
   RegularExpression,
+  StringOrRegExp,
   Token,
   TokenType,
 }
