@@ -10,7 +10,8 @@ interface Constructor<T> extends Function {
 
 type Factory<T> = (...args: unknown[]) => T
 
-export type Regexps = StringOrRegExp | readonly StringOrRegExp[]
+export type RegExps = StringOrRegExp | readonly StringOrRegExp[]
+
 export type StringOrRegExp = string | RegExp
 
 export default class ParameterType<T> {
@@ -51,7 +52,7 @@ export default class ParameterType<T> {
    */
   constructor(
     public readonly name: string | undefined,
-    regexps: Regexps,
+    regexps: RegExps,
     public readonly type: Constructor<T> | Factory<T> | null,
     transform: (...match: string[]) => T | PromiseLike<T>,
     public readonly useForSnippets: boolean,
@@ -80,7 +81,7 @@ export default class ParameterType<T> {
   }
 }
 
-function stringArray(regexps: Regexps): string[] {
+function stringArray(regexps: RegExps): string[] {
   const array: StringOrRegExp[] = Array.isArray(regexps) ? regexps : [regexps]
   return array.map((r) => (r instanceof RegExp ? regexpSource(r) : r))
 }
