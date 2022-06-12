@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [16.0.0] - 2022-06-12
 ### Changed
 - [JavaScript] The `ParameterType` constructor's `regexps` parameter has a new type: `type Regexps = StringOrRegExp | readonly StringOrRegExp[]; type StringOrRegExp = string | RegExp`.
 
@@ -713,7 +714,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...HEAD
+[16.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...v16.0.0
 [15.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...v15.2.0
 [15.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.0...v15.1.1
 [15.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.2...v15.1.0
