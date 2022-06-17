@@ -52,8 +52,8 @@
   "homepage": "https://github.com/cucumber/cucumber-expressions#readme",
   "devDependencies": {
     "@codemirror/commands": "6.0.0",
-    "@codemirror/state": "6.0.0",
-    "@codemirror/view": "6.0.0",
+    "@codemirror/state": "6.0.1",
+    "@codemirror/view": "6.0.1",
     "@headlessui/react": "1.6.4",
     "@stryker-mutator/core": "6.0.2",
     "@stryker-mutator/mocha-runner": "6.0.2",
