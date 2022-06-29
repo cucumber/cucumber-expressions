@@ -195,8 +195,10 @@ Sometimes you want to relax your language, to make it flow better. For example:
 
 This would match either of those texts:
 
-    I have 42 cucumbers in my belly
+    I have 1 cucumber in my belly
+    I have 1 cucumber in my stomach
     I have 42 cucumbers in my stomach
+    I have 42 cucumbers in my belly
 
 Alternative text only works when there is no whitespace between the alternative parts.
 
