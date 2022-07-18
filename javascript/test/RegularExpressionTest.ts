@@ -14,6 +14,17 @@ interface Expectation {
 }
 
 describe('RegularExpression', () => {
+<<<<<<< HEAD
+  it('documents match arguments', () => {
+    const parameterRegistry = new ParameterTypeRegistry()
+
+    const expr = /I have (\d+) cukes? in my (\w+) now/
+    const expression = new RegularExpression(expr, parameterRegistry)
+    const args = expression.match('I have 7 cukes in my belly now')!
+    assert.strictEqual(7, args[0].getValue(null))
+    assert.strictEqual('belly', args[1].getValue(null))
+  })
+=======
   for (const path of glob.sync(`${testDataDir}/regular-expression/matching/*.yaml`)) {
     const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
     it(`matches ${path}`, () => {
@@ -29,6 +40,7 @@ describe('RegularExpression', () => {
       )
     })
   }
+>>>>>>> main
 
   it('does no transform by default', () => {
     assert.deepStrictEqual(match(/(\d\d)/, '22'), ['22'])
