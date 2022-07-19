@@ -8,10 +8,9 @@
     "json"
   ],
   "cleanTempDir": false,
-  "testRunner": "mocha",
   "buildCommand": "npm run build:cjs",
-  "mochaOptions": {
-    "spec": [ "dist/cjs/test/**/*.js" ]
-  },
-  "coverageAnalysis": "perTest"
+  "coverageAnalysis": "perTest",
+  "commandRunner": {
+    "command": "npm run test:cjs"
+  }
 }

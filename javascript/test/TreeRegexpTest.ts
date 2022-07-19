@@ -1,9 +1,11 @@
 import assert from 'assert'
 
+import { describe, it } from 'minispec'
+
 import TreeRegexp from '../src/TreeRegexp.js'
 
-describe('TreeRegexp', () => {
-  it('exposes group source', () => {
+describe('TreeRegexp', async () => {
+  it('exposes group source', async () => {
     const tr = new TreeRegexp(/(a(?:b)?)(c)/)
     assert.deepStrictEqual(
       tr.groupBuilder.children.map((gb) => gb.source),
@@ -11,7 +13,7 @@ describe('TreeRegexp', () => {
     )
   })
 
-  it('builds tree', () => {
+  it('builds tree', async () => {
     const tr = new TreeRegexp(/(a(?:b)?)(c)/)
     const group = tr.match('ac')!
     assert.strictEqual(group.value, 'ac')
@@ -20,21 +22,21 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[1].value, 'c')
   })
 
-  it('ignores `?:` as a non-capturing group', () => {
+  it('ignores `?:` as a non-capturing group', async () => {
     const tr = new TreeRegexp(/a(?:b)(c)/)
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('ignores `?!` as a non-capturing group', () => {
+  it('ignores `?!` as a non-capturing group', async () => {
     const tr = new TreeRegexp(/a(?!b)(.+)/)
     const group = tr.match('aBc')!
     assert.strictEqual(group.value, 'aBc')
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('ignores `?=` as a non-capturing group', () => {
+  it('ignores `?=` as a non-capturing group', async () => {
     const tr = new TreeRegexp(/a(?=[b])(.+)/)
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
@@ -42,7 +44,7 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[0].value, 'bc')
   })
 
-  it('ignores `?<=` as a non-capturing group', () => {
+  it('ignores `?<=` as a non-capturing group', async () => {
     const tr = new TreeRegexp(/a(.+)(?<=c)$/)
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
@@ -50,7 +52,7 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[0].value, 'bc')
   })
 
-  it('ignores `?<!` as a non-capturing group', () => {
+  it('ignores `?<!` as a non-capturing group', async () => {
     const tr = new TreeRegexp(/a(.+?)(?<!b)$/)
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
@@ -58,7 +60,7 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[0].value, 'bc')
   })
 
-  it('matches named capturing group', () => {
+  it('matches named capturing group', async () => {
     const tr = new TreeRegexp(/a(?<name>b)c/)
     const group = tr.match('abc')!
     assert.strictEqual(group.value, 'abc')
@@ -66,13 +68,13 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[0].value, 'b')
   })
 
-  it('matches optional group', () => {
+  it('matches optional group', async () => {
     const tr = new TreeRegexp(/^Something( with an optional argument)?/)
     const group = tr.match('Something')!
     assert.strictEqual(group.children[0].value, undefined)
   })
 
-  it('matches nested groups', () => {
+  it('matches nested groups', async () => {
     const tr = new TreeRegexp(
       /^A (\d+) thick line from ((\d+),\s*(\d+),\s*(\d+)) to ((\d+),\s*(\d+),\s*(\d+))/
     )
@@ -89,31 +91,31 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children[2].children[2].value, '60')
   })
 
-  it('detects multiple non capturing groups', () => {
+  it('detects multiple non capturing groups', async () => {
     const tr = new TreeRegexp(/(?:a)(:b)(\?c)(d)/)
     const group = tr.match('a:b?cd')!
     assert.strictEqual(group.children.length, 3)
   })
 
-  it('works with escaped backslash', () => {
+  it('works with escaped backslash', async () => {
     const tr = new TreeRegexp(/foo\\(bar|baz)/)
     const group = tr.match('foo\\bar')!
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('works with escaped slash', () => {
+  it('works with escaped slash', async () => {
     const tr = new TreeRegexp(/^I go to '\/(.+)'$/)
     const group = tr.match("I go to '/hello'")!
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('works with digit and word', () => {
+  it('works with digit and word', async () => {
     const tr = new TreeRegexp(/^(\d) (\w+)$/)
     const group = tr.match('2 you')!
     assert.strictEqual(group.children.length, 2)
   })
 
-  it('captures non capturing groups with capturing groups inside', () => {
+  it('captures non capturing groups with capturing groups inside', async () => {
     const tr = new TreeRegexp('the stdout(?: from "(.*?)")?')
     const group = tr.match('the stdout')!
     assert.strictEqual(group.value, 'the stdout')
@@ -121,27 +123,27 @@ describe('TreeRegexp', () => {
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('works with case insensitive flag', () => {
+  it('works with case insensitive flag', async () => {
     const tr = new TreeRegexp(/HELLO/i)
     const group = tr.match('hello')!
     assert.strictEqual(group.value, 'hello')
   })
 
-  it('empty capturing group', () => {
+  it('empty capturing group', async () => {
     const tr = new TreeRegexp(/()/)
     const group = tr.match('')!
     assert.strictEqual(group.value, '')
     assert.strictEqual(group.children.length, 1)
   })
 
-  it('empty look ahead', () => {
+  it('empty look ahead', async () => {
     const tr = new TreeRegexp(/(?<=)/)
     const group = tr.match('')!
     assert.strictEqual(group.value, '')
     assert.strictEqual(group.children.length, 0)
   })
 
-  it('does not consider parenthesis in character class as group', () => {
+  it('does not consider parenthesis in character class as group', async () => {
     const tr = new TreeRegexp(/^drawings: ([A-Z, ()]+)$/)
     const group = tr.match('drawings: ONE(TWO)')!
     assert.strictEqual(group.value, 'drawings: ONE(TWO)')

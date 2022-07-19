@@ -1,5 +1,7 @@
 import assert from 'assert'
 
+import { describe, beforeEach, it } from 'minispec'
+
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 
@@ -15,13 +17,13 @@ class Place {
 
 const CAPITALISED_WORD = /[A-Z]+\w+/
 
-describe('ParameterTypeRegistry', () => {
+describe('ParameterTypeRegistry', async () => {
   let registry: ParameterTypeRegistry
-  beforeEach(() => {
+  beforeEach(async () => {
     registry = new ParameterTypeRegistry()
   })
 
-  it('does not allow more than one preferential parameter type for each regexp', () => {
+  it('does not allow more than one preferential parameter type for each regexp', async () => {
     registry.defineParameterType(
       new ParameterType('name', CAPITALISED_WORD, Name, (s) => new Name(s), true, true)
     )
@@ -41,7 +43,7 @@ describe('ParameterTypeRegistry', () => {
     }
   })
 
-  it('looks up preferential parameter type by regexp', () => {
+  it('looks up preferential parameter type by regexp', async () => {
     const name = new ParameterType('name', /[A-Z]+\w+/, null, (s) => new Name(s), true, false)
     const person = new ParameterType('person', /[A-Z]+\w+/, null, (s) => new Person(s), true, true)
     const place = new ParameterType('place', /[A-Z]+\w+/, null, (s) => new Place(s), true, false)

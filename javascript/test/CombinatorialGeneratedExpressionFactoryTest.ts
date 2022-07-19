@@ -1,10 +1,12 @@
 import assert from 'assert'
 
+import { describe, it } from 'minispec'
+
 import CombinatorialGeneratedExpressionFactory from '../src/CombinatorialGeneratedExpressionFactory.js'
 import ParameterType from '../src/ParameterType.js'
 
-describe('CucumberExpressionGenerator', () => {
-  it('generates multiple expressions', () => {
+describe('CucumberExpressionGenerator', async () => {
+  it('generates multiple expressions', async () => {
     const parameterTypeCombinations = [
       [
         new ParameterType('color', /red|blue|yellow/, null, (s) => s, false, true),

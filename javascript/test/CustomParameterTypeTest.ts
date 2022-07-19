@@ -1,5 +1,7 @@
 import assert from 'assert'
 
+import { describe, it, beforeEach } from 'minispec'
+
 import CucumberExpression from '../src/CucumberExpression.js'
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
@@ -13,31 +15,31 @@ class CssColor {
   constructor(public readonly name: string) {}
 }
 
-describe('Custom parameter type', () => {
+describe('Custom parameter type', async () => {
   let parameterTypeRegistry: ParameterTypeRegistry
 
-  beforeEach(() => {
+  beforeEach(async () => {
     parameterTypeRegistry = new ParameterTypeRegistry()
     parameterTypeRegistry.defineParameterType(
       new ParameterType('color', /red|blue|yellow/, Color, (s) => new Color(s), false, true)
     )
   })
 
-  describe('CucumberExpression', () => {
-    it('throws exception for illegal character in parameter name', () => {
+  describe('CucumberExpression', async () => {
+    it('throws exception for illegal character in parameter name', async () => {
       assert.throws(() => new ParameterType('[string]', /.*/, String, (s) => s, false, true), {
         message:
           "Illegal character in parameter name {[string]}. Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
       })
     })
 
-    it('matches parameters with custom parameter type', () => {
+    it('matches parameters with custom parameter type', async () => {
       const expression = new CucumberExpression('I have a {color} ball', parameterTypeRegistry)
       const value = expression.match('I have a red ball')?.[0].getValue<Color>(null)
       assert.strictEqual(value?.name, 'red')
     })
 
-    it('matches parameters with multiple capture groups', () => {
+    it('matches parameters with multiple capture groups', async () => {
       class Coordinate {
         constructor(
           public readonly x: number,
@@ -76,7 +78,7 @@ describe('Custom parameter type', () => {
       assert.strictEqual(to?.z, 60)
     })
 
-    it('matches parameters with custom parameter type using optional capture group', () => {
+    it('matches parameters with custom parameter type using optional capture group', async () => {
       parameterTypeRegistry = new ParameterTypeRegistry()
       parameterTypeRegistry.defineParameterType(
         new ParameterType(
@@ -93,7 +95,7 @@ describe('Custom parameter type', () => {
       assert.strictEqual(value?.name, 'dark red')
     })
 
-    it('defers transformation until queried from argument', () => {
+    it('defers transformation until queried from argument', async () => {
       parameterTypeRegistry.defineParameterType(
         new ParameterType(
           'throwing',
@@ -118,8 +120,8 @@ describe('Custom parameter type', () => {
       })
     })
 
-    describe('conflicting parameter type', () => {
-      it('is detected for type name', () => {
+    describe('conflicting parameter type', async () => {
+      it('is detected for type name', async () => {
         assert.throws(
           () =>
             parameterTypeRegistry.defineParameterType(
@@ -129,13 +131,13 @@ describe('Custom parameter type', () => {
         )
       })
 
-      it('is not detected for type', () => {
+      it('is not detected for type', async () => {
         parameterTypeRegistry.defineParameterType(
           new ParameterType('whatever', /.*/, Color, (s) => new Color(s), false, false)
         )
       })
 
-      it('is not detected for regexp', () => {
+      it('is not detected for regexp', async () => {
         parameterTypeRegistry.defineParameterType(
           new ParameterType(
             'css-color',
@@ -195,8 +197,8 @@ describe('Custom parameter type', () => {
     })
   })
 
-  describe('RegularExpression', () => {
-    it('matches arguments with custom parameter type', () => {
+  describe('RegularExpression', async () => {
+    it('matches arguments with custom parameter type', async () => {
       const expression = new RegularExpression(
         /I have a (red|blue|yellow) ball/,
         parameterTypeRegistry

@@ -1,5 +1,7 @@
 import assert from 'assert'
 
+import { describe, it, beforeEach } from 'minispec'
+
 import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
 import ParameterType from '../src/ParameterType.js'
@@ -10,7 +12,7 @@ class Currency {
   constructor(public readonly s: string) {}
 }
 
-describe('CucumberExpressionGenerator', () => {
+describe('CucumberExpressionGenerator', async () => {
   let parameterTypeRegistry: ParameterTypeRegistry
   let generator: CucumberExpressionGenerator
 
@@ -36,12 +38,12 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(match.length, expectedParameterInfo.length)
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     parameterTypeRegistry = new ParameterTypeRegistry()
     generator = new CucumberExpressionGenerator(() => parameterTypeRegistry.parameterTypes)
   })
 
-  it('documents expression generation', () => {
+  it('documents expression generation', async () => {
     parameterTypeRegistry = new ParameterTypeRegistry()
     generator = new CucumberExpressionGenerator(() => parameterTypeRegistry.parameterTypes)
     const undefinedStepText = 'I have 2 cucumbers and 1.5 tomato'
@@ -51,19 +53,19 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(generatedExpression.parameterTypes[1].name, 'float')
   })
 
-  it('generates expression for no args', () => {
+  it('generates expression for no args', async () => {
     assertExpression('hello', [], 'hello')
   })
 
-  it('generates expression with escaped left parenthesis', () => {
+  it('generates expression with escaped left parenthesis', async () => {
     assertExpression('\\(iii)', [], '(iii)')
   })
 
-  it('generates expression with escaped left curly brace', () => {
+  it('generates expression with escaped left curly brace', async () => {
     assertExpression('\\{iii}', [], '{iii}')
   })
 
-  it('generates expression with escaped slashes', () => {
+  it('generates expression with escaped slashes', async () => {
     assertExpression(
       'The {int}\\/{int}\\/{int} hey',
       [
@@ -87,7 +89,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('generates expression for int float arg', () => {
+  it('generates expression for int float arg', async () => {
     assertExpression(
       'I have {int} cukes and {float} euro',
       [
@@ -106,7 +108,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('generates expression for strings', () => {
+  it('generates expression for strings', async () => {
     assertExpression(
       'I like {string} and {string}',
       [
@@ -125,7 +127,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('generates expression with % sign', () => {
+  it('generates expression with % sign', async () => {
     assertExpression(
       'I am {int}%% foobar',
       [
@@ -139,7 +141,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('generates expression for just int', () => {
+  it('generates expression for just int', async () => {
     assertExpression(
       '{int}',
       [
@@ -153,7 +155,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('numbers only second argument when builtin type is not reserved keyword', () => {
+  it('numbers only second argument when builtin type is not reserved keyword', async () => {
     assertExpression(
       'I have {float} cukes and {float} euro',
       [
@@ -172,7 +174,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('generates expression for custom type', () => {
+  it('generates expression for custom type', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('currency', /[A-Z]{3}/, Currency, (s) => new Currency(s), true, false)
     )
@@ -190,7 +192,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('prefers leftmost match when there is overlap', () => {
+  it('prefers leftmost match when there is overlap', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('currency', /c d/, Currency, (s) => new Currency(s), true, false)
     )
@@ -213,7 +215,7 @@ describe('CucumberExpressionGenerator', () => {
 
   // TODO: prefers widest match
 
-  it('generates all combinations of expressions when several parameter types match', () => {
+  it('generates all combinations of expressions when several parameter types match', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('currency', /x/, null, (s) => new Currency(s), true, false)
     )
@@ -235,13 +237,13 @@ describe('CucumberExpressionGenerator', () => {
     ])
   })
 
-  it('exposes parameter type names in generated expression', () => {
+  it('exposes parameter type names in generated expression', async () => {
     const expression = generator.generateExpressions('I have 2 cukes and 1.5 euro')[0]
     const typeNames = expression.parameterTypes.map((parameter) => parameter.name)
     assert.deepStrictEqual(typeNames, ['int', 'float'])
   })
 
-  it('matches parameter types with optional capture groups', () => {
+  it('matches parameter types with optional capture groups', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('optional-flight', /(1st flight)?/, null, (s) => s, true, false)
     )
@@ -255,7 +257,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expression.source, 'I reach Stage {int}: {optional-flight} {int} hotel')
   })
 
-  it('generates at most 256 expressions', () => {
+  it('generates at most 256 expressions', async () => {
     for (let i = 0; i < 4; i++) {
       parameterTypeRegistry.defineParameterType(
         new ParameterType('my-type-' + i, /([a-z] )*?[a-z]/, null, (s) => s, true, false)
@@ -266,7 +268,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expressions.length, 256)
   })
 
-  it('prefers expression with longest non empty match', () => {
+  it('prefers expression with longest non empty match', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('zero-or-more', /[a-z]*/, null, (s) => s, true, false)
     )
@@ -280,7 +282,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expressions[1].source, '{zero-or-more} {zero-or-more} {zero-or-more}')
   })
 
-  it('does not suggest parameter included at the beginning of a word', () => {
+  it('does not suggest parameter included at the beginning of a word', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('direction', /(up|down)/, null, (s) => s, true, false)
     )
@@ -291,7 +293,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expressions[0].source, 'I download a picture')
   })
 
-  it('does not suggest parameter included inside a word', () => {
+  it('does not suggest parameter included inside a word', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('direction', /(up|down)/, null, (s) => s, true, false)
     )
@@ -302,7 +304,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expressions[0].source, 'I watch the muppet show')
   })
 
-  it('does not suggest parameter at the end of a word', () => {
+  it('does not suggest parameter at the end of a word', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('direction', /(up|down)/, null, (s) => s, true, false)
     )
@@ -313,7 +315,7 @@ describe('CucumberExpressionGenerator', () => {
     assert.strictEqual(expressions[0].source, 'I create a group')
   })
 
-  it('does suggest parameter that are a full word', () => {
+  it('does suggest parameter that are a full word', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('direction', /(up|down)/, null, (s) => s, true, false)
     )
@@ -334,7 +336,7 @@ describe('CucumberExpressionGenerator', () => {
     )
   })
 
-  it('does not consider punctuation as being part of a word', () => {
+  it('does not consider punctuation as being part of a word', async () => {
     parameterTypeRegistry.defineParameterType(
       new ParameterType('direction', /(up|down)/, null, (s) => s, true, false)
     )
