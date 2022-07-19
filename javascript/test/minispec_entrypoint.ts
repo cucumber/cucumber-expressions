@@ -12,7 +12,6 @@ import './ParameterTypeTest.js'
 import './RegularExpressionTest.js'
 import './TreeRegexpTest.js'
 
-import assert from 'assert'
 import MiniSpec from 'minispec'
 
 MiniSpec.execute()
