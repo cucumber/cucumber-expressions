@@ -1,6 +1,5 @@
 import assert from 'assert'
-
-import { describe, it, beforeEach } from 'minispec'
+import { beforeEach, describe, it } from 'minispec'
 
 import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'

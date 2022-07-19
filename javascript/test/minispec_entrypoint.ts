@@ -1,6 +1,3 @@
-import assert from 'assert'
-import MiniSpec from 'minispec'
-
 import './ArgumentTest.js'
 import './CombinatorialGeneratedExpressionFactoryTest.js'
 import './CucumberExpressionGeneratorTest.js'
@@ -14,5 +11,8 @@ import './ParameterTypeRegistryTest.js'
 import './ParameterTypeTest.js'
 import './RegularExpressionTest.js'
 import './TreeRegexpTest.js'
+
+import assert from 'assert'
+import MiniSpec from 'minispec'
 
 MiniSpec.execute()

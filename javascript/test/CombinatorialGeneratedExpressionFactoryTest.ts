@@ -1,5 +1,4 @@
 import assert from 'assert'
-
 import { describe, it } from 'minispec'
 
 import CombinatorialGeneratedExpressionFactory from '../src/CombinatorialGeneratedExpressionFactory.js'

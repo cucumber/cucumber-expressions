@@ -1,6 +1,5 @@
 import assert from 'assert'
-
-import { describe, beforeEach, it } from 'minispec'
+import { beforeEach, describe, it } from 'minispec'
 
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'

@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-
 import { describe, it } from 'minispec'
 
 import ParameterType from '../src/ParameterType.js'

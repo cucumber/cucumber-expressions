@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-
 import { describe, it } from 'minispec'
 
 import Argument from '../src/Argument.js'

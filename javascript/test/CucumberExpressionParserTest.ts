@@ -2,7 +2,6 @@ import assert from 'assert'
 import fs from 'fs'
 import glob from 'glob'
 import yaml from 'js-yaml'
-
 import { describe, it } from 'minispec'
 
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
