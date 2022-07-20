@@ -2,6 +2,7 @@ import assert from 'assert'
 import fs from 'fs'
 import glob from 'glob'
 import yaml from 'js-yaml'
+import { describe, it } from 'minispec'
 
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
 import CucumberExpressionTokenizer from '../src/CucumberExpressionTokenizer.js'
@@ -13,10 +14,10 @@ type Expectation = {
   exception?: string
 }
 
-describe('CucumberExpressionTokenizer', () => {
+describe('CucumberExpressionTokenizer', async () => {
   for (const path of glob.sync(`${testDataDir}/cucumber-expression/tokenizer/*.yaml`)) {
     const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
-    it(`tokenizes ${path}`, () => {
+    it(`tokenizes ${path}`, async () => {
       const tokenizer = new CucumberExpressionTokenizer()
       if (expectation.expected_tokens !== undefined) {
         const tokens = tokenizer.tokenize(expectation.expression)

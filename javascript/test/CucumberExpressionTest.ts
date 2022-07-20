@@ -2,6 +2,7 @@ import assert from 'assert'
 import fs from 'fs'
 import glob from 'glob'
 import yaml from 'js-yaml'
+import { describe, it } from 'minispec'
 
 import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionError from '../src/CucumberExpressionError.js'
@@ -16,10 +17,10 @@ type Expectation = {
   exception?: string
 }
 
-describe('CucumberExpression', () => {
+describe('CucumberExpression', async () => {
   for (const path of glob.sync(`${testDataDir}/cucumber-expression/matching/*.yaml`)) {
     const expectation = yaml.load(fs.readFileSync(path, 'utf-8')) as Expectation
-    it(`matches ${path}`, () => {
+    it(`matches ${path}`, async () => {
       const parameterTypeRegistry = new ParameterTypeRegistry()
       if (expectation.expected_args !== undefined) {
         const expression = new CucumberExpression(expectation.expression, parameterTypeRegistry)
@@ -48,7 +49,7 @@ describe('CucumberExpression', () => {
     })
   }
 
-  it('matches float', () => {
+  it('matches float', async () => {
     assert.deepStrictEqual(match('{float}', ''), null)
     assert.deepStrictEqual(match('{float}', '.'), null)
     assert.deepStrictEqual(match('{float}', ','), null)
@@ -83,16 +84,16 @@ describe('CucumberExpression', () => {
     assert.deepStrictEqual(match('{float}', '-.10E2'), [-10])
   })
 
-  it('matches float with zero', () => {
+  it('matches float with zero', async () => {
     assert.deepEqual(match('{float}', '0'), [0])
   })
 
-  it('exposes source', () => {
+  it('exposes source', async () => {
     const expr = 'I have {int} cuke(s)'
     assert.strictEqual(new CucumberExpression(expr, new ParameterTypeRegistry()).source, expr)
   })
 
-  it('unmatched optional groups have undefined values', () => {
+  it('unmatched optional groups have undefined values', async () => {
     const parameterTypeRegistry = new ParameterTypeRegistry()
     parameterTypeRegistry.defineParameterType(
       new ParameterType(
@@ -116,7 +117,7 @@ describe('CucumberExpression', () => {
 
   // JavaScript-specific
 
-  it('delegates transform to custom object', () => {
+  it('delegates transform to custom object', async () => {
     const parameterTypeRegistry = new ParameterTypeRegistry()
     parameterTypeRegistry.defineParameterType(
       new ParameterType(
