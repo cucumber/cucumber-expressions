@@ -81,7 +81,7 @@
     "glob": "8.0.3",
     "js-yaml": "4.1.0",
     "mocha": "10.0.0",
-    "npm-check-updates": "16.0.4",
+    "npm-check-updates": "16.0.5",
     "postcss": "8.4.14",
     "postcss-cli": "9.1.0",
     "prettier": "2.7.1",
