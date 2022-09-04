@@ -69,7 +69,7 @@
     "@typescript-eslint/parser": "5.36.1",
     "autoprefixer": "10.4.8",
     "cross-env": "7.0.3",
-    "esbuild": "0.15.6",
+    "esbuild": "0.15.7",
     "eslint": "8.23.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
