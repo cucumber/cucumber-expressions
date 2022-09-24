@@ -53,7 +53,7 @@
   "devDependencies": {
     "@codemirror/commands": "6.1.0",
     "@codemirror/state": "6.1.2",
-    "@codemirror/view": "6.2.4",
+    "@codemirror/view": "6.2.5",
     "@headlessui/react": "1.7.2",
     "@stryker-mutator/core": "6.2.2",
     "@stryker-mutator/mocha-runner": "6.2.2",
