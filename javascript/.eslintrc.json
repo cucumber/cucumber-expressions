@@ -9,7 +9,6 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react",
     "import",
     "simple-import-sort",
     "node",
@@ -17,8 +16,6 @@
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -37,8 +34,7 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "react/prop-types": "off"
+    "simple-import-sort/exports": "error"
   },
   "overrides": [
     {
