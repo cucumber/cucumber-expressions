@@ -11,13 +11,14 @@ export default class GroupBuilder {
     this.groupBuilders.push(groupBuilder)
   }
 
-  public build(match: RegExpExecArray, nextGroupIndex: () => number): Group {
+  public build(match: RegExpExecArray, nextGroupIndex: () => number): Group | null {
     const groupIndex = nextGroupIndex()
     const children = this.groupBuilders.map((gb) => gb.build(match, nextGroupIndex))
     const value = match[groupIndex]
+    if (value === undefined) return null
     const index = match.indices[groupIndex]
-    const start = index ? index[0] : undefined
-    const end = index ? index[1] : undefined
+    const start = index[0]
+    const end = index[1]
     return new Group(value, start, end, children)
   }
 

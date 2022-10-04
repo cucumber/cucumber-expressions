@@ -76,7 +76,7 @@ export default class ParameterType<T> {
     this.transformFn = transform
   }
 
-  public transform(thisObj: unknown, groupValues: string[] | null) {
+  public transform(thisObj: unknown, groupValues: (string | null)[]) {
     return this.transformFn.apply(thisObj, groupValues)
   }
 }
