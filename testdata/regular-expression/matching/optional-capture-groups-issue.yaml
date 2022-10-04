@@ -1,0 +1,4 @@
+---
+expression: "^I should( not)? be on the map$"
+text: I should be on the map
+expected_args: [null]
