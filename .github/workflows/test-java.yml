@@ -2,8 +2,9 @@ name: test-java
 
 on:
   push:
-    - main
-    - renovate/**
+    branches:
+      - main
+      - renovate/**
   pull_request:
     branches:
       - main

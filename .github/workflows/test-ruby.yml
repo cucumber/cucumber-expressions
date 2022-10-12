@@ -2,8 +2,9 @@ name: test-ruby
 
 on:
   push:
-    - main
-    - renovate/**
+    branches:
+      - main
+      - renovate/**
   pull_request:
     branches:
       - main
