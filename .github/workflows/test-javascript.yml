@@ -2,6 +2,8 @@ name: test-javascript
 
 on:
   push:
+    - main
+    - renovate/**
   pull_request:
     branches:
       - main
