@@ -2,15 +2,42 @@ import CucumberExpressionError from './CucumberExpressionError.js'
 import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import defineDefaultParameterTypes from './defineDefaultParameterTypes.js'
 import { AmbiguousParameterTypeError } from './Errors.js'
-import ParameterType from './ParameterType.js'
+import ParameterType, { ParameterTypeJson } from './ParameterType.js'
 import { DefinesParameterType } from './types'
+
+export type ParameterTypeRegistryJson = {
+  parameterTypes: readonly ParameterTypeJson[]
+}
 
 export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
   private readonly parameterTypesByRegexp = new Map<string, Array<ParameterType<unknown>>>()
 
+  static fromJSON(json: ParameterTypeRegistryJson) {
+    const registry = new ParameterTypeRegistry()
+    for (const parameterTypeJson of json.parameterTypes) {
+      const parameterType = new ParameterType(
+        parameterTypeJson.name,
+        parameterTypeJson.regexpStrings,
+        null,
+        () => undefined,
+        parameterTypeJson.useForSnippets,
+        parameterTypeJson.preferForRegexpMatch,
+        parameterTypeJson.builtin
+      )
+      registry.defineParameterType(parameterType)
+    }
+    return registry
+  }
+
   constructor() {
     defineDefaultParameterTypes(this)
+  }
+
+  public toJSON() {
+    return {
+      parameterTypes: [...this.parameterTypes].filter((t) => !t.builtin).map((t) => t.toJSON()),
+    }
   }
 
   get parameterTypes(): IterableIterator<ParameterType<unknown>> {

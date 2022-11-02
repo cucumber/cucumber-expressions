@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- [JavaScript] Added the ability to serialize/deserailize `ParameterTypeRegistry`, `ParameterType`, `CucumberExpression` and `RegularExpression` to/from JSON.
+
 ## [16.0.0] - 2022-06-12
 ### Changed
 - [JavaScript] The `ParameterType` constructor's `regexps` parameter has a new type: `type Regexps = StringOrRegExp | readonly StringOrRegExp[]; type StringOrRegExp = string | RegExp`.

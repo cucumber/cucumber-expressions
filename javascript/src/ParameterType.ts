@@ -14,6 +14,14 @@ export type RegExps = StringOrRegExp | readonly StringOrRegExp[]
 
 export type StringOrRegExp = string | RegExp
 
+export type ParameterTypeJson = {
+  name: string | undefined
+  regexpStrings: readonly string[]
+  useForSnippets: boolean
+  preferForRegexpMatch: boolean
+  builtin: boolean
+}
+
 export default class ParameterType<T> {
   private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
 
@@ -49,6 +57,7 @@ export default class ParameterType<T> {
    * @param transform {Function} function transforming string to another type. May be null.
    * @param useForSnippets {boolean} true if this should be used for snippets. Defaults to true.
    * @param preferForRegexpMatch {boolean} true if this is a preferential type. Defaults to false.
+   * @param builtin whether or not this is a built-in type
    */
   constructor(
     public readonly name: string | undefined,
@@ -56,7 +65,8 @@ export default class ParameterType<T> {
     public readonly type: Constructor<T> | Factory<T> | null,
     transform: (...match: string[]) => T | PromiseLike<T>,
     public readonly useForSnippets: boolean,
-    public readonly preferForRegexpMatch: boolean
+    public readonly preferForRegexpMatch: boolean,
+    public readonly builtin = false
   ) {
     if (transform === undefined) {
       transform = (s) => s as unknown as T
@@ -74,6 +84,16 @@ export default class ParameterType<T> {
 
     this.regexpStrings = stringArray(regexps)
     this.transformFn = transform
+  }
+
+  public toJSON(): ParameterTypeJson {
+    return {
+      name: this.name,
+      regexpStrings: this.regexpStrings,
+      useForSnippets: this.useForSnippets,
+      preferForRegexpMatch: this.preferForRegexpMatch,
+      builtin: this.builtin,
+    }
   }
 
   public transform(thisObj: unknown, groupValues: string[] | null) {
