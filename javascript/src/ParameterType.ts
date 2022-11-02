@@ -54,9 +54,9 @@ export default class ParameterType<T> {
     public readonly name: string | undefined,
     regexps: RegExps,
     public readonly type: Constructor<T> | Factory<T> | null,
-    transform: (...match: string[]) => T | PromiseLike<T>,
-    public readonly useForSnippets: boolean,
-    public readonly preferForRegexpMatch: boolean
+    transform?: (...match: string[]) => T | PromiseLike<T>,
+    public readonly useForSnippets?: boolean,
+    public readonly preferForRegexpMatch?: boolean
   ) {
     if (transform === undefined) {
       transform = (s) => s as unknown as T
