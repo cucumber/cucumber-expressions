@@ -8,12 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - [Java] Enabled reproducible builds
+- [JavaScript] Added `ParameterType.builtin`. This is to allow JSON serialization of only the non-builtin parameter types.
+
 ## [16.0.1] - 2022-11-06
 ### Fixed
 - [JavaScript] The `ParameterType` constructor's `transform`, `useForSnippets` and `preferForRegexpMatch` should be optional. ([#178](https://github.com/cucumber/cucumber-expressions/pull/178))
-
-### Added
-- [JavaScript] Added the ability to serialize/deserailize `ParameterTypeRegistry`, `ParameterType`, `CucumberExpression` and `RegularExpression` to/from JSON.
 
 ## [16.0.0] - 2022-06-12
 ### Changed
