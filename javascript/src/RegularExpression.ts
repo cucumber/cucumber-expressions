@@ -4,12 +4,6 @@ import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import TreeRegexp from './TreeRegexp.js'
 import { Expression } from './types.js'
 
-export type RegularExpressionJson = {
-  type: 'RegularExpression'
-  expression: string
-  flags: string
-}
-
 export default class RegularExpression implements Expression {
   private readonly treeRegexp: TreeRegexp
 
@@ -18,14 +12,6 @@ export default class RegularExpression implements Expression {
     private readonly parameterTypeRegistry: ParameterTypeRegistry
   ) {
     this.treeRegexp = new TreeRegexp(regexp)
-  }
-
-  public toJSON(): RegularExpressionJson {
-    return {
-      type: 'RegularExpression',
-      expression: this.regexp.source,
-      flags: this.regexp.flags,
-    }
   }
 
   public match(text: string): readonly Argument[] | null {

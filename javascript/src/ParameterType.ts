@@ -14,14 +14,6 @@ export type RegExps = StringOrRegExp | readonly StringOrRegExp[]
 
 export type StringOrRegExp = string | RegExp
 
-export type ParameterTypeJson = {
-  name: string | undefined
-  regexpStrings: readonly string[]
-  useForSnippets: boolean
-  preferForRegexpMatch: boolean
-  builtin: boolean
-}
-
 export default class ParameterType<T> {
   private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
 
@@ -63,10 +55,10 @@ export default class ParameterType<T> {
     public readonly name: string | undefined,
     regexps: RegExps,
     public readonly type: Constructor<T> | Factory<T> | null,
-    transform: (...match: string[]) => T | PromiseLike<T>,
-    public readonly useForSnippets: boolean,
-    public readonly preferForRegexpMatch: boolean,
-    public readonly builtin = false
+    transform?: (...match: string[]) => T | PromiseLike<T>,
+    public readonly useForSnippets?: boolean,
+    public readonly preferForRegexpMatch?: boolean,
+    public readonly builtin?: boolean
   ) {
     if (transform === undefined) {
       transform = (s) => s as unknown as T
@@ -84,16 +76,6 @@ export default class ParameterType<T> {
 
     this.regexpStrings = stringArray(regexps)
     this.transformFn = transform
-  }
-
-  public toJSON(): ParameterTypeJson {
-    return {
-      name: this.name,
-      regexpStrings: this.regexpStrings,
-      useForSnippets: this.useForSnippets,
-      preferForRegexpMatch: this.preferForRegexpMatch,
-      builtin: this.builtin,
-    }
   }
 
   public transform(thisObj: unknown, groupValues: string[] | null) {

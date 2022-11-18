@@ -124,7 +124,7 @@ ParameterType("color", "red|blue|yellow") { color: String => // name, regexp
 #### JavaScript / TypeScript
 
 ```javascript
-import { defineParameterType } from 'cucumber'
+import { defineParameterType } from '@cucumber/cucumber'
 
 defineParameterType({
     name: 'color',

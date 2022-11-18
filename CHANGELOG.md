@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Java] Enabled reproducible builds
+## [16.0.1] - 2022-11-06
+### Fixed
+- [JavaScript] The `ParameterType` constructor's `transform`, `useForSnippets` and `preferForRegexpMatch` should be optional. ([#178](https://github.com/cucumber/cucumber-expressions/pull/178))
 
 ### Added
 - [JavaScript] Added the ability to serialize/deserailize `ParameterTypeRegistry`, `ParameterType`, `CucumberExpression` and `RegularExpression` to/from JSON.
@@ -717,7 +722,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...HEAD
+[16.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...v16.0.1
 [16.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...v16.0.0
 [15.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...v15.2.0
 [15.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.0...v15.1.1

@@ -17,11 +17,6 @@ import { Expression } from './types.js'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 
-export type CucumberExpressionJson = {
-  type: 'CucumberExpression'
-  expression: string
-}
-
 export default class CucumberExpression implements Expression {
   private readonly parameterTypes: Array<ParameterType<unknown>> = []
   private readonly treeRegexp: TreeRegexp
@@ -39,13 +34,6 @@ export default class CucumberExpression implements Expression {
     this.ast = parser.parse(expression)
     const pattern = this.rewriteToRegex(this.ast)
     this.treeRegexp = new TreeRegexp(pattern)
-  }
-
-  toJSON(): CucumberExpressionJson {
-    return {
-      type: 'CucumberExpression',
-      expression: this.expression,
-    }
   }
 
   private rewriteToRegex(node: Node): string {
