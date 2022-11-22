@@ -15,6 +15,7 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : Number(s)),
       true,
+      true,
       true
     )
   )
@@ -25,11 +26,12 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : parseFloat(s)),
       true,
-      false
+      false,
+      true
     )
   )
   registry.defineParameterType(
-    new ParameterType('word', WORD_REGEXP, String, (s) => s, false, false)
+    new ParameterType('word', WORD_REGEXP, String, (s) => s, false, false, true)
   )
   registry.defineParameterType(
     new ParameterType(
@@ -38,11 +40,12 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       String,
       (s1, s2) => (s1 || s2 || '').replace(/\\"/g, '"').replace(/\\'/g, "'"),
       true,
-      false
+      false,
+      true
     )
   )
   registry.defineParameterType(
-    new ParameterType('', ANONYMOUS_REGEXP, String, (s) => s, false, true)
+    new ParameterType('', ANONYMOUS_REGEXP, String, (s) => s, false, true, true)
   )
 
   registry.defineParameterType(
@@ -52,7 +55,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : parseFloat(s)),
       false,
-      false
+      false,
+      true
     )
   )
 
@@ -63,7 +67,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       String,
       (s) => (s === undefined ? null : s),
       false,
-      false
+      false,
+      true
     )
   )
 
@@ -74,7 +79,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : Number(s)),
       false,
-      false
+      false,
+      true
     )
   )
 
@@ -85,7 +91,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : Number(s)),
       false,
-      false
+      false,
+      true
     )
   )
 
@@ -96,7 +103,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       Number,
       (s) => (s === undefined ? null : Number(s)),
       false,
-      false
+      false,
+      true
     )
   )
 
@@ -107,7 +115,8 @@ export default function defineDefaultParameterTypes(registry: DefinesParameterTy
       BigInt,
       (s) => (s === undefined ? null : BigInt(s)),
       false,
-      false
+      false,
+      true
     )
   )
 }
