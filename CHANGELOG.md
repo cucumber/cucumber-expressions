@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [16.1.0] - 2022-11-28
 ### Added
 - [Java] Enabled reproducible builds
 - [JavaScript] Added `ParameterType.builtin`. This is to allow JSON serialization of only the non-builtin parameter types.
@@ -721,7 +723,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...HEAD
+[16.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...v16.1.0
 [16.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...v16.0.1
 [16.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...v16.0.0
 [15.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...v15.2.0
