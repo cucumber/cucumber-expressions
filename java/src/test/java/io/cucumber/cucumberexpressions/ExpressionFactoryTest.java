@@ -13,7 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ExpressionFactoryTest {
-
+    
+    @Test
+    public void creates_cucumber_expression_for_empty() {
+        assertCucumberExpression("");
+    }
+    
     @Test
     public void creates_cucumber_expression_by_default() {
         assertCucumberExpression("strings are cukexp by default");
