@@ -27,25 +27,30 @@ public final class ExpressionFactory {
     }
 
     public Expression createExpression(String expressionString) {
+        /* This method is called often (typically about number_of_steps x
+         * nbr_test_scenarios), thus performance is more important than
+         * readability here.
+         * Consequently, we check the first and last expressionString
+         * characters to determine whether we need to create a
+         * RegularExpression or a CucumberExpression (because character
+         * matching is faster than startsWith/endsWith and regexp matching).
+         */
         int length = expressionString.length();
-        int lastCharIndex = 0;
-        char firstChar = 0;
-        char lastChar = 0;
-        if (length > 0) {
-            lastCharIndex = length - 1;
-            firstChar = expressionString.charAt(0);
-            lastChar = expressionString.charAt(lastCharIndex);
-        }
-        if (firstChar == '^' || lastChar == '$') {
-            // java regexp => create from regexp
-            return this.createRegularExpressionWithAnchors(expressionString);
-        } else if (firstChar == '/' && lastChar == '/') {
-            // script style regexp => create from regexp
-            return new RegularExpression(Pattern.compile(expressionString.substring(1, lastCharIndex)), this.parameterTypeRegistry);
-        } else {
-            // otherwise create cucumber style expression
+        if (length == 0) {
             return new CucumberExpression(expressionString, this.parameterTypeRegistry);
         }
+
+        int lastCharIndex = length - 1;
+        char firstChar = expressionString.charAt(0);
+        char lastChar = expressionString.charAt(lastCharIndex);
+
+        if (firstChar == '^' || lastChar == '$') {
+            return this.createRegularExpressionWithAnchors(expressionString);
+        } else if (firstChar == '/' && lastChar == '/') {
+            return new RegularExpression(Pattern.compile(expressionString.substring(1, lastCharIndex)), this.parameterTypeRegistry);
+        }
+
+        return new CucumberExpression(expressionString, this.parameterTypeRegistry);
     }
 
     private RegularExpression createRegularExpressionWithAnchors(String expressionString) {
