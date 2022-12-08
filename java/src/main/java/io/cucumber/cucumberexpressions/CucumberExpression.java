@@ -24,7 +24,7 @@ import static java.util.stream.Collectors.joining;
 
 @API(status = API.Status.STABLE)
 public final class CucumberExpression implements Expression {
-    private static final Pattern ESCAPE_PATTERN = Pattern.compile("([\\\\^\\[({$.|?*+})\\]])");
+    private static final Pattern ESCAPE_PATTERN = Pattern.compile("[\\\\^\\[({$.|?*+})\\]]");
 
     private final List<ParameterType<?>> parameterTypes = new ArrayList<>();
     private final String source;
@@ -62,7 +62,7 @@ public final class CucumberExpression implements Expression {
     }
 
     private static String escapeRegex(String text) {
-        return ESCAPE_PATTERN.matcher(text).replaceAll("\\\\$1");
+        return ESCAPE_PATTERN.matcher(text).replaceAll("\\\\$0");
     }
 
     private String rewriteOptional(Node node) {
