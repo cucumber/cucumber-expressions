@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [16.1.1] - 2022-12-08
 ### Fixed
 - [Java] Improve expression creation performance ([#187](https://github.com/cucumber/cucumber-expressions/pull/187), [#189](https://github.com/cucumber/cucumber-expressions/pull/189))
 
@@ -725,7 +727,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.1...HEAD
+[16.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...v16.1.1
 [16.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...v16.1.0
 [16.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...v16.0.1
 [16.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...v16.0.0
