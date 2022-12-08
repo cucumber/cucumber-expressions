@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- [Java] Improve expression creation performance ([#187](https://github.com/cucumber/cucumber-expressions/pull/187), [#189](https://github.com/cucumber/cucumber-expressions/pull/189))
 
 ## [16.1.0] - 2022-11-28
 ### Added
