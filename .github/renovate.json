@@ -4,6 +4,7 @@
     ":preserveSemverRanges",
     ":rebaseStalePrs",
     ":disableDependencyDashboard",
+    ":automergeBranch",
     ":automergePatch",
     ":automergeMinor",
   ],
