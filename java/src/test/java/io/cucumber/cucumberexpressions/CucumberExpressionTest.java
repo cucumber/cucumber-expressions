@@ -12,6 +12,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -192,4 +194,34 @@ class CucumberExpressionTest {
             return list;
         }
     }
+    
+    @Test
+    void escape_all_regexp_characters() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        assertEquals("\\^\\$\\[\\]\\(\\)\\{\\}\\.\\|\\?\\*\\+\\\\", delegateEscapeRegex("^$[](){}.|?*+\\"));
+    }
+
+    @Test
+    void escape_escaped_regexp_characters() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        assertEquals("\\^\\$\\[\\]\\\\\\(\\\\\\)\\{\\}\\\\\\\\\\.\\|\\?\\*\\+", delegateEscapeRegex("^$[]\\(\\){}\\\\.|?*+"));
+    }
+
+
+    @Test
+    void do_not_escape_when_there_is_nothing_to_escape() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        assertEquals("dummy", delegateEscapeRegex("dummy"));
+    }
+
+    @Test
+    void escapeRegex_gives_no_error_for_unicode_characters() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        assertEquals("🥒", delegateEscapeRegex("🥒"));
+    }
+
+    private String delegateEscapeRegex(String expression) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        // this delegate is used to test the private method `escapeRegex(String)`
+        ParameterTypeRegistry context = new ParameterTypeRegistry(Locale.ENGLISH);
+        Method escapeRegex = CucumberExpression.class.getDeclaredMethod("escapeRegex", String.class);
+        escapeRegex.setAccessible(true);
+        return (String)escapeRegex.invoke(new CucumberExpression("", context), expression);
+    }
+
 }
