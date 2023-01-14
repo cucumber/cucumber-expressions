@@ -19,6 +19,7 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createOptionalMayNotBeEmpty;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createParameterIsNotAllowedInOptional;
 import static io.cucumber.cucumberexpressions.ParameterType.isValidParameterTypeName;
+import static io.cucumber.cucumberexpressions.RegexpUtils.escapeRegex;
 import static io.cucumber.cucumberexpressions.UndefinedParameterTypeException.createUndefinedParameterType;
 import static java.util.stream.Collectors.joining;
 
@@ -42,7 +43,7 @@ public final class CucumberExpression implements Expression {
     private String rewriteToRegex(Node node) {
         switch (node.type()) {
             case TEXT_NODE:
-                return RegexpUtils.escapeRegex(node.text());
+                return escapeRegex(node.text());
             case OPTIONAL_NODE:
                 return rewriteOptional(node);
             case ALTERNATION_NODE:
