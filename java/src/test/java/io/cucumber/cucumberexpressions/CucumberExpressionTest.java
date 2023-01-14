@@ -192,5 +192,4 @@ class CucumberExpressionTest {
             return list;
         }
     }
-    
 }
