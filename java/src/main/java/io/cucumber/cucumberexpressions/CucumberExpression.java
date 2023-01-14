@@ -24,27 +24,6 @@ import static java.util.stream.Collectors.joining;
 
 @API(status = API.Status.STABLE)
 public final class CucumberExpression implements Expression {
-    /**
-     * List of characters to be escaped.
-     * The last char is '}' with index 125, so we need only 126 characters.
-     */
-    private static final boolean[] CHAR_TO_ESCAPE = new boolean[126];
-    static {
-        CHAR_TO_ESCAPE['^'] = true;
-        CHAR_TO_ESCAPE['$'] = true;
-        CHAR_TO_ESCAPE['['] = true;
-        CHAR_TO_ESCAPE[']'] = true;
-        CHAR_TO_ESCAPE['('] = true;
-        CHAR_TO_ESCAPE[')'] = true;
-        CHAR_TO_ESCAPE['{'] = true;
-        CHAR_TO_ESCAPE['}'] = true;
-        CHAR_TO_ESCAPE['.'] = true;
-        CHAR_TO_ESCAPE['|'] = true;
-        CHAR_TO_ESCAPE['?'] = true;
-        CHAR_TO_ESCAPE['*'] = true;
-        CHAR_TO_ESCAPE['+'] = true;
-        CHAR_TO_ESCAPE['\\'] = true;
-    }
     private final List<ParameterType<?>> parameterTypes = new ArrayList<>();
     private final String source;
     private final TreeRegexp treeRegexp;
@@ -63,7 +42,7 @@ public final class CucumberExpression implements Expression {
     private String rewriteToRegex(Node node) {
         switch (node.type()) {
             case TEXT_NODE:
-                return escapeRegex(node.text());
+                return RegexpUtils.escapeRegex(node.text());
             case OPTIONAL_NODE:
                 return rewriteOptional(node);
             case ALTERNATION_NODE:
@@ -80,20 +59,6 @@ public final class CucumberExpression implements Expression {
         }
     }
 
-    private static String escapeRegex(String text) {
-        int length = text.length();
-        StringBuilder sb = new StringBuilder(length * 2); // prevent resizes
-        int maxChar = CHAR_TO_ESCAPE.length;
-        for (int i = 0; i < length; i++) {
-            char currentChar = text.charAt(i);
-            if (currentChar < maxChar && CHAR_TO_ESCAPE[currentChar]) {
-                sb.append('\\');
-            }
-            sb.append(currentChar);
-        }
-        return sb.toString();
-    }
-    
     private String rewriteOptional(Node node) {
         assertNoParameters(node, astNode -> createParameterIsNotAllowedInOptional(astNode, source));
         assertNoOptionals(node, astNode -> createOptionalIsNotAllowedInOptional(astNode, source));
