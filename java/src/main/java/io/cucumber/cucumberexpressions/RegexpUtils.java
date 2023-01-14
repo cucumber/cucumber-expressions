@@ -6,6 +6,7 @@ class RegexpUtils {
      * The last char is '}' with index 125, so we need only 126 characters.
      */
     private static final boolean[] CHAR_TO_ESCAPE = new boolean[126];
+
     static {
         CHAR_TO_ESCAPE['^'] = true;
         CHAR_TO_ESCAPE['$'] = true;
@@ -27,6 +28,7 @@ class RegexpUtils {
      * Escapes the regexp characters (the ones from "^$(){}[].+*?\")
      * from the given text, so that they are not considered as regexp
      * characters.
+     *
      * @param text the non-null input text
      * @return the input text with escaped regexp characters
      */
@@ -39,7 +41,7 @@ class RegexpUtils {
         */
         int length = text.length();
         StringBuilder sb = null; // lazy initialization
-        int blocStart=0;
+        int blockStart = 0;
         int maxChar = CHAR_TO_ESCAPE.length;
         for (int i = 0; i < length; i++) {
             char currentChar = text.charAt(i);
@@ -47,20 +49,20 @@ class RegexpUtils {
                 if (sb == null) {
                     sb = new StringBuilder(length * 2);
                 }
-                if (i > blocStart) {
+                if (i > blockStart) {
                     // flush previous block
-                    sb.append(text, blocStart, i);
+                    sb.append(text, blockStart, i);
                 }
                 sb.append('\\');
                 sb.append(currentChar);
-                blocStart=i+1;
+                blockStart = i + 1;
             }
         }
         if (sb != null) {
             // finalizing character escaping
-            if (length > blocStart) {
+            if (length > blockStart) {
                 // flush remaining characters
-                sb.append(text, blocStart, length);
+                sb.append(text, blockStart, length);
             }
             return sb.toString();
         }
