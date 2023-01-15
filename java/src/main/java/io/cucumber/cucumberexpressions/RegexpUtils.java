@@ -49,7 +49,7 @@ class RegexpUtils {
                 if (sb == null) {
                     sb = new StringBuilder(length * 2);
                 }
-                if (i > blockStart) {
+                if (blockStart < i) {
                     // flush previous block
                     sb.append(text, blockStart, i);
                 }
