@@ -60,7 +60,7 @@ class RegexpUtils {
         }
         if (sb != null) {
             // finalizing character escaping
-            if (length > blockStart) {
+            if (blockStart < length) {
                 // flush remaining characters
                 sb.append(text, blockStart, length);
             }
