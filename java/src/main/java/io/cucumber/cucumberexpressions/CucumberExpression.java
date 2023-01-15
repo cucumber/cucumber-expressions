@@ -19,12 +19,12 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createOptionalMayNotBeEmpty;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createParameterIsNotAllowedInOptional;
 import static io.cucumber.cucumberexpressions.ParameterType.isValidParameterTypeName;
+import static io.cucumber.cucumberexpressions.RegexpUtils.escapeRegex;
 import static io.cucumber.cucumberexpressions.UndefinedParameterTypeException.createUndefinedParameterType;
 import static java.util.stream.Collectors.joining;
 
 @API(status = API.Status.STABLE)
 public final class CucumberExpression implements Expression {
-    private static final Pattern ESCAPE_PATTERN = Pattern.compile("[\\\\^\\[({$.|?*+})\\]]");
     private final List<ParameterType<?>> parameterTypes = new ArrayList<>();
     private final String source;
     private final TreeRegexp treeRegexp;
@@ -60,11 +60,6 @@ public final class CucumberExpression implements Expression {
         }
     }
 
-    private static String escapeRegex(String text) {
-        return ESCAPE_PATTERN.matcher(text).replaceAll("\\\\$0");
-    }
-
-    
     private String rewriteOptional(Node node) {
         assertNoParameters(node, astNode -> createParameterIsNotAllowedInOptional(astNode, source));
         assertNoOptionals(node, astNode -> createOptionalIsNotAllowedInOptional(astNode, source));

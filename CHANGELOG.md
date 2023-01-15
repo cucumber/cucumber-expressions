@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- [Java] Improve cucumber expression creation performance ([#202](https://github.com/cucumber/cucumber-expressions/pull/202))
+
 ## [16.1.1] - 2022-12-08
 ### Fixed
 - [Java] Improve expression creation performance ([#187](https://github.com/cucumber/cucumber-expressions/pull/187), [#189](https://github.com/cucumber/cucumber-expressions/pull/189))
