@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
+
 ## [16.1.2] - 2023-01-17
 ### Fixed
 - [Java] Improve cucumber expression creation performance ([#202](https://github.com/cucumber/cucumber-expressions/pull/202))
