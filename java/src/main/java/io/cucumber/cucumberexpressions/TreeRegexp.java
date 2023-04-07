@@ -39,26 +39,31 @@ final class TreeRegexp {
                 charClass = true;
             } else if (c == ']' && !escaping) {
                 charClass = false;
-            } else if (c == '(' && !escaping && !charClass) {
-                boolean nonCapturing = isNonCapturingGroup(source, i);
-                GroupBuilder groupBuilder = new GroupBuilder(i);
-                if (nonCapturing) {
-                    groupBuilder.setNonCapturing();
-                }
-                stack.push(groupBuilder);
-            } else if (c == ')' && !escaping && !charClass) {
-                GroupBuilder gb = stack.pop();
-                if (gb.isCapturing()) {
-                    gb.setSource(source.substring(gb.getStartIndex() + 1, i));
-                    stack.peek().add(gb);
-                } else {
-                    gb.moveChildrenTo(stack.peek());
-                }
-                gb.setEndIndex(i);
             }
+            handleCharacter(c, charClass, escaping, source, i, stack);
             escaping = c == '\\' && !escaping;
         }
         return stack.pop();
+    }
+
+    private static void handleCharacter(char character, boolean charClass, boolean isEscaping, String source, int index, Deque<GroupBuilder> stack) {
+        if (character == '(' && !isEscaping && !charClass) {
+            boolean nonCapturing = isNonCapturingGroup(source, index);
+            GroupBuilder groupBuilder = new GroupBuilder(index);
+            if (nonCapturing) {
+                groupBuilder.setNonCapturing();
+            }
+            stack.push(groupBuilder);
+        } else if (character == ')' && !isEscaping && !charClass) {
+            GroupBuilder gb = stack.pop();
+            if (gb.isCapturing()) {
+                gb.setSource(source.substring(gb.getStartIndex() + 1, index));
+                stack.peek().add(gb);
+            } else {
+                gb.moveChildrenTo(stack.peek());
+            }
+            gb.setEndIndex(index);
+        }
     }
 
     private static boolean isNonCapturingGroup(String source, int i) {
