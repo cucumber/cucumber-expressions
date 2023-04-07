@@ -29,6 +29,7 @@ public final class CucumberExpression implements Expression {
     private final String source;
     private final TreeRegexp treeRegexp;
     private final ParameterTypeRegistry parameterTypeRegistry;
+    private final NodeAssert nodeAssert = new NodeAssert();
 
     CucumberExpression(String expression, ParameterTypeRegistry parameterTypeRegistry) {
         this.source = expression;
@@ -61,9 +62,9 @@ public final class CucumberExpression implements Expression {
     }
 
     private String rewriteOptional(Node node) {
-        assertNoParameters(node, astNode -> createParameterIsNotAllowedInOptional(astNode, source));
-        assertNoOptionals(node, astNode -> createOptionalIsNotAllowedInOptional(astNode, source));
-        assertNotEmpty(node, astNode -> createOptionalMayNotBeEmpty(astNode, source));
+        nodeAssert.assertNoParameters(node, astNode -> createParameterIsNotAllowedInOptional(astNode, source));
+        nodeAssert.assertNoOptionals(node, astNode -> createOptionalIsNotAllowedInOptional(astNode, source));
+        nodeAssert.assertNotEmpty(node, astNode -> createOptionalMayNotBeEmpty(astNode, source));
         return node.nodes().stream()
                 .map(this::rewriteToRegex)
                 .collect(joining("", "(?:", ")?"));
@@ -75,7 +76,7 @@ public final class CucumberExpression implements Expression {
             if (alternative.nodes().isEmpty()) {
                 throw createAlternativeMayNotBeEmpty(alternative, source);
             }
-            assertNotEmpty(alternative, astNode -> createAlternativeMayNotExclusivelyContainOptionals(astNode, source));
+            nodeAssert.assertNotEmpty(alternative, astNode -> createAlternativeMayNotExclusivelyContainOptionals(astNode, source));
         }
         return node.nodes()
                 .stream()
@@ -110,38 +111,6 @@ public final class CucumberExpression implements Expression {
                 .map(this::rewriteToRegex)
                 .collect(joining("", "^", "$"));
     }
-
-    private void assertNotEmpty(Node node,
-            Function<Node, CucumberExpressionException> createNodeWasNotEmptyException) {
-        node.nodes()
-                .stream()
-                .filter(astNode -> TEXT_NODE.equals(astNode.type()))
-                .findFirst()
-                .orElseThrow(() -> createNodeWasNotEmptyException.apply(node));
-    }
-
-    private void assertNoParameters(Node node,
-            Function<Node, CucumberExpressionException> createNodeContainedAParameterException) {
-        assertNoNodeOfType(PARAMETER_NODE, node, createNodeContainedAParameterException);
-    }
-
-    private void assertNoOptionals(Node node,
-            Function<Node, CucumberExpressionException> createNodeContainedAnOptionalException) {
-        assertNoNodeOfType(OPTIONAL_NODE, node, createNodeContainedAnOptionalException);
-    }
-
-    private void assertNoNodeOfType(Node.Type nodeType, Node node,
-            Function<Node, CucumberExpressionException> createException) {
-        node.nodes()
-                .stream()
-                .filter(astNode -> nodeType.equals(astNode.type()))
-                .map(createException)
-                .findFirst()
-                .ifPresent(exception -> {
-                    throw exception;
-                });
-    }
-
 
     @Override
     public List<Argument<?>> match(String text, Type... typeHints) {
