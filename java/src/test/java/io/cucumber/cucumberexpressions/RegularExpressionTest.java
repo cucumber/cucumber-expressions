@@ -2,6 +2,7 @@ package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.ArgumentConverter;
@@ -27,12 +28,16 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.regex.Pattern.compile;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegularExpressionTest {
 
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
+
+    private static final String CAPITALISED_WORD = "[A-Z]+\\w+";
 
     private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
@@ -266,6 +271,55 @@ public class RegularExpressionTest {
         ));
         List<?> match = match(compile("^text(?: (.+))? text2$"), "text text2", String.class);
         assertEquals(singletonList(null), match);
+    }
+
+    @Test
+    public void looks_up_preferential_parameter_type_by_regexp() {
+        ParameterType<ParameterTypeRegistryTest.Name> name = new ParameterType<>("name", CAPITALISED_WORD, ParameterTypeRegistryTest.Name.class, ParameterTypeRegistryTest.Name::new, false, false);
+        ParameterType<ParameterTypeRegistryTest.Person> person = new ParameterType<>("person", CAPITALISED_WORD, ParameterTypeRegistryTest.Person.class, ParameterTypeRegistryTest.Person::new, false, true);
+        ParameterType<ParameterTypeRegistryTest.Place> place = new ParameterType<>("place", CAPITALISED_WORD, ParameterTypeRegistryTest.Place.class, ParameterTypeRegistryTest.Place::new, false, false);
+        parameterTypeRegistry.defineParameterType(name);
+        parameterTypeRegistry.defineParameterType(person);
+        parameterTypeRegistry.defineParameterType(place);
+        assertSame(person, RegularExpression.lookupByRegexp(CAPITALISED_WORD, Pattern.compile("([A-Z]+\\w+) and ([A-Z]+\\w+)"), "Lisa and Bob", parameterTypeRegistry));
+    }
+
+    @Test
+    public void throws_ambiguous_exception_on_lookup_when_no_parameter_types_are_preferential() {
+        ParameterType<ParameterTypeRegistryTest.Name> name = new ParameterType<>("name", CAPITALISED_WORD, ParameterTypeRegistryTest.Name.class, ParameterTypeRegistryTest.Name::new, true, false);
+        ParameterType<ParameterTypeRegistryTest.Person> person = new ParameterType<>("person", CAPITALISED_WORD, ParameterTypeRegistryTest.Person.class, ParameterTypeRegistryTest.Person::new, true, false);
+        ParameterType<ParameterTypeRegistryTest.Place> place = new ParameterType<>("place", CAPITALISED_WORD, ParameterTypeRegistryTest.Place.class, ParameterTypeRegistryTest.Place::new, true, false);
+        parameterTypeRegistry.defineParameterType(name);
+        parameterTypeRegistry.defineParameterType(person);
+        parameterTypeRegistry.defineParameterType(place);
+
+        String expected = "" +
+                "Your Regular Expression /([A-Z]+\\w+) and ([A-Z]+\\w+)/\n" +
+                "matches multiple parameter types with regexp /[A-Z]+\\w+/:\n" +
+                "   {name}\n" +
+                "   {person}\n" +
+                "   {place}\n" +
+                "\n" +
+                "I couldn't decide which one to use. You have two options:\n" +
+                "\n" +
+                "1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:\n" +
+                "   {name} and {name}\n" +
+                "   {name} and {person}\n" +
+                "   {name} and {place}\n" +
+                "   {person} and {name}\n" +
+                "   {person} and {person}\n" +
+                "   {person} and {place}\n" +
+                "   {place} and {name}\n" +
+                "   {place} and {person}\n" +
+                "   {place} and {place}\n" +
+                "\n" +
+                "2) Make one of the parameter types preferential and continue to use a Regular Expression.\n" +
+                "\n";
+
+        final Executable testMethod = () -> RegularExpression.lookupByRegexp(CAPITALISED_WORD, Pattern.compile("([A-Z]+\\w+) and ([A-Z]+\\w+)"), "Lisa and Bob", parameterTypeRegistry);
+
+        final AmbiguousParameterTypeException thrownException = assertThrows(AmbiguousParameterTypeException.class, testMethod);
+        assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(expected)));
     }
 
     private List<?> match(Pattern pattern, String text, Type... types) {

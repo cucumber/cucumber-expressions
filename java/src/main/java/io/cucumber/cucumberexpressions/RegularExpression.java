@@ -5,6 +5,7 @@ import org.apiguardian.api.API;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.regex.Pattern;
 
 import static io.cucumber.cucumberexpressions.ParameterType.createAnonymousParameterType;
@@ -44,7 +45,7 @@ public final class RegularExpression implements Expression {
             boolean hasTypeHint = typeHintIndex < typeHints.length;
             final Type typeHint = hasTypeHint ? typeHints[typeHintIndex++] : String.class;
 
-            ParameterType<?> parameterType = parameterTypeRegistry.lookupByRegexp(parameterTypeRegexp, expressionRegexp, text);
+            ParameterType<?> parameterType = lookupByRegexp(parameterTypeRegexp, expressionRegexp, text, parameterTypeRegistry);
 
             // When there is a conflict between the type hint from the regular expression and the method
             // prefer the the parameter type associated with the regular expression. This ensures we will
@@ -70,6 +71,19 @@ public final class RegularExpression implements Expression {
         }
 
         return Argument.build(group, parameterTypes);
+    }
+
+    public static <T> ParameterType<T> lookupByRegexp(String parameterTypeRegexp, Pattern expressionRegexp, String text, ParameterTypeRegistry parameterTypeRegistry) {
+        SortedSet<ParameterType<?>> parameterTypes = parameterTypeRegistry.getParameterTypesByRegexp().get(parameterTypeRegexp);
+        if (parameterTypes == null) return null;
+        if (parameterTypes.size() > 1 && !parameterTypes.first().preferForRegexpMatch()) {
+            // We don't do this check on insertion because we only want to restrict
+            // ambiguity when we look up by Regexp. Users of CucumberExpression should
+            // not be restricted.
+            List<GeneratedExpression> generatedExpressions = new CucumberExpressionGenerator(parameterTypeRegistry).generateExpressions(text);
+            throw new AmbiguousParameterTypeException(parameterTypeRegexp, expressionRegexp, parameterTypes, generatedExpressions);
+        }
+        return (ParameterType<T>) parameterTypes.first();
     }
 
     @Override

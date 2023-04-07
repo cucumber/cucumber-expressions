@@ -173,17 +173,8 @@ public final class ParameterTypeRegistry {
         return (ParameterType<T>) parameterTypeByName.get(typeName);
     }
 
-    <T> ParameterType<T> lookupByRegexp(String parameterTypeRegexp, Pattern expressionRegexp, String text) {
-        SortedSet<ParameterType<?>> parameterTypes = parameterTypesByRegexp.get(parameterTypeRegexp);
-        if (parameterTypes == null) return null;
-        if (parameterTypes.size() > 1 && !parameterTypes.first().preferForRegexpMatch()) {
-            // We don't do this check on insertion because we only want to restrict
-            // ambiguity when we look up by Regexp. Users of CucumberExpression should
-            // not be restricted.
-            List<GeneratedExpression> generatedExpressions = new CucumberExpressionGenerator(this).generateExpressions(text);
-            throw new AmbiguousParameterTypeException(parameterTypeRegexp, expressionRegexp, parameterTypes, generatedExpressions);
-        }
-        return (ParameterType<T>) parameterTypes.first();
+    public Map<String, SortedSet<ParameterType<?>>> getParameterTypesByRegexp() {
+        return parameterTypesByRegexp;
     }
 
     Collection<ParameterType<?>> getParameterTypes() {
