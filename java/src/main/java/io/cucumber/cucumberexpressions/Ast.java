@@ -10,13 +10,6 @@ import static java.util.stream.Collectors.joining;
 
 final class Ast {
 
-    private static final char escapeCharacter = '\\';
-    private static final char alternationCharacter = '/';
-    private static final char beginParameterCharacter = '{';
-    private static final char endParameterCharacter = '}';
-    private static final char beginOptionalCharacter = '(';
-    private static final char endOptionalCharacter = ')';
-
     interface Located {
         int start();
 
@@ -126,9 +119,14 @@ final class Ast {
         public boolean equals(Object o) {
             if (this == o)
                 return true;
-            if (o == null || getClass() != o.getClass())
+            boolean isDifferentOrNullClass = o == null || getClass() != o.getClass();
+            if(isDifferentOrNullClass)
                 return false;
             Node node = (Node) o;
+            return hasSameAttributes(node);
+        }
+
+        public boolean hasSameAttributes(Node node) {
             return start == node.start &&
                     end == node.end &&
                     type == node.type &&
@@ -144,6 +142,13 @@ final class Ast {
     }
 
     static final class Token implements Located {
+
+        private static final char escapeCharacter = '\\';
+        private static final char alternationCharacter = '/';
+        private static final char beginParameterCharacter = '{';
+        private static final char endParameterCharacter = '}';
+        private static final char beginOptionalCharacter = '(';
+        private static final char endOptionalCharacter = ')';
 
         final String text;
         final Token.Type type;
