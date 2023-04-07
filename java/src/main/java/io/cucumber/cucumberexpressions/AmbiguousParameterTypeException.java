@@ -58,16 +58,15 @@ public final class AmbiguousParameterTypeException extends CucumberExpressionExc
 
     private static String join(List<String> strings) {
         StringBuilder builder = new StringBuilder();
-        boolean first = true;
+        boolean isFirstElement = true;
         for (String element : strings) {
-            if (first) {
-                first = false;
+            if (isFirstElement) {
+                isFirstElement = false;
             } else {
                 builder.append("\n   ");
             }
             builder.append(element);
         }
-
         return builder.toString();
     }
 
