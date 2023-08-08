@@ -2,8 +2,7 @@ name: stryker-javascript
 
 on:
   push:
-    branches:
-      - main
+    branches-ignore:
       - renovate/**
   pull_request:
     branches:
