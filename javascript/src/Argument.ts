@@ -22,7 +22,10 @@ export default class Argument {
     return parameterTypes.map((parameterType, i) => new Argument(argGroups[i], parameterType))
   }
 
-  constructor(public readonly group: Group, public readonly parameterType: ParameterType<unknown>) {
+  constructor(
+    public readonly group: Group,
+    public readonly parameterType: ParameterType<unknown>
+  ) {
     this.group = group
     this.parameterType = parameterType
   }
