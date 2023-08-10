@@ -211,7 +211,10 @@ I couldn't decide which one to use. You have two options:
 }
 
 export class UndefinedParameterTypeError extends CucumberExpressionError {
-  constructor(public readonly undefinedParameterTypeName: string, message: string) {
+  constructor(
+    public readonly undefinedParameterTypeName: string,
+    message: string
+  ) {
     super(message)
   }
 }
