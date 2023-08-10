@@ -3,7 +3,7 @@ import CucumberExpressionError from './CucumberExpressionError.js'
 const ILLEGAL_PARAMETER_NAME_PATTERN = /([[\]()$.|?*+])/
 const UNESCAPE_PATTERN = () => /(\\([[$.|?*+\]]))/g
 
-interface Constructor<T> extends Function {
+interface Constructor<T> {
   new (...args: unknown[]): T
   prototype: T
 }
