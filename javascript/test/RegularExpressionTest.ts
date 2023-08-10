@@ -1,6 +1,6 @@
 import assert from 'assert'
 import fs from 'fs'
-import glob from 'glob'
+import { glob } from 'glob'
 import yaml from 'js-yaml'
 
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
