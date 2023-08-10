@@ -41,7 +41,7 @@ classifiers = [
 python = "^3.7"
 
 [tool.poetry.dev-dependencies]
-pre-commit = "^2.6"
+pre-commit = "^3.3"
 pytest = "^7.0.0"
 PyYAML = "^6.0"
 
