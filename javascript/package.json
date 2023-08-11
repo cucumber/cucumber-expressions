@@ -52,7 +52,7 @@
     "@types/glob": "8.1.0",
     "@types/js-yaml": "4.0.5",
     "@types/mocha": "10.0.1",
-    "@types/node": "18.17.4",
+    "@types/node": "18.17.5",
     "@typescript-eslint/eslint-plugin": "6.3.0",
     "@typescript-eslint/parser": "6.3.0",
     "cross-env": "7.0.3",
