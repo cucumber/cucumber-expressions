@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/parameter_type_matcher'
 require 'cucumber/cucumber_expressions/generated_expression'
 require 'cucumber/cucumber_expressions/combinatorial_generated_expression_factory'

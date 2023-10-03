@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/argument'
 require 'cucumber/cucumber_expressions/tree_regexp'
 require 'cucumber/cucumber_expressions/errors'

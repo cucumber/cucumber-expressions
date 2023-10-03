@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'cucumber/cucumber_expressions/cucumber_expression_tokenizer'
 require 'cucumber/cucumber_expressions/errors'

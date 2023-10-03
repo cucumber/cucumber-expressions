@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/group'
 require 'cucumber/cucumber_expressions/errors'
 

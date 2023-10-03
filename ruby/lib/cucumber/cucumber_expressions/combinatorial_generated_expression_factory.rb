@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require('cucumber/cucumber_expressions/generated_expression')
 
 module Cucumber

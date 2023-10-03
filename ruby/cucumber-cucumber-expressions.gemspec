@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
 
 version = File.read(File.expand_path("VERSION", __dir__)).strip
 

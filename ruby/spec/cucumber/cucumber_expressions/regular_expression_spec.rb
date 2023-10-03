@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/parameter_type_registry'
@@ -7,13 +9,13 @@ module Cucumber
     describe RegularExpression do
       Dir['../testdata/regular-expression/matching/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
-        
+
         it "matches #{path}" do
           parameter_registry = ParameterTypeRegistry.new
           expression = RegularExpression.new(Regexp.new(expectation['expression']), parameter_registry)
           matches = expression.match(expectation['text'])
           values = matches.map { |arg| arg.value(nil) }
-          
+
           expect(values).to eq(expectation['expected_args'])
         end
       end
