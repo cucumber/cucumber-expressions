@@ -553,12 +553,12 @@ Style/Lambda:
     - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
     - 'spec/cucumber/cucumber_expressions/parameter_type_spec.rb'
 
-# Offense count: 21
-# This cop supports safe auto-correction (--auto-correct).
-Style/LineEndConcatenation:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/errors.rb'
-    - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
+## Offense count: 21
+## This cop supports safe auto-correction (--auto-correct).
+#Style/LineEndConcatenation:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/errors.rb'
+#    - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
 
 # Offense count: 1
 # This cop supports safe auto-correction (--auto-correct).
