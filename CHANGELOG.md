@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Ruby] Minimum supported ruby is now 2.5+
 
 - [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
 
