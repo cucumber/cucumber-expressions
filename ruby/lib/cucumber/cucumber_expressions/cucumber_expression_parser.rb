@@ -42,20 +42,20 @@ module Cucumber
 
         # parameter := '{' + name* + '}'
         parse_parameter = parse_between(
-            NodeType::PARAMETER,
-            TokenType::BEGIN_PARAMETER,
-            TokenType::END_PARAMETER,
-            [parse_name]
+          NodeType::PARAMETER,
+          TokenType::BEGIN_PARAMETER,
+          TokenType::END_PARAMETER,
+          [parse_name]
         )
 
         # optional := '(' + option* + ')'
         # option := optional | parameter | text
         optional_sub_parsers = []
         parse_optional = parse_between(
-            NodeType::OPTIONAL,
-            TokenType::BEGIN_OPTIONAL,
-            TokenType::END_OPTIONAL,
-            optional_sub_parsers
+          NodeType::OPTIONAL,
+          TokenType::BEGIN_OPTIONAL,
+          TokenType::END_OPTIONAL,
+          optional_sub_parsers
         )
         optional_sub_parsers << parse_optional << parse_parameter << parse_text
 
@@ -101,10 +101,10 @@ module Cucumber
         # cucumber-expression :=  ( alternation | optional | parameter | text )*
         #
         parse_cucumber_expression = parse_between(
-            NodeType::EXPRESSION,
-            TokenType::START_OF_LINE,
-            TokenType::END_OF_LINE,
-            [parse_alternation, parse_optional, parse_parameter, parse_text]
+          NodeType::EXPRESSION,
+          TokenType::START_OF_LINE,
+          TokenType::END_OF_LINE,
+          [parse_alternation, parse_optional, parse_parameter, parse_text]
         )
 
         tokenizer = CucumberExpressionTokenizer.new

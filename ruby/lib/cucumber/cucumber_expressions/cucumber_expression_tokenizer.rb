@@ -63,10 +63,10 @@ module Cucumber
 
         consumed_index = @buffer_start_index + @buffer.length + escape_tokens
         t = Token.new(
-            token_type,
-            @buffer.map { |codepoint| codepoint.chr(Encoding::UTF_8) }.join(''),
-            @buffer_start_index,
-            consumed_index
+          token_type,
+          @buffer.map { |codepoint| codepoint.chr(Encoding::UTF_8) }.join(''),
+          @buffer_start_index,
+          consumed_index
         )
         @buffer = []
         @buffer_start_index = consumed_index
@@ -77,18 +77,15 @@ module Cucumber
         unless treat_as_text
           return Token.type_of(codepoint)
         end
-        if Token.can_escape(codepoint)
-          return TokenType::TEXT
-        end
-        raise CantEscape.new(
-            @expression,
-            @buffer_start_index + @buffer.length + @escaped
-        )
+
+        return TokenType::TEXT if Token.can_escape(codepoint)
+
+        raise CantEscape.new(@expression, @buffer_start_index + @buffer.length + @escaped)
       end
 
       def should_create_new_token?(previous_token_type, current_token_type)
         current_token_type != previous_token_type ||
-            (current_token_type != TokenType::WHITE_SPACE && current_token_type != TokenType::TEXT)
+          (current_token_type != TokenType::WHITE_SPACE && current_token_type != TokenType::TEXT)
       end
     end
   end

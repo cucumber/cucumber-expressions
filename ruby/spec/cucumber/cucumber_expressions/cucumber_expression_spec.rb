@@ -8,6 +8,7 @@ module Cucumber
 
       Dir['../testdata/cucumber-expression/matching/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
+
         it "matches #{path}" do
           parameter_registry = ParameterTypeRegistry.new
           if expectation['exception']
@@ -43,6 +44,7 @@ module Cucumber
         expr = "I have {int} cuke(s)"
         expression = CucumberExpression.new(expr, parameter_registry)
         args = expression.match("I have 7 cukes")
+
         expect(args[0].value(nil)).to eq(7)
         ### [capture-match-arguments]
       end
@@ -92,35 +94,31 @@ module Cucumber
 
       it "exposes source" do
         expr = "I have {int} cuke(s)"
+
         expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).source).to eq(expr)
       end
 
       it "exposes source via #to_s" do
         expr = "I have {int} cuke(s)"
+
         expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).to_s).to eq(expr.inspect)
       end
 
       it "unmatched optional groups have undefined values" do
         parameter_type_registry = ParameterTypeRegistry.new
         parameter_type_registry.define_parameter_type(
-            ParameterType.new(
-                'textAndOrNumber',
-                /([A-Z]+)?(?: )?([0-9]+)?/,
-                Object,
-                -> (s1, s2) {
-                  [s1, s2]
-                },
-                false,
-                true
-            )
+          ParameterType.new(
+            'textAndOrNumber',
+            /([A-Z]+)?(?: )?([0-9]+)?/,
+            Object,
+            -> (s1, s2) { [s1, s2] },
+            false,
+            true
+          )
         )
-        expression = CucumberExpression.new(
-            '{textAndOrNumber}',
-            parameter_type_registry
-        )
+        expression = CucumberExpression.new('{textAndOrNumber}', parameter_type_registry)
 
-        class World
-        end
+        class World; end
 
         expect(expression.match("TLA")[0].value(World.new)).to eq(["TLA", nil])
         expect(expression.match("123")[0].value(World.new)).to eq([nil, "123"])
@@ -131,20 +129,18 @@ module Cucumber
       it "delegates transform to custom object" do
         parameter_type_registry = ParameterTypeRegistry.new
         parameter_type_registry.define_parameter_type(
-            ParameterType.new(
-                'widget',
-                /\w+/,
-                Object,
-                -> (s) {
-                  self.create_widget(s)
-                },
-                false,
-                true
-            )
+          ParameterType.new(
+            'widget',
+            /\w+/,
+            Object,
+            -> (s) { self.create_widget(s) },
+            false,
+            true
+          )
         )
         expression = CucumberExpression.new(
-            'I have a {widget}',
-            parameter_type_registry
+          'I have a {widget}',
+          parameter_type_registry
         )
 
         class World
@@ -154,20 +150,19 @@ module Cucumber
         end
 
         args = expression.match("I have a bolt")
+
         expect(args[0].value(World.new)).to eq('widget:bolt')
       end
 
       it "reports undefined parameter type name" do
         parameter_type_registry = ParameterTypeRegistry.new
 
-        begin
-          CucumberExpression.new(
-              'I have {int} {widget}(s) in {word}',
-              parameter_type_registry
-          )
-        rescue UndefinedParameterTypeError => e
-          expect(e.undefined_parameter_type_name).to eq('widget')
-        end
+        CucumberExpression.new(
+          'I have {int} {widget}(s) in {word}',
+          parameter_type_registry
+        )
+      rescue UndefinedParameterTypeError => e
+        expect(e.undefined_parameter_type_name).to eq('widget')
       end
 
       def match(expression, text)

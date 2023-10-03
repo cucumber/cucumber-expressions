@@ -14,7 +14,7 @@ module Cucumber
 
         if arg_groups.length != parameter_types.length
           raise CucumberExpressionError.new(
-              "Expression #{tree_regexp.regexp.inspect} has #{arg_groups.length} capture groups (#{arg_groups.map(&:value)}), but there were #{parameter_types.length} parameter types (#{parameter_types.map(&:name)})"
+            "Expression #{tree_regexp.regexp.inspect} has #{arg_groups.length} capture groups (#{arg_groups.map(&:value)}), but there were #{parameter_types.length} parameter types (#{parameter_types.map(&:name)})"
           )
         end
 
