@@ -25,7 +25,7 @@ module Cucumber
             nil,
             parameter_type_regexp,
             String,
-            lambda {|*s| s[0]},
+            ->(*s) { s[0]},
             false,
             false
           )

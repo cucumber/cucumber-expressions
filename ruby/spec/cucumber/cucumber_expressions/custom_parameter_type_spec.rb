@@ -50,7 +50,7 @@ module Cucumber
             'color',                   # name
             /red|blue|yellow/,         # regexp
             Color,                     # type
-            lambda {|s| Color.new(s)}, # transform
+            ->(s) { Color.new(s)}, # transform
             true,                      # use_for_snippets
             false                      # prefer_for_regexp_match
           )
@@ -64,7 +64,7 @@ module Cucumber
             '[string]',
             /.*/,
             String,
-            lambda {|s| s},
+            ->(s) { s},
             true,
             false
           )
@@ -85,7 +85,7 @@ module Cucumber
               'coordinate',
               /(\d+),\s*(\d+),\s*(\d+)/,
               Coordinate,
-              lambda {|x, y, z| Coordinate.new(x.to_i, y.to_i, z.to_i)},
+              ->(x, y, z) { Coordinate.new(x.to_i, y.to_i, z.to_i)},
               true,
               false
             )
@@ -111,7 +111,7 @@ module Cucumber
               'color',
               [/red|blue|yellow/, /(?:dark|light) (?:red|blue|yellow)/],
               Color,
-              lambda {|s| Color.new(s)},
+              ->(s) { Color.new(s)},
               true,
               false
             )
@@ -128,7 +128,7 @@ module Cucumber
               'throwing',
               /bad/,
               CssColor,
-              lambda {|s| raise "Can't transform [#{s}]"},
+              ->(s) { raise "Can't transform [#{s}]"},
               true,
               false
             )
@@ -147,7 +147,7 @@ module Cucumber
                   'color',
                   /.*/,
                   CssColor,
-                  lambda {|s| CssColor.new(s)},
+                  ->(s) { CssColor.new(s)},
                   true,
                   false
                 )
@@ -161,7 +161,7 @@ module Cucumber
                 'whatever',
                 /.*/,
                 Color,
-                lambda {|s| Color.new(s)},
+                ->(s) { Color.new(s)},
                 false,
                 false
               )
@@ -174,7 +174,7 @@ module Cucumber
                 'css-color',
                 /red|blue|yellow/,
                 CssColor,
-                lambda {|s| CssColor.new(s)},
+                ->(s) { CssColor.new(s)},
                 true,
                 false
               )
@@ -200,7 +200,7 @@ module Cucumber
               nil,
               /red|blue|yellow/,
               Color,
-              lambda {|s| Color.new(s)},
+              ->(s) { Color.new(s)},
               true,
               false
             )
