@@ -11,10 +11,10 @@ module Cucumber
       end
 
       def advance_to(new_match_position)
-        (new_match_position...@text.length).each {|advancedPos|
+        (new_match_position...@text.length).each do |advancedPos|
           matcher = self.class.new(parameter_type, @regexp, @text, advancedPos)
           return matcher if matcher.find && matcher.full_word?
-        }
+        end
 
         self.class.new(parameter_type, @regexp, @text, @text.length)
       end
