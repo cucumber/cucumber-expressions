@@ -158,7 +158,7 @@ This Cucumber Expression has a problem at column #{index + 1}:
             current.start,
             expression,
             point_at_located(current),
-            "An alternation can not be used inside an optional",
+            'An alternation can not be used inside an optional',
             "You can use '\\/' to escape the the '/'"
           )
         )
@@ -179,7 +179,7 @@ This Cucumber Expression has a problem at column #{index + 1}:
             expression,
             point_at_located(token),
             "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
-            "Did you mean to use a regular expression?"
+            'Did you mean to use a regular expression?'
           )
         )
       end

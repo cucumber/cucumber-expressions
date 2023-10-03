@@ -14,7 +14,7 @@ module Cucumber
       def generate_expressions(text)
         parameter_type_combinations = []
         parameter_type_matchers = create_parameter_type_matchers(text)
-        expression_template = ""
+        expression_template = ''
         pos = 0
 
         loop do
@@ -46,7 +46,7 @@ module Cucumber
             parameter_type_combinations.push(parameter_types)
 
             expression_template += escape(text.slice(pos...best_parameter_type_matcher.start))
-            expression_template += "{%s}"
+            expression_template += '{%s}'
 
             pos = best_parameter_type_matcher.start + best_parameter_type_matcher.group.length
           else

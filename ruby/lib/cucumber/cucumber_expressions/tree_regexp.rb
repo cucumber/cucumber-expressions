@@ -44,7 +44,7 @@ module Cucumber
         end
 
         # (?<name>X)
-        raise CucumberExpressionError.new("Named capture groups are not supported. See https://github.com/cucumber/cucumber/issues/329")
+        raise CucumberExpressionError.new('Named capture groups are not supported. See https://github.com/cucumber/cucumber/issues/329')
       end
 
       private def create_group_builder(regexp)

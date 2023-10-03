@@ -707,12 +707,12 @@ Style/StringConcatenation:
     - 'lib/cucumber/cucumber_expressions/errors.rb'
     - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
 
-# Offense count: 264
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
+## Offense count: 264
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
+## SupportedStyles: single_quotes, double_quotes
+#Style/StringLiterals:
+#  Enabled: false
 
 # Offense count: 7
 # This cop supports unsafe auto-correction (--auto-correct-all).

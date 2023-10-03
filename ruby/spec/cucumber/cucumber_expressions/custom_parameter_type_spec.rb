@@ -42,7 +42,7 @@ module Cucumber
       end
     end
 
-    describe "Custom parameter type" do
+    describe 'Custom parameter type' do
       before do
         parameter_type_registry = ParameterTypeRegistry.new
         parameter_type_registry.define_parameter_type(
@@ -58,7 +58,7 @@ module Cucumber
         @parameter_type_registry = parameter_type_registry
       end
 
-      it "throws exception for illegal character in parameter name" do
+      it 'throws exception for illegal character in parameter name' do
         expect do
           ParameterType.new(
             '[string]',
@@ -72,14 +72,14 @@ module Cucumber
       end
 
       describe CucumberExpression do
-        it "matches parameters with custom parameter type" do
-          expression = CucumberExpression.new("I have a {color} ball", @parameter_type_registry)
-          transformed_argument_value = expression.match("I have a red ball")[0].value(nil)
+        it 'matches parameters with custom parameter type' do
+          expression = CucumberExpression.new('I have a {color} ball', @parameter_type_registry)
+          transformed_argument_value = expression.match('I have a red ball')[0].value(nil)
 
           expect(transformed_argument_value).to eq(Color.new('red'))
         end
 
-        it "matches parameters with multiple capture groups" do
+        it 'matches parameters with multiple capture groups' do
           @parameter_type_registry.define_parameter_type(
             ParameterType.new(
               'coordinate',
@@ -104,7 +104,7 @@ module Cucumber
           expect(to).to eq(Coordinate.new(40, 50, 60))
         end
 
-        it "matches parameters with custom parameter type using optional capture group" do
+        it 'matches parameters with custom parameter type using optional capture group' do
           parameter_type_registry = ParameterTypeRegistry.new
           parameter_type_registry.define_parameter_type(
             ParameterType.new(
@@ -116,13 +116,13 @@ module Cucumber
               false
             )
           )
-          expression = CucumberExpression.new("I have a {color} ball", parameter_type_registry)
-          transformed_argument_value = expression.match("I have a dark red ball")[0].value(nil)
+          expression = CucumberExpression.new('I have a {color} ball', parameter_type_registry)
+          transformed_argument_value = expression.match('I have a dark red ball')[0].value(nil)
 
           expect(transformed_argument_value).to eq(Color.new('dark red'))
         end
 
-        it "defers transformation until queried from argument" do
+        it 'defers transformation until queried from argument' do
           @parameter_type_registry.define_parameter_type(
             ParameterType.new(
               'throwing',
@@ -133,14 +133,14 @@ module Cucumber
               false
             )
           )
-          expression = CucumberExpression.new("I have a {throwing} parameter", @parameter_type_registry)
-          args = expression.match("I have a bad parameter")
+          expression = CucumberExpression.new('I have a {throwing} parameter', @parameter_type_registry)
+          args = expression.match('I have a bad parameter')
 
           expect {args[0].value(nil)}.to raise_error("Can't transform [bad]")
         end
 
-        describe "conflicting parameter type" do
-          it "is detected for type name" do
+        describe 'conflicting parameter type' do
+          it 'is detected for type name' do
             expect {
               @parameter_type_registry.define_parameter_type(
                 ParameterType.new(
@@ -152,10 +152,10 @@ module Cucumber
                   false
                 )
               )
-            }.to raise_error("There is already a parameter with name color")
+            }.to raise_error('There is already a parameter with name color')
           end
 
-          it "is not detected for type" do
+          it 'is not detected for type' do
             @parameter_type_registry.define_parameter_type(
               ParameterType.new(
                 'whatever',
@@ -168,7 +168,7 @@ module Cucumber
             )
           end
 
-          it "is not detected for regexp" do
+          it 'is not detected for regexp' do
             @parameter_type_registry.define_parameter_type(
               ParameterType.new(
                 'css-color',
@@ -179,21 +179,21 @@ module Cucumber
                 false
               )
             )
-            css_color = CucumberExpression.new("I have a {css-color} ball", @parameter_type_registry)
-            css_color_value = css_color.match("I have a blue ball")[0].value(nil)
+            css_color = CucumberExpression.new('I have a {css-color} ball', @parameter_type_registry)
+            css_color_value = css_color.match('I have a blue ball')[0].value(nil)
 
-            expect(css_color_value).to eq(CssColor.new("blue"))
+            expect(css_color_value).to eq(CssColor.new('blue'))
 
-            color = CucumberExpression.new("I have a {color} ball", @parameter_type_registry)
-            color_value = color.match("I have a blue ball")[0].value(nil)
+            color = CucumberExpression.new('I have a {color} ball', @parameter_type_registry)
+            color_value = color.match('I have a blue ball')[0].value(nil)
 
-            expect(color_value).to eq(Color.new("blue"))
+            expect(color_value).to eq(Color.new('blue'))
           end
         end
       end
 
       describe RegularExpression do
-        it "matches arguments with custom parameter type without name" do
+        it 'matches arguments with custom parameter type without name' do
           parameter_type_registry = ParameterTypeRegistry.new
           parameter_type_registry.define_parameter_type(
             ParameterType.new(
@@ -206,7 +206,7 @@ module Cucumber
             )
           )
           expression = RegularExpression.new(/I have a (red|blue|yellow) ball/, parameter_type_registry)
-          value = expression.match("I have a red ball")[0].value(nil)
+          value = expression.match('I have a red ball')[0].value(nil)
 
           expect(value).to eq(Color.new('red'))
         end

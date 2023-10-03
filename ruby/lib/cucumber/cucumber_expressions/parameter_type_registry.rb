@@ -56,7 +56,7 @@ module Cucumber
         if parameter_type.name != nil
           if @parameter_type_by_name.has_key?(parameter_type.name)
             if parameter_type.name.length == 0
-              raise CucumberExpressionError.new("The anonymous parameter type has already been defined")
+              raise CucumberExpressionError.new('The anonymous parameter type has already been defined')
             else
               raise CucumberExpressionError.new("There is already a parameter with name #{parameter_type.name}")
             end

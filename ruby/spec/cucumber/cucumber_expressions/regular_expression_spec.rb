@@ -20,48 +20,48 @@ module Cucumber
         end
       end
 
-      it "does not transform by default" do
-        expect( match(/(\d\d)/, "22") ).to eq(["22"])
+      it 'does not transform by default' do
+        expect( match(/(\d\d)/, '22') ).to eq(['22'])
       end
 
-      it "does not transform anonymous" do
-        expect( match(/(.*)/, "22") ).to eq(["22"])
+      it 'does not transform anonymous' do
+        expect( match(/(.*)/, '22') ).to eq(['22'])
       end
 
-      it "transforms negative int" do
-        expect( match(/(-?\d+)/, "-22") ).to eq([-22])
+      it 'transforms negative int' do
+        expect( match(/(-?\d+)/, '-22') ).to eq([-22])
       end
 
-      it "transforms positive int" do
-        expect( match(/(\d+)/, "22") ).to eq([22])
+      it 'transforms positive int' do
+        expect( match(/(\d+)/, '22') ).to eq([22])
       end
 
-      it "returns nil when there is no match" do
-        expect( match(/hello/, "world") ).to be_nil
+      it 'returns nil when there is no match' do
+        expect( match(/hello/, 'world') ).to be_nil
       end
 
-      it "matches empty string when there is an empty string match" do
+      it 'matches empty string when there is an empty string match' do
         expect( match(/^The value equals "([^"]*)"$/, 'The value equals ""') ).to eq([''])
       end
 
-      it "matches nested capture group without match" do
+      it 'matches nested capture group without match' do
         expect( match(/^a user( named "([^"]*)")?$/, 'a user') ).to eq([nil])
       end
 
-      it "matches nested capture group with match" do
+      it 'matches nested capture group with match' do
         expect( match(/^a user( named "([^"]*)")?$/, 'a user named "Charlie"') ).to eq(['Charlie'])
       end
 
-      it "ignores non capturing groups" do
+      it 'ignores non capturing groups' do
         expect(
           match(
             /(\S+) ?(can|cannot) (?:delete|cancel) the (\d+)(?:st|nd|rd|th) (attachment|slide) ?(?:upload)?/,
-            "I can cancel the 1st slide upload"
+            'I can cancel the 1st slide upload'
           )
-        ).to eq(["I", "can", 1, "slide"])
+        ).to eq(['I', 'can', 1, 'slide'])
       end
 
-      it "matches capture group nested in optional one" do
+      it 'matches capture group nested in optional one' do
         regexp = /^a (pre-commercial transaction |pre buyer fee model )?purchase(?: for \$(\d+))?$/
 
         expect( match(regexp, 'a purchase') ).to eq([nil, nil])
@@ -69,11 +69,11 @@ module Cucumber
         expect( match(regexp, 'a pre buyer fee model purchase') ).to eq(['pre buyer fee model ', nil])
       end
 
-      it "works with escaped parentheses" do
+      it 'works with escaped parentheses' do
         expect( match(/Across the line\(s\)/, 'Across the line(s)') ).to eq([])
       end
 
-      it "exposes source and regexp" do
+      it 'exposes source and regexp' do
         regexp = /I have (\d+) cukes? in my (\+) now/
         expression = RegularExpression.new(regexp, ParameterTypeRegistry.new)
 

@@ -103,13 +103,13 @@ module Cucumber
 
       it 'detects multiple non capturing groups' do
         tr = TreeRegexp.new(/(?:a)(:b)(\?c)(d)/)
-        group = tr.match("a:b?cd")
+        group = tr.match('a:b?cd')
         expect(group.children.length).to eq(3)
       end
 
       it 'works with escaped backslash' do
         tr = TreeRegexp.new(/foo\\(bar|baz)/)
-        group = tr.match("foo\\bar")
+        group = tr.match('foo\\bar')
         expect(group.children.length).to eq(1)
       end
 
@@ -121,22 +121,22 @@ module Cucumber
 
       it 'works with digit and word' do
         tr = TreeRegexp.new(/^(\d) (\w+)$/)
-        group = tr.match("2 you")
+        group = tr.match('2 you')
         expect(group.children.length).to eq(2)
       end
 
       it 'captures non capturing groups with capturing groups inside' do
         tr = TreeRegexp.new(/the stdout(?: from "(.*?)")?/)
-        group = tr.match("the stdout")
-        expect(group.value).to eq("the stdout")
+        group = tr.match('the stdout')
+        expect(group.value).to eq('the stdout')
         expect(group.children[0].value).to eq(nil)
         expect(group.children.length).to eq(1)
       end
 
       it 'works with flags' do
         tr = TreeRegexp.new(/HELLO/i)
-        group = tr.match("hello")
-        expect(group.value).to eq("hello")
+        group = tr.match('hello')
+        expect(group.value).to eq('hello')
       end
 
       it('does not consider parenthesis in character class as group') do
