@@ -8,11 +8,11 @@ require 'bigdecimal'
 module Cucumber
   module CucumberExpressions
     class ParameterTypeRegistry
-      INTEGER_REGEXPS = [/-?\d+/, /\d+/]
-      FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][-+]?\d+)?/
-      WORD_REGEXP = /[^\s]+/
-      STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/
-      ANONYMOUS_REGEXP = /.*/
+      INTEGER_REGEXPS = [/-?\d+/, /\d+/].freeze
+      FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][-+]?\d+)?/.freeze
+      WORD_REGEXP = /[^\s]+/.freeze
+      STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/.freeze
+      ANONYMOUS_REGEXP = /.*/.freeze
 
       def initialize
         @parameter_type_by_name = {}

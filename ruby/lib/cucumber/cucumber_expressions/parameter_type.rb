@@ -5,8 +5,8 @@ require 'cucumber/cucumber_expressions/errors'
 module Cucumber
   module CucumberExpressions
     class ParameterType
-      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/
-      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/
+      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/.freeze
+      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/.freeze
 
       attr_reader :name, :type, :regexps
 

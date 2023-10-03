@@ -566,17 +566,17 @@ Style/MultilineTernaryOperator:
   Exclude:
     - 'spec/cucumber/cucumber_expressions/cucumber_expression_spec.rb'
 
-# Offense count: 30
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/ast.rb'
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
-    - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
+## Offense count: 30
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: literals, strict
+#Style/MutableConstant:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/ast.rb'
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
+#    - 'spec/cucumber/cucumber_expressions/parameter_type_registry_spec.rb'
 
 # Offense count: 1
 # This cop supports safe auto-correction (--auto-correct).

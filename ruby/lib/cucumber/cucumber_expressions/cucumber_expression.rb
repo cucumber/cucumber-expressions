@@ -9,7 +9,7 @@ module Cucumber
   module CucumberExpressions
     class CucumberExpression
 
-      ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/
+      ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/.freeze
 
       def initialize(expression, parameter_type_registry)
         @expression = expression

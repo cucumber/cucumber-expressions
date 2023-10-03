@@ -6,7 +6,7 @@ require 'cucumber/cucumber_expressions/errors'
 
 module Cucumber
   module CucumberExpressions
-    CAPITALISED_WORD = /[A-Z]+\w+/
+    CAPITALISED_WORD = /[A-Z]+\w+/.freeze
 
     class Name; end
     class Person; end
