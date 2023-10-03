@@ -172,10 +172,10 @@ module Cucumber
 
       def to_hash
         {
-            'type' => @type,
-            'text' => @text,
-            'start' => @start,
-            'end' => @end
+          'type' => @type,
+          'text' => @text,
+          'start' => @start,
+          'end' => @end
         }
       end
     end
