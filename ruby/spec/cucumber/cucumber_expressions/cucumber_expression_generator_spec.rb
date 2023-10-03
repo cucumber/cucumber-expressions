@@ -78,7 +78,7 @@ module Cucumber
         assert_expression('I have a {currency} account and a {currency} account', ['currency', 'currency2'], 'I have a EUR account and a GBP account')
       end
 
-      it 'exposes parameters in generated expression' do
+      it 'exposes parameters in a generated expression' do
         expression = @generator.generate_expressions('I have 2 cukes and 1.5 euro')[0]
         types = expression.parameter_types.map(&:type)
 

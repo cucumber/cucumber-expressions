@@ -50,7 +50,7 @@ module Cucumber
             'color',                   # name
             /red|blue|yellow/,         # regexp
             Color,                     # type
-            ->(s) { Color.new(s)}, # transform
+            ->(s) { Color.new(s)},     # transform
             true,                      # use_for_snippets
             false                      # prefer_for_regexp_match
           )
@@ -193,7 +193,7 @@ module Cucumber
       end
 
       describe RegularExpression do
-        it 'matches arguments with custom parameter type without name' do
+        it 'matches arguments with custom parameter types without a name' do
           parameter_type_registry = ParameterTypeRegistry.new
           parameter_type_registry.define_parameter_type(
             ParameterType.new(
