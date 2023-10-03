@@ -17,9 +17,7 @@ module Cucumber
 
         codepoints = expression.codepoints
 
-        if codepoints.empty?
-          tokens.push(Token.new(TokenType::START_OF_LINE, '', 0, 0))
-        end
+        tokens.push(Token.new(TokenType::START_OF_LINE, '', 0, 0)) if codepoints.empty?
 
         codepoints.each do |codepoint|
           if !treat_as_text && Token.is_escape_character(codepoint)
@@ -76,9 +74,7 @@ module Cucumber
       end
 
       def token_type_of(codepoint, treat_as_text)
-        unless treat_as_text
-          return Token.type_of(codepoint)
-        end
+        return Token.type_of(codepoint) unless treat_as_text
 
         return TokenType::TEXT if Token.can_escape(codepoint)
 

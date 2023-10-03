@@ -11,9 +11,7 @@ module Cucumber
 
     class Node
       def initialize(type, nodes, token, start, _end)
-        if nodes.nil? && token.nil?
-          raise 'Either nodes or token must be defined'
-        end
+        raise 'Either nodes or token must be defined' if nodes.nil? && token.nil?
         @type = type
         @nodes = nodes
         @token = token
@@ -42,21 +40,15 @@ module Cucumber
       end
 
       def text
-        if @token.nil?
-          return @nodes.map { |value| value.text }.join('')
-        end
+        return @nodes.map { |value| value.text }.join('') if @token.nil?
         @token
       end
 
       def to_hash
         hash = Hash.new
         hash["type"] = @type
-        unless @nodes.nil?
-          hash["nodes"] = @nodes.map { |node| node.to_hash }
-        end
-        unless @token.nil?
-          hash["token"] = @token
-        end
+        hash["nodes"] = @nodes.map { |node| node.to_hash } unless @nodes.nil?
+        hash["token"] = @token unless @token.nil?
         hash["start"] = @start
         hash["end"] = @end
         hash

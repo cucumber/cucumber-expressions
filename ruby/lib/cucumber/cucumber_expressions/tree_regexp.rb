@@ -62,9 +62,7 @@ module Cucumber
             group_start_stack.push(i)
             group_builder = GroupBuilder.new
             non_capturing = is_non_capturing(source, i)
-            if non_capturing
-              group_builder.set_non_capturing!
-            end
+            group_builder.set_non_capturing! if non_capturing
             stack.push(group_builder)
           elsif c == ')' && !escaping && !char_class
             gb = stack.pop

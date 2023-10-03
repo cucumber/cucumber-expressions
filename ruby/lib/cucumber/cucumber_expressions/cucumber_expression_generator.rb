@@ -21,9 +21,7 @@ module Cucumber
           matching_parameter_type_matchers = []
           parameter_type_matchers.each do |parameter_type_matcher|
             advanced_parameter_type_matcher = parameter_type_matcher.advance_to(pos)
-            if advanced_parameter_type_matcher.find
-              matching_parameter_type_matchers.push(advanced_parameter_type_matcher)
-            end
+            matching_parameter_type_matchers.push(advanced_parameter_type_matcher) if advanced_parameter_type_matcher.find
           end
 
           if matching_parameter_type_matchers.any?
@@ -41,9 +39,7 @@ module Cucumber
             # Users are most likely to want these, so they should be listed at the top.
             parameter_types = []
             best_parameter_type_matchers.each do |parameter_type_matcher|
-              unless parameter_types.include?(parameter_type_matcher.parameter_type)
-                parameter_types.push(parameter_type_matcher.parameter_type)
-              end
+              parameter_types.push(parameter_type_matcher.parameter_type) unless parameter_types.include?(parameter_type_matcher.parameter_type)
             end
             parameter_types.sort!
 
@@ -73,9 +69,7 @@ module Cucumber
       def create_parameter_type_matchers(text)
         parameter_matchers = []
         @parameter_type_registry.parameter_types.each do |parameter_type|
-          if parameter_type.use_for_snippets?
-            parameter_matchers += create_parameter_type_matchers2(parameter_type, text)
-          end
+          parameter_matchers += create_parameter_type_matchers2(parameter_type, text) if parameter_type.use_for_snippets?
         end
         parameter_matchers
       end

@@ -63,9 +63,7 @@ module Cucumber
 
         # alternation := alternative* + ( '/' + alternative* )+
         parse_alternative_separator = lambda do |_, tokens, current|
-          unless looking_at(tokens, current, TokenType::ALTERNATION)
-            return 0, nil
-          end
+          return 0, nil unless looking_at(tokens, current, TokenType::ALTERNATION)
           token = tokens[current]
           return 1, [Node.new(NodeType::ALTERNATIVE, nil, token.text, token.start, token.end)]
         end
@@ -83,15 +81,11 @@ module Cucumber
         # alternative: = optional | parameter | text
         parse_alternation = lambda do |expr, tokens, current|
           previous = current - 1
-          unless looking_at_any(tokens, previous, [TokenType::START_OF_LINE, TokenType::WHITE_SPACE, TokenType::END_PARAMETER])
-            return 0, nil
-          end
+          return 0, nil unless looking_at_any(tokens, previous, [TokenType::START_OF_LINE, TokenType::WHITE_SPACE, TokenType::END_PARAMETER])
 
           consumed, ast = parse_tokens_until(expr, alternative_parsers, tokens, current, [TokenType::WHITE_SPACE, TokenType::END_OF_LINE, TokenType::BEGIN_PARAMETER])
           sub_current = current + consumed
-          unless ast.map { |astNode| astNode.type }.include? NodeType::ALTERNATIVE
-            return 0, nil
-          end
+          return 0, nil unless ast.map { |astNode| astNode.type }.include? NodeType::ALTERNATIVE
 
           start = tokens[current].start
           _end = tokens[sub_current].start
@@ -119,17 +113,13 @@ module Cucumber
 
       def parse_between(type, begin_token, end_token, parsers)
         lambda do |expression, tokens, current|
-          unless looking_at(tokens, current, begin_token)
-            return 0, nil
-          end
+          return 0, nil unless looking_at(tokens, current, begin_token)
           sub_current = current + 1
           consumed, ast = parse_tokens_until(expression, parsers, tokens, sub_current, [end_token, TokenType::END_OF_LINE])
           sub_current += consumed
 
           # endToken not found
-          unless looking_at(tokens, sub_current, end_token)
-            raise MissingEndToken.new(expression, begin_token, end_token, tokens[current])
-          end
+          raise MissingEndToken.new(expression, begin_token, end_token, tokens[current]) unless looking_at(tokens, sub_current, end_token)
           # consumes endToken
           start = tokens[current].start
           _end = tokens[sub_current].end
@@ -153,9 +143,7 @@ module Cucumber
         size = tokens.length
         ast = []
         while current < size do
-          if looking_at_any(tokens, current, end_tokens)
-            break
-          end
+          break if looking_at_any(tokens, current, end_tokens)
           consumed, sub_ast = parse_token(expression, parsers, tokens, current)
           if consumed == 0
             # If configured correctly this will never happen
@@ -178,9 +166,7 @@ module Cucumber
           # Keep for completeness
           return token == TokenType::START_OF_LINE
         end
-        if at >= tokens.length
-          return token == TokenType::END_OF_LINE
-        end
+        return token == TokenType::END_OF_LINE if at >= tokens.length
         tokens[at].type == token
       end
 

@@ -516,20 +516,20 @@ Style/GuardClause:
     - 'lib/cucumber/cucumber_expressions/parameter_type.rb'
     - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
 
-# Offense count: 27
-# This cop supports safe auto-correction (--auto-correct).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/ast.rb'
-    - 'lib/cucumber/cucumber_expressions/combinatorial_generated_expression_factory.rb'
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression_generator.rb'
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression_parser.rb'
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression_tokenizer.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type_matcher.rb'
-    - 'lib/cucumber/cucumber_expressions/tree_regexp.rb'
-    - 'spec/cucumber/cucumber_expressions/cucumber_expression_generator_spec.rb'
+## Offense count: 27
+## This cop supports safe auto-correction (--auto-correct).
+#Style/IfUnlessModifier:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/ast.rb'
+#    - 'lib/cucumber/cucumber_expressions/combinatorial_generated_expression_factory.rb'
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression_generator.rb'
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression_parser.rb'
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression_tokenizer.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type_matcher.rb'
+#    - 'lib/cucumber/cucumber_expressions/tree_regexp.rb'
+#    - 'spec/cucumber/cucumber_expressions/cucumber_expression_generator_spec.rb'
 
 # Offense count: 1
 # This cop supports unsafe auto-correction (--auto-correct-all).
