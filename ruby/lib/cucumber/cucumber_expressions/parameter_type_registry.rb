@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/errors'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
@@ -6,27 +8,27 @@ require 'bigdecimal'
 module Cucumber
   module CucumberExpressions
     class ParameterTypeRegistry
-      INTEGER_REGEXPS = [/-?\d+/, /\d+/]
-      FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][-+]?\d+)?/
-      WORD_REGEXP = /[^\s]+/
-      STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/
-      ANONYMOUS_REGEXP = /.*/
+      INTEGER_REGEXPS = [/-?\d+/, /\d+/].freeze
+      FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][-+]?\d+)?/.freeze
+      WORD_REGEXP = /[^\s]+/.freeze
+      STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/.freeze
+      ANONYMOUS_REGEXP = /.*/.freeze
 
       def initialize
         @parameter_type_by_name = {}
         @parameter_types_by_regexp = Hash.new {|hash, regexp| hash[regexp] = []}
 
-        define_parameter_type(ParameterType.new('int', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, true, true))
-        define_parameter_type(ParameterType.new('float', FLOAT_REGEXP, Float, lambda {|s = nil| s && s.to_f}, true, false))
-        define_parameter_type(ParameterType.new('word', WORD_REGEXP, String, lambda {|s = nil| s}, false, false))
-        define_parameter_type(ParameterType.new('string', STRING_REGEXP, String, lambda { |s1, s2| arg = s1 != nil ? s1 : s2; arg.gsub(/\\"/, '"').gsub(/\\'/, "'")}, true, false))
-        define_parameter_type(ParameterType.new('', ANONYMOUS_REGEXP, String, lambda {|s = nil| s}, false, true))
-        define_parameter_type(ParameterType.new('bigdecimal', FLOAT_REGEXP, BigDecimal, lambda {|s = nil| BigDecimal(s)}, false, false))
-        define_parameter_type(ParameterType.new('biginteger', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
-        define_parameter_type(ParameterType.new('byte', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
-        define_parameter_type(ParameterType.new('short', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
-        define_parameter_type(ParameterType.new('long', INTEGER_REGEXPS, Integer, lambda {|s = nil| s && s.to_i}, false, false))
-        define_parameter_type(ParameterType.new('double', FLOAT_REGEXP, Float, lambda {|s = nil| s && s.to_f}, false, false))
+        define_parameter_type(ParameterType.new('int', INTEGER_REGEXPS, Integer, ->(s = nil) { s && s.to_i}, true, true))
+        define_parameter_type(ParameterType.new('float', FLOAT_REGEXP, Float, ->(s = nil) { s && s.to_f}, true, false))
+        define_parameter_type(ParameterType.new('word', WORD_REGEXP, String, ->(s = nil) { s}, false, false))
+        define_parameter_type(ParameterType.new('string', STRING_REGEXP, String, ->(s1, s2) { arg = s1 != nil ? s1 : s2; arg.gsub(/\\"/, '"').gsub(/\\'/, "'")}, true, false))
+        define_parameter_type(ParameterType.new('', ANONYMOUS_REGEXP, String, ->(s = nil) { s}, false, true))
+        define_parameter_type(ParameterType.new('bigdecimal', FLOAT_REGEXP, BigDecimal, ->(s = nil) { BigDecimal(s)}, false, false))
+        define_parameter_type(ParameterType.new('biginteger', INTEGER_REGEXPS, Integer, ->(s = nil) { s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('byte', INTEGER_REGEXPS, Integer, ->(s = nil) { s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('short', INTEGER_REGEXPS, Integer, ->(s = nil) { s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('long', INTEGER_REGEXPS, Integer, ->(s = nil) { s && s.to_i}, false, false))
+        define_parameter_type(ParameterType.new('double', FLOAT_REGEXP, Float, ->(s = nil) { s && s.to_f}, false, false))
       end
 
       def lookup_by_type_name(name)
@@ -54,7 +56,7 @@ module Cucumber
         if parameter_type.name != nil
           if @parameter_type_by_name.has_key?(parameter_type.name)
             if parameter_type.name.length == 0
-              raise CucumberExpressionError.new("The anonymous parameter type has already been defined")
+              raise CucumberExpressionError.new('The anonymous parameter type has already been defined')
             else
               raise CucumberExpressionError.new("There is already a parameter with name #{parameter_type.name}")
             end

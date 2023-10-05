@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/group_builder'
 require 'cucumber/cucumber_expressions/errors'
 
@@ -42,7 +44,7 @@ module Cucumber
         end
 
         # (?<name>X)
-        raise CucumberExpressionError.new("Named capture groups are not supported. See https://github.com/cucumber/cucumber/issues/329")
+        raise CucumberExpressionError.new('Named capture groups are not supported. See https://github.com/cucumber/cucumber/issues/329')
       end
 
       private def create_group_builder(regexp)
@@ -60,9 +62,7 @@ module Cucumber
             group_start_stack.push(i)
             group_builder = GroupBuilder.new
             non_capturing = is_non_capturing(source, i)
-            if non_capturing
-              group_builder.set_non_capturing!
-            end
+            group_builder.set_non_capturing! if non_capturing
             stack.push(group_builder)
           elsif c == ')' && !escaping && !char_class
             gb = stack.pop

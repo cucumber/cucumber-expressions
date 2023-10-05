@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/argument'
 require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/tree_regexp'
@@ -23,7 +25,7 @@ module Cucumber
             nil,
             parameter_type_regexp,
             String,
-            lambda {|*s| s[0]},
+            ->(*s) { s[0]},
             false,
             false
           )

@@ -1,15 +1,16 @@
 # encoding: utf-8
+# frozen_string_literal: true
 require 'rubygems'
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
-$:.unshift File.expand_path("../lib", __FILE__)
+$:.unshift File.expand_path('../lib', __FILE__)
 
 Dir['./rake/*.rb'].each do |f|
   require f
 end
 
-require "rspec/core/rake_task"
+require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
 task default: :spec

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/argument'
 require 'cucumber/cucumber_expressions/tree_regexp'
 require 'cucumber/cucumber_expressions/errors'
@@ -7,7 +9,7 @@ module Cucumber
   module CucumberExpressions
     class CucumberExpression
 
-      ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/
+      ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/.freeze
 
       def initialize(expression, parameter_type_registry)
         @expression = expression
@@ -72,9 +74,7 @@ module Cucumber
       def rewrite_alternation(node)
         # Make sure the alternative parts aren't empty and don't contain parameter types
         node.nodes.each { |alternative|
-          if alternative.nodes.length == 0
-            raise AlternativeMayNotBeEmpty.new(alternative, @expression)
-          end
+          raise AlternativeMayNotBeEmpty.new(alternative, @expression) if alternative.nodes.length == 0
           assert_not_empty(alternative) { |astNode| raise AlternativeMayNotExclusivelyContainOptionals.new(astNode, @expression) }
         }
         regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('|')
@@ -88,14 +88,10 @@ module Cucumber
       def rewrite_parameter(node)
         name = node.text
         parameter_type = @parameter_type_registry.lookup_by_type_name(name)
-        if parameter_type.nil?
-          raise UndefinedParameterTypeError.new(node, @expression, name)
-        end
+        raise UndefinedParameterTypeError.new(node, @expression, name) if parameter_type.nil?
         @parameter_types.push(parameter_type)
         regexps = parameter_type.regexps
-        if regexps.length == 1
-          return "(#{regexps[0]})"
-        end
+        return "(#{regexps[0]})" if regexps.length == 1
         "((?:#{regexps.join(')|(?:')}))"
       end
 

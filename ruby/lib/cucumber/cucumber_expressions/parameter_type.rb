@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/errors'
 
 module Cucumber
   module CucumberExpressions
     class ParameterType
-      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/
-      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/
+      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/.freeze
+      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/.freeze
 
       attr_reader :name, :type, :regexps
 
       def self.check_parameter_type_name(type_name)
-        unless is_valid_parameter_type_name(type_name)
-          raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'")
-        end
+        raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'") unless is_valid_parameter_type_name(type_name)
       end
 
       def self.is_valid_parameter_type_name(type_name)
@@ -75,9 +75,7 @@ module Cucumber
             'MULTILINE'
         ].each do |option_name|
           option = Regexp.const_get(option_name)
-          if regexp.options & option != 0
-            raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}")
-          end
+          raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}") if regexp.options & option != 0
         end
         regexp.source
       end

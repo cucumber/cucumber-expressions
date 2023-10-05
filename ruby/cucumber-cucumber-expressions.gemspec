@@ -1,18 +1,19 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
 
-version = File.read(File.expand_path("VERSION", __dir__)).strip
+version = File.read(File.expand_path('VERSION', __dir__)).strip
 
 Gem::Specification.new do |s|
   s.name        = 'cucumber-cucumber-expressions'
   s.version     = version
-  s.authors     = ["Aslak Hellesøy"]
+  s.authors     = ['Aslak Hellesøy']
   s.description = 'Cucumber Expressions - a simpler alternative to Regular Expressions'
   s.summary     = "cucumber-expressions-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
-  s.homepage    = "https://github.com/cucumber/cucumber-expressions-ruby#readme"
+  s.homepage    = 'https://github.com/cucumber/cucumber-expressions-ruby#readme'
   s.platform    = Gem::Platform::RUBY
-  s.license     = "MIT"
-  s.required_ruby_version = ">= 2.5"
+  s.license     = 'MIT'
+  s.required_ruby_version = '>= 2.5'
 
   s.metadata    = {
                     'bug_tracker_uri'   => 'https://github.com/cucumber/cucumber/issues',
@@ -26,9 +27,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.11', '>= 3.11.0'
   s.add_development_dependency 'rubocop', '~> 1.27.0'
 
-  s.rubygems_version = ">= 3.0.8"
+  s.rubygems_version = '>= 3.0.8'
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
   s.test_files       = `git ls-files -- spec/*`.split("\n")
-  s.rdoc_options     = ["--charset=UTF-8"]
-  s.require_path     = "lib"
+  s.rdoc_options     = ['--charset=UTF-8']
+  s.require_path     = 'lib'
 end

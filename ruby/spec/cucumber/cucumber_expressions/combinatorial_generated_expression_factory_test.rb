@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/combinatorial_generated_expression_factory'
 
@@ -14,13 +16,13 @@ module Cucumber
       it 'generates multiple expressions' do
         parameter_type_combinations = [
           [
-            ParameterType.new('color', /red|blue|yellow/, Color, lambda {|s| Color.new}, true, false),
-            ParameterType.new('csscolor', /red|blue|yellow/, CssColor, lambda {|s| CssColor.new}, true, false)
+            ParameterType.new('color', /red|blue|yellow/, Color, ->(s) { Color.new}, true, false),
+            ParameterType.new('csscolor', /red|blue|yellow/, CssColor, ->(s) { CssColor.new}, true, false)
           ],
           [
-            ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, Date, lambda {|s| Date.new}, true, false),
-            ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, DateTime, lambda {|s| DateTime.new}, true, false),
-            ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, Timestamp, lambda {|s| Timestamp.new}, true, false)
+            ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, Date, ->(s) { Date.new}, true, false),
+            ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, DateTime, ->(s) { DateTime.new}, true, false),
+            ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, Timestamp, ->(s) { Timestamp.new}, true, false)
           ]
         ]
 
