@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
-- [Ruby] Minimum supported ruby is now 2.5+
-
 - [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
+- [Ruby] Minimum supported ruby is now 2.5+ ([#232](https://github.com/cucumber/cucumber-expressions/pull/232))
+- [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233))
 
 ## [16.1.2] - 2023-01-17
 ### Fixed
