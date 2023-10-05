@@ -8,7 +8,7 @@ module Cucumber
       ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/.freeze
       UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/.freeze
 
-      attr_reader :name, :type, :regexps
+      attr_reader :name, :type, :transformer, :use_for_snippets, :prefer_for_regexp_match, :regexps
 
       def self.check_parameter_type_name(type_name)
         raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'") unless is_valid_parameter_type_name(type_name)
@@ -19,14 +19,6 @@ module Cucumber
           $2
         end
         !(ILLEGAL_PARAMETER_NAME_PATTERN =~ unescaped_type_name)
-      end
-
-      def prefer_for_regexp_match?
-        @prefer_for_regexp_match
-      end
-
-      def use_for_snippets?
-        @use_for_snippets
       end
 
       # Create a new Parameter
@@ -62,7 +54,6 @@ module Cucumber
 
       private
 
-
       def string_array(regexps)
         array = regexps.is_a?(Array) ? regexps : [regexps]
         array.map { |regexp| regexp.is_a?(String) ? regexp : regexp_source(regexp) }
@@ -70,9 +61,9 @@ module Cucumber
 
       def regexp_source(regexp)
         [
-            'EXTENDED',
-            'IGNORECASE',
-            'MULTILINE'
+          'EXTENDED',
+          'IGNORECASE',
+          'MULTILINE'
         ].each do |option_name|
           option = Regexp.const_get(option_name)
           raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}") if regexp.options & option != 0
