@@ -69,7 +69,7 @@ module Cucumber
       def create_parameter_type_matchers(text)
         parameter_matchers = []
         @parameter_type_registry.parameter_types.each do |parameter_type|
-          parameter_matchers += create_parameter_type_matchers2(parameter_type, text) if parameter_type.use_for_snippets?
+          parameter_matchers += create_parameter_type_matchers2(parameter_type, text) if parameter_type.use_for_snippets
         end
         parameter_matchers
       end
