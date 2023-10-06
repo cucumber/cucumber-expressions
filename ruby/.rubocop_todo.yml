@@ -117,11 +117,11 @@ Layout/HashAlignment:
   Exclude:
     - 'cucumber-cucumber-expressions.gemspec'
 
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-Layout/HeredocIndentation:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/errors.rb'
+## Offense count: 2
+## This cop supports safe auto-correction (--auto-correct).
+#Layout/HeredocIndentation:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/errors.rb'
 
 # Offense count: 2
 # This cop supports safe auto-correction (--auto-correct).
