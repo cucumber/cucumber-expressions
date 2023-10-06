@@ -146,14 +146,14 @@ Layout/MultilineMethodCallIndentation:
   Exclude:
     - 'lib/cucumber/cucumber_expressions/cucumber_expression_generator.rb'
 
-# Offense count: 2
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceAroundEqualsInParameterDefault:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/argument.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type_matcher.rb'
+## Offense count: 2
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: space, no_space
+#Layout/SpaceAroundEqualsInParameterDefault:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/argument.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type_matcher.rb'
 
 # Offense count: 5
 # This cop supports safe auto-correction (--auto-correct).

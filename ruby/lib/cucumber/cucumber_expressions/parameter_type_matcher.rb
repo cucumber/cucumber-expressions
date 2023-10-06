@@ -5,7 +5,7 @@ module Cucumber
     class ParameterTypeMatcher
       attr_reader :parameter_type
 
-      def initialize(parameter_type, regexp, text, match_position=0)
+      def initialize(parameter_type, regexp, text, match_position = 0)
         @parameter_type, @regexp, @text = parameter_type, regexp, text
         @match = @regexp.match(@text, match_position)
       end
