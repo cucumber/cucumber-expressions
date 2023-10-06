@@ -171,6 +171,7 @@ module Cucumber
         cucumber_expression = CucumberExpression.new(expression, ParameterTypeRegistry.new)
         args = cucumber_expression.match(text)
         return nil if args.nil?
+
         args.map { |arg| arg.value(nil) }
       end
     end

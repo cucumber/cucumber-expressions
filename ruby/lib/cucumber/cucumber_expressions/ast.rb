@@ -12,6 +12,7 @@ module Cucumber
     class Node
       def initialize(type, nodes, token, start, _end)
         raise 'Either nodes or token must be defined' if nodes.nil? && token.nil?
+
         @type = type
         @nodes = nodes
         @token = token
@@ -41,6 +42,7 @@ module Cucumber
 
       def text
         return @nodes.map { |value| value.text }.join('') if @token.nil?
+
         @token
       end
 
@@ -96,6 +98,7 @@ module Cucumber
           # TODO: Unicode whitespace?
           return true
         end
+
         case c
         when ESCAPE_CHARACTER
           true
@@ -120,6 +123,7 @@ module Cucumber
           # TODO: Unicode whitespace?
           return TokenType::WHITE_SPACE
         end
+
         case c
         when ALTERNATION_CHARACTER
           TokenType::ALTERNATION

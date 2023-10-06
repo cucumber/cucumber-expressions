@@ -85,6 +85,7 @@ module Cucumber
         regular_expression = RegularExpression.new(expression, ParameterTypeRegistry.new)
         arguments = regular_expression.match(text)
         return nil if arguments.nil?
+
         arguments.map { |arg| arg.value(nil) }
       end
     end

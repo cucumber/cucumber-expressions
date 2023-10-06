@@ -75,6 +75,7 @@ module Cucumber
         # Make sure the alternative parts aren't empty and don't contain parameter types
         node.nodes.each { |alternative|
           raise AlternativeMayNotBeEmpty.new(alternative, @expression) if alternative.nodes.length == 0
+
           assert_not_empty(alternative) { |astNode| raise AlternativeMayNotExclusivelyContainOptionals.new(astNode, @expression) }
         }
         regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('|')
@@ -89,9 +90,11 @@ module Cucumber
         name = node.text
         parameter_type = @parameter_type_registry.lookup_by_type_name(name)
         raise UndefinedParameterTypeError.new(node, @expression, name) if parameter_type.nil?
+
         @parameter_types.push(parameter_type)
         regexps = parameter_type.regexps
         return "(#{regexps[0]})" if regexps.length == 1
+
         "((?:#{regexps.join(')|(?:')}))"
       end
 

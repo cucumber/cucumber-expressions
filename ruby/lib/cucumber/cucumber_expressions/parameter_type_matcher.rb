@@ -38,8 +38,10 @@ module Cucumber
       def <=>(other)
         pos_comparison = start <=> other.start
         return pos_comparison if pos_comparison != 0
+
         length_comparison = other.group.length <=> group.length
         return length_comparison if length_comparison != 0
+
         0
       end
 

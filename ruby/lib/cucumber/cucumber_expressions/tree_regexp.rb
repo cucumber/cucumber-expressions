@@ -16,6 +16,7 @@ module Cucumber
       def match(s)
         match = @regexp.match(s)
         return nil if match.nil?
+
         group_indices = (0..match.length).to_a.to_enum
         @group_builder.build(match, group_indices)
       end
