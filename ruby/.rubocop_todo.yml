@@ -73,13 +73,13 @@ Layout/EmptyLinesAroundBlockBody:
 #    - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
 #    - 'lib/cucumber/cucumber_expressions/regular_expression.rb'
 
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundModuleBody:
-  Exclude:
-    - 'spec/cucumber/cucumber_expressions/combinatorial_generated_expression_factory_test.rb'
+## Offense count: 1
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
+#Layout/EmptyLinesAroundModuleBody:
+#  Exclude:
+#    - 'spec/cucumber/cucumber_expressions/combinatorial_generated_expression_factory_test.rb'
 
 ## Offense count: 1
 ## This cop supports safe auto-correction (--auto-correct).

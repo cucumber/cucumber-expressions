@@ -5,7 +5,6 @@ require 'cucumber/cucumber_expressions/combinatorial_generated_expression_factor
 
 module Cucumber
   module CucumberExpressions
-
     class Color; end
     class CssColor; end
     class Date; end
