@@ -66,7 +66,6 @@ module Cucumber
       EXPRESSION = 'EXPRESSION_NODE'
     end
 
-
     class Token
       def initialize(type, text, start, _end)
         @type, @text, @start, @end = type, text, start, _end
