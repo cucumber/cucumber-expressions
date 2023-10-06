@@ -6,14 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.0.0] - 2023-10-06
 ### Changed
 - [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
 - [Ruby] Minimum supported ruby is now 2.5+ ([#232](https://github.com/cucumber/cucumber-expressions/pull/232))
 - [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233) [#235](https://github.com/cucumber/cucumber-expressions/pull/235))
+- Expose `transformer` arg as a public reader
+- Remove `prefer_for_regexp_match?` and `use_for_snippets?` -> Use their reader equivalents instead (Remove the `?`)
+([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
 - [Ruby] Change public API readers for `ParameterType`
-  - Expose `transformer` arg as a public reader
-  - Remove `prefer_for_regexp_match?` and `use_for_snippets?` -> Use their reader equivalents instead (Remove the `?`)
-    ([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
 
 ## [16.1.2] - 2023-01-17
 ### Fixed
@@ -739,7 +741,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...HEAD
+[17.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...v17.0.0
 [16.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.1...v16.1.2
 [16.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...v16.1.1
 [16.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...v16.1.0
