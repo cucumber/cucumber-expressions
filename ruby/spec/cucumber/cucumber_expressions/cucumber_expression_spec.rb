@@ -112,7 +112,7 @@ module Cucumber
             'textAndOrNumber',
             /([A-Z]+)?(?: )?([0-9]+)?/,
             Object,
-            -> (s1, s2) { [s1, s2] },
+            ->(s1, s2) { [s1, s2] },
             false,
             true
           )
@@ -134,7 +134,7 @@ module Cucumber
             'widget',
             /\w+/,
             Object,
-            -> (s) { self.create_widget(s) },
+            ->(s) { self.create_widget(s) },
             false,
             true
           )
