@@ -38,6 +38,7 @@ module Cucumber
       def lookup_by_regexp(parameter_type_regexp, expression_regexp, text)
         parameter_types = @parameter_types_by_regexp[parameter_type_regexp]
         return nil if parameter_types.nil?
+
         if parameter_types.length > 1 && !parameter_types[0].prefer_for_regexp_match
           # We don't do this check on insertion because we only want to restrict
           # ambiguity when we look up by Regexp. Users of CucumberExpression should
@@ -69,11 +70,11 @@ module Cucumber
           if parameter_types.any? && parameter_types[0].prefer_for_regexp_match && parameter_type.prefer_for_regexp_match
             raise CucumberExpressionError.new("There can only be one preferential parameter type per regexp. The regexp /#{parameter_type_regexp}/ is used for two preferential parameter types, {#{parameter_types[0].name}} and {#{parameter_type.name}}")
           end
+
           parameter_types.push(parameter_type)
           parameter_types.sort!
         end
       end
-
     end
   end
 end

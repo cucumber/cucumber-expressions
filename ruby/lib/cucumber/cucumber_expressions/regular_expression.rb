@@ -7,7 +7,6 @@ require 'cucumber/cucumber_expressions/tree_regexp'
 module Cucumber
   module CucumberExpressions
     class RegularExpression
-
       def initialize(expression_regexp, parameter_type_registry)
         @expression_regexp = expression_regexp
         @parameter_type_registry = parameter_type_registry

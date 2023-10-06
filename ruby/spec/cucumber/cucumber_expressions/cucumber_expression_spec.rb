@@ -7,7 +7,6 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 module Cucumber
   module CucumberExpressions
     describe CucumberExpression do
-
       Dir['../testdata/cucumber-expression/matching/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
 
@@ -113,7 +112,7 @@ module Cucumber
             'textAndOrNumber',
             /([A-Z]+)?(?: )?([0-9]+)?/,
             Object,
-            -> (s1, s2) { [s1, s2] },
+            ->(s1, s2) { [s1, s2] },
             false,
             true
           )
@@ -135,7 +134,7 @@ module Cucumber
             'widget',
             /\w+/,
             Object,
-            -> (s) { self.create_widget(s) },
+            ->(s) { self.create_widget(s) },
             false,
             true
           )
@@ -171,6 +170,7 @@ module Cucumber
         cucumber_expression = CucumberExpression.new(expression, ParameterTypeRegistry.new)
         args = cucumber_expression.match(text)
         return nil if args.nil?
+
         args.map { |arg| arg.value(nil) }
       end
     end

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.required_ruby_version = '>= 2.5'
 
-  s.metadata    = {
+  s.metadata = {
                     'bug_tracker_uri'   => 'https://github.com/cucumber/cucumber/issues',
                     'changelog_uri'     => 'https://github.com/cucumber/common/blob/main/cucumber-expressions/CHANGELOG.md',
                     'documentation_uri' => 'https://cucumber.io/docs/cucumber/cucumber-expressions/',
