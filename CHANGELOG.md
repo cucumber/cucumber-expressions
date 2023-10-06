@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
 - [Ruby] Minimum supported ruby is now 2.5+ ([#232](https://github.com/cucumber/cucumber-expressions/pull/232))
-- [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233))
+- [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233) [#235](https://github.com/cucumber/cucumber-expressions/pull/235))
 - [Ruby] Change public API readers for `ParameterType`
   - Expose `transformer` arg as a public reader
   - Remove `prefer_for_regexp_match?` and `use_for_snippets?` -> Use their reader equivalents instead (Remove the `?`)
