@@ -81,12 +81,12 @@ Layout/EmptyLinesAroundModuleBody:
   Exclude:
     - 'spec/cucumber/cucumber_expressions/combinatorial_generated_expression_factory_test.rb'
 
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'cucumber-cucumber-expressions.gemspec'
+## Offense count: 1
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
+#Layout/ExtraSpacing:
+#  Exclude:
+#    - 'cucumber-cucumber-expressions.gemspec'
 
 # Offense count: 4
 # This cop supports safe auto-correction (--auto-correct).
