@@ -5,7 +5,6 @@ require 'cucumber/cucumber_expressions/ast'
 module Cucumber
   module CucumberExpressions
     class CucumberExpressionError < StandardError
-
       def build_message(index, expression, pointer, problem, solution)
         m = <<-EOF
 This Cucumber Expression has a problem at column #{index + 1}:

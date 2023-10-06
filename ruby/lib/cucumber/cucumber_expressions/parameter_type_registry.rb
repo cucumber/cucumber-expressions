@@ -75,7 +75,6 @@ module Cucumber
           parameter_types.sort!
         end
       end
-
     end
   end
 end

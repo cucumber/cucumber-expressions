@@ -8,7 +8,6 @@ require 'cucumber/cucumber_expressions/cucumber_expression_parser'
 module Cucumber
   module CucumberExpressions
     class CucumberExpression
-
       ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/.freeze
 
       def initialize(expression, parameter_type_registry)

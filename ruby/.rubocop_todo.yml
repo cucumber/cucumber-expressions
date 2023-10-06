@@ -62,16 +62,16 @@ Layout/EmptyLinesAroundBlockBody:
     - 'spec/cucumber/cucumber_expressions/cucumber_expression_spec.rb'
     - 'spec/cucumber/cucumber_expressions/tree_regexp_spec.rb'
 
-# Offense count: 4
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
-Layout/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
-    - 'lib/cucumber/cucumber_expressions/errors.rb'
-    - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
-    - 'lib/cucumber/cucumber_expressions/regular_expression.rb'
+## Offense count: 4
+## This cop supports safe auto-correction (--auto-correct).
+## Configuration parameters: EnforcedStyle.
+## SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
+#Layout/EmptyLinesAroundClassBody:
+#  Exclude:
+#    - 'lib/cucumber/cucumber_expressions/cucumber_expression.rb'
+#    - 'lib/cucumber/cucumber_expressions/errors.rb'
+#    - 'lib/cucumber/cucumber_expressions/parameter_type_registry.rb'
+#    - 'lib/cucumber/cucumber_expressions/regular_expression.rb'
 
 # Offense count: 1
 # This cop supports safe auto-correction (--auto-correct).
