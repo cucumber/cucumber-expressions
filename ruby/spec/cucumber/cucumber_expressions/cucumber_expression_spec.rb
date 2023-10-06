@@ -7,7 +7,6 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 module Cucumber
   module CucumberExpressions
     describe CucumberExpression do
-
       Dir['../testdata/cucumber-expression/matching/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
 
