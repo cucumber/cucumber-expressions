@@ -10,34 +10,16 @@ module Cucumber
     END_OPTIONAL_CHARACTER = ')'
 
     class Node
-      def initialize(type, nodes, token, start, _end)
+      attr_reader :type, :nodes, :token, :start, :end
+
+      def initialize(type, nodes, token, start, ending)
         raise 'Either nodes or token must be defined' if nodes.nil? && token.nil?
 
         @type = type
         @nodes = nodes
         @token = token
         @start = start
-        @end = _end
-      end
-
-      def type
-        @type
-      end
-
-      def nodes
-        @nodes
-      end
-
-      def token
-        @token
-      end
-
-      def start
-        @start
-      end
-
-      def end
-        @end
+        @end = ending
       end
 
       def text
@@ -67,24 +49,10 @@ module Cucumber
     end
 
     class Token
-      def initialize(type, text, start, _end)
-        @type, @text, @start, @end = type, text, start, _end
-      end
+      attr_reader :type, :text, :start, :end
 
-      def type
-        @type
-      end
-
-      def text
-        @text
-      end
-
-      def start
-        @start
-      end
-
-      def end
-        @end
+      def initialize(type, text, start, ending)
+        @type, @text, @start, @end = type, text, start, ending
       end
 
       def self.is_escape_character(codepoint)
