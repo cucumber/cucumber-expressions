@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Ruby] Minimum supported ruby is now 2.5+ ([#232](https://github.com/cucumber/cucumber-expressions/pull/232))
 - [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233) [#235](https://github.com/cucumber/cucumber-expressions/pull/235))
 - [Ruby] Expose `ParameterType#transformer` as a new public reader ([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
-- Remove `ParameterType#prefer_for_regexp_match?` and `ParameterType#use_for_snippets?` -> Use their standard reader equivalents instead (Remove the `?`)
+- [Ruby] Remove `ParameterType#prefer_for_regexp_match?` and `ParameterType#use_for_snippets?` -> Use their standard reader equivalents instead (Remove the `?`)
 ([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
 
 ## [16.1.2] - 2023-01-17
