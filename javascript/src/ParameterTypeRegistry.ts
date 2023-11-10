@@ -3,7 +3,7 @@ import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import defineDefaultParameterTypes from './defineDefaultParameterTypes.js'
 import { AmbiguousParameterTypeError } from './Errors.js'
 import ParameterType from './ParameterType.js'
-import { DefinesParameterType } from './types'
+import { DefinesParameterType } from './types.js'
 
 export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()

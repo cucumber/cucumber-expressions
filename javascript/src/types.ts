@@ -1,5 +1,5 @@
 import Argument from './Argument.js'
-import ParameterType from './ParameterType'
+import ParameterType from './ParameterType.js'
 
 export interface DefinesParameterType {
   defineParameterType<T>(parameterType: ParameterType<T>): void
