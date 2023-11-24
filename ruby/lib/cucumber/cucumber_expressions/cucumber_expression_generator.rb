@@ -64,7 +64,7 @@ module Cucumber
         ).generate_expressions
       end
 
-    private
+      private
 
       def create_parameter_type_matchers(text)
         parameter_matchers = []
