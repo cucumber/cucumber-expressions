@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Fixed
+### Fixed
 - [JavaScript] Fix import paths lacking file suffix ([#243](https://github.com/cucumber/cucumber-expressions/pull/243))
+- [Ruby] Fixed up `Layout` rubocop autofixes
 
 ## [17.0.0] - 2023-10-06
 ### Changed
