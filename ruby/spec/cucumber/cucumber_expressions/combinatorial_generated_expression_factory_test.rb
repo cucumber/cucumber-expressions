@@ -15,13 +15,13 @@ module Cucumber
       it 'generates multiple expressions' do
         parameter_type_combinations = [
           [
-            ParameterType.new('color', /red|blue|yellow/, Color, ->(s) { Color.new}, true, false),
-            ParameterType.new('csscolor', /red|blue|yellow/, CssColor, ->(s) { CssColor.new}, true, false)
+            ParameterType.new('color', /red|blue|yellow/, Color, ->(s) { Color.new }, true, false),
+            ParameterType.new('csscolor', /red|blue|yellow/, CssColor, ->(s) { CssColor.new }, true, false)
           ],
           [
-            ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, Date, ->(s) { Date.new}, true, false),
-            ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, DateTime, ->(s) { DateTime.new}, true, false),
-            ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, Timestamp, ->(s) { Timestamp.new}, true, false)
+            ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, Date, ->(s) { Date.new }, true, false),
+            ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, DateTime, ->(s) { DateTime.new }, true, false),
+            ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, Timestamp, ->(s) { Timestamp.new }, true, false)
           ]
         ]
 
@@ -29,7 +29,7 @@ module Cucumber
           'I bought a {%s} ball on {%s}',
           parameter_type_combinations
         )
-        expressions = factory.generate_expressions.map {|ge| ge.source}
+        expressions = factory.generate_expressions.map { |ge| ge.source }
         expect(expressions).to eq([
             'I bought a {color} ball on {date}',
             'I bought a {color} ball on {datetime}',

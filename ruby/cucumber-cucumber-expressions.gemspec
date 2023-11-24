@@ -27,9 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3.11', '>= 3.11.0'
   s.add_development_dependency 'rubocop', '~> 1.27.0'
 
-  s.rubygems_version = '>= 3.0.8'
-  s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
-  s.test_files       = `git ls-files -- spec/*`.split("\n")
+  s.files            = `git ls-files`.split("\n").reject { |path| path =~ /\.gitignore$/ }
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
 end

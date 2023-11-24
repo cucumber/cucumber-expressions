@@ -7,7 +7,7 @@ module Cucumber
     describe TreeRegexp do
       it 'exposes the group source' do
         tr = TreeRegexp.new(/(a(?:b)?)(c)/)
-        expect(tr.group_builder.children.map {|gb| gb.source}).to eq(['a(?:b)?', 'c'])
+        expect(tr.group_builder.children.map { |gb| gb.source }).to eq(['a(?:b)?', 'c'])
       end
 
       it 'builds a tree' do
