@@ -24,7 +24,7 @@ module Cucumber
           @registry.define_parameter_type(ParameterType.new('place', CAPITALISED_WORD, Place, ->(s) { Place.new }, true, true))
         end.to raise_error(
           CucumberExpressionError,
-          'There can only be one preferential parameter type per regexp. The regexp /[A-Z]+\\w+/ is used for two preferential parameter types, {name} and {place}'
+          'There can only be one preferential parameter type per regexp. The regexp /[A-Z]+\\w+/ is used for two: {name} and {place}'
         )
       end
 
