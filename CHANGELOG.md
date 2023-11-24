@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.0.1] - 2023-11-24
 ### Fixed
 - [JavaScript] Fix import paths lacking file suffix ([#243](https://github.com/cucumber/cucumber-expressions/pull/243))
 - [Ruby] Fixed up `Layout` rubocop autofixes
@@ -743,7 +745,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...HEAD
+[17.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...v17.0.1
 [17.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...v17.0.0
 [16.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.1...v16.1.2
 [16.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...v16.1.1
