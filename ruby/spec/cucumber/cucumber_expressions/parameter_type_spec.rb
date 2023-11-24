@@ -10,7 +10,8 @@ module Cucumber
           ParameterType.new('case-insensitive', /[a-z]+/i, String, ->(s) { s }, true, true)
         end.to raise_error(
           CucumberExpressionError,
-          "ParameterType Regexps can't use option Regexp::IGNORECASE")
+          "ParameterType Regexps can't use option Regexp::IGNORECASE"
+        )
       end
     end
   end

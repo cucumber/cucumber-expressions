@@ -23,12 +23,12 @@ module Cucumber
 
       private def is_non_capturing(source, i)
         # Regex is valid. Bounds check not required.
-        if source[i+1] != '?'
+        if source[i + 1] != '?'
           # (X)
           return false
         end
 
-        if source[i+2] != '<'
+        if source[i + 2] != '<'
           # (?:X)
           # (?idmsuxU-idmsuxU)
           # (?idmsux-idmsux:X)
@@ -38,7 +38,7 @@ module Cucumber
           return true
         end
 
-        if source[i+3] == '=' || source[i+3] == '!'
+        if source[i + 3] == '=' || source[i + 3] == '!'
           # (?<=X)
           # (?<!X)
           return true
