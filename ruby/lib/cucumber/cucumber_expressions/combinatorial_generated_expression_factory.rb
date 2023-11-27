@@ -30,7 +30,7 @@ module Cucumber
 
         (0...@parameter_type_combinations[depth].length).each do |i|
           # Avoid recursion if no elements can be added.
-          return if generated_expressions.length >= MAX_EXPRESSIONS
+          break if generated_expressions.length >= MAX_EXPRESSIONS
 
           new_current_parameter_types = current_parameter_types.dup # clone
           new_current_parameter_types.push(@parameter_type_combinations[depth][i])

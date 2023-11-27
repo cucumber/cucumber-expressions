@@ -20,6 +20,12 @@ Gemspec/RequireMFA:
 Layout/LineLength:
   Max: 200
 
+# This is documented in this spec to showcase why it's not working and people shouldn't use it
+# cf:
+Lint/MixedRegexpCaptureTypes:
+  Exclude:
+    - 'spec/cucumber/cucumber_expressions/tree_regexp_spec.rb'
+
 Style/Documentation:
   Enabled: false
 

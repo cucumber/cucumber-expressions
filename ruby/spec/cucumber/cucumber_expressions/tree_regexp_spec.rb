@@ -75,15 +75,14 @@ module Cucumber
 
       it 'throws an error when there are named capture groups because they are buggy in Ruby' do
         # https://github.com/cucumber/cucumber/issues/329
-        expect {
-          TreeRegexp.new(/^I am a person( named "(?<first_name>.+) (?<last_name>.+)")?$/)
-        }.to raise_error(/Named capture groups are not supported/)
+        expect { TreeRegexp.new(/^I am a person( named "(?<first_name>.+) (?<last_name>.+)")?$/) }
+          .to raise_error(/Named capture groups are not supported/)
       end
 
       it 'matches an optional group' do
         tr = TreeRegexp.new(/^Something( with an optional argument)?/)
         group = tr.match('Something')
-        expect(group.children[0].value).to eq(nil)
+        expect(group.children[0].value).to be_nil
       end
 
       it 'matches nested groups' do
