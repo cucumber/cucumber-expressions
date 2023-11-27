@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
 
 ## [17.0.1] - 2023-11-24
 ### Fixed
