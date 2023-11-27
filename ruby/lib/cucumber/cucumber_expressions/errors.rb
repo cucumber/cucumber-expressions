@@ -14,7 +14,7 @@ module Cucumber
           #{problem}.
           #{solution}
         ERROR
-        m.split
+        m.strip
       end
 
       def point_at(index)
