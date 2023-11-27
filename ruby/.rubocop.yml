@@ -1,3 +1,8 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
 inherit_from: .rubocop_todo.yml
 
 inherit_mode:
@@ -22,6 +27,5 @@ Style/RegexpLiteral:
   EnforcedStyle: slashes
   AllowInnerSlashes: true
 
-# Once we enable rubocop-rspec
-#RSpec/MessageSpies:
-#  EnforcedStyle: receive
+RSpec/MessageSpies:
+  EnforcedStyle: receive
