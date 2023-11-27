@@ -13,13 +13,13 @@ module Cucumber
 
       before do
         @parameter_type_registry = ParameterTypeRegistry.new
-        @generator = CucumberExpressionGenerator.new(@parameter_type_registry)
+        @generator = described_class.new(@parameter_type_registry)
       end
 
       it 'documents expression generation' do
         parameter_registry = ParameterTypeRegistry.new
         ### [generate-expression]
-        generator = CucumberExpressionGenerator.new(parameter_registry)
+        generator = described_class.new(parameter_registry)
         undefined_step_text = 'I have 2 cucumbers and 1.5 tomato'
         generated_expression = generator.generate_expressions(undefined_step_text)[0]
         expect(generated_expression.source).to eq('I have {int} cucumbers and {float} tomato')

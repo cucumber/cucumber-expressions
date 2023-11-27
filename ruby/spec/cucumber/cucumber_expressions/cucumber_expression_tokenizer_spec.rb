@@ -10,7 +10,7 @@ module Cucumber
       Dir['../testdata/cucumber-expression/tokenizer/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
         it "tokenizes #{path}" do
-          tokenizer = CucumberExpressionTokenizer.new
+          tokenizer = described_class.new
           if expectation['exception']
             expect { tokenizer.tokenize(expectation['expression']) }.to raise_error(expectation['exception'])
           else

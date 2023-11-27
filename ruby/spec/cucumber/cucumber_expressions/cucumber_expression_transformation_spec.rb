@@ -13,11 +13,11 @@ module Cucumber
           parameter_registry = ParameterTypeRegistry.new
           if expectation['exception']
             expect {
-              cucumber_expression = CucumberExpression.new(expectation['expression'], parameter_registry)
+              cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
               cucumber_expression.match(expectation['text'])
             }.to raise_error(expectation['exception'])
           else
-            cucumber_expression = CucumberExpression.new(expectation['expression'], parameter_registry)
+            cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
             matches = cucumber_expression.match(expectation['text'])
             values = matches.nil? ? nil : matches.map { |arg| arg.value(nil) }
             expect(values).to eq(expectation['expected_args'])

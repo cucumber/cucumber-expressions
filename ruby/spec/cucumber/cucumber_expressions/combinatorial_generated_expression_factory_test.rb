@@ -25,7 +25,7 @@ module Cucumber
           ]
         ]
 
-        factory = CombinatorialGeneratedExpressionFactory.new(
+        factory = described_class.new(
           'I bought a {%s} ball on {%s}',
           parameter_type_combinations
         )

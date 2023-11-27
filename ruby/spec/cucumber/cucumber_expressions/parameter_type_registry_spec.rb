@@ -14,7 +14,7 @@ module Cucumber
 
     describe ParameterTypeRegistry do
       before do
-        @registry = ParameterTypeRegistry.new
+        @registry = described_class.new
       end
 
       it 'does not allow more than one prefer_for_regexp_match parameter type for each regexp' do

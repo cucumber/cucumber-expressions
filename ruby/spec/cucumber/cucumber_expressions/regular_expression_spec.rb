@@ -12,7 +12,7 @@ module Cucumber
 
         it "matches #{path}" do
           parameter_registry = ParameterTypeRegistry.new
-          expression = RegularExpression.new(Regexp.new(expectation['expression']), parameter_registry)
+          expression = described_class.new(Regexp.new(expectation['expression']), parameter_registry)
           matches = expression.match(expectation['text'])
           values = matches.map { |arg| arg.value(nil) }
 
@@ -75,7 +75,7 @@ module Cucumber
 
       it 'exposes source and regexp' do
         regexp = /I have (\d+) cukes? in my (\+) now/
-        expression = RegularExpression.new(regexp, ParameterTypeRegistry.new)
+        expression = described_class.new(regexp, ParameterTypeRegistry.new)
 
         expect(expression.regexp).to eq(regexp)
         expect(expression.source).to eq(regexp.source)
