@@ -10,17 +10,26 @@ describe Cucumber::CucumberExpressions::CombinatorialGeneratedExpressionFactory 
   let(:date_time) { Class.new }
   let(:timestamp) { Class.new }
 
+  let(:color_parameter_type) do
+    Cucumber::CucumberExpressions::ParameterType.new('color', /red|blue|yellow/, color, ->(_) { color.new }, true, false)
+  end
+  let(:css_color_parameter_type) do
+    Cucumber::CucumberExpressions::ParameterType.new('csscolor', /red|blue|yellow/, css_color, ->(_) { css_color.new }, true, false)
+  end
+  let(:date_parameter_type) do
+    Cucumber::CucumberExpressions::ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, date, ->(_) { date.new }, true, false)
+  end
+  let(:date_time_parameter_type) do
+    Cucumber::CucumberExpressions::ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, date_time, ->(_) { date_time.new }, true, false)
+  end
+  let(:timestamp_parameter_type) do
+    Cucumber::CucumberExpressions::ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, timestamp, ->(_) { timestamp.new }, true, false)
+  end
+
   it 'generates multiple expressions' do
     parameter_type_combinations = [
-      [
-        Cucumber::CucumberExpressions::ParameterType.new('color', /red|blue|yellow/, color, ->(_) { color.new }, true, false),
-        Cucumber::CucumberExpressions::ParameterType.new('csscolor', /red|blue|yellow/, css_color, ->(_) { css_color.new }, true, false)
-      ],
-      [
-        Cucumber::CucumberExpressions::ParameterType.new('date', /\d{4}-\d{2}-\d{2}/, date, ->(_) { date.new }, true, false),
-        Cucumber::CucumberExpressions::ParameterType.new('datetime', /\d{4}-\d{2}-\d{2}/, date_time, ->(_) { date_time.new }, true, false),
-        Cucumber::CucumberExpressions::ParameterType.new('timestamp', /\d{4}-\d{2}-\d{2}/, timestamp, ->(_) { timestamp.new }, true, false)
-      ]
+      [color_parameter_type, css_color_parameter_type],
+      [date_parameter_type, date_time_parameter_type, timestamp_parameter_type]
     ]
 
     factory = described_class.new(
