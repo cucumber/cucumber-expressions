@@ -69,7 +69,7 @@ module Cucumber
             'currency',
             '[A-Z]{3}',
             Currency,
-            ->(s) { Currency.new(s)},
+            ->(s) { Currency.new(s) },
             true,
             true
           )
@@ -91,7 +91,7 @@ module Cucumber
             'optional-flight',
             /(1st flight)?/,
             String,
-            ->(s) { s},
+            ->(s) { s },
             true,
             false
           )
@@ -101,7 +101,7 @@ module Cucumber
             'optional-hotel',
             /(1 hotel)?/,
             String,
-            ->(s) { s},
+            ->(s) { s },
             true,
             false
           )
@@ -121,7 +121,7 @@ module Cucumber
               "my-type-#{i}",
               /([a-z] )*?[a-z]/,
               String,
-              ->(s) { s},
+              ->(s) { s },
               true,
               false
             )
@@ -139,7 +139,7 @@ module Cucumber
             'zero-or-more',
             /[a-z]*/,
             String,
-            ->(s) { s},
+            ->(s) { s },
             true,
             false
           )
@@ -149,7 +149,7 @@ module Cucumber
             'exactly-one',
             /[a-z]/,
             String,
-            ->(s) { s},
+            ->(s) { s },
             true,
             false
           )
@@ -168,7 +168,7 @@ module Cucumber
               'direction',
               /(up|down)/,
               String,
-              ->(s) { s},
+              ->(s) { s },
               true,
               false
             )
@@ -198,7 +198,7 @@ module Cucumber
               'direction',
               /(up|down)/,
               String,
-              ->(s) { s},
+              ->(s) { s },
               true,
               false
             )

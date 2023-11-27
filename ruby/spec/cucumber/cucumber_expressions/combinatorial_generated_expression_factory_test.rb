@@ -31,12 +31,12 @@ module Cucumber
         )
         expressions = factory.generate_expressions.map { |ge| ge.source }
         expect(expressions).to eq([
-            'I bought a {color} ball on {date}',
-            'I bought a {color} ball on {datetime}',
-            'I bought a {color} ball on {timestamp}',
-            'I bought a {csscolor} ball on {date}',
-            'I bought a {csscolor} ball on {datetime}',
-            'I bought a {csscolor} ball on {timestamp}',
+          'I bought a {color} ball on {date}',
+          'I bought a {color} ball on {datetime}',
+          'I bought a {color} ball on {timestamp}',
+          'I bought a {csscolor} ball on {date}',
+          'I bought a {csscolor} ball on {datetime}',
+          'I bought a {csscolor} ball on {timestamp}',
         ])
       end
     end
