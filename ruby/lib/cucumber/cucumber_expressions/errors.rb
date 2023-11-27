@@ -6,15 +6,15 @@ module Cucumber
   module CucumberExpressions
     class CucumberExpressionError < StandardError
       def build_message(index, expression, pointer, problem, solution)
-        m = <<~EOF
+        m = <<~ERROR
           This Cucumber Expression has a problem at column #{index + 1}:
 
           #{expression}
           #{pointer}
           #{problem}.
           #{solution}
-        EOF
-        m.strip
+        ERROR
+        m.split
       end
 
       def point_at(index)
@@ -203,7 +203,7 @@ module Cucumber
 
     class AmbiguousParameterTypeError < CucumberExpressionError
       def initialize(parameter_type_regexp, expression_regexp, parameter_types, generated_expressions)
-        super(<<~EOM)
+        super(<<~ERROR)
           Your Regular Expression /#{expression_regexp.source}/
           matches multiple parameter types with regexp /#{parameter_type_regexp}/:
              #{parameter_type_names(parameter_types)}
@@ -215,7 +215,7 @@ module Cucumber
 
           2) Make one of the parameter types preferential and continue to use a Regular Expression.
 
-        EOM
+        ERROR
       end
 
       private
