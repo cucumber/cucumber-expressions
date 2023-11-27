@@ -76,7 +76,7 @@ module Cucumber
 
           consumed, ast = parse_tokens_until(expr, alternative_parsers, tokens, current, [TokenType::WHITE_SPACE, TokenType::END_OF_LINE, TokenType::BEGIN_PARAMETER])
           sub_current = current + consumed
-          return [0, nil] unless ast.map { |astNode| astNode.type }.include? NodeType::ALTERNATIVE
+          return [0, nil] unless ast.map { |ast_node| ast_node.type }.include? NodeType::ALTERNATIVE
 
           start = tokens[current].start
           _end = tokens[sub_current].start
