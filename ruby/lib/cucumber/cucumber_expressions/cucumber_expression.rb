@@ -63,9 +63,9 @@ module Cucumber
       end
 
       def rewrite_optional(node)
-        assert_no_parameters(node) { |astNode| raise ParameterIsNotAllowedInOptional.new(astNode, @expression) }
-        assert_no_optionals(node) { |astNode| raise OptionalIsNotAllowedInOptional.new(astNode, @expression) }
-        assert_not_empty(node) { |astNode| raise OptionalMayNotBeEmpty.new(astNode, @expression) }
+        assert_no_parameters(node) { |ast_node| raise ParameterIsNotAllowedInOptional.new(ast_node, @expression) }
+        assert_no_optionals(node) { |ast_node| raise OptionalIsNotAllowedInOptional.new(ast_node, @expression) }
+        assert_not_empty(node) { |ast_node| raise OptionalMayNotBeEmpty.new(ast_node, @expression) }
         regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('')
         "(?:#{regex})?"
       end
@@ -75,14 +75,14 @@ module Cucumber
         node.nodes.each { |alternative|
           raise AlternativeMayNotBeEmpty.new(alternative, @expression) if alternative.nodes.length == 0
 
-          assert_not_empty(alternative) { |astNode| raise AlternativeMayNotExclusivelyContainOptionals.new(astNode, @expression) }
+          assert_not_empty(alternative) { |ast_node| raise AlternativeMayNotExclusivelyContainOptionals.new(ast_node, @expression) }
         }
         regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('|')
         "(?:#{regex})"
       end
 
       def rewrite_alternative(node)
-        node.nodes.map { |lastNode| rewrite_to_regex(lastNode) }.join('')
+        node.nodes.map { |last_node| rewrite_to_regex(last_node) }.join('')
       end
 
       def rewrite_parameter(node)
@@ -103,17 +103,17 @@ module Cucumber
       end
 
       def assert_not_empty(node, &raise_error)
-        text_nodes = node.nodes.select { |astNode| NodeType::TEXT == astNode.type }
+        text_nodes = node.nodes.select { |ast_node| NodeType::TEXT == ast_node.type }
         raise_error.call(node) if text_nodes.length == 0
       end
 
       def assert_no_parameters(node, &raise_error)
-        nodes = node.nodes.select { |astNode| NodeType::PARAMETER == astNode.type }
+        nodes = node.nodes.select { |ast_node| NodeType::PARAMETER == ast_node.type }
         raise_error.call(nodes[0]) if nodes.length > 0
       end
 
       def assert_no_optionals(node, &raise_error)
-        nodes = node.nodes.select { |astNode| NodeType::OPTIONAL == astNode.type }
+        nodes = node.nodes.select { |ast_node| NodeType::OPTIONAL == ast_node.type }
         raise_error.call(nodes[0]) if nodes.length > 0
       end
     end

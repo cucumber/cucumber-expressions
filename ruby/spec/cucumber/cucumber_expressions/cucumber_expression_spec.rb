@@ -14,11 +14,11 @@ module Cucumber
           parameter_registry = ParameterTypeRegistry.new
           if expectation['exception']
             expect {
-              cucumber_expression = CucumberExpression.new(expectation['expression'], parameter_registry)
+              cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
               cucumber_expression.match(expectation['text'])
             }.to raise_error(expectation['exception'])
           else
-            cucumber_expression = CucumberExpression.new(expectation['expression'], parameter_registry)
+            cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
             matches = cucumber_expression.match(expectation['text'])
             values = matches.nil? ? nil : matches.map do |arg|
               value = arg.value(nil)
@@ -43,7 +43,7 @@ module Cucumber
 
         ### [capture-match-arguments]
         expr = 'I have {int} cuke(s)'
-        expression = CucumberExpression.new(expr, parameter_registry)
+        expression = described_class.new(expr, parameter_registry)
         args = expression.match('I have 7 cukes')
 
         expect(args[0].value(nil)).to eq(7)
@@ -96,13 +96,13 @@ module Cucumber
       it 'exposes source' do
         expr = 'I have {int} cuke(s)'
 
-        expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).source).to eq(expr)
+        expect(described_class.new(expr, ParameterTypeRegistry.new).source).to eq(expr)
       end
 
       it 'exposes source via #to_s' do
         expr = 'I have {int} cuke(s)'
 
-        expect(CucumberExpression.new(expr, ParameterTypeRegistry.new).to_s).to eq(expr.inspect)
+        expect(described_class.new(expr, ParameterTypeRegistry.new).to_s).to eq(expr.inspect)
       end
 
       it 'unmatched optional groups have undefined values' do
@@ -117,7 +117,7 @@ module Cucumber
             true
           )
         )
-        expression = CucumberExpression.new('{textAndOrNumber}', parameter_type_registry)
+        expression = described_class.new('{textAndOrNumber}', parameter_type_registry)
 
         class World; end
 
@@ -139,7 +139,7 @@ module Cucumber
             true
           )
         )
-        expression = CucumberExpression.new(
+        expression = described_class.new(
           'I have a {widget}',
           parameter_type_registry
         )
@@ -158,7 +158,7 @@ module Cucumber
       it 'reports undefined parameter type name' do
         parameter_type_registry = ParameterTypeRegistry.new
 
-        CucumberExpression.new(
+        described_class.new(
           'I have {int} {widget}(s) in {word}',
           parameter_type_registry
         )

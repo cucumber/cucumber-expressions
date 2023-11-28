@@ -11,8 +11,8 @@ module Cucumber
       end
 
       def advance_to(new_match_position)
-        (new_match_position...@text.length).each do |advancedPos|
-          matcher = self.class.new(parameter_type, @regexp, @text, advancedPos)
+        (new_match_position...@text.length).each do |advanced_position|
+          matcher = self.class.new(parameter_type, @regexp, @text, advanced_position)
           return matcher if matcher.find && matcher.full_word?
         end
 

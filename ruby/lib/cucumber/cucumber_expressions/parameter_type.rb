@@ -15,9 +15,7 @@ module Cucumber
       end
 
       def self.is_valid_parameter_type_name(type_name)
-        unescaped_type_name = type_name.gsub(UNESCAPE_PATTERN) do
-          $2
-        end
+        unescaped_type_name = type_name.gsub(UNESCAPE_PATTERN) { Regexp.last_match(2) }
         !(ILLEGAL_PARAMETER_NAME_PATTERN =~ unescaped_type_name)
       end
 
