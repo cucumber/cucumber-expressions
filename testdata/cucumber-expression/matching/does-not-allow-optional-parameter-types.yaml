@@ -7,4 +7,4 @@ exception: |-
   ({int})
    ^---^
   An optional may not contain a parameter type.
-  If you did not mean to use an parameter type you can use '\{' to escape the the '{'
+  If you did not mean to use an parameter type you can use '\{' to escape the '{'

@@ -30,7 +30,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(current),
                 "An alternation can not be used inside an optional",
-                "You can use '\\/' to escape the the '/'"
+                "You can use '\\/' to escape the '/'"
         ));
     }
 
@@ -41,7 +41,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(index),
                 "The end of line can not be escaped",
-                "You can use '\\\\' to escape the the '\\'"
+                "You can use '\\\\' to escape the '\\'"
         ));
     }
 
@@ -51,7 +51,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(node),
                 "Alternative may not be empty",
-                "If you did not mean to use an alternative you can use '\\/' to escape the the '/'"));
+                "If you did not mean to use an alternative you can use '\\/' to escape the '/'"));
     }
 
     internal static CucumberExpressionException CreateParameterIsNotAllowedInOptional(Node node, string expression) {
@@ -60,7 +60,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(node),
                 "An optional may not contain a parameter type",
-                "If you did not mean to use an parameter type you can use '\\{' to escape the the '{'"));
+                "If you did not mean to use an parameter type you can use '\\{' to escape the '{'"));
     }
     internal static CucumberExpressionException CreateOptionalIsNotAllowedInOptional(Node node, string expression) {
         return new CucumberExpressionException(GetMessage(
@@ -68,7 +68,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(node),
                 "An optional may not contain an other optional",
-                "If you did not mean to use an optional type you can use '\\(' to escape the the '('. For more complicated expressions consider using a regular expression instead."));
+                "If you did not mean to use an optional type you can use '\\(' to escape the '('. For more complicated expressions consider using a regular expression instead."));
     }
 
     internal static CucumberExpressionException CreateOptionalMayNotBeEmpty(Node node, string expression) {
@@ -77,7 +77,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(node),
                 "An optional must contain some text",
-                "If you did not mean to use an optional you can use '\\(' to escape the the '('"));
+                "If you did not mean to use an optional you can use '\\(' to escape the '('"));
     }
 
     internal static CucumberExpressionException CreateAlternativeMayNotExclusivelyContainOptionals(Node node,
@@ -87,7 +87,7 @@ public class CucumberExpressionException : Exception {
                 expression,
                 PointAt(node),
                 "An alternative may not exclusively contain optionals",
-                "If you did not mean to use an optional you can use '\\(' to escape the the '('"));
+                "If you did not mean to use an optional you can use '\\(' to escape the '('"));
     }
 
     private static string ThisCucumberExpressionHasAProblemAt(int index) {

@@ -6,4 +6,4 @@ exception: |-
   (a(b))
     ^-^
   An optional may not contain an other optional.
-  If you did not mean to use an optional type you can use '\(' to escape the the '('. For more complicated expressions consider using a regular expression instead.
+  If you did not mean to use an optional type you can use '\(' to escape the '('. For more complicated expressions consider using a regular expression instead.
