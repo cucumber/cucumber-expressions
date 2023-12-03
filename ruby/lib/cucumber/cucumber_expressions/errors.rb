@@ -41,7 +41,7 @@ module Cucumber
             expression,
             point_at_located(node),
             'An alternative may not exclusively contain optionals',
-            "If you did not mean to use an optional you can use '\\(' to escape the the '('"
+            "If you did not mean to use an optional you can use '\\(' to escape the '('"
           )
         )
       end
@@ -55,7 +55,7 @@ module Cucumber
             expression,
             point_at_located(node),
             'Alternative may not be empty',
-            "If you did not mean to use an alternative you can use '\\/' to escape the the '/'"
+            "If you did not mean to use an alternative you can use '\\/' to escape the '/'"
           )
         )
       end
@@ -83,7 +83,7 @@ module Cucumber
             expression,
             point_at_located(node),
             'An optional must contain some text',
-            "If you did not mean to use an optional you can use '\\(' to escape the the '('"
+            "If you did not mean to use an optional you can use '\\(' to escape the '('"
           )
         )
       end
@@ -97,7 +97,7 @@ module Cucumber
             expression,
             point_at_located(node),
             'An optional may not contain a parameter type',
-            "If you did not mean to use an parameter type you can use '\\{' to escape the the '{'"
+            "If you did not mean to use an parameter type you can use '\\{' to escape the '{'"
           )
         )
       end
@@ -111,7 +111,7 @@ module Cucumber
             expression,
             point_at_located(node),
             'An optional may not contain an other optional',
-            "If you did not mean to use an optional type you can use '\\(' to escape the the '('. For more complicated expressions consider using a regular expression instead."
+            "If you did not mean to use an optional type you can use '\\(' to escape the '('. For more complicated expressions consider using a regular expression instead."
           )
         )
       end
@@ -126,7 +126,7 @@ module Cucumber
             expression,
             point_at(index),
             'The end of line can not be escaped',
-            "You can use '\\\\' to escape the the '\\'"
+            "You can use '\\\\' to escape the '\\'"
           )
         )
       end
@@ -158,7 +158,7 @@ module Cucumber
             expression,
             point_at_located(current),
             'An alternation can not be used inside an optional',
-            "You can use '\\/' to escape the the '/'"
+            "You can use '\\/' to escape the '/'"
           )
         )
       end

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
 
+### Fixed
+- Removed repeated 'the' from error message for use of alternations inside optionals ([#252](https://github.com/cucumber/cucumber-expressions/issues/252))
+
 ## [17.0.1] - 2023-11-24
 ### Fixed
 - [JavaScript] Fix import paths lacking file suffix ([#243](https://github.com/cucumber/cucumber-expressions/pull/243))

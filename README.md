@@ -160,9 +160,9 @@ public Color ConvertColor(string colorValue)
 
 ```python
 ParameterType(
-  name=        'color',
+  name=        "color",
   regexp=      "red|blue|yellow",
-  type=  Color,
+  type=        Color,
   transformer= lambda s: Color(),
 )
 ```

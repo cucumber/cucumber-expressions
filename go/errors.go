@@ -34,7 +34,7 @@ func createAlternationNotAllowedInOptional(expression string, current token) err
 		expression,
 		pointAtToken(current),
 		"An alternation can not be used inside an optional",
-		"You can use '\\/' to escape the the '/'",
+		"You can use '\\/' to escape the '/'",
 	))
 }
 
@@ -45,7 +45,7 @@ func createTheEndOfLineCanNotBeEscaped(expression string) error {
 		expression,
 		pointAt(index),
 		"The end of line can not be escaped",
-		"You can use '\\\\' to escape the the '\\'",
+		"You can use '\\\\' to escape the '\\'",
 	))
 }
 
@@ -55,7 +55,7 @@ func createOptionalMayNotBeEmpty(node node, expression string) error {
 		expression,
 		pointAtNode(node),
 		"An optional must contain some text",
-		"If you did not mean to use an optional you can use '\\(' to escape the the '('",
+		"If you did not mean to use an optional you can use '\\(' to escape the '('",
 	))
 }
 func createParameterIsNotAllowedInOptional(node node, expression string) error {
@@ -64,7 +64,7 @@ func createParameterIsNotAllowedInOptional(node node, expression string) error {
 		expression,
 		pointAtNode(node),
 		"An optional may not contain a parameter type",
-		"If you did not mean to use an parameter type you can use '\\{' to escape the the '{'",
+		"If you did not mean to use an parameter type you can use '\\{' to escape the '{'",
 	))
 }
 func createOptionalIsNotAllowedInOptional(node node, expression string) error {
@@ -73,7 +73,7 @@ func createOptionalIsNotAllowedInOptional(node node, expression string) error {
 		expression,
 		pointAtNode(node),
 		"An optional may not contain an other optional",
-		"If you did not mean to use an optional type you can use '\\(' to escape the the '('. For more complicated expressions consider using a regular expression instead.",
+		"If you did not mean to use an optional type you can use '\\(' to escape the '('. For more complicated expressions consider using a regular expression instead.",
 	))
 }
 func createAlternativeMayNotBeEmpty(node node, expression string) error {
@@ -82,7 +82,7 @@ func createAlternativeMayNotBeEmpty(node node, expression string) error {
 		expression,
 		pointAtNode(node),
 		"Alternative may not be empty",
-		"If you did not mean to use an alternative you can use '\\/' to escape the the '/'",
+		"If you did not mean to use an alternative you can use '\\/' to escape the '/'",
 	))
 }
 func createAlternativeMayNotExclusivelyContainOptionals(node node, expression string) error {
@@ -91,7 +91,7 @@ func createAlternativeMayNotExclusivelyContainOptionals(node node, expression st
 		expression,
 		pointAtNode(node),
 		"An alternative may not exclusively contain optionals",
-		"If you did not mean to use an optional you can use '\\(' to escape the the '('",
+		"If you did not mean to use an optional you can use '\\(' to escape the '('",
 	))
 }
 

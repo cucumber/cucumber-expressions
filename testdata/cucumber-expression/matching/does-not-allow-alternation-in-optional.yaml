@@ -7,4 +7,4 @@ exception: |-
   three( brown/black) mice
               ^
   An alternation can not be used inside an optional.
-  You can use '\/' to escape the the '/'
+  You can use '\/' to escape the '/'

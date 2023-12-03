@@ -42,7 +42,7 @@ class AlternativeMayNotExclusivelyContainOptionals(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(node),
                 problem="An alternative may not exclusively contain optionals",
-                solution="If you did not mean to use an optional you can use '\\(' to escape the the '('",
+                solution="If you did not mean to use an optional you can use '\\(' to escape the '('",
             )
         )
 
@@ -55,7 +55,7 @@ class AlternativeMayNotBeEmpty(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(node),
                 problem="Alternative may not be empty",
-                solution="If you did not mean to use an alternative you can use '\\/' to escape the the '/'",
+                solution="If you did not mean to use an alternative you can use '\\/' to escape the '/'",
             )
         )
 
@@ -81,7 +81,7 @@ class OptionalMayNotBeEmpty(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(node),
                 problem="An optional must contain some text",
-                solution="If you did not mean to use an optional you can use '\\(' to escape the the '('",
+                solution="If you did not mean to use an optional you can use '\\(' to escape the '('",
             )
         )
 
@@ -94,7 +94,7 @@ class ParameterIsNotAllowedInOptional(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(node),
                 problem="An optional may not contain a parameter type",
-                solution="If you did not mean to use an parameter type you can use '\\{' to escape the the '{'",
+                solution="If you did not mean to use an parameter type you can use '\\{' to escape the '{'",
             )
         )
 
@@ -108,7 +108,7 @@ class OptionalIsNotAllowedInOptional(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem="An optional may not contain an other optional",
                 solution=(
-                    "If you did not mean to use an optional type you can use '\\(' to escape the the '('. "
+                    "If you did not mean to use an optional type you can use '\\(' to escape the '('. "
                     "For more complicated expressions consider using a regular expression instead."
                 ),
             )
@@ -140,7 +140,7 @@ class AlternationNotAllowedInOptional(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(current),
                 problem="An alternation can not be used inside an optional",
-                solution="You can use '\\/' to escape the the '/'",
+                solution="You can use '\\/' to escape the '/'",
             )
         )
 
@@ -220,6 +220,6 @@ class TheEndOfLineCannotBeEscaped(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at(index),
                 problem="The end of line can not be escaped",
-                solution="You can use '\\\\' to escape the the '\\'",
+                solution="You can use '\\\\' to escape the '\\'",
             )
         )
