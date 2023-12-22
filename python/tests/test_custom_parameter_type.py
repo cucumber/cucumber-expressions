@@ -62,6 +62,24 @@ class TestCustomParameterType:
         transformed_argument_value = expression.match("I have a red ball")[0]
         assert transformed_argument_value.value == Color("red")
 
+    def test_matches_parameters_without_snippet_and_regex_parameters(
+        self,
+    ):
+        parameter_type_registry = ParameterTypeRegistry()
+        parameter_type_registry.define_parameter_type(
+            ParameterType(
+                "color",
+                r"red|blue|yellow",
+                Color,
+                lambda s: Color(s),
+            )
+        )
+        expression = CucumberExpression(
+            "I have a {color} ball", parameter_type_registry
+        )
+        argument_value = expression.match("I have a red ball")[0].value
+        assert argument_value == Color("red")
+
     def test_matches_parameters_with_multiple_capture_groups(self):
         self._parameter_type_registry.define_parameter_type(
             ParameterType(
