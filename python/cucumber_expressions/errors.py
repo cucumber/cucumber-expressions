@@ -140,7 +140,10 @@ class AlternationNotAllowedInOptional(CucumberExpressionError):
                 expression=expression,
                 pointer=point_at_located(current),
                 problem="An alternation can not be used inside an optional",
-                solution="You can use '\\/' to escape the '/'",
+                solution=(
+                    "If you did not mean to use an alternation you can use '\\/' to escape the '/'. "
+                    "Otherwise rephrase your expression or consider using a regular expression instead."
+                ),
             )
         )
 
