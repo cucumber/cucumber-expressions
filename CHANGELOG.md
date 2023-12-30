@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
+- Additional information for alternation inside optional error message on how to fix ([#260](https://github.com/cucumber/cucumber-expressions/pull/260))
 
 ### Fixed
 - Removed repeated 'the' from error message for use of alternations inside optionals ([#252](https://github.com/cucumber/cucumber-expressions/issues/252))

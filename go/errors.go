@@ -34,7 +34,7 @@ func createAlternationNotAllowedInOptional(expression string, current token) err
 		expression,
 		pointAtToken(current),
 		"An alternation can not be used inside an optional",
-		"You can use '\\/' to escape the '/'",
+		"If you did not mean to use an alternation you can use '\\/' to escape the '/'. Otherwise rephrase your expression or consider using a regular expression instead.",
 	))
 }
 
