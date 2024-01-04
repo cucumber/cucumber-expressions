@@ -7,6 +7,35 @@ This document describes the grammar and production rules of Cucumber Expressions
 A Cucumber Expression has the following [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) grammar:
 
 ```ebnf
+cucumber-expression     = (alternation
+                           | optional
+                           | parameter
+                           | text)*
+text                    = (- text-to-escape) | ('\', text-to-escape)
+text-to-escape          = '(' | '{' | '/' | '\' 
+
+alternation             = single-alternation, ('/', single_alternation)+
+single-alternation      = ((text-in-alternative+, optional*) 
+                            | (optional+, text-in-alternative+))+
+text-in-alternative     = (- alternative-to-escape) | ('\', alternative-to-escape)
+alternative-to-escape   = ' ' | '(' | '{' | '/' | '\'
+
+optional                = '(', text-in-optional+, ')'
+text-in-optional        = (- optional-to-escape) | ('\', optional-to-escape)
+optional-to-escape      = '(' | ')' | '{' | '/' | '\'
+
+parameter               = '{', name*, '}'
+name                    = (- name-to-escape) | ('\', name-to-escape)
+name-to-escape          = '{' | '}' | '(' | '/' | '\'
+```
+
+## Implementation
+
+Implementations provided in this repository are using the following grammar, which is superset of `Cucumber Expressions`. Only after creating superset AST comes validation for better error handling. 
+
+Note, that this is only suggestion for implementation and as long as you are compliant with [formal spec](#Grammar), you should be alright. 
+
+```ebnf
 cucumber-expression = ( alternation | optional | parameter | text )*
 alternation         = (?<=left-boundary), alternative*, ( "/" + alternative* )+, (?=right-boundary)
 left-boundary       = whitespace | "}" | "^"
