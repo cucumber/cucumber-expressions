@@ -6,4 +6,4 @@ exception: |-
   \
   ^
   The end of line can not be escaped.
-  You can use '\\' to escape the the '\'
+  You can use '\\' to escape the '\'

@@ -48,7 +48,6 @@ public class RegularExpressionTest {
         List<Argument<?>> match = expression.match(expectation.text);
         List<?> values = match == null ? null : match.stream()
                 .map(Argument::getValue)
-                .map(e -> e instanceof Float ? ((Float)e).doubleValue() : e)
                 .collect(Collectors.toList());
 
         assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));

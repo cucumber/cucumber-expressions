@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/group'
 
 module Cucumber
@@ -16,7 +18,7 @@ module Cucumber
 
       def build(match, group_indices)
         group_index = group_indices.next
-        children = @group_builders.map {|gb| gb.build(match, group_indices)}
+        children = @group_builders.map { |gb| gb.build(match, group_indices) }
         Group.new(match[group_index], match.offset(group_index)[0], match.offset(group_index)[1], children)
       end
 

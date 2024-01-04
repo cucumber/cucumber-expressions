@@ -2,6 +2,9 @@ name: test-javascript
 
 on:
   push:
+    branches:
+      - main
+      - renovate/**
   pull_request:
     branches:
       - main
@@ -14,19 +17,19 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-        node-version: ['12.x', '14.x', '16.x']
+        node-version: ['18.x', '20.x']
         include:
           - os: windows-latest
-            node-version: '16.x'
+            node-version: '20.x'
           - os: macos-latest
-            node-version: '16.x'
+            node-version: '20.x'
 
     steps:
     - name: set git core.autocrlf to 'input'
       run: git config --global core.autocrlf input
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'

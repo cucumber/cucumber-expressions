@@ -1,14 +1,16 @@
 [![test-go](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-go.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-go.yml)
 [![test-java](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-java.yml)
 [![test-javascript](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yml)
+[![test-python](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml)
 [![test-ruby](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml)
+[![test-dotnet](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml)
 
 # Cucumber Expressions
 
 Cucumber Expressions is an alternative to [Regular Expressions](https://en.wikipedia.org/wiki/Regular_expression)
 with a more intuitive syntax.
 
-[Try Cucumber Expressions in your browser](https://cucumber.github.io/cucumber-expressions/).
+[Try Cucumber Expressions in your browser](https://cucumber.github.io/try-cucumber-expressions/).
 
 Cucumber supports both Cucumber Expressions and Regular Expressions for defining
 [Step Definitions](https://cucumber.io/docs/cucumber/step-definitions), but you cannot
@@ -51,20 +53,22 @@ the following built-in parameter types:
 
 | Parameter Type  | Description |
 | --------------- | ----------- |
-| `{int}`         | Matches integers, for example `71` or `-19`. |
-| `{float}`       | Matches floats, for example `3.6`, `.8` or `-9.2`. |
+| `{int}`         | Matches integers, for example `71` or `-19`. Converts to a 32-bit signed integer if the platform supports it.|
+| `{float}`       | Matches floats, for example `3.6`, `.8` or `-9.2`. Converts to a 32 bit float if the platform supports it. |
 | `{word}`        | Matches words without whitespace, for example `banana` (but not `banana split`). |
 | `{string}`      | Matches single-quoted or double-quoted strings, for example `"banana split"` or `'banana split'` (but not `banana split`). Only the text between the quotes will be extracted. The quotes themselves are discarded. Empty pairs of quotes are valid and will be matched and passed to step code as empty strings. |
 | `{}` anonymous  | Matches anything (`/.*/`). |
+| `{bigdecimal}`  | Matches the same as `{float}`, but converts to a `BigDecimal` if the platform supports it. |
+| `{double}`      | Matches the same as `{float}`, but converts to a 64 bit float if the platform supports it. |
+| `{biginteger}`  | Matches the same as `{int}`, but converts to a `BigInteger` if the platform supports it. |
+| `{byte}`        | Matches the same as `{int}`, but converts to an 8 bit signed integer if the platform supports it. |
+| `{short}`       | Matches the same as `{int}`, but converts to a 16 bit signed integer if the platform supports it. |
+| `{long}`        | Matches the same as `{int}`, but converts to a 64 bit signed integer if the platform supports it. |
 
-### Cucumber-JVM additions
+### Cucumber-JVM
 
-On the JVM, there are additional parameter types for `biginteger`, `bigdecimal`,
-`byte`, `short`, `long` and `double`.
-
-The anonymous parameter type will be converted to the parameter type of the step definition using an object mapper.
-Cucumber comes with a built-in object mapper that can handle most basic types. Aside from `Enum` it supports conversion
-to `BigInteger`, `BigDecimal`, `Boolean`, `Byte`, `Short`, `Integer`, `Long`, `Float`, `Double` and `String`.
+The *anonymous* parameter type will be converted to the parameter type of the step definition using an object mapper.
+Cucumber comes with a built-in object mapper that can handle all numeric types as well as. `Enum`.
 
 To automatically convert to other types it is recommended to install an object mapper. See [configuration](https://cucumber.io/docs/cucumber/configuration)
 to learn how.
@@ -86,7 +90,7 @@ a parameter type.
 | ------------- | ----------- |
 | `name`        | The name the parameter type will be recognised by in output parameters.
 | `regexp`      | A regexp that will match the parameter. May include capture groups.
-| `type`        | The return type of the transformer {{% stepdef-body %}}.
+| `type`        | The return type of the transformer.
 | `transformer` | A function or method that transforms the match from the regexp. Must have arity 1 if the regexp doesn't have any capture groups. Otherwise the arity must match the number of capture groups in `regexp`. |
 | `useForSnippets` / `use_for_snippets` | Defaults to `true`. That means this parameter type will be used to generate snippets for undefined steps. If the `regexp` frequently matches text you don't intend to be used as arguments, disable its use for snippets with `false`. |
 | `preferForRegexpMatch` / `prefer_for_regexp_match` | Defaults to `false`. Set to `true` if you have step definitions that use regular expressions, and you want this parameter type to take precedence over others during a match. |
@@ -120,7 +124,7 @@ ParameterType("color", "red|blue|yellow") { color: String => // name, regexp
 #### JavaScript / TypeScript
 
 ```javascript
-import { defineParameterType } from 'cucumber'
+import { defineParameterType } from '@cucumber/cucumber'
 
 defineParameterType({
     name: 'color',
@@ -141,6 +145,29 @@ ParameterType(
   transformer: ->(s) { Color.new(s) }
 )
 ```
+
+#### .NET / SpecFlow
+
+```CSharp
+[StepArgumentTransformation("(red|blue|yellow)")]
+public Color ConvertColor(string colorValue)
+{
+    return new Color(colorValue);
+}
+```
+
+#### Python
+
+```python
+ParameterType(
+  name=        "color",
+  regexp=      "red|blue|yellow",
+  type=        Color,
+  transformer= lambda s: Color(),
+)
+```
+
+*Note: Currently the parameter name cannot be customized, so the custom parameters can only be used with the type name, e.g. `{Color}`.*
 
 ## Optional text
 
@@ -168,8 +195,10 @@ Sometimes you want to relax your language, to make it flow better. For example:
 
 This would match either of those texts:
 
-    I have 42 cucumbers in my belly
+    I have 1 cucumber in my belly
+    I have 1 cucumber in my stomach
     I have 42 cucumbers in my stomach
+    I have 42 cucumbers in my belly
 
 Alternative text only works when there is no whitespace between the alternative parts.
 

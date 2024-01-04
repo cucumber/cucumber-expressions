@@ -1,32 +1,22 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/errors'
 
 module Cucumber
   module CucumberExpressions
     class ParameterType
-      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/
-      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/
+      ILLEGAL_PARAMETER_NAME_PATTERN = /([\[\]()$.|?*+])/.freeze
+      UNESCAPE_PATTERN = /(\\([\[$.|?*+\]]))/.freeze
 
-      attr_reader :name, :type, :regexps
+      attr_reader :name, :type, :transformer, :use_for_snippets, :prefer_for_regexp_match, :regexps
 
       def self.check_parameter_type_name(type_name)
-        unless is_valid_parameter_type_name(type_name)
-          raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'")
-        end
+        raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'") unless is_valid_parameter_type_name(type_name)
       end
 
       def self.is_valid_parameter_type_name(type_name)
-        unescaped_type_name = type_name.gsub(UNESCAPE_PATTERN) do
-          $2
-        end
+        unescaped_type_name = type_name.gsub(UNESCAPE_PATTERN) { Regexp.last_match(2) }
         !(ILLEGAL_PARAMETER_NAME_PATTERN =~ unescaped_type_name)
-      end
-
-      def prefer_for_regexp_match?
-        @prefer_for_regexp_match
-      end
-
-      def use_for_snippets?
-        @use_for_snippets
       end
 
       # Create a new Parameter
@@ -55,13 +45,13 @@ module Cucumber
       end
 
       def <=>(other)
-        return -1 if prefer_for_regexp_match? && !other.prefer_for_regexp_match?
-        return 1 if other.prefer_for_regexp_match? && !prefer_for_regexp_match?
+        return -1 if prefer_for_regexp_match && !other.prefer_for_regexp_match
+        return 1 if other.prefer_for_regexp_match && !prefer_for_regexp_match
+
         return name <=> other.name
       end
 
       private
-
 
       def string_array(regexps)
         array = regexps.is_a?(Array) ? regexps : [regexps]
@@ -70,14 +60,12 @@ module Cucumber
 
       def regexp_source(regexp)
         [
-            'EXTENDED',
-            'IGNORECASE',
-            'MULTILINE'
+          'EXTENDED',
+          'IGNORECASE',
+          'MULTILINE'
         ].each do |option_name|
           option = Regexp.const_get(option_name)
-          if regexp.options & option != 0
-            raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}")
-          end
+          raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}") if regexp.options & option != 0
         end
         regexp.source
       end

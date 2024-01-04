@@ -1,0 +1,37 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
+inherit_from: .rubocop_todo.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  TargetRubyVersion: 2.5
+  NewCops: enable
+
+# Disabled on our repo's to enable polyglot-release
+Gemspec/RequireMFA:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 200
+
+# This is documented in this spec to showcase why it's not working and people shouldn't use it
+# cf:
+Lint/MixedRegexpCaptureTypes:
+  Exclude:
+    - 'spec/cucumber/cucumber_expressions/tree_regexp_spec.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+  AllowInnerSlashes: true
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive

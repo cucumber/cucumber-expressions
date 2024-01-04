@@ -11,15 +11,13 @@ import java.util.regex.PatternSyntaxException;
  * using heuristics. This is particularly useful for languages that don't have a
  * literal syntax for regular expressions. In Java, a regular expression has to be represented as a String.
  *
- *  A string that starts with `^` and/or ends with `$` is considered a regular expression.
+ *  A string that starts with `^` and/or ends with `$` (or written in script style, i.e. starting with `/` 
+ *  and ending with `/`) is considered a regular expression.
  *  Everything else is considered a Cucumber expression.
  */
 @API(status = API.Status.STABLE)
 public final class ExpressionFactory {
 
-    private static final Pattern BEGIN_ANCHOR = Pattern.compile("^\\^.*");
-    private static final Pattern END_ANCHOR = Pattern.compile(".*\\$$");
-    private static final Pattern SCRIPT_STYLE_REGEXP = Pattern.compile("^/(.*)/$");
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("((?:\\\\){0,2})\\{([^}]*)\\}");
 
     private final ParameterTypeRegistry parameterTypeRegistry;
@@ -29,14 +27,30 @@ public final class ExpressionFactory {
     }
 
     public Expression createExpression(String expressionString) {
-        if (BEGIN_ANCHOR.matcher(expressionString).find() || END_ANCHOR.matcher(expressionString).find()) {
-            return createRegularExpressionWithAnchors(expressionString);
+        /* This method is called often (typically about number_of_steps x
+         * nbr_test_scenarios), thus performance is more important than
+         * readability here.
+         * Consequently, we check the first and last expressionString
+         * characters to determine whether we need to create a
+         * RegularExpression or a CucumberExpression (because character
+         * matching is faster than startsWith/endsWith and regexp matching).
+         */
+        int length = expressionString.length();
+        if (length == 0) {
+            return new CucumberExpression(expressionString, this.parameterTypeRegistry);
         }
-        Matcher m = SCRIPT_STYLE_REGEXP.matcher(expressionString);
-        if (m.find()) {
-            return new RegularExpression(Pattern.compile(m.group(1)), parameterTypeRegistry);
+
+        int lastCharIndex = length - 1;
+        char firstChar = expressionString.charAt(0);
+        char lastChar = expressionString.charAt(lastCharIndex);
+
+        if (firstChar == '^' || lastChar == '$') {
+            return this.createRegularExpressionWithAnchors(expressionString);
+        } else if (firstChar == '/' && lastChar == '/') {
+            return new RegularExpression(Pattern.compile(expressionString.substring(1, lastCharIndex)), this.parameterTypeRegistry);
         }
-        return new CucumberExpression(expressionString, parameterTypeRegistry);
+
+        return new CucumberExpression(expressionString, this.parameterTypeRegistry);
     }
 
     private RegularExpression createRegularExpressionWithAnchors(String expressionString) {

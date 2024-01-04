@@ -6,6 +6,82 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
+- Additional information for alternation inside optional error message on how to fix ([#260](https://github.com/cucumber/cucumber-expressions/pull/260))
+
+### Fixed
+- Removed repeated 'the' from error message for use of alternations inside optionals ([#252](https://github.com/cucumber/cucumber-expressions/issues/252))
+
+## [17.0.1] - 2023-11-24
+### Fixed
+- [JavaScript] Fix import paths lacking file suffix ([#243](https://github.com/cucumber/cucumber-expressions/pull/243))
+- [Ruby] Fixed up `Layout` rubocop autofixes
+
+## [17.0.0] - 2023-10-06
+### Changed
+- [JavaScript] Added TypeScript source to the package ([#211](https://github.com/cucumber/cucumber-expressions/pull/211))
+- [Ruby] Minimum supported ruby is now 2.5+ ([#232](https://github.com/cucumber/cucumber-expressions/pull/232))
+- [Ruby] Large suite wide refactor for basic rubocop compliance ([#233](https://github.com/cucumber/cucumber-expressions/pull/233) [#235](https://github.com/cucumber/cucumber-expressions/pull/235))
+- [Ruby] Expose `ParameterType#transformer` as a new public reader ([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
+- [Ruby] Remove `ParameterType#prefer_for_regexp_match?` and `ParameterType#use_for_snippets?` -> Use their standard reader equivalents instead (Remove the `?`)
+([#234](https://github.com/cucumber/cucumber-expressions/pull/234))
+
+## [16.1.2] - 2023-01-17
+### Fixed
+- [Java] Improve cucumber expression creation performance ([#202](https://github.com/cucumber/cucumber-expressions/pull/202))
+
+## [16.1.1] - 2022-12-08
+### Fixed
+- [Java] Improve expression creation performance ([#187](https://github.com/cucumber/cucumber-expressions/pull/187), [#189](https://github.com/cucumber/cucumber-expressions/pull/189))
+
+## [16.1.0] - 2022-11-28
+### Added
+- [Java] Enabled reproducible builds
+- [JavaScript] Added `ParameterType.builtin`. This is to allow JSON serialization of only the non-builtin parameter types.
+
+## [16.0.1] - 2022-11-06
+### Fixed
+- [JavaScript] The `ParameterType` constructor's `transform`, `useForSnippets` and `preferForRegexpMatch` should be optional. ([#178](https://github.com/cucumber/cucumber-expressions/pull/178))
+
+## [16.0.0] - 2022-06-12
+### Changed
+- [JavaScript] The `ParameterType` constructor's `regexps` parameter has a new type: `type Regexps = StringOrRegExp | readonly StringOrRegExp[]; type StringOrRegExp = string | RegExp`.
+
+## [15.2.0] - 2022-05-24
+### Added
+- [JavaScript] Add `ParameterInfo` ([#124](https://github.com/cucumber/cucumber-expressions/pull/124))
+
+### Fixed
+- [.NET] Fix casing in "word" parameter type constant
+
+## [15.1.1] - 2022-04-21
+### Fixed
+- [JavaScript] Make `CucumberExpression.ast` public (it was accidentally private in 15.1.0)
+
+## [15.1.0] - 2022-04-21
+### Added
+- [JavaScript] Add `CucumberExpression.ast` and expose the AST types.
+
+## [15.0.2] - 2022-03-15
+### Fixed
+- Add missing `name` field in CommonJS package file ([#87](https://github.com/cucumber/cucumber-expressions/pull/87))
+
+## [15.0.1] - 2022-01-04
+### Fixed
+- Fixed release scripts
+
+## [15.0.0] - 2022-01-04
+### Added
+- [Ruby,JavaScript,Go] Add `bigdecimal`, `biginteger` parameter types ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
+- [.NET] Implementation of Cucumber Expressions by porting the Java parser
+([#1743](https://github.com/cucumber/cucumber-expressions/pull/45))
+- [Python] Added Python Cucumber Expressions
+([#65](https://github.com/cucumber/cucumber-expressions/pull/65))
+
+### Changed
+- [Go] Parameters of type `{float}` are now parsed as `float32` (previously it was `float64`).
+Use `{double}` if you need `float64`. ([#42](https://github.com/cucumber/cucumber-expressions/pull/42))
 
 ## [14.0.0] - 2021-10-12
 ### Changed
@@ -265,7 +341,7 @@ Use `ExpressionFactory#create_expression` instead.
 - Javascript release process
 - Version numbering 🙈
 
-## [6.6.2] - 2019-03-22
+## 6.6.2 - 2019-03-22
 
 ## [6.2.3] - 2019-03-22
 ### Fixed
@@ -310,7 +386,7 @@ to work around a limitation on Android (and other platforms).
 [#498](https://github.com/cucumber/cucumber/pull/498)
 [lsuski](https://github.com/lsuski))
 
-## [6.1.0] - 2018-09-23
+## 6.1.0 - 2018-09-23
 ### Added
 - (Java) Added `ParameterType.fromEnum(MyEnumClass.class)` to make it easier
 to register enums.
@@ -384,7 +460,7 @@ than interpreting it as alternation character. Generated expressions will use
 [#392](https://github.com/cucumber/cucumber/pull/392)
 [aslakhellesoy](https://github.com/aslakhellesoy))
 
-## [5.0.17] - 2018-04-12
+## 5.0.17 - 2018-04-12
 ### Changed
 - java: Swapped 2 parameters in a `ParameterType` constructor to make it consistent with
 overloaded constructors.
@@ -442,7 +518,7 @@ and simplified capture group parsing in `TreeRegexp` to reduce likelihood of mor
 [#327](https://github.com/cucumber/cucumber/pull/327)
 [mpkorstanje](https://github.com/aslakhellesoy))
 
-## [5.0.11] - 2018-01-19
+## 5.0.11 - 2018-01-19
 ### Fixed
 - javascript: Fixed a regression introduced by [#324](https://github.com/cucumber/cucumber/pull/324)
 ([#325](https://github.com/cucumber/cucumber/issues/325)
@@ -483,7 +559,7 @@ more than just letters - it works with anything that isn't a space.
 ([#303](https://github.com/cucumber/cucumber/issues/303)
 by [aslakhellesoy](https://github.com/aslakhellesoy))
 
-## [5.0.3] - 2017-11-06
+## 5.0.3 - 2017-11-06
 ### Fixed
 - javascript: Support RegExp flags
 ([#300](https://github.com/cucumber/cucumber/issues/300)
@@ -494,7 +570,7 @@ by [aslakhellesoy](https://github.com/aslakhellesoy) and [dmeehan1968](https://g
 - java: Make the jar a bundle to support osgi. ([#287](https://github.com/cucumber/cucumber/pull/287)
 by [mpkorstanje](https://github.com/mpkorstanje))
 
-## [5.0.0] - 2017-10-10
+## 5.0.0 - 2017-10-10
 ### Changed
 - ruby, javascript: A `transformer` function can run in the context of a world object. `Argument#value` now takes an object as argument (renamed to `Argument#getValue` in js) ([#284](https://github.com/cucumber/cucumber/pull/284) by [aslakhellesoy](https://github.com/aslakhellesoy))
 
@@ -510,7 +586,7 @@ by [mpkorstanje](https://github.com/mpkorstanje))
 ### Fixed
 - javascript: Expose `Argument.group` and fix `start` and `end` accessors in `Group`
 
-## [4.0.2] - 2017-07-14
+## 4.0.2 - 2017-07-14
 ### Fixed
 - javascript: Make it work on Node 4 and browser (Use `Array.indexOf` instead of `Array.includes`)
 ([#237](https://github.com/cucumber/cucumber/pull/237)
@@ -675,7 +751,20 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...HEAD
+[17.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...v17.0.1
+[17.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...v17.0.0
+[16.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.1...v16.1.2
+[16.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.0...v16.1.1
+[16.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.1...v16.1.0
+[16.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v16.0.0...v16.0.1
+[16.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.2.0...v16.0.0
+[15.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.1...v15.2.0
+[15.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.1.0...v15.1.1
+[15.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.2...v15.1.0
+[15.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.1...v15.0.2
+[15.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v15.0.0...v15.0.1
+[15.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v14.0.0...v15.0.0
 [14.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.3...v14.0.0
 [13.1.3]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.2...v13.1.3
 [13.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v13.1.1...v13.1.2
@@ -687,7 +776,7 @@ by [brasmusson](https://github.com/brasmusson))
 [12.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v12.1.0...v12.1.1
 [12.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v12.0.1...v12.1.0
 [12.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v12.0.0...v12.0.1
-[12.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.1...v12.0.0
+[12.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.2...v12.0.0
 [11.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v11.0.0...v11.0.1
 [11.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v10.3.0...v11.0.0
 [10.3.0]: https://github.com/cucumber/cucumber-expressions/compare/v10.2.2...v10.3.0
@@ -705,37 +794,30 @@ by [brasmusson](https://github.com/brasmusson))
 [8.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v8.0.1...v8.0.2
 [8.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v8.0.0...v8.0.1
 [8.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.2...v8.0.0
-[7.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.0...v7.0.2
-[7.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v6.6.2...v7.0.0
-[6.6.2]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.3...v6.6.2
+[7.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v7.0.1...v7.0.2
+[7.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.3...v7.0.0
 [6.2.3]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.2...v6.2.3
 [6.2.2]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.1...v6.2.2
 [6.2.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.2.0...v6.2.1
 [6.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v6.1.2...v6.2.0
-[6.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v6.1.0...v6.1.2
-[6.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.1.0...v6.1.1
-[6.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v6.0.1...v6.1.0
+[6.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v6.1.1...v6.1.2
+[6.1.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.0.1...v6.1.1
 [6.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v6.0.0...v6.0.1
-[6.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.18...v6.0.0
-[5.0.18]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.17...v5.0.18
-[5.0.17]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.16...v5.0.17
+[6.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.19...v6.0.0
+[5.0.18]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.16...v5.0.18
 [5.0.16]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.15...v5.0.16
 [5.0.15]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.14...v5.0.15
 [5.0.14]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.13...v5.0.14
 [5.0.13]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.12...v5.0.13
-[5.0.12]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.11...v5.0.12
-[5.0.11]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.10...v5.0.11
+[5.0.12]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.10...v5.0.12
 [5.0.10]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.7...v5.0.10
 [5.0.7]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.6...v5.0.7
 [5.0.6]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.5...v5.0.6
 [5.0.5]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.4...v5.0.5
-[5.0.4]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.3...v5.0.4
-[5.0.3]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.2...v5.0.3
-[5.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.0...v5.0.2
-[5.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.4...v5.0.0
+[5.0.4]: https://github.com/cucumber/cucumber-expressions/compare/v5.0.2...v5.0.4
+[5.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.4...v5.0.2
 [4.0.4]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.3...v4.0.4
-[4.0.3]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.2...v4.0.3
-[4.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.1...v4.0.2
+[4.0.3]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.1...v4.0.3
 [4.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v2.0.1...v3.0.0

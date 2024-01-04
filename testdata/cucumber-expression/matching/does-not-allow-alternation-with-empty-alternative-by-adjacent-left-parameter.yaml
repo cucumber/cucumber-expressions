@@ -7,4 +7,4 @@ exception: |-
   {int}/x
        ^
   Alternative may not be empty.
-  If you did not mean to use an alternative you can use '\/' to escape the the '/'
+  If you did not mean to use an alternative you can use '\/' to escape the '/'

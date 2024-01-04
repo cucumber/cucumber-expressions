@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'cucumber/cucumber_expressions/expression_factory'
 
 module Cucumber
   module CucumberExpressions
     describe ExpressionFactory do
       before do
-        @expression_factory = ExpressionFactory.new(ParameterTypeRegistry.new)
+        @expression_factory = described_class.new(ParameterTypeRegistry.new)
       end
 
       it 'creates a RegularExpression' do

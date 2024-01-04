@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'cucumber/cucumber_expressions/cucumber_expression_parser'
 require 'cucumber/cucumber_expressions/errors'
@@ -8,7 +10,7 @@ module Cucumber
       Dir['../testdata/cucumber-expression/parser/*.yaml'].each do |path|
         expectation = YAML.load_file(path)
         it "parses #{path}" do
-          parser = CucumberExpressionParser.new
+          parser = described_class.new
           if expectation['exception']
             expect { parser.parse(expectation['expression']) }.to raise_error(expectation['exception'])
           else

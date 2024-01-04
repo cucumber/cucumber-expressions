@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "cucumber-expressions"
+version = "17.0.1"
+description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
+authors = ["Jason Allen <jsa34@noreply.github.com>"]
+license = "MIT"
+
+readme = "README.md"
+
+packages = [
+    { include = "cucumber_expressions"}
+]
+include = [
+    { path = "tests", format = "sdist" }
+]
+
+homepage = "https://github.com/cucumber/cucumber-expressions"
+repository = "https://github.com/cucumber/cucumber-expressions"
+documentation = "https://github.com/cucumber/cucumber-expressions"
+
+keywords = ["BDD", "testing", "cucumber", "expressions"]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^3.3"
+pytest = "^7.0.0"
+PyYAML = "^6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+py_version = 37
+profile = "black"
+force_single_line = true
+combine_as_imports = true
+lines_between_types = 1
+lines_after_imports = 2
+src_paths = ["cucumber_expressions", "tests"]
+
+
+[tool.black]
+target-version = ['py37']

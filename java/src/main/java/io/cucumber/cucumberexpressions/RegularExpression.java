@@ -47,7 +47,7 @@ public final class RegularExpression implements Expression {
             ParameterType<?> parameterType = parameterTypeRegistry.lookupByRegexp(parameterTypeRegexp, expressionRegexp, text);
 
             // When there is a conflict between the type hint from the regular expression and the method
-            // prefer the the parameter type associated with the regular expression. This ensures we will
+            // prefer the parameter type associated with the regular expression. This ensures we will
             // use the internal/user registered parameter transformer rather then the default.
             //
             // Unless the parameter type indicates it is the stronger type hint.

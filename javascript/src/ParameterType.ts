@@ -3,8 +3,19 @@ import CucumberExpressionError from './CucumberExpressionError.js'
 const ILLEGAL_PARAMETER_NAME_PATTERN = /([[\]()$.|?*+])/
 const UNESCAPE_PATTERN = () => /(\\([[$.|?*+\]]))/g
 
+interface Constructor<T> {
+  new (...args: unknown[]): T
+  prototype: T
+}
+
+type Factory<T> = (...args: unknown[]) => T
+
+export type RegExps = StringOrRegExp | readonly StringOrRegExp[]
+
+export type StringOrRegExp = string | RegExp
+
 export default class ParameterType<T> {
-  private transformFn: (...match: readonly string[]) => T
+  private transformFn: (...match: readonly string[]) => T | PromiseLike<T>
 
   public static compare(pt1: ParameterType<unknown>, pt2: ParameterType<unknown>) {
     if (pt1.preferForRegexpMatch && !pt2.preferForRegexpMatch) {
@@ -33,19 +44,21 @@ export default class ParameterType<T> {
 
   /**
    * @param name {String} the name of the type
-   * @param regexps {Array.<RegExp>,RegExp,Array.<String>,String} that matches the type
+   * @param regexps {Array.<RegExp | String>,RegExp,String} that matche the type
    * @param type {Function} the prototype (constructor) of the type. May be null.
    * @param transform {Function} function transforming string to another type. May be null.
    * @param useForSnippets {boolean} true if this should be used for snippets. Defaults to true.
    * @param preferForRegexpMatch {boolean} true if this is a preferential type. Defaults to false.
+   * @param builtin whether or not this is a built-in type
    */
   constructor(
     public readonly name: string | undefined,
-    regexps: readonly RegExp[] | readonly string[] | RegExp | string,
-    private readonly type: unknown,
-    transform: (...match: string[]) => T,
-    public readonly useForSnippets: boolean,
-    public readonly preferForRegexpMatch: boolean
+    regexps: RegExps,
+    public readonly type: Constructor<T> | Factory<T> | null,
+    transform?: (...match: string[]) => T | PromiseLike<T>,
+    public readonly useForSnippets?: boolean,
+    public readonly preferForRegexpMatch?: boolean,
+    public readonly builtin?: boolean
   ) {
     if (transform === undefined) {
       transform = (s) => s as unknown as T
@@ -70,11 +83,8 @@ export default class ParameterType<T> {
   }
 }
 
-type StringOrRegexp = string | RegExp
-
-function stringArray(regexps: readonly StringOrRegexp[] | StringOrRegexp): string[] {
-  // @ts-ignore
-  const array: StringOrRegexp[] = Array.isArray(regexps) ? regexps : [regexps]
+function stringArray(regexps: RegExps): string[] {
+  const array: StringOrRegExp[] = Array.isArray(regexps) ? regexps : [regexps]
   return array.map((r) => (r instanceof RegExp ? regexpSource(r) : r))
 }
 

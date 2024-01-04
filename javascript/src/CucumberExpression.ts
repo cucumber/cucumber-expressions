@@ -10,16 +10,17 @@ import {
   createParameterIsNotAllowedInOptional,
   createUndefinedParameterType,
 } from './Errors.js'
-import Expression from './Expression.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import TreeRegexp from './TreeRegexp.js'
+import { Expression } from './types.js'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 
 export default class CucumberExpression implements Expression {
   private readonly parameterTypes: Array<ParameterType<unknown>> = []
   private readonly treeRegexp: TreeRegexp
+  public readonly ast: Node
 
   /**
    * @param expression
@@ -30,8 +31,8 @@ export default class CucumberExpression implements Expression {
     private readonly parameterTypeRegistry: ParameterTypeRegistry
   ) {
     const parser = new CucumberExpressionParser()
-    const ast = parser.parse(expression)
-    const pattern = this.rewriteToRegex(ast)
+    this.ast = parser.parse(expression)
+    const pattern = this.rewriteToRegex(this.ast)
     this.treeRegexp = new TreeRegexp(pattern)
   }
 
@@ -73,14 +74,14 @@ export default class CucumberExpression implements Expression {
 
   private rewriteAlternation(node: Node) {
     // Make sure the alternative parts aren't empty and don't contain parameter types
-    ;(node.nodes || []).forEach((alternative) => {
+    for (const alternative of node.nodes || []) {
       if (!alternative.nodes || alternative.nodes.length == 0) {
         throw createAlternativeMayNotBeEmpty(alternative, this.expression)
       }
       this.assertNotEmpty(alternative, (astNode) =>
         createAlternativeMayNotExclusivelyContainOptionals(astNode, this.expression)
       )
-    })
+    }
     const regex = (node.nodes || []).map((node) => this.rewriteToRegex(node)).join('|')
     return `(?:${regex})`
   }
