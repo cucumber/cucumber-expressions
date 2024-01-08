@@ -32,10 +32,8 @@ jobs:
       - name: Build
         run: poetry build
 
-      - name: Config for PyPI release
-        run: |
-          poetry config pypi-token.pypi "${{ secrets.PYPI_TOKEN }}"
-
-      - name: Publish
-        run: |
-          poetry publish
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
+          skip-existing: true
