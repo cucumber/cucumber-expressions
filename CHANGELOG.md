@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Changed
-- [Python] Updated the release workflow to use trusted publisher ([#263](https://github.com/cucumber/cucumber-expressions/pull/263))
+- [Python] Updated the release workflow to use trusted publisher ([#263](https://github.com/cucumber/cucumber-expressions/pull/263), [#264](https://github.com/cucumber/cucumber-expressions/pull/264))
 - [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
 - Additional information for alternation inside optional error message on how to fix ([#260](https://github.com/cucumber/cucumber-expressions/pull/260))
 
