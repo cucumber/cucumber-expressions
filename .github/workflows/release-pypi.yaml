@@ -23,6 +23,6 @@ jobs:
         with:
           python-version: "3.10"
 
-      - uses: cucumber/action-publish-pypi@v1.1.0
+      - uses: cucumber/action-publish-pypi@v2.0.0
         with:
           working-directory: "python"
