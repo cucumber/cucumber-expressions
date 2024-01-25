@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
     'source_code_uri' => 'https://github.com/cucumber/common/blob/main/cucumber-expressions/ruby',
   }
 
+  s.add_runtime_dependency 'bigdecimal'
+
   s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
   s.add_development_dependency 'rspec', '~> 3.11', '>= 3.11.0'
   s.add_development_dependency 'rubocop', '~> 1.27.0'
