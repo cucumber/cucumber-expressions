@@ -224,8 +224,7 @@ Then this expression would match the following example:
     I have 1 \{what} cucumber in my belly \(amazing!)
     I have 42 \{what} cucumbers in my belly \(amazing!)
 
-There is currently no way to escape a `/` character - it will always be interpreted
-as alternative text.
+The `/` character will always be interpreted as an alternative, unless escaped, such as with `\/`.
 
 ## Architecture
 
