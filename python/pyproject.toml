@@ -42,7 +42,7 @@ python = "^3.10"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.3"
-pytest = "^7.0.0"
+pytest = "^8.0.0"
 PyYAML = "^6.0"
 
 [build-system]
