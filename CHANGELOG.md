@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.0.2] - 2024-02-20
 ### Changed
 - [Python] Updated the release workflow to use trusted publisher ([#263](https://github.com/cucumber/cucumber-expressions/pull/263), [#264](https://github.com/cucumber/cucumber-expressions/pull/264))
 - [Ruby] Added subsidiary rubocop gems (RSpec/Rake/Performance), and did some initial refactoring ([#247](https://github.com/cucumber/cucumber-expressions/pull/247))
@@ -754,7 +756,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...HEAD
+[17.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...v17.0.2
 [17.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...v17.0.1
 [17.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...v17.0.0
 [16.1.2]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.1...v16.1.2
