@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Removed repeated 'the' from error message for use of alternations inside optionals ([#252](https://github.com/cucumber/cucumber-expressions/issues/252))
 - [Python] Missing keyword argument defaults in parameter type class ([#259](https://github.com/cucumber/cucumber-expressions/pull/259))
+- [Ruby] Added an explicit dependency on `bigdecimal` gem, to fix Ruby 3.4-pre builds where the gem has changed its status from default to bundled ([#273](https://github.com/cucumber/cucumber-expressions/pull/273))
 
 ## [17.0.1] - 2023-11-24
 ### Fixed
