@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Pattern
+from typing import Callable, Optional, Pattern
 
 from cucumber_expressions.errors import CucumberExpressionError
 
@@ -47,7 +47,7 @@ class ParameterType:
         name,
         regexp,
         type,
-        transformer,
+        transformer: Optional[Callable] = None,
         use_for_snippets: bool = True,
         prefer_for_regexp_match: bool = False,
     ):
@@ -69,7 +69,7 @@ class ParameterType:
         if self.name:
             self._check_parameter_type_name(self.name)
         self.type = type
-        self.transformer = transformer
+        self.transformer = transformer or (lambda value: type(value))
         self._use_for_snippets = use_for_snippets
         self._prefer_for_regexp_match = prefer_for_regexp_match
         self.regexps = self.to_array(regexp)
