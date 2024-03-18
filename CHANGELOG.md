@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - [Python] Remove support for Python 3.7 and extend support to 3.12 ([#280](https://github.com/cucumber/cucumber-expressions/pull/280))
+- [Python] The `ParameterType` constructor's `transformer` should be optional ([#288](https://github.com/cucumber/cucumber-expressions/pull/288))
 
 ## [17.0.2] - 2024-02-20
 ### Changed
