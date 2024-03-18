@@ -165,7 +165,7 @@ ParameterType(
   name=        "color",
   regexp=      "red|blue|yellow",
   type=        Color,
-  transformer= lambda s: Color(),
+  transformer= lambda s: Color(s),
 )
 ```
 
