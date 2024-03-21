@@ -6,8 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [17.1.0] - 2024-03-21
 ### Added
-- [Java] Assume numbers use either a comma or period for the thousands separator instead of non-breaking spaces. ([#290](https://github.com/cucumber/cucumber-expressions/pull/290)) 
+- [Java] Assume numbers use either a comma or period for the thousands separator instead of non-breaking spaces. ([#290](https://github.com/cucumber/cucumber-expressions/pull/290))
 
 ### Fixed
 - [Java] Parse negative numbers in Norwegian (and 59 other languages) ([#290](https://github.com/cucumber/cucumber-expressions/pull/290))
@@ -763,7 +765,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...HEAD
+[17.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...v17.1.0
 [17.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...v17.0.2
 [17.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...v17.0.1
 [17.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v16.1.2...v17.0.0

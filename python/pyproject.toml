@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cucumber-expressions"
-version = "17.0.2"
+version = "17.1.0"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
 authors = ["Jason Allen <jsa34@noreply.github.com>"]
 license = "MIT"
