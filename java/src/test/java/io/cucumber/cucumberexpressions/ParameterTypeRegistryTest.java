@@ -171,8 +171,19 @@ public class ParameterTypeRegistryTest {
         ExpressionFactory factory = new ExpressionFactory(new ParameterTypeRegistry(Locale.CANADA_FRENCH));
         Expression expression = factory.createExpression("{bigdecimal}");
 
-        assertThat(expression.match("1\u00A0000,1").get(0).getValue(), is(new BigDecimal("1000.1")));
-        assertThat(expression.match("1\u00A0000\u00A0000,1").get(0).getValue(), is(new BigDecimal("1000000.1")));
+        assertThat(expression.match("1.000,1").get(0).getValue(), is(new BigDecimal("1000.1")));
+        assertThat(expression.match("1.000.000,1").get(0).getValue(), is(new BigDecimal("1000000.1")));
+        assertThat(expression.match("-1,1").get(0).getValue(), is(new BigDecimal("-1.1")));
+        assertThat(expression.match("-,1E1").get(0).getValue(), is(new BigDecimal("-1")));
+    }
+
+    @Test
+    public void parse_decimal_numbers_in_norwegian() {
+        ExpressionFactory factory = new ExpressionFactory(new ParameterTypeRegistry(Locale.forLanguageTag("no")));
+        Expression expression = factory.createExpression("{bigdecimal}");
+
+        assertThat(expression.match("1.000,1").get(0).getValue(), is(new BigDecimal("1000.1")));
+        assertThat(expression.match("1.000.000,1").get(0).getValue(), is(new BigDecimal("1000000.1")));
         assertThat(expression.match("-1,1").get(0).getValue(), is(new BigDecimal("-1.1")));
         assertThat(expression.match("-,1E1").get(0).getValue(), is(new BigDecimal("-1")));
     }

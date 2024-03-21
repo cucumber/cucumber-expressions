@@ -58,7 +58,7 @@ public final class ParameterTypeRegistry {
         this.internalParameterTransformer = defaultParameterTransformer;
         this.defaultParameterTransformer = defaultParameterTransformer;
 
-        DecimalFormatSymbols numberFormat = DecimalFormatSymbols.getInstance(locale);
+        DecimalFormatSymbols numberFormat = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
 
         List<String> localizedFloatRegexp = singletonList(FLOAT_REGEXPS
                 .replace("{decimal}", "" + numberFormat.getDecimalSeparator())

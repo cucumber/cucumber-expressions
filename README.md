@@ -65,13 +65,34 @@ the following built-in parameter types:
 | `{short}`       | Matches the same as `{int}`, but converts to a 16 bit signed integer if the platform supports it. |
 | `{long}`        | Matches the same as `{int}`, but converts to a 64 bit signed integer if the platform supports it. |
 
-### Cucumber-JVM
+### Java
+
+### The Anonymous Parameter
 
 The *anonymous* parameter type will be converted to the parameter type of the step definition using an object mapper.
 Cucumber comes with a built-in object mapper that can handle all numeric types as well as. `Enum`.
 
-To automatically convert to other types it is recommended to install an object mapper. See [configuration](https://cucumber.io/docs/cucumber/configuration)
+To automatically convert to other types it is recommended to install an object mapper. See [cucumber-java - Default Transformers](https://github.com/cucumber/cucumber-jvm/tree/main/cucumber-java#default-transformers)
 to learn how.
+
+### Number formats
+
+Java supports parsing localised numbers. I.e. in your English feature file you
+can format a-thousand-and-one-tenth as '1,000.1; while in French you would format it
+as '1.000,1'. 
+
+Parsing is facilitated by Javas [`DecimalFormat`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/text/DecimalFormat.html)
+and includes support for the scientific notation. Unfortunately the default
+localisation include symbols that can not be easily written on a regular
+keyboard. So a few substitutions are made:
+
+ * The minus sign is always hyphen-minus - (ascii 45).
+ * If the decimal separator is a period (. ascii 46) the thousands separator is a comma (, ascii 44).
+   So '1 000.1' and '1’000.1' should always be written as '1,000.1'. 
+ * If the decimal separator is a comma (, ascii 44) the thousands separator is a period (. ascii 46).
+   So '1 000,1' or '1’000,1' should always be written as '1.000,1'.
+
+If support for your preferred language could be improved, please create an issue!
 
 ### Custom Parameter types
 

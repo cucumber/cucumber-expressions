@@ -2,6 +2,7 @@ package io.cucumber.cucumberexpressions;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -14,6 +15,8 @@ final class NumberParser {
         if (numberFormat instanceof DecimalFormat) {
             DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
             decimalFormat.setParseBigDecimal(true);
+            DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
+            decimalFormat.setDecimalFormatSymbols(symbols);
         }
     }
 

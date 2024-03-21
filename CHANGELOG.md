@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Java] Assume numbers use either a comma or period for the thousands separator instead of non-breaking spaces. ([#290](https://github.com/cucumber/cucumber-expressions/pull/290)) 
+
 ### Fixed
+- [Java] Parse negative numbers in Norwegian (and 59 other languages) ([#290](https://github.com/cucumber/cucumber-expressions/pull/290))
 - [Python] Remove support for Python 3.7 and extend support to 3.12 ([#280](https://github.com/cucumber/cucumber-expressions/pull/280))
 - [Python] The `ParameterType` constructor's `transformer` should be optional ([#288](https://github.com/cucumber/cucumber-expressions/pull/288))
 
