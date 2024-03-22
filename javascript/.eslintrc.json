@@ -8,12 +8,7 @@
     "project": "tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": [
-    "import",
-    "simple-import-sort",
-    "node",
-    "@typescript-eslint"
-  ],
+  "plugins": ["import", "simple-import-sort", "n", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:import/typescript",
@@ -23,7 +18,7 @@
   ],
   "rules": {
     "import/no-cycle": "error",
-    "node/no-extraneous-import": "error",
+    "n/no-extraneous-import": "error",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
