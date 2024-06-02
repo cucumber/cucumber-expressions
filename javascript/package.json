@@ -67,7 +67,7 @@
     "js-yaml": "4.1.0",
     "mocha": "10.4.0",
     "npm-check-updates": "16.14.20",
-    "prettier": "3.2.5",
+    "prettier": "3.3.0",
     "pretty-quick": "4.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
