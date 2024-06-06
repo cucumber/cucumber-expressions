@@ -27,7 +27,7 @@
     "stryker": "cross-env CUCUMBER_EXPRESSIONS_TEST_DATA_DIR=$(pwd)/../testdata stryker run",
     "prepublishOnly": "npm run build",
     "eslint-fix": "eslint --ext ts,tsx --max-warnings 0 --fix src test",
-    "eslint": "eslint --ext ts,tsx --max-warnings 0 src test",
+    "eslint": "eslint --ext ts,tsx --max-warnings 0 src test"
   },
   "repository": {
     "type": "git",
