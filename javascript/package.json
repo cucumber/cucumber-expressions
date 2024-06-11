@@ -65,7 +65,7 @@
     "glob": "10.4.1",
     "js-yaml": "4.1.0",
     "mocha": "10.4.0",
-    "prettier": "3.3.1",
+    "prettier": "3.3.2",
     "pretty-quick": "4.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
