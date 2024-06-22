@@ -50,7 +50,7 @@
     "@stryker-mutator/mocha-runner": "8.2.6",
     "@types/glob": "8.1.0",
     "@types/js-yaml": "4.0.9",
-    "@types/mocha": "10.0.6",
+    "@types/mocha": "10.0.7",
     "@types/node": "20.14.8",
     "@typescript-eslint/eslint-plugin": "7.13.1",
     "@typescript-eslint/parser": "7.13.1",
