@@ -62,7 +62,7 @@
     "eslint-plugin-n": "17.10.2",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
-    "glob": "10.4.5",
+    "glob": "11.0.0",
     "js-yaml": "4.1.0",
     "mocha": "10.7.3",
     "prettier": "3.3.3",
