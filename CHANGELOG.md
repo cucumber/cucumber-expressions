@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [18.0.0] - 2024-10-24
 ### Changed
 - [Ruby] Minimum supported ruby is now 2.7+ ([#308](https://github.com/cucumber/cucumber-expressions/pull/308))
 
@@ -767,7 +769,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...HEAD
+[18.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...v18.0.0
 [17.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...v17.1.0
 [17.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...v17.0.2
 [17.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.0...v17.0.1
