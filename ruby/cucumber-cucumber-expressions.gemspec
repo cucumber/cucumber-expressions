@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop-rake', '~> 0.5.0'
   s.add_development_dependency 'rubocop-rspec', '~> 2.0.0'
 
-  s.files            = `git ls-files`.split("\n").reject { |path| path =~ /\.gitignore$/ }
+  s.files            = Dir['lib/**/*', 'CHANGELOG.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md']
   s.rdoc_options     = ['--charset=UTF-8']
   s.require_path     = 'lib'
 end
