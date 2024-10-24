@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/cucumber/cucumber-expressions'
   s.platform    = Gem::Platform::RUBY
   s.license     = 'MIT'
-  s.required_ruby_version = '>= 2.5'
+  s.required_ruby_version = '>= 2.7'
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/cucumber/cucumber/issues',
@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'bigdecimal'
 
-  s.add_development_dependency 'rake', '~> 13.0', '>= 13.0.6'
-  s.add_development_dependency 'rspec', '~> 3.11', '>= 3.11.0'
+  s.add_development_dependency 'rake', '~> 13.1'
+  s.add_development_dependency 'rspec', '~> 3.13'
   s.add_development_dependency 'rubocop', '~> 1.27.0'
   s.add_development_dependency 'rubocop-performance', '~> 1.7.0'
   s.add_development_dependency 'rubocop-rake', '~> 0.5.0'
