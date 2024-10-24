@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Ruby] Minimum supported ruby is now 2.7+ ([#308](https://github.com/cucumber/cucumber-expressions/pull/308))
 
 ## [17.1.0] - 2024-03-21
 ### Added
