@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [18.0.1] - 2024-10-28
 ### Fixed
 - [Python] Release process didn't release to pypi correctly
 
@@ -771,7 +773,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...HEAD
+[18.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...v18.0.1
 [18.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...v18.0.0
 [17.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...v17.1.0
 [17.0.2]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.1...v17.0.2
