@@ -68,7 +68,7 @@
     "prettier": "3.3.3",
     "pretty-quick": "4.0.0",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.6.3"
   },
   "dependencies": {
     "regexp-match-indices": "1.0.2"
