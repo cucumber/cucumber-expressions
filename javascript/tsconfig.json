@@ -13,9 +13,9 @@
     "experimentalDecorators": true,
     "module": "ESNext",
     "lib": [
-      "ES6"
+      "ES2022"
     ],
-    "target": "ES6",
+    "target": "ES2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noEmit": true
