@@ -25,11 +25,12 @@ jobs:
       - name: Show Python version
         run: python --version
 
-      - name: Install Python package dependencies
+      - name: Check build
         run: |
           python -m pip install build twine
           python -m build
           twine check --strict dist/*
+
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
