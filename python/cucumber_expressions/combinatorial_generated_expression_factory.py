@@ -1,5 +1,3 @@
-from typing import List
-
 from cucumber_expressions.generated_expression import GeneratedExpression
 from cucumber_expressions.parameter_type import ParameterType
 
@@ -12,16 +10,16 @@ class CombinatorialGeneratedExpressionFactory:
         self.expression_template = expression_template
         self.parameter_type_combinations = parameter_type_combinations
 
-    def generate_expressions(self) -> List[GeneratedExpression]:
+    def generate_expressions(self) -> list[GeneratedExpression]:
         generated_expressions = []
         self.generate_permutations(generated_expressions, 0, [])
         return generated_expressions
 
     def generate_permutations(
         self,
-        generated_expressions: List[GeneratedExpression],
+        generated_expressions: list[GeneratedExpression],
         depth: int,
-        current_parameter_types: List[ParameterType],
+        current_parameter_types: list[ParameterType],
     ):
         if len(generated_expressions) >= MAX_EXPRESSIONS:
             return

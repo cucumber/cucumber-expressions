@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional, List
+from typing import Optional, Any
 
 
 class NodeType(Enum):
@@ -41,44 +41,24 @@ class Node:
     def __init__(
         self,
         ast_type: NodeType,
-        nodes: Optional[List[Node]],
+        nodes: Optional[list[Node]],
         token: Optional[str],
         start: int,
         end: int,
     ):
         if nodes is None and token is None:
             raise Exception("Either nodes or token must be defined")
-        self._ast_type = ast_type
-        self._nodes = nodes
-        self._token = token
-        self._start = start
-        self._end = end
-
-    @property
-    def ast_type(self) -> NodeType:
-        return self._ast_type
-
-    @property
-    def nodes(self) -> List[Node]:
-        return self._nodes
-
-    @property
-    def token(self) -> str:
-        return self._token
-
-    @property
-    def start(self) -> int:
-        return self._start
-
-    @property
-    def end(self) -> int:
-        return self._end
+        self.ast_type = ast_type
+        self.nodes = nodes
+        self.token = token
+        self.start = start
+        self.end = end
 
     @property
     def text(self) -> str:
         return self.token or "".join([node_value.text for node_value in self.nodes])
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         json_obj = {"type": self.ast_type.value}
         if self.nodes is not None:
             json_obj["nodes"] = [node_value.to_json() for node_value in self.nodes]
@@ -91,26 +71,10 @@ class Node:
 
 class Token:
     def __init__(self, ast_type: TokenType, text: str, start: int, end: int):
-        self._ast_type = ast_type
-        self._text = text
-        self._start = start
-        self._end = end
-
-    @property
-    def ast_type(self):
-        return self._ast_type
-
-    @property
-    def text(self):
-        return self._text
-
-    @property
-    def start(self):
-        return self._start
-
-    @property
-    def end(self):
-        return self._end
+        self.ast_type = ast_type
+        self.text = text
+        self.start = start
+        self.end = end
 
     @staticmethod
     def is_escape_character(char: str) -> bool:
@@ -140,7 +104,7 @@ class Token:
         return TokenType.TEXT
 
     @staticmethod
-    def symbol_of(token: TokenType):
+    def symbol_of(token: TokenType) -> str:
         possible_token_character_key = token.name + "_CHARACTER"
         if any(
             e.name
@@ -151,7 +115,7 @@ class Token:
         return ""
 
     @staticmethod
-    def purpose_of(token: TokenType):
+    def purpose_of(token: TokenType) -> str:
         if token in [TokenType.BEGIN_OPTIONAL, TokenType.END_OPTIONAL]:
             return "optional text"
         if token in [TokenType.BEGIN_PARAMETER, TokenType.END_PARAMETER]:
@@ -160,7 +124,7 @@ class Token:
             return "alternation"
         return ""
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         return {
             "type": self.ast_type.value,
             "text": self.text,

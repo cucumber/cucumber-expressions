@@ -1,6 +1,5 @@
 import functools
 import re
-from typing import List
 
 from cucumber_expressions.generated_expression import GeneratedExpression
 from cucumber_expressions.parameter_type import ParameterType
@@ -8,16 +7,17 @@ from cucumber_expressions.parameter_type_matcher import ParameterTypeMatcher
 from cucumber_expressions.combinatorial_generated_expression_factory import (
     CombinatorialGeneratedExpressionFactory,
 )
+from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 
 class CucumberExpressionGenerator:
-    def __init__(self, parameter_type_registry):
+    def __init__(self, parameter_type_registry: ParameterTypeRegistry):
         self.parameter_type_registry = parameter_type_registry
 
-    def generate_expressions(self, text: str) -> List[GeneratedExpression]:
+    def generate_expressions(self, text: str) -> list[GeneratedExpression]:
         parameter_type_combinations = []
         parameter_type_matchers = self.create_parameter_type_matchers(text)
-        expression_template: List[str] = []
+        expression_template: list[str] = []
         pos = 0
 
         while True:
@@ -80,7 +80,7 @@ class CucumberExpressionGenerator:
             .replace(r"/", "\\/")
         )
 
-    def create_parameter_type_matchers(self, text) -> List[ParameterTypeMatcher]:
+    def create_parameter_type_matchers(self, text) -> list[ParameterTypeMatcher]:
         parameter_type_matchers = []
         for parameter_type in self.parameter_type_registry.parameter_types:
             if parameter_type.use_for_snippets:
@@ -92,7 +92,7 @@ class CucumberExpressionGenerator:
     @staticmethod
     def create_parameter_type_matchers_with_type(
         parameter_type, text
-    ) -> List[ParameterTypeMatcher]:
+    ) -> list[ParameterTypeMatcher]:
         return [
             ParameterTypeMatcher(parameter_type, re.compile(f"({regexp})"), text, 0)
             for regexp in parameter_type.regexps

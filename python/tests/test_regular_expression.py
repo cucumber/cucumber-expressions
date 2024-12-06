@@ -75,7 +75,7 @@ class TestRegularExpression:
         assert self._match(r"Across the line\(s\)", "Across the line(s)") == []
 
     def test_exposes_regexp(self):
-        regexp = r"I have (\d+) cukes? in my (\+) now"
+        regexp = "I have (\d+) cukes? in my (\+) now"
         expression = RegularExpression(regexp, ParameterTypeRegistry())
         assert expression.regexp == regexp
 

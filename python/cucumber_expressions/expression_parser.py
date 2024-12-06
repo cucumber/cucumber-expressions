@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Callable, List
+from typing import NamedTuple, Optional, Callable
 
 from cucumber_expressions.ast import Token, TokenType, Node, NodeType
 from cucumber_expressions.errors import (
@@ -18,7 +18,7 @@ class Result(NamedTuple):
 
 class Parser(NamedTuple):
     expression: str
-    tokens: List[Token]
+    tokens: list[Token]
     current: int
 
 
@@ -75,7 +75,7 @@ class CucumberExpressionParser:
 
         # optional := '(' + option* + ')'
         # option := optional | parameter | text
-        optional_sub_parsers = []
+        optional_sub_parsers: list = []
         parse_optional = self.parse_between(
             NodeType.OPTIONAL,
             TokenType.BEGIN_OPTIONAL,
@@ -170,7 +170,7 @@ class CucumberExpressionParser:
         ast_type: NodeType,
         begin_token: TokenType,
         end_token: TokenType,
-        parsers: List,
+        parsers: list,
     ) -> Callable[[Parser], Result | tuple[int, Node]]:
         def _parse_between(parser: Parser):
             if not self.looking_at(parser.tokens, parser.current, begin_token):
@@ -205,7 +205,7 @@ class CucumberExpressionParser:
 
     @staticmethod
     def parse_token(
-        expression, parsers: List, tokens: List[Token], start_at: int
+        expression, parsers: list, tokens: list[Token], start_at: int
     ) -> Result:
         for parser in parsers:
             consumed, ast = parser(Parser(expression, tokens, start_at))
@@ -217,14 +217,14 @@ class CucumberExpressionParser:
     def parse_tokens_until(
         self,
         expression,
-        parsers: List,
-        tokens: List[Token],
+        parsers: list,
+        tokens: list[Token],
         start_at: int,
-        end_tokens: List[TokenType],
-    ) -> tuple[int, List[Node]]:
+        end_tokens: list[TokenType],
+    ) -> tuple[int, list[Node]]:
         current = start_at
         size = len(tokens)
-        ast: List[Node] = []
+        ast: list[Node] = []
         while current < size:
             if self.looking_at_any(tokens, current, end_tokens):
                 break
@@ -238,14 +238,14 @@ class CucumberExpressionParser:
         return current - start_at, ast
 
     def looking_at_any(
-        self, tokens: List[Token], position: int, token_types: List[TokenType]
+        self, tokens: list[Token], position: int, token_types: list[TokenType]
     ) -> bool:
         return any(
             self.looking_at(tokens, position, token_type) for token_type in token_types
         )
 
     @staticmethod
-    def looking_at(tokens: List[Token], position: int, token_type: TokenType) -> bool:
+    def looking_at(tokens: list[Token], position: int, token_type: TokenType) -> bool:
         if position < 0:
             # If configured correctly this will never happen
             # Keep for completeness
@@ -255,8 +255,8 @@ class CucumberExpressionParser:
         return tokens[position].ast_type == token_type
 
     def split_alternatives(
-        self, start: int, end: int, alternation: List[Node]
-    ) -> List[Node]:
+        self, start: int, end: int, alternation: list[Node]
+    ) -> list[Node]:
         separators = []
         alternatives = []
         alternative = []
@@ -272,8 +272,8 @@ class CucumberExpressionParser:
 
     @staticmethod
     def create_alternative_nodes(
-        start: int, end: int, separators: List, alternatives: List
-    ) -> List[Node]:
+        start: int, end: int, separators: list, alternatives: list
+    ) -> list[Node]:
         for index, alternative in enumerate(alternatives):
             if index == 0:
                 right_separator = separators[index]

@@ -1,9 +1,8 @@
 import functools
 import re
 from decimal import Decimal
-from typing import Optional, List
+from typing import Optional, Union
 
-from cucumber_expressions.expression_generator import CucumberExpressionGenerator
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.errors import (
     CucumberExpressionError,
@@ -78,23 +77,23 @@ class ParameterTypeRegistry:
         )
 
     @property
-    def parameter_types(self) -> List:
+    def parameter_types(self) -> list:
         return list(self.parameter_type_by_name.values())
 
     def lookup_by_type_name(self, name: str) -> Optional[ParameterType]:
         return self.parameter_type_by_name.get(name)
 
-    def lookup_by_regexp(
-        self, parameter_type_regexp: str, expression_regexp, text: str
-    ):
-        raw_regex = rf"{parameter_type_regexp}"
-        parameter_types = self.parameter_types_by_regexp.get(raw_regex)
+    def lookup_by_regexp(self, parameter_type_regexp: str, expression_regexp: Union[str, re.Pattern], text: str):
+        """
+        Lookup and match the text using parameter types, then transform the results.
+        Supports both named and unnamed capture groups.
+        """
+        parameter_types = self.parameter_types_by_regexp.get(parameter_type_regexp)
         if not parameter_types:
             return None
         if len(parameter_types) > 1 and not parameter_types[0].prefer_for_regexp_match:
-            generated_expressions = CucumberExpressionGenerator(
-                self
-            ).generate_expressions(text)
+            from cucumber_expressions.expression_generator import CucumberExpressionGenerator
+            generated_expressions = CucumberExpressionGenerator(self).generate_expressions(text)
             raise AmbiguousParameterTypeError(
                 parameter_type_regexp,
                 expression_regexp,

@@ -1,53 +1,35 @@
-from __future__ import annotations
-
-from typing import List
-
 from cucumber_expressions.group import Group
 
 
 class GroupBuilder:
     def __init__(self):
-        self._group_builders: List[GroupBuilder] = []
-        self._capturing = True
-        self._source: str = ""
-        self._end_index = None
-        self._children: List[GroupBuilder] = []
+        self.group_builders: list[GroupBuilder] = []
+        self.capturing: bool = True
+        self.source: str | None = None
+        self.end_index: int | None = None
 
-    def add(self, group_builder: GroupBuilder):
-        self._group_builders.append(group_builder)
+    def add(self, group_builder: "GroupBuilder"):
+        self.group_builders.append(group_builder)
 
-    def build(self, match, group_indices) -> Group:
+    def build(self, match, group_indices, group_name_map: dict) -> Group:
         group_index = next(group_indices)
-        children: List[Group] = [
-            gb.build(match, group_indices) for gb in self._group_builders
+        group_name = group_name_map.get(group_index, None)
+
+        children = [
+            gb.build(match, group_indices, group_name_map) for gb in self.group_builders
         ]
         return Group(
+            name=group_name,
             value=match.group(group_index),
             start=match.regs[group_index][0],
             end=match.regs[group_index][1],
             children=children,
         )
 
-    def move_children_to(self, group_builder: GroupBuilder) -> None:
-        for child in self._group_builders:
+    def move_children_to(self, group_builder: "GroupBuilder") -> None:
+        for child in self.group_builders:
             group_builder.add(child)
 
     @property
-    def capturing(self):
-        return self._capturing
-
-    @capturing.setter
-    def capturing(self, value: bool):
-        self._capturing = value
-
-    @property
-    def children(self) -> list[GroupBuilder]:
-        return self._group_builders
-
-    @property
-    def source(self) -> str:
-        return self._source
-
-    @source.setter
-    def source(self, source: str):
-        self._source = source
+    def children(self) -> list["GroupBuilder"]:
+        return self.group_builders

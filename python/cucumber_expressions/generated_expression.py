@@ -5,14 +5,14 @@ class GeneratedExpression:
         self.usage_by_type_name = {}
 
     @property
-    def source(self):
+    def source(self) -> str:
         return self.expression_template % tuple(p.name for p in self.parameter_types)
 
     @property
-    def parameter_names(self):
+    def parameter_names(self) -> list[str]:
         return [self.get_parameter_name(t.name) for t in self.parameter_types]
 
-    def get_parameter_name(self, type_name):
+    def get_parameter_name(self, type_name: str) -> str:
         count = self.usage_by_type_name.get(type_name) or 0
         count = count + 1
         self.usage_by_type_name[type_name] = count
