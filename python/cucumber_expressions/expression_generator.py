@@ -81,7 +81,7 @@ class CucumberExpressionGenerator:
             .replace(r"/", "\\/")
         )
 
-    def create_parameter_type_matchers(self, text) -> list[ParameterTypeMatcher]:
+    def create_parameter_type_matchers(self, text) -> List[ParameterTypeMatcher]:
         parameter_type_matchers = []
         for parameter_type in self.parameter_type_registry.parameter_types:
             if parameter_type.use_for_snippets:

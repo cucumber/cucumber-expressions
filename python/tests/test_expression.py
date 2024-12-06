@@ -1,6 +1,6 @@
 from decimal import Decimal
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional, Any, Tuple
 
 from tests.definitions import TESTDATA_ROOT_DIR
 
@@ -20,7 +20,7 @@ def match(
     expression: str,
     match_text: str,
     parameter_registry: ParameterTypeRegistry = ParameterTypeRegistry(),
-) -> Optional[tuple[Any, str]]:
+) -> Optional[Tuple[Any, str]]:
     cucumber_expression = CucumberExpression(expression, parameter_registry)
     matches = cucumber_expression.match(match_text)
 

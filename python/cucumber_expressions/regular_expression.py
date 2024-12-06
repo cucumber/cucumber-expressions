@@ -1,6 +1,6 @@
 import re
 from collections.abc import Generator
-from typing import Optional, Union, Tuple
+from typing import Optional, Union, Tuple, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type import ParameterType
@@ -32,7 +32,7 @@ class RegularExpression:
         self.parameter_type_registry = parameter_type_registry
         self.tree_regexp: TreeRegexp = TreeRegexp(self.expression_regexp.pattern)
 
-    def match(self, text) -> Optional[list[Argument]]:
+    def match(self, text) -> Optional[List[Argument]]:
         # Convert the generator to a list before passing it to Argument.build
         parameter_types_and_names = list(
             (parameter_type, capture_name)
