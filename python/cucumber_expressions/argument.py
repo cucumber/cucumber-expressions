@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, List
 
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp, Group
@@ -19,8 +19,8 @@ class Argument:
     def build(
         tree_regexp: TreeRegexp,
         text: str,
-        parameter_types_and_names: list[tuple[ParameterType, Optional[str]]],
-    ) -> Optional[list[Argument]]:
+        parameter_types_and_names: List[tuple[ParameterType, Optional[str]]],
+    ) -> Optional[List[Argument]]:
         # Check if all elements in parameter_types_and_names are tuples
         for item in parameter_types_and_names:
             if not isinstance(item, tuple) or len(item) != 2:

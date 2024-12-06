@@ -1,7 +1,7 @@
 import functools
 import re
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Optional, List, Union
 
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.errors import (
@@ -77,7 +77,7 @@ class ParameterTypeRegistry:
         )
 
     @property
-    def parameter_types(self) -> list:
+    def parameter_types(self) -> List:
         return list(self.parameter_type_by_name.values())
 
     def lookup_by_type_name(self, name: str) -> Optional[ParameterType]:

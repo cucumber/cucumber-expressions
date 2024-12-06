@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
@@ -22,12 +22,12 @@ class CucumberExpression:
     def __init__(self, expression: str, parameter_type_registry: ParameterTypeRegistry):
         self.expression = expression
         self.parameter_type_registry = parameter_type_registry
-        self.parameter_types_and_names: list[tuple[ParameterType, Optional[str]]] = []
+        self.parameter_types_and_names: List[tuple[ParameterType, Optional[str]]] = []
         self.tree_regexp = TreeRegexp(
             self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression))
         )
 
-    def match(self, text: str) -> Optional[list[Argument]]:
+    def match(self, text: str) -> Optional[List[Argument]]:
         return Argument.build(self.tree_regexp, text, self.parameter_types_and_names)
 
     @property
@@ -130,5 +130,5 @@ class CucumberExpression:
         return results[0] if results else None
 
     @staticmethod
-    def get_nodes_with_ast_type(node: Node, ast_type: NodeType) -> list[Node]:
+    def get_nodes_with_ast_type(node: Node, ast_type: NodeType) -> List[Node]:
         return [ast_node for ast_node in node.nodes if ast_node.ast_type == ast_type]

@@ -1,5 +1,6 @@
 import functools
 import re
+from typing import List
 
 from cucumber_expressions.generated_expression import GeneratedExpression
 from cucumber_expressions.parameter_type import ParameterType
@@ -14,10 +15,10 @@ class CucumberExpressionGenerator:
     def __init__(self, parameter_type_registry: ParameterTypeRegistry):
         self.parameter_type_registry = parameter_type_registry
 
-    def generate_expressions(self, text: str) -> list[GeneratedExpression]:
+    def generate_expressions(self, text: str) -> List[GeneratedExpression]:
         parameter_type_combinations = []
         parameter_type_matchers = self.create_parameter_type_matchers(text)
-        expression_template: list[str] = []
+        expression_template: List[str] = []
         pos = 0
 
         while True:
@@ -92,7 +93,7 @@ class CucumberExpressionGenerator:
     @staticmethod
     def create_parameter_type_matchers_with_type(
         parameter_type, text
-    ) -> list[ParameterTypeMatcher]:
+    ) -> List[ParameterTypeMatcher]:
         return [
             ParameterTypeMatcher(parameter_type, re.compile(f"({regexp})"), text, 0)
             for regexp in parameter_type.regexps

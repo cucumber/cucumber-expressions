@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional, Any
+from typing import Optional, List, Any
 
 
 class NodeType(Enum):
@@ -41,18 +41,38 @@ class Node:
     def __init__(
         self,
         ast_type: NodeType,
-        nodes: Optional[list[Node]],
+        nodes: Optional[List[Node]],
         token: Optional[str],
         start: int,
         end: int,
     ):
         if nodes is None and token is None:
             raise Exception("Either nodes or token must be defined")
-        self.ast_type = ast_type
-        self.nodes = nodes
-        self.token = token
-        self.start = start
-        self.end = end
+        self._ast_type = ast_type
+        self._nodes = nodes
+        self._token = token
+        self._start = start
+        self._end = end
+
+    @property
+    def ast_type(self) -> NodeType:
+        return self._ast_type
+
+    @property
+    def nodes(self) -> List[Node]:
+        return self._nodes
+
+    @property
+    def token(self) -> str:
+        return self._token
+
+    @property
+    def start(self) -> int:
+        return self._start
+
+    @property
+    def end(self) -> int:
+        return self._end
 
     @property
     def text(self) -> str:
@@ -71,10 +91,26 @@ class Node:
 
 class Token:
     def __init__(self, ast_type: TokenType, text: str, start: int, end: int):
-        self.ast_type = ast_type
-        self.text = text
-        self.start = start
-        self.end = end
+        self._ast_type = ast_type
+        self._text = text
+        self._start = start
+        self._end = end
+
+    @property
+    def ast_type(self):
+        return self._ast_type
+
+    @property
+    def text(self):
+        return self._text
+
+    @property
+    def start(self):
+        return self._start
+
+    @property
+    def end(self):
+        return self._end
 
     @staticmethod
     def is_escape_character(char: str) -> bool:

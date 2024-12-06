@@ -1,6 +1,6 @@
 import re
 from collections.abc import Generator
-from typing import Optional, Union, AnyStr
+from typing import Optional, Union
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type import ParameterType
@@ -88,5 +88,5 @@ class RegularExpression:
             yield parameter_type, capture_name
 
     @property
-    def regexp(self) -> AnyStr:
+    def regexp(self):
         return self.expression_regexp.pattern

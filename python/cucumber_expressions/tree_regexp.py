@@ -1,5 +1,5 @@
 import re
-from typing import Pattern, Union, Optional
+from typing import Pattern, Union, Optional, List
 
 from cucumber_expressions.ast import EscapeCharacters
 from cucumber_expressions.group import Group
@@ -21,7 +21,7 @@ class TreeRegexp:
 
     def create_group_builder(self, regexp):
         source = regexp.pattern
-        stack: list[GroupBuilder] = [GroupBuilder()]
+        stack: List[GroupBuilder] = [GroupBuilder()]
         group_start_stack = []
         escaping: bool = False
         char_class: bool = False

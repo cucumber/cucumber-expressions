@@ -1,50 +1,15 @@
 from __future__ import annotations
 
 import re
-from typing import Callable, Optional, Pattern, TypeVar, Union
+from typing import Callable, Optional, Pattern, Union, List
 
-from .errors import CucumberExpressionError
+from cucumber_expressions.errors import CucumberExpressionError
 
 ILLEGAL_PARAMETER_NAME_PATTERN = re.compile(r"([\[\]()$.|?*+])")
 
 
-T = TypeVar("T")
-
-
 class ParameterType:
     """Creates a new Parameter Type"""
-
-    def __init__(
-        self,
-        name: str | None,
-        regexp: list[str] | str | list[Pattern] | Pattern,
-        type: T,
-        transformer: Optional[Callable] = None,
-        use_for_snippets: bool = True,
-        prefer_for_regexp_match: bool = False,
-    ):
-        """Creates a new Parameter
-        :param name: name of the parameter type
-        :type name: Optional[str]
-        :param regexp: regexp or list of regexps for capture groups
-        :type regexp: list[str], str, list[Pattern] or Pattern
-        :param type: the return type of the transformed
-        :type type: class
-        :param transformer: transforms a str to (possibly) another type
-        :type transformer: lambda
-        :param use_for_snippets: if this should be used for snippet generation
-        :type use_for_snippets: bool
-        :param prefer_for_regexp_match: if this should be preferred over similar types
-        :type prefer_for_regexp_match: bool
-        """
-        self.name = name
-        if self.name:
-            self._check_parameter_type_name(self.name)
-        self.type = type
-        self.transformer = transformer or (lambda value: type(value))
-        self.use_for_snippets = use_for_snippets
-        self.prefer_for_regexp_match = prefer_for_regexp_match
-        self.regexps = self.to_array(regexp)
 
     def _check_parameter_type_name(self, type_name):
         """Checks if a parameter type name is allowed"""
@@ -77,6 +42,46 @@ class ParameterType:
             return 1
         return 0
 
+    def __init__(
+        self,
+        name: str | None,
+        regexp: Union[List[str], str, List[Pattern], Pattern],
+        type,
+        transformer: Optional[Callable] = None,
+        use_for_snippets: bool = True,
+        prefer_for_regexp_match: bool = False,
+    ):
+        """Creates a new Parameter
+        :param name: name of the parameter type
+        :type name: Optional[str]
+        :param regexp: regexp or list of regexps for capture groups
+        :type regexp: list[str], str, list[Pattern] or Pattern
+        :param type: the return type of the transformed
+        :type type: class
+        :param transformer: transforms a str to (possibly) another type
+        :type transformer: lambda
+        :param use_for_snippets: if this should be used for snippet generation
+        :type use_for_snippets: bool
+        :param prefer_for_regexp_match: if this should be preferred over similar types
+        :type prefer_for_regexp_match: bool
+        """
+        self.name = name
+        if self.name:
+            self._check_parameter_type_name(self.name)
+        self.type = type
+        self.transformer = transformer or (lambda value: type(value))
+        self._use_for_snippets = use_for_snippets
+        self._prefer_for_regexp_match = prefer_for_regexp_match
+        self.regexps = self.to_array(regexp)
+
+    @property
+    def prefer_for_regexp_match(self):
+        return self._prefer_for_regexp_match
+
+    @property
+    def use_for_snippets(self):
+        return self._use_for_snippets
+
     @staticmethod
     def _get_regexp_source(regexp_pattern: Pattern) -> str:
         invalid_flags = [re.I, re.M]
@@ -92,10 +97,10 @@ class ParameterType:
         return regexp_pattern.pattern
 
     def to_array(
-        self, regexps: Union[list[str], str, list[Pattern], Pattern]
-    ) -> list[str]:
+        self, regexps: Union[List[str], str, List[Pattern], Pattern]
+    ) -> List[str]:
         """Make a list of regexps if not already"""
-        array: list = regexps if isinstance(regexps, list) else [regexps]
+        array: List = regexps if isinstance(regexps, list) else [regexps]
         return [
             regexp if isinstance(regexp, str) else self._get_regexp_source(regexp)
             for regexp in array

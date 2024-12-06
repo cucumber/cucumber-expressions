@@ -1,17 +1,38 @@
+from __future__ import annotations
+
+from typing import List, Optional
+
+
 class Group:
     def __init__(
         self,
         value: str,
         start: int,
         end: int,
-        children: list["Group"],
-        name: str | None = None,
+        children: List[Group],
+        name: Optional[str] = None,
     ):
-        self.children = children
+        self._children = children
+        self._value = value
+        self._start = start
+        self._end = end
         self.name = name
-        self.value = value
-        self.start = start
-        self.end = end
+
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def start(self):
+        return self._start
+
+    @property
+    def end(self):
+        return self._end
+
+    @property
+    def children(self):
+        return self._children
 
     @property
     def values(self):
