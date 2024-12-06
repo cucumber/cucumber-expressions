@@ -16,7 +16,9 @@ class RegularExpression:
     dynamically typed languages."""
 
     def __init__(
-        self, expression_regexp: Union[re.Pattern, str], parameter_type_registry: ParameterTypeRegistry
+        self,
+        expression_regexp: Union[re.Pattern, str],
+        parameter_type_registry: ParameterTypeRegistry,
     ):
         """Creates a new instance. Use this when the transform types are not known in advance,
         and should be determined by the regular expression's capture groups. Use this with
@@ -63,13 +65,17 @@ class RegularExpression:
             # No named group, just return the original pattern
             return None, group_source
 
-    def generate_parameter_types(self, text) -> Generator[tuple[ParameterType, Optional[str]]]:
+    def generate_parameter_types(
+        self, text
+    ) -> Generator[tuple[ParameterType, Optional[str]]]:
         for group_builder in self.tree_regexp.group_builder.children:
             # Extract the raw source for the group
             parameter_type_regexp = group_builder.source
 
             # Process the capture group (check if it's named and clean the pattern)
-            capture_name, cleaned_pattern = self._process_capture_group(parameter_type_regexp)
+            capture_name, cleaned_pattern = self._process_capture_group(
+                parameter_type_regexp
+            )
 
             # Lookup the parameter type using the stripped capture group
             possible_regexp = self.parameter_type_registry.lookup_by_regexp(

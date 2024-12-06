@@ -9,7 +9,9 @@ INVALID_CURLY_PATTERN = re.compile(r"^\d+(?:,\d+)?$")
 
 
 class ExpressionFactory:
-    def __init__(self, parameter_type_registry: ParameterTypeRegistry = ParameterTypeRegistry()):
+    def __init__(
+        self, parameter_type_registry: ParameterTypeRegistry = ParameterTypeRegistry()
+    ):
         self.parameter_type_registry = parameter_type_registry
 
     @staticmethod
@@ -30,7 +32,6 @@ class ExpressionFactory:
             if INVALID_CURLY_PATTERN.match(text):
                 return False  # Found a form of curly bracket
         return True  # All curly brackets are valid
-
 
     def create_expression(self, expression_string: str):
         if self.is_cucumber_expression(expression_string):

@@ -11,7 +11,8 @@ from cucumber_expressions.errors import (
     OptionalIsNotAllowedInOptional,
     OptionalMayNotBeEmpty,
     AlternativeMayNotBeEmpty,
-    AlternativeMayNotExclusivelyContainOptionals, UndefinedParameterTypeError,
+    AlternativeMayNotExclusivelyContainOptionals,
+    UndefinedParameterTypeError,
 )
 
 ESCAPE_PATTERN = rb"([\\^\[({$.|?*+})\]])"
@@ -59,9 +60,13 @@ class CucumberExpression:
 
     def rewrite_optional(self, node: Node) -> str:
         if self.get_possible_node_with_parameters(node):
-            raise ParameterIsNotAllowedInOptional(self.get_possible_node_with_parameters(node), self.expression)
+            raise ParameterIsNotAllowedInOptional(
+                self.get_possible_node_with_parameters(node), self.expression
+            )
         if self.get_possible_node_with_optionals(node):
-            raise OptionalIsNotAllowedInOptional(self.get_possible_node_with_optionals(node), self.expression)
+            raise OptionalIsNotAllowedInOptional(
+                self.get_possible_node_with_optionals(node), self.expression
+            )
         if self.are_nodes_empty(node):
             raise OptionalMayNotBeEmpty(node, self.expression)
         regex = "".join([self.rewrite_to_regex(_node) for _node in node.nodes])
@@ -95,11 +100,15 @@ class CucumberExpression:
             return rf"({regexps[0]})"
         return rf"((?:{')|(?:'.join(regexps)}))"
 
-    def parse_parameter_name(self, name: str) -> tuple[Optional[str], Optional[ParameterType]]:
+    def parse_parameter_name(
+        self, name: str
+    ) -> tuple[Optional[str], Optional[ParameterType]]:
         """Helper function to parse the parameter name and return group_name and parameter_type."""
         if ":" in name:
             group_name, parameter_type_name = name.split(":")
-            parameter_type = self.parameter_type_registry.lookup_by_type_name(parameter_type_name)
+            parameter_type = self.parameter_type_registry.lookup_by_type_name(
+                parameter_type_name
+            )
         else:
             group_name = None
             parameter_type = self.parameter_type_registry.lookup_by_type_name(name)

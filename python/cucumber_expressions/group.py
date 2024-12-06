@@ -1,5 +1,12 @@
 class Group:
-    def __init__(self, value: str, start: int, end: int, children: list["Group"], name: str | None = None):
+    def __init__(
+        self,
+        value: str,
+        start: int,
+        end: int,
+        children: list["Group"],
+        name: str | None = None,
+    ):
         self.children = children
         self.name = name
         self.value = value

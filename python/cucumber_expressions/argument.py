@@ -8,14 +8,18 @@ from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Argument:
-    def __init__(self, group: Group, parameter_type: ParameterType, name: Optional[str]):
+    def __init__(
+        self, group: Group, parameter_type: ParameterType, name: Optional[str]
+    ):
         self.group = group
         self.parameter_type = parameter_type
         self.name = name
 
     @staticmethod
     def build(
-        tree_regexp: TreeRegexp, text: str, parameter_types_and_names: list[tuple[ParameterType, Optional[str]]]
+        tree_regexp: TreeRegexp,
+        text: str,
+        parameter_types_and_names: list[tuple[ParameterType, Optional[str]]],
     ) -> Optional[list[Argument]]:
         # Check if all elements in parameter_types_and_names are tuples
         for item in parameter_types_and_names:
@@ -31,13 +35,16 @@ class Argument:
         arg_groups = match_group.children
 
         if len(arg_groups) != len(parameter_types_and_names):
+            param_count = len(parameter_types_and_names)
             raise CucumberExpressionError(
-                f"Group has {len(arg_groups)} capture groups, but there were {len(parameter_types_and_names)} parameter types/names"
+                f"Group has {len(arg_groups)} capture groups, but there were {param_count} parameter types/names"
             )
 
         return [
             Argument(arg_group, parameter_type, parameter_name)
-            for (parameter_type, parameter_name), arg_group in zip(parameter_types_and_names, arg_groups)
+            for (parameter_type, parameter_name), arg_group in zip(
+                parameter_types_and_names, arg_groups
+            )
         ]
 
     @property

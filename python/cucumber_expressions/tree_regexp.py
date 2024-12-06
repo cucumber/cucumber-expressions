@@ -49,7 +49,7 @@ class TreeRegexp:
                 group_start = group_start_stack.pop()
                 group_start = group_start or 0
                 if group_builder.capturing:
-                    group_builder.source = source[(group_start + 1): index]
+                    group_builder.source = source[(group_start + 1) : index]
                     stack[-1].add(group_builder)
                 else:
                     group_builder.move_children_to(stack[-1])
@@ -61,7 +61,7 @@ class TreeRegexp:
         """
         Check if the group at the given index is a named capturing group, e.g. (?P<name>...).
         """
-        return source[index + 1: index + 3] == "P<" and source[index + 3] != "?"
+        return source[index + 1 : index + 3] == "P<" and source[index + 3] != "?"
 
     @staticmethod
     def extract_named_group_name(source: str, index: int) -> str:

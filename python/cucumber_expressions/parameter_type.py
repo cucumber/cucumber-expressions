@@ -8,11 +8,12 @@ from .errors import CucumberExpressionError
 ILLEGAL_PARAMETER_NAME_PATTERN = re.compile(r"([\[\]()$.|?*+])")
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class ParameterType:
     """Creates a new Parameter Type"""
+
     def __init__(
         self,
         name: str | None,
@@ -90,7 +91,9 @@ class ParameterType:
                 )
         return regexp_pattern.pattern
 
-    def to_array(self, regexps: Union[list[str], str, list[Pattern], Pattern]) -> list[str]:
+    def to_array(
+        self, regexps: Union[list[str], str, list[Pattern], Pattern]
+    ) -> list[str]:
         """Make a list of regexps if not already"""
         array: list = regexps if isinstance(regexps, list) else [regexps]
         return [

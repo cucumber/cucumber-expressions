@@ -33,6 +33,7 @@ def match(
 
     return matches and [(transform_value(arg.value), arg.name) for arg in matches]
 
+
 class TestCucumberExpression:
     @pytest.mark.parametrize("load_test_yamls", get_expectation_yamls(), indirect=True)
     def test_cucumber_expression_matches(self, load_test_yamls: dict):
@@ -115,5 +116,11 @@ class TestCucumberExpression:
             )
         )
 
-        assert match("{textAndOrNumber}", "TLA", parameter_type_registry)[0] == (["TLA", None], None)
-        assert match("{textAndOrNumber}", "123", parameter_type_registry)[0] == ([None, "123"], None)
+        assert match("{textAndOrNumber}", "TLA", parameter_type_registry)[0] == (
+            ["TLA", None],
+            None,
+        )
+        assert match("{textAndOrNumber}", "123", parameter_type_registry)[0] == (
+            [None, "123"],
+            None,
+        )
