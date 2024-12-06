@@ -1,6 +1,6 @@
 import re
 from collections.abc import Generator
-from typing import Optional, Union
+from typing import Optional, Union, Tuple
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type import ParameterType
@@ -67,7 +67,7 @@ class RegularExpression:
 
     def generate_parameter_types(
         self, text
-    ) -> Generator[tuple[ParameterType, Optional[str]]]:
+    ) -> Generator[Tuple[ParameterType, Optional[str]]]:
         for group_builder in self.tree_regexp.group_builder.children:
             # Extract the raw source for the group
             parameter_type_regexp = group_builder.source

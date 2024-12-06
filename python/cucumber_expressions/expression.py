@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
@@ -22,7 +22,7 @@ class CucumberExpression:
     def __init__(self, expression: str, parameter_type_registry: ParameterTypeRegistry):
         self.expression = expression
         self.parameter_type_registry = parameter_type_registry
-        self.parameter_types_and_names: List[tuple[ParameterType, Optional[str]]] = []
+        self.parameter_types_and_names: List[Tuple[ParameterType, Optional[str]]] = []
         self.tree_regexp = TreeRegexp(
             self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression))
         )
@@ -102,7 +102,7 @@ class CucumberExpression:
 
     def parse_parameter_name(
         self, name: str
-    ) -> tuple[Optional[str], Optional[ParameterType]]:
+    ) -> Tuple[Optional[str], Optional[ParameterType]]:
         """Helper function to parse the parameter name and return group_name and parameter_type."""
         if ":" in name:
             group_name, parameter_type_name = name.split(":")
