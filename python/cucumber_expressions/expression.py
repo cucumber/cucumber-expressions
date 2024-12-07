@@ -105,7 +105,7 @@ class CucumberExpression:
     ) -> Tuple[Optional[str], Optional[ParameterType]]:
         """Helper function to parse the parameter name and return group_name and parameter_type."""
         if ":" in name:
-            group_name, parameter_type_name = name.split(":")
+            group_name, parameter_type_name = [part.strip() for part in name.split(":")]
             parameter_type = self.parameter_type_registry.lookup_by_type_name(
                 parameter_type_name
             )

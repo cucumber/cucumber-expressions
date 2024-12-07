@@ -55,6 +55,14 @@ class TestCucumberExpression:
         values = match("I have {cuke_count:int} cuke(s)", "I have 7 cukes")
         assert values[0] == (7, "cuke_count")
 
+    def test_documents_match_arguments_with_names_and_spaces(self):
+        values = match(
+            "I have {  cuke_count : int  } cuke(s) and {gherkin_count: int} gherkin(s)",
+            "I have 7 cukes and 4 gherkins",
+        )
+        assert values[0] == (7, "cuke_count")
+        assert values[1] == (4, "gherkin_count")
+
     def test_matches_float(self):
         assert match("{float}", "") is None
         assert match("{float}", ".") is None
