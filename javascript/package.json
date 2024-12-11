@@ -46,8 +46,8 @@
   },
   "homepage": "https://github.com/cucumber/cucumber-expressions#readme",
   "devDependencies": {
-    "@stryker-mutator/core": "8.7.0",
-    "@stryker-mutator/mocha-runner": "8.7.0",
+    "@stryker-mutator/core": "8.7.1",
+    "@stryker-mutator/mocha-runner": "8.7.1",
     "@types/glob": "8.1.0",
     "@types/js-yaml": "4.0.9",
     "@types/mocha": "10.0.10",
