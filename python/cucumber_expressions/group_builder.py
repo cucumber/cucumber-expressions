@@ -16,12 +16,16 @@ class GroupBuilder:
     def add(self, group_builder: GroupBuilder):
         self._group_builders.append(group_builder)
 
-    def build(self, match, group_indices) -> Group:
+    def build(self, match, group_indices, group_name_map: dict) -> Group:
         group_index = next(group_indices)
-        children: List[Group] = [
-            gb.build(match, group_indices) for gb in self._group_builders
+        group_name = group_name_map.get(group_index, None)
+
+        children = [
+            gb.build(match, group_indices, group_name_map)
+            for gb in self._group_builders
         ]
         return Group(
+            name=group_name,
             value=match.group(group_index),
             start=match.regs[group_index][0],
             end=match.regs[group_index][1],
