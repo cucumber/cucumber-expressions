@@ -17,6 +17,8 @@ storybook-static
 *-go
 *.iml
 .vscode-test
+# Root README copied on build
+README.md
 
 # stryker temp files
 .stryker-tmp
