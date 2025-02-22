@@ -12,7 +12,7 @@ export default class CucumberExpressionGenerator {
     let expressionTemplate = ''
     let pos = 0
     let counter = 0
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
       let matchingParameterTypeMatchers = []
 

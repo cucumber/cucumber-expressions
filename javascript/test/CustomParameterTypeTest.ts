@@ -111,7 +111,7 @@ describe('Custom parameter type', () => {
         'I have a {throwing} parameter',
         parameterTypeRegistry
       )
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       const args = expression.match('I have a bad parameter')!
       assert.throws(() => args[0].getValue(null), {
         message: "Can't transform [bad]",
