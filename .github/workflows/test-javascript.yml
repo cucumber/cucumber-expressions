@@ -36,5 +36,5 @@ jobs:
         cache-dependency-path: javascript/package-lock.json
     - run: npm install-test
       working-directory: javascript
-    - run: npm run eslint
+    - run: npm run lint
       working-directory: javascript
