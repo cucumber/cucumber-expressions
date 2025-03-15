@@ -58,13 +58,25 @@ class TestTreeRegexp:
         tree_regexp = TreeRegexp("a(?=(?P<tmp>b))(?P=tmp)c")
         group = tree_regexp.match("abc")
         assert "abc" == group.value
-        assert 0 == len(group.children)
+        assert 1 == len(group.children)
 
     def test_matches_named_capturing_group(self):
         tree_regexp = TreeRegexp("a(?P<name>b)c$")
         group = tree_regexp.match("abc")
         assert "abc" == group.value
-        assert 0 == len(group.children)
+        assert 1 == len(group.children)
+
+    def test_matches_named_capturing_group_returns_name(self):
+        tree_regexp = TreeRegexp(r"(a)(?P<name>b)(c)(?P<other>d)")
+        group = tree_regexp.match("abcd")
+        assert "abcd" == group.value
+        assert len(group.children) == 4
+        assert group.children[0].value == "a"
+        assert group.children[1].value == "b"
+        assert group.children[1].name == "name"
+        assert group.children[2].value == "c"
+        assert group.children[3].value == "d"
+        assert group.children[3].name == "other"
 
     def test_matches_optional_group(self):
         tree_regexp = TreeRegexp("^Something( with an optional argument)?")
