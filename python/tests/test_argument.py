@@ -10,6 +10,6 @@ class TestArgument:
         arguments = Argument.build(
             tree_regexp,
             "three blind mice",
-            [parameter_type_registry.lookup_by_type_name("string")],
+            [(parameter_type_registry.lookup_by_type_name("string"), None)],
         )
         assert arguments[0].parameter_type.name == "string"
