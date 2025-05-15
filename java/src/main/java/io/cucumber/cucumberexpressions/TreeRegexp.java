@@ -91,7 +91,7 @@ final class TreeRegexp {
         return groupBuilder.build(matcher, IntStream.rangeClosed(0, matcher.groupCount()).iterator());
     }
 
-    public GroupBuilder getGroupBuilder() {
+    GroupBuilder getGroupBuilder() {
         return groupBuilder;
     }
 

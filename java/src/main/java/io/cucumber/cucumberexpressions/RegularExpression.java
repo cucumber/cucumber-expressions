@@ -48,7 +48,7 @@ public final class RegularExpression implements Expression {
 
             // When there is a conflict between the type hint from the regular expression and the method
             // prefer the parameter type associated with the regular expression. This ensures we will
-            // use the internal/user registered parameter transformer rather then the default.
+            // use the internal/user registered parameter transformer rather than the default.
             //
             // Unless the parameter type indicates it is the stronger type hint.
             if (parameterType != null && hasTypeHint && !parameterType.useRegexpMatchAsStrongTypeHint()) {

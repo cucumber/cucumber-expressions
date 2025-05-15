@@ -28,7 +28,10 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
-final class CucumberExpressionParser {
+/**
+ * A parser for Cucumber expressions
+ */
+public final class CucumberExpressionParser {
 
     /*
      * text := whitespace | ')' | '}' | .
@@ -160,7 +163,13 @@ final class CucumberExpressionParser {
             )
     );
 
-    Node parse(String expression) {
+    /**
+     * Parses as Cucumber expression into an AST of {@link Node nodes}. 
+     * @param expression the expression to parse
+     * @return an AST of nodes
+     * @throws CucumberExpressionException if the expression could not be parsed
+     */
+    public Node parse(String expression) {
         CucumberExpressionTokenizer tokenizer = new CucumberExpressionTokenizer();
         List<Token> tokens = tokenizer.tokenize(expression);
         Result result = cucumberExpressionParser.parse(expression, tokens, 0);
