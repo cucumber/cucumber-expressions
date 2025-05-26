@@ -23,14 +23,14 @@ Gem::Specification.new do |s|
     'source_code_uri' => 'https://github.com/cucumber/cucumber-expressions/tree/main/ruby',
   }
 
-  s.add_runtime_dependency 'bigdecimal'
+  s.add_dependency 'bigdecimal'
 
   s.add_development_dependency 'rake', '~> 13.1'
   s.add_development_dependency 'rspec', '~> 3.13'
-  s.add_development_dependency 'rubocop', '~> 1.27.0'
-  s.add_development_dependency 'rubocop-performance', '~> 1.7.0'
-  s.add_development_dependency 'rubocop-rake', '~> 0.5.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 2.0.0'
+  s.add_development_dependency 'rubocop', '~> 1.75.7'
+  s.add_development_dependency 'rubocop-performance', '~> 1.25.0'
+  s.add_development_dependency 'rubocop-rake', '~> 0.7.1'
+  s.add_development_dependency 'rubocop-rspec', '~> 3.6.0'
 
   s.files            = Dir['lib/**/*', 'CHANGELOG.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md']
   s.rdoc_options     = ['--charset=UTF-8']
