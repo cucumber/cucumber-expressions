@@ -33,8 +33,7 @@ module Cucumber
       def value(self_obj = :nil)
         raise 'No self_obj' if self_obj == :nil
 
-        group_values = @group&.values
-        @parameter_type.transform(self_obj, group_values)
+        @parameter_type.transform(self_obj, @group&.values)
       end
     end
   end
