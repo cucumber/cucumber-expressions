@@ -63,7 +63,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^17.15.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "glob": "11.0.2",
+    "glob": "11.0.3",
     "globals": "^16.0.0",
     "js-yaml": "4.1.0",
     "mocha": "11.6.0",
