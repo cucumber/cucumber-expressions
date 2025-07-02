@@ -51,7 +51,7 @@
     "@eslint/js": "^9.21.0",
     "@stryker-mutator/core": "9.0.1",
     "@stryker-mutator/mocha-runner": "9.0.1",
-    "@types/glob": "8.1.0",
+    "@types/glob": "9.0.0",
     "@types/js-yaml": "4.0.9",
     "@types/mocha": "10.0.10",
     "@types/node": "22.16.0",
