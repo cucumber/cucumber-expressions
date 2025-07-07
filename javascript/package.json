@@ -55,8 +55,8 @@
     "@types/js-yaml": "4.0.9",
     "@types/mocha": "10.0.10",
     "@types/node": "22.16.0",
-    "@typescript-eslint/eslint-plugin": "^8.24.1",
-    "@typescript-eslint/parser": "^8.24.1",
+    "@typescript-eslint/eslint-plugin": "^8.35.1 ",
+    "@typescript-eslint/parser": "^8.35.1",
     "cross-env": "7.0.3",
     "esbuild": "0.25.5",
     "eslint": "^9.21.0",
@@ -70,7 +70,7 @@
     "prettier": "^3.5.2",
     "pretty-quick": "4.2.2",
     "ts-node": "10.9.2",
-    "typescript": "5.7.3"
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "regexp-match-indices": "1.0.2"
