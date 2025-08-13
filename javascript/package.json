@@ -58,7 +58,7 @@
     "@typescript-eslint/eslint-plugin": "^8.35.1 ",
     "@typescript-eslint/parser": "^8.35.1",
     "cross-env": "10.0.0",
-    "esbuild": "0.25.8",
+    "esbuild": "0.25.9",
     "eslint": "^9.21.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^17.15.1",
