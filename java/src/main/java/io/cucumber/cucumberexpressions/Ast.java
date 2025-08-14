@@ -4,18 +4,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
 
-final class Ast {
+public final class Ast {
 
-    private static final char escapeCharacter = '\\';
-    private static final char alternationCharacter = '/';
-    private static final char beginParameterCharacter = '{';
-    private static final char endParameterCharacter = '}';
-    private static final char beginOptionalCharacter = '(';
-    private static final char endOptionalCharacter = ')';
+    public static final char escapeCharacter = '\\';
+    public static final char alternationCharacter = '/';
+    public static final char beginParameterCharacter = '{';
+    public static final char endParameterCharacter = '}';
+    public static final char beginOptionalCharacter = '(';
+    public static final char endOptionalCharacter = ')';
 
     interface Located {
         int start();
@@ -24,7 +23,7 @@ final class Ast {
 
     }
 
-    static final class Node implements Located {
+    public static final class Node implements Located {
 
         private final Type type;
         private final List<Node> nodes;
@@ -33,11 +32,11 @@ final class Ast {
         private final int end;
 
         Node(Type type, int start, int end, String token) {
-            this(type, start, end, null, token);
+            this(type, start, end, null, requireNonNull(token));
         }
 
         Node(Type type, int start, int end, List<Node> nodes) {
-            this(type, start, end, nodes, null);
+            this(type, start, end, requireNonNull(nodes), null);
         }
 
         private Node(Type type, int start, int end, List<Node> nodes, String token) {
@@ -48,7 +47,7 @@ final class Ast {
             this.end = end;
         }
 
-        enum Type {
+        public enum Type {
             TEXT_NODE,
             OPTIONAL_NODE,
             ALTERNATION_NODE,
@@ -65,12 +64,22 @@ final class Ast {
             return end;
         }
 
-        List<Node> nodes() {
+        /**
+         * @return child nodes, {@code null} if a leaf-node
+         */
+        public List<Node> nodes() {
             return nodes;
         }
 
-        Type type() {
+        public Type type() {
             return type;
+        }
+
+        /**
+         * @return the text contained with in this node, {@code null} if not a leaf-node
+         */
+        public String token() {
+            return token;
         }
 
         String text() {
@@ -106,13 +115,13 @@ final class Ast {
             if (nodes != null) {
                 sb.append(", \"nodes\": ");
                 if (!nodes.isEmpty()) {
-                StringBuilder padding = new StringBuilder();
-                for (int i = 0; i < depth; i++) {
-                    padding.append("  ");
-                }
-                sb.append(nodes.stream()
-                        .map(node -> node.toString(depth + 1))
-                        .collect(joining(",\n", "[\n", "\n" +padding + "]")));
+                    StringBuilder padding = new StringBuilder();
+                    for (int i = 0; i < depth; i++) {
+                        padding.append("  ");
+                    }
+                    sb.append(nodes.stream()
+                            .map(node -> node.toString(depth + 1))
+                            .collect(joining(",\n", "[\n", "\n" + padding + "]")));
 
                 } else {
                     sb.append("[]");
@@ -224,10 +233,10 @@ final class Ast {
 
         @Override
         public String toString() {
-            return new StringJoiner(", ", "" + "{", "}")
+            return new StringJoiner(", ", "{", "}")
                     .add("\"type\": \"" + type + "\"")
-                    .add("\"start\": " + start + "")
-                    .add("\"end\": " + end + "")
+                    .add("\"start\": " + start)
+                    .add("\"end\": " + end)
                     .add("\"text\": \"" + text + "\"")
                     .toString();
         }
