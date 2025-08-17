@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,7 +39,10 @@ class CucumberExpressionTest {
 
     private static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
+        Path path = Paths.get("..", "testdata", "cucumber-expression", "matching");
+        try (DirectoryStream<Path> directories = newDirectoryStream(path)){
+            directories.forEach(paths::add);
+        }
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
