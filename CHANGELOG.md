@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- [Ruby] Updated rubocop and rubocop gems (RSpec/Rake/Performance), also autofixed some styles affected by the updated rules ([#342](https://github.com/cucumber/cucumber-expressions/pull/342))
 
 ## [18.0.1] - 2024-10-28
 ### Fixed

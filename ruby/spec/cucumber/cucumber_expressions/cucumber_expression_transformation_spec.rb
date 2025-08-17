@@ -19,7 +19,7 @@ module Cucumber
           else
             cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
             matches = cucumber_expression.match(expectation['text'])
-            values = matches.nil? ? nil : matches.map { |arg| arg.value(nil) }
+            values = matches&.map { |arg| arg.value(nil) }
             expect(values).to eq(expectation['expected_args'])
           end
         end
