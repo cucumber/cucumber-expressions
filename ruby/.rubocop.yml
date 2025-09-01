@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-performance
   - rubocop-rake
   - rubocop-rspec
@@ -10,7 +10,7 @@ inherit_mode:
     - Exclude
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.7
   NewCops: enable
 
 # Disabled on our repo's to enable polyglot-release
@@ -27,6 +27,9 @@ Lint/MixedRegexpCaptureTypes:
     - 'spec/cucumber/cucumber_expressions/tree_regexp_spec.rb'
 
 Style/Documentation:
+  Enabled: false
+
+Gemspec/DevelopmentDependencies:
   Enabled: false
 
 Style/RegexpLiteral:

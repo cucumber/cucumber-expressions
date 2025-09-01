@@ -128,7 +128,7 @@ module Cucumber
         tr = described_class.new(/the stdout(?: from "(.*?)")?/)
         group = tr.match('the stdout')
         expect(group.value).to eq('the stdout')
-        expect(group.children[0].value).to eq(nil)
+        expect(group.children[0].value).to be_nil
         expect(group.children.length).to eq(1)
       end
 

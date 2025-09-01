@@ -20,7 +20,7 @@ module Cucumber
           else
             cucumber_expression = described_class.new(expectation['expression'], parameter_registry)
             matches = cucumber_expression.match(expectation['text'])
-            values = matches.nil? ? nil : matches.map do |arg|
+            values = matches&.map do |arg|
               value = arg.value(nil)
               case value
               when BigDecimal
@@ -51,24 +51,24 @@ module Cucumber
       end
 
       it 'matches float' do
-        expect(match('{float}', '')).to eq(nil)
-        expect(match('{float}', '.')).to eq(nil)
-        expect(match('{float}', ',')).to eq(nil)
-        expect(match('{float}', '-')).to eq(nil)
-        expect(match('{float}', 'E')).to eq(nil)
-        expect(match('{float}', '1,')).to eq(nil)
-        expect(match('{float}', ',1')).to eq(nil)
-        expect(match('{float}', '1.')).to eq(nil)
+        expect(match('{float}', '')).to be_nil
+        expect(match('{float}', '.')).to be_nil
+        expect(match('{float}', ',')).to be_nil
+        expect(match('{float}', '-')).to be_nil
+        expect(match('{float}', 'E')).to be_nil
+        expect(match('{float}', '1,')).to be_nil
+        expect(match('{float}', ',1')).to be_nil
+        expect(match('{float}', '1.')).to be_nil
 
         expect(match('{float}', '1')).to eq([1])
         expect(match('{float}', '-1')).to eq([-1])
         expect(match('{float}', '1.1')).to eq([1.1])
-        expect(match('{float}', '1,000')).to eq(nil)
-        expect(match('{float}', '1,000,0')).to eq(nil)
-        expect(match('{float}', '1,000.1')).to eq(nil)
-        expect(match('{float}', '1,000,10')).to eq(nil)
-        expect(match('{float}', '1,0.1')).to eq(nil)
-        expect(match('{float}', '1,000,000.1')).to eq(nil)
+        expect(match('{float}', '1,000')).to be_nil
+        expect(match('{float}', '1,000,0')).to be_nil
+        expect(match('{float}', '1,000.1')).to be_nil
+        expect(match('{float}', '1,000,10')).to be_nil
+        expect(match('{float}', '1,0.1')).to be_nil
+        expect(match('{float}', '1,000,000.1')).to be_nil
         expect(match('{float}', '-1.1')).to eq([-1.1])
 
         expect(match('{float}', '.1')).to eq([0.1])
@@ -76,7 +76,7 @@ module Cucumber
         expect(match('{float}', '-.1000001')).to eq([-0.1000001])
         expect(match('{float}', '1E1')).to eq([10.0])
         expect(match('{float}', '.1E1')).to eq([1])
-        expect(match('{float}', 'E1')).to eq(nil)
+        expect(match('{float}', 'E1')).to be_nil
         expect(match('{float}', '-.1E-1')).to eq([-0.01])
         expect(match('{float}', '-.1E-2')).to eq([-0.001])
         expect(match('{float}', '-.1E+1')).to eq([-1])
