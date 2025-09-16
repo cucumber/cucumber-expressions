@@ -58,7 +58,3 @@ combine_as_imports = true
 lines_between_types = 1
 lines_after_imports = 2
 src_paths = ["cucumber_expressions", "tests"]
-
-
-[tool.black]
-target-version = ['py38']

@@ -23,7 +23,6 @@ class Parser(NamedTuple):
 
 
 class CucumberExpressionParser:
-
     # text == whitespace | ')' | '}' | .
     @staticmethod
     def parse_text(parser: Parser):

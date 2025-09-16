@@ -1,10 +1,6 @@
 repos:
--   repo: https://github.com/psf/black
-    rev: 22.3.0
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.0
     hooks:
-    -   id: black
--   repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
-    hooks:
-    -   id: flake8
-        args: ['--max-line-length=130','--ignore=E203,W503']
+      - id: ruff-check
+      - id: ruff-format
