@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Callable, List
+from typing import Callable, List, NamedTuple, Optional
 
-from cucumber_expressions.ast import Token, TokenType, Node, NodeType
+from cucumber_expressions.ast import Node, NodeType, Token, TokenType
 from cucumber_expressions.errors import (
     AlternationNotAllowedInOptional,
     InvalidParameterTypeNameInNode,
@@ -23,7 +23,6 @@ class Parser(NamedTuple):
 
 
 class CucumberExpressionParser:
-
     # text == whitespace | ')' | '}' | .
     @staticmethod
     def parse_text(parser: Parser):
