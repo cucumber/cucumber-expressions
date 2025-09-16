@@ -1,10 +1,10 @@
 import pytest
 
+from cucumber_expressions.errors import CucumberExpressionError
 from cucumber_expressions.expression import CucumberExpression
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 from cucumber_expressions.regular_expression import RegularExpression
-from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Color:

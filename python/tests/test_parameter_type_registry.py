@@ -1,11 +1,11 @@
 import pytest
 
+from cucumber_expressions.errors import (
+    AmbiguousParameterTypeError,
+    CucumberExpressionError,
+)
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
-from cucumber_expressions.errors import (
-    CucumberExpressionError,
-    AmbiguousParameterTypeError,
-)
 
 CAPITALISED_WORD = r"[A-Z]+\w+"
 

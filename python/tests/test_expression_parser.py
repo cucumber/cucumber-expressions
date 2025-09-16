@@ -1,12 +1,11 @@
 from pathlib import Path
 
-from tests.definitions import TESTDATA_ROOT_DIR
-
 import pytest
 
 from cucumber_expressions.expression_parser import (
     CucumberExpressionParser,
 )
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

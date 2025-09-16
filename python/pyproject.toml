@@ -50,11 +50,7 @@ PyYAML = "^6.0"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-py_version = 38
-profile = "black"
-force_single_line = true
-combine_as_imports = true
-lines_between_types = 1
-lines_after_imports = 2
-src_paths = ["cucumber_expressions", "tests"]
+[tool.ruff.lint]
+extend-select = [
+  "I",
+]
