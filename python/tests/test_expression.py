@@ -1,13 +1,12 @@
 from decimal import Decimal
 from pathlib import Path
 
-from tests.definitions import TESTDATA_ROOT_DIR
-
 import pytest
 
 from cucumber_expressions.expression import CucumberExpression
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

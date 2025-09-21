@@ -1,9 +1,9 @@
 from typing import List
 
-from cucumber_expressions.ast import TokenType, Token
+from cucumber_expressions.ast import Token, TokenType
 from cucumber_expressions.errors import (
-    TheEndOfLineCannotBeEscaped,
     CantEscape,
+    TheEndOfLineCannotBeEscaped,
 )
 
 

@@ -1,5 +1,5 @@
 import re
-from typing import Optional, List
+from typing import List, Optional
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type import ParameterType

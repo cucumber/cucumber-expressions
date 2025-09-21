@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import List, Optional
 
+from cucumber_expressions.errors import CucumberExpressionError
 from cucumber_expressions.group import Group
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp
-from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Argument:
