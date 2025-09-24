@@ -38,7 +38,7 @@ module Cucumber
           return true
         end
 
-        if source[i + 3] == '=' || source[i + 3] == '!'
+        if ['=', '!'].include?(source[i + 3])
           # (?<=X)
           # (?<!X)
           return true
