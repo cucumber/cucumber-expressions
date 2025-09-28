@@ -4,6 +4,9 @@ version = "18.0.1"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
 authors = ["Jason Allen <jsa34@noreply.github.com>"]
 license = "MIT"
+license_files = [
+    "LICENSE"
+]
 
 readme = "README.md"
 
@@ -35,7 +38,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Testing",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
 ]
 
 [tool.poetry.dependencies]
