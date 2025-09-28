@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))
 
 ## [18.0.1] - 2024-10-28
 ### Fixed

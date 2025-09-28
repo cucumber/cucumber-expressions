@@ -1,25 +1,16 @@
-[tool.poetry]
+[project]
 name = "cucumber-expressions"
 version = "18.0.1"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
-authors = ["Jason Allen <jsa34@noreply.github.com>"]
-license = "MIT"
-
 readme = "README.md"
-
-packages = [
-    { include = "cucumber_expressions"}
+authors = [
+    {name = "Jason Allen", email = "jsa34@noreply.github.com"},
 ]
-include = [
-    { path = "tests", format = "sdist" }
+keywords = ["cucumber", "BDD", "testing", "expressions"]
+license = "MIT"
+license-files = [
+    "LICENSE"
 ]
-
-homepage = "https://github.com/cucumber/cucumber-expressions"
-repository = "https://github.com/cucumber/cucumber-expressions"
-documentation = "https://github.com/cucumber/cucumber-expressions"
-
-keywords = ["BDD", "testing", "cucumber", "expressions"]
-
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
@@ -35,7 +26,22 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Testing",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: MIT License",  # for compatibility with tooling such as pip-licenses",
+]
+
+[project.urls]
+Homepage = "https://github.com/cucumber/cucumber-expressions"
+Repository = "https://github.com/cucumber/cucumber-expressions.git"
+Download = "https://pypi.python.org/pypi/cucumber-expressions"
+Issues = "https://github.com/cucumber/cucumber-expressions/issues"
+Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
+
+[tool.poetry]
+packages = [
+    { include = "cucumber_expressions"}
+]
+include = [
+    { path = "tests", format = "sdist" }
 ]
 
 [tool.poetry.dependencies]
@@ -47,7 +53,7 @@ pytest = "^8.0.0"
 PyYAML = "^6.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
