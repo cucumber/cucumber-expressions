@@ -1,18 +1,18 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
+from cucumber_expressions.errors import (
+    AlternativeMayNotBeEmpty,
+    AlternativeMayNotExclusivelyContainOptionals,
+    OptionalIsNotAllowedInOptional,
+    OptionalMayNotBeEmpty,
+    ParameterIsNotAllowedInOptional,
+    UndefinedParameterTypeError,
+)
 from cucumber_expressions.expression_parser import CucumberExpressionParser
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp
-from cucumber_expressions.errors import (
-    UndefinedParameterTypeError,
-    ParameterIsNotAllowedInOptional,
-    OptionalIsNotAllowedInOptional,
-    OptionalMayNotBeEmpty,
-    AlternativeMayNotBeEmpty,
-    AlternativeMayNotExclusivelyContainOptionals,
-)
 
 ESCAPE_PATTERN = rb"([\\^\[({$.|?*+})\]])"
 

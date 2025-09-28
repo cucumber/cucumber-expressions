@@ -1,12 +1,11 @@
 from pathlib import Path
-from typing import Optional, List
-
-from tests.definitions import TESTDATA_ROOT_DIR
+from typing import List, Optional
 
 import pytest
 
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 from cucumber_expressions.regular_expression import RegularExpression
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

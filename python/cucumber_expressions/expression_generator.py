@@ -2,12 +2,12 @@ import functools
 import re
 from typing import List
 
-from cucumber_expressions.generated_expression import GeneratedExpression
-from cucumber_expressions.parameter_type import ParameterType
-from cucumber_expressions.parameter_type_matcher import ParameterTypeMatcher
 from cucumber_expressions.combinatorial_generated_expression_factory import (
     CombinatorialGeneratedExpressionFactory,
 )
+from cucumber_expressions.generated_expression import GeneratedExpression
+from cucumber_expressions.parameter_type import ParameterType
+from cucumber_expressions.parameter_type_matcher import ParameterTypeMatcher
 
 
 class CucumberExpressionGenerator:
