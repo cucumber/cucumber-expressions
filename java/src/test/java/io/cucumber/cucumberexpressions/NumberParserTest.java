@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnJre;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -59,16 +60,21 @@ class NumberParserTest {
     @Test
     void can_parse_exponents() {
         assertEquals(new BigDecimal("100"), english.parseBigDecimal("1.00E2"));
-        assertEquals(new BigDecimal("100"), canadian.parseBigDecimal("1.00e2"));
         assertEquals(new BigDecimal("100"), german.parseBigDecimal("1,00E2"));
         assertEquals(new BigDecimal("100"), canadianFrench.parseBigDecimal("1,00E2"));
         assertEquals(new BigDecimal("100"), norwegian.parseBigDecimal("1,00E2"));
 
         assertEquals(new BigDecimal("0.01"), english.parseBigDecimal("1E-2"));
-        assertEquals(new BigDecimal("0.01"), canadian.parseBigDecimal("1e-2"));
         assertEquals(new BigDecimal("0.01"), german.parseBigDecimal("1E-2"));
         assertEquals(new BigDecimal("0.01"), canadianFrench.parseBigDecimal("1E-2"));
         assertEquals(new BigDecimal("0.01"), norwegian.parseBigDecimal("1E-2"));
+    }
+
+    @Test
+    @DisabledOnJre(versions = 17, disabledReason = "Locale information on JDK 17 uses lower case e for exponents")
+    void can_parse_exponents_canadian() {
+        assertEquals(new BigDecimal("100"), canadian.parseBigDecimal("1.00E2"));
+        assertEquals(new BigDecimal("0.01"), canadian.parseBigDecimal("1E-2"));
     }
 
 }
