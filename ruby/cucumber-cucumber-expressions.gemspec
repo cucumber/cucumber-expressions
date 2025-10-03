@@ -26,12 +26,12 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'bigdecimal'
 
-  s.add_development_dependency 'rake', '~> 13.1'
+  s.add_development_dependency 'rake', '~> 13.3'
   s.add_development_dependency 'rspec', '~> 3.13'
-  s.add_development_dependency 'rubocop', '~> 1.27.0'
-  s.add_development_dependency 'rubocop-performance', '~> 1.7.0'
-  s.add_development_dependency 'rubocop-rake', '~> 0.5.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 2.0.0'
+  s.add_development_dependency 'rubocop', '~> 1.55.0'
+  s.add_development_dependency 'rubocop-performance', '~> 1.21.0'
+  s.add_development_dependency 'rubocop-rake', '~> 0.6.0'
+  s.add_development_dependency 'rubocop-rspec', '~> 3.0.0'
 
   s.files            = Dir['lib/**/*', 'CHANGELOG.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md']
   s.rdoc_options     = ['--charset=UTF-8']
