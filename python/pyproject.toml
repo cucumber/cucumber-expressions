@@ -41,12 +41,14 @@ Download = "https://pypi.python.org/pypi/cucumber-expressions"
 Issues = "https://github.com/cucumber/cucumber-expressions/issues"
 Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
 
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.3"
-pytest = "^8.0.0"
-PyYAML = "^6.0"
-
 [tool.ruff.lint]
 extend-select = [
   "I",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pyyaml>=6.0.3",
 ]
