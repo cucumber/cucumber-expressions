@@ -13,11 +13,11 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os:
           - ubuntu-latest
-        java: ['11', '17']
+        java: ['17', '21']
         include:
           - os: windows-latest
             java: '17'
