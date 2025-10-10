@@ -22,11 +22,12 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Testing",
@@ -43,7 +44,24 @@ Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
 
 [tool.ruff.lint]
 extend-select = [
+  "B",
+  "C4",
+  "COM",
+  "FURB",
   "I",
+  "ISC",
+  "N",
+  "PERF",
+  "PIE",
+  "RET",
+  "TID",
+  "UP",
+]
+ignore = [
+    "B023",
+    "COM812",
+    "N818",
+    "PERF401",
 ]
 
 [dependency-groups]

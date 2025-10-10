@@ -21,8 +21,10 @@ def get_expectation_yamls():
 def match(
     expression: str,
     match_text: str,
-    parameter_registry: ParameterTypeRegistry = ParameterTypeRegistry(),
+    parameter_registry: ParameterTypeRegistry | None = None,
 ):
+    if parameter_registry is None:
+        parameter_registry = ParameterTypeRegistry()
     cucumber_expression = CucumberExpression(expression, parameter_registry)
     matches = cucumber_expression.match(match_text)
 
@@ -106,7 +108,7 @@ class TestCucumberExpression:
                 lambda s1, s2: [s1, s2],
                 False,
                 True,
-            )
+            ),
         )
 
         assert match("{textAndOrNumber}", "TLA", parameter_type_registry)[0] == [

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional
 
 
 class NodeType(Enum):
@@ -41,8 +40,8 @@ class Node:
     def __init__(
         self,
         ast_type: NodeType,
-        nodes: Optional[List[Node]],
-        token: Optional[str],
+        nodes: [list[Node]] | None,
+        token: str | None,
         start: int,
         end: int,
     ):
@@ -59,7 +58,7 @@ class Node:
         return self._ast_type
 
     @property
-    def nodes(self) -> List[Node]:
+    def nodes(self) -> list[Node]:
         return self._nodes
 
     @property

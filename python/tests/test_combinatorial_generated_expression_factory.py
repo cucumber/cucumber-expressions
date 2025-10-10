@@ -29,7 +29,12 @@ class TestCombinatorialGeneratedExpressionFactory:
         parameter_type_combinations = [
             [
                 ParameterType(
-                    "color", r"red|blue|yellow", Color, lambda s: Color(), True, False
+                    "color",
+                    r"red|blue|yellow",
+                    Color,
+                    lambda s: Color(),
+                    True,
+                    False,
                 ),
                 ParameterType(
                     "csscolor",
@@ -42,7 +47,12 @@ class TestCombinatorialGeneratedExpressionFactory:
             ],
             [
                 ParameterType(
-                    "date", r"\d{4}-\d{2}-\d{2}", Date, lambda s: Date(), True, False
+                    "date",
+                    r"\d{4}-\d{2}-\d{2}",
+                    Date,
+                    lambda s: Date(),
+                    True,
+                    False,
                 ),
                 ParameterType(
                     "datetime",
@@ -64,7 +74,8 @@ class TestCombinatorialGeneratedExpressionFactory:
         ]
 
         factory = CombinatorialGeneratedExpressionFactory(
-            "I bought a {%s} ball on {%s}", parameter_type_combinations
+            "I bought a {%s} ball on {%s}",
+            parameter_type_combinations,
         )
         expressions = [ge.source for ge in factory.generate_expressions()]
         assert expressions == [
