@@ -40,7 +40,7 @@ class Node:
     def __init__(
         self,
         ast_type: NodeType,
-        nodes: [list[Node]] | None,
+        nodes: list[Node] | None,
         token: str | None,
         start: int,
         end: int,

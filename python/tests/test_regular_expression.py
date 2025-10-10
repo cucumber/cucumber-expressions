@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import pytest
 
@@ -80,7 +79,7 @@ class TestRegularExpression:
         assert expression.regexp == regexp
 
     @staticmethod
-    def _match(expression: str, text: str) -> Optional[list[str]]:
+    def _match(expression: str, text: str) -> list[str] | None:
         regular_expression = RegularExpression(expression, ParameterTypeRegistry())
         arguments = regular_expression.match(text)
         return arguments and [arg.value for arg in arguments]

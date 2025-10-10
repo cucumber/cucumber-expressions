@@ -30,7 +30,9 @@ class Argument:
 
         return [
             Argument(arg_group, parameter_type)
-            for parameter_type, arg_group in zip(parameter_types, arg_groups)
+            for parameter_type, arg_group in zip(
+                parameter_types, arg_groups, strict=False
+            )
         ]
 
     @property

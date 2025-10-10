@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from re import Pattern
-from typing import Callable
 
 from cucumber_expressions.errors import CucumberExpressionError
 
@@ -48,7 +48,7 @@ class ParameterType:
         name,
         regexp,
         type,
-        transformer: Callable = None,
+        transformer: Callable | None = None,
         use_for_snippets: bool = True,
         prefer_for_regexp_match: bool = False,
     ):
