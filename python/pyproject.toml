@@ -1,8 +1,13 @@
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build>=0.9.0,<0.10.0"]
+
 [project]
 name = "cucumber-expressions"
 version = "18.0.1"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
 readme = "README.md"
+requires-python = ">=3.9"
 authors = [
     {name = "Jason Allen", email = "jsa34@noreply.github.com"},
 ]
@@ -36,25 +41,10 @@ Download = "https://pypi.python.org/pypi/cucumber-expressions"
 Issues = "https://github.com/cucumber/cucumber-expressions/issues"
 Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
 
-[tool.poetry]
-packages = [
-    { include = "cucumber_expressions"}
-]
-include = [
-    { path = "tests", format = "sdist" }
-]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.3"
 pytest = "^8.0.0"
 PyYAML = "^6.0"
-
-[build-system]
-requires = ["poetry-core>=2.2.0"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.ruff.lint]
 extend-select = [
