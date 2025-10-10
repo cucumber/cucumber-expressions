@@ -73,7 +73,7 @@ class TestTreeRegexp:
 
     def test_matches_nested_groups(self):
         tree_regexp = TreeRegexp(
-            "^A (\\d+) thick line from ((\\d+),\\s*(\\d+),\\s*(\\d+)) to ((\\d+),\\s*(\\d+),\\s*(\\d+))"
+            "^A (\\d+) thick line from ((\\d+),\\s*(\\d+),\\s*(\\d+)) to ((\\d+),\\s*(\\d+),\\s*(\\d+))",
         )
         group = tree_regexp.match("A 5 thick line from 10,20,30 to 40,50,60")
 

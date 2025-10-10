@@ -2,10 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from tests.definitions import TESTDATA_ROOT_DIR
-
 from cucumber_expressions.expression import CucumberExpression
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

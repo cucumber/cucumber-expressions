@@ -25,7 +25,8 @@ class TestCucumberExpression:
         assert generated_expression.source == expected_expression
 
         cucumber_expression = CucumberExpression(
-            generated_expression.source, self.parameter_type_registry
+            generated_expression.source,
+            self.parameter_type_registry,
         )
         match = cucumber_expression.match(text)
         if match is None:
@@ -41,7 +42,7 @@ class TestCucumberExpression:
             generated_expression.source == "I have {int} cucumbers and {float} tomato"
         )
         assert generated_expression.parameter_names[0] == "int"
-        assert generated_expression.parameter_types[1].type == float
+        assert generated_expression.parameter_types[1].type is float
 
     def test_generates_expression_for_no_args(self):
         self._assert_expression("hello", [], "hello")
@@ -97,7 +98,7 @@ class TestCucumberExpression:
                 lambda currency: Currency(currency),
                 True,
                 True,
-            )
+            ),
         )
 
         self._assert_expression(
@@ -116,17 +117,27 @@ class TestCucumberExpression:
     def test_matches_parameter_types_with_optional_capture_groups(self):
         self.parameter_type_registry.define_parameter_type(
             ParameterType(
-                "optional-flight", r"(1st flight)?", str, lambda s: s, True, False
-            )
+                "optional-flight",
+                r"(1st flight)?",
+                str,
+                lambda s: s,
+                True,
+                False,
+            ),
         )
         self.parameter_type_registry.define_parameter_type(
             ParameterType(
-                "optional-hotel", r"(1 hotel)?", str, lambda s: s, True, False
-            )
+                "optional-hotel",
+                r"(1 hotel)?",
+                str,
+                lambda s: s,
+                True,
+                False,
+            ),
         )
 
         expression = self.generator.generate_expressions(
-            "I reach Stage 4: 1st flight -1 hotel"
+            "I reach Stage 4: 1st flight -1 hotel",
         )[0]
         # While you would expect this to be `I reach Stage {int}: {optional-flight} -{optional-hotel}`
         # the `-1` causes {int} to match just before {optional-hotel}.
@@ -136,8 +147,13 @@ class TestCucumberExpression:
         for i in range(3):
             self.parameter_type_registry.define_parameter_type(
                 ParameterType(
-                    f"my-type-{i}", r"([a-z] )*?[a-z]", str, lambda s: s, True, False
-                )
+                    f"my-type-{i}",
+                    r"([a-z] )*?[a-z]",
+                    str,
+                    lambda s: s,
+                    True,
+                    False,
+                ),
             )
 
         # This would otherwise generate 4^11=4194300 expressions and consume just shy of 1.5GB.
@@ -146,10 +162,10 @@ class TestCucumberExpression:
 
     def test_prefers_expression_with_longest_non_empty_match(self):
         self.parameter_type_registry.define_parameter_type(
-            ParameterType("zero-or-more", r"[a-z]*", str, lambda s: s, True, False)
+            ParameterType("zero-or-more", r"[a-z]*", str, lambda s: s, True, False),
         )
         self.parameter_type_registry.define_parameter_type(
-            ParameterType("exactly-one", r"[a-z]", str, lambda s: s, True, False)
+            ParameterType("exactly-one", r"[a-z]", str, lambda s: s, True, False),
         )
 
         expressions = self.generator.generate_expressions("a simple step")
@@ -161,10 +177,10 @@ class TestCucumberExpression:
     def direction_parameter_type_registry_generator(self):
         direction_parameter_type_registry = self.parameter_type_registry
         direction_parameter_type_registry.define_parameter_type(
-            ParameterType("direction", r"(up|down)", str, lambda s: s, True, False)
+            ParameterType("direction", r"(up|down)", str, lambda s: s, True, False),
         )
         self.direction_generator = CucumberExpressionGenerator(
-            direction_parameter_type_registry
+            direction_parameter_type_registry,
         )
 
     def test_does_not_suggest_parameter_when_match_is_at_the_beginning_of_a_word(self):
@@ -184,13 +200,13 @@ class TestCucumberExpression:
     def test_does_not_suggest_parameter_when_match_is_inside_a_word(self):
         assert (
             self.direction_generator.generate_expressions(
-                "When I watch the muppet show"
+                "When I watch the muppet show",
             )[0].source
             != "When I watch the m{direction}pet show"
         )
         assert (
             self.direction_generator.generate_expressions(
-                "When I watch the muppet show"
+                "When I watch the muppet show",
             )[0].source
             == "When I watch the muppet show"
         )
@@ -224,7 +240,7 @@ class TestCucumberExpression:
         )
         assert (
             self.direction_generator.generate_expressions(
-                "up the hill, the road goes down"
+                "up the hill, the road goes down",
             )[0].source
             == "{direction} the hill, the road goes {direction}"
         )

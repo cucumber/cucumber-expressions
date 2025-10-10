@@ -1,18 +1,16 @@
-from typing import Optional, List
-
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
+from cucumber_expressions.errors import (
+    AlternativeMayNotBeEmpty,
+    AlternativeMayNotExclusivelyContainOptionals,
+    OptionalIsNotAllowedInOptional,
+    OptionalMayNotBeEmpty,
+    ParameterIsNotAllowedInOptional,
+    UndefinedParameterTypeError,
+)
 from cucumber_expressions.expression_parser import CucumberExpressionParser
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp
-from cucumber_expressions.errors import (
-    UndefinedParameterTypeError,
-    ParameterIsNotAllowedInOptional,
-    OptionalIsNotAllowedInOptional,
-    OptionalMayNotBeEmpty,
-    AlternativeMayNotBeEmpty,
-    AlternativeMayNotExclusivelyContainOptionals,
-)
 
 ESCAPE_PATTERN = rb"([\\^\[({$.|?*+})\]])"
 
@@ -21,12 +19,12 @@ class CucumberExpression:
     def __init__(self, expression, parameter_type_registry):
         self.expression = expression
         self.parameter_type_registry = parameter_type_registry
-        self.parameter_types: List[ParameterType] = []
+        self.parameter_types: list[ParameterType] = []
         self.tree_regexp = TreeRegexp(
-            self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression))
+            self.rewrite_to_regex(CucumberExpressionParser().parse(self.expression)),
         )
 
-    def match(self, text: str) -> Optional[List[Argument]]:
+    def match(self, text: str) -> list[Argument] | None:
         return Argument.build(self.tree_regexp, text, self.parameter_types)
 
     @property
@@ -61,12 +59,14 @@ class CucumberExpression:
         _possible_node_with_params = self.get_possible_node_with_parameters(node)
         if _possible_node_with_params:
             raise ParameterIsNotAllowedInOptional(
-                _possible_node_with_params, self.expression
+                _possible_node_with_params,
+                self.expression,
             )
         _possible_node_with_optionals = self.get_possible_node_with_optionals(node)
         if _possible_node_with_optionals:
             raise OptionalIsNotAllowedInOptional(
-                _possible_node_with_optionals, self.expression
+                _possible_node_with_optionals,
+                self.expression,
             )
         if self.are_nodes_empty(node):
             raise OptionalMayNotBeEmpty(node, self.expression)
@@ -79,7 +79,8 @@ class CucumberExpression:
                 raise AlternativeMayNotBeEmpty(alternative, self.expression)
             if self.are_nodes_empty(alternative):
                 raise AlternativeMayNotExclusivelyContainOptionals(
-                    alternative, self.expression
+                    alternative,
+                    self.expression,
                 )
         regex = "|".join([self.rewrite_to_regex(_node) for _node in node.nodes])
         return f"(?:{regex})"
@@ -108,14 +109,14 @@ class CucumberExpression:
     def are_nodes_empty(self, node: Node) -> bool:
         return not any(self.get_nodes_with_ast_type(node, NodeType.TEXT))
 
-    def get_possible_node_with_parameters(self, node: Node) -> Optional[Node]:
+    def get_possible_node_with_parameters(self, node: Node) -> Node | None:
         results = self.get_nodes_with_ast_type(node, NodeType.PARAMETER)
         return results[0] if results else None
 
-    def get_possible_node_with_optionals(self, node: Node) -> Optional[Node]:
+    def get_possible_node_with_optionals(self, node: Node) -> Node | None:
         results = self.get_nodes_with_ast_type(node, NodeType.OPTIONAL)
         return results[0] if results else None
 
     @staticmethod
-    def get_nodes_with_ast_type(node: Node, ast_type: NodeType) -> List[Node]:
+    def get_nodes_with_ast_type(node: Node, ast_type: NodeType) -> list[Node]:
         return [ast_node for ast_node in node.nodes if ast_node.ast_type == ast_type]

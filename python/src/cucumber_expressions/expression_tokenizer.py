@@ -1,20 +1,18 @@
-from typing import List
-
-from cucumber_expressions.ast import TokenType, Token
+from cucumber_expressions.ast import Token, TokenType
 from cucumber_expressions.errors import (
-    TheEndOfLineCannotBeEscaped,
     CantEscape,
+    TheEndOfLineCannotBeEscaped,
 )
 
 
 class CucumberExpressionTokenizer:
     def __init__(self):
         self.expression: str = ""
-        self.buffer: List[str] = []
+        self.buffer: list[str] = []
         self.escaped: int = 0
         self.buffer_start_index: int = 0
 
-    def tokenize(self, expression: str, to_json: bool = False) -> List[Token]:
+    def tokenize(self, expression: str, to_json: bool = False) -> list[Token]:
         self.expression = expression
         tokens = []
         previous_token_type = TokenType.START_OF_LINE
@@ -50,7 +48,7 @@ class CucumberExpressionTokenizer:
 
         tokens.append(Token(TokenType.END_OF_LINE, "", len(chars), len(chars)))
 
-        def convert_to_json_format(_tokens: List[Token]) -> List:
+        def convert_to_json_format(_tokens: list[Token]) -> list:
             return [
                 {
                     "type": t.ast_type.value,
@@ -93,7 +91,8 @@ class CucumberExpressionTokenizer:
 
     @staticmethod
     def should_create_new_token(
-        previous_token_type: TokenType, current_token_type: TokenType
+        previous_token_type: TokenType,
+        current_token_type: TokenType,
     ):
         return current_token_type != previous_token_type or (
             current_token_type not in [TokenType.WHITE_SPACE, TokenType.TEXT]

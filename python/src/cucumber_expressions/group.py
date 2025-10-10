@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-from typing import List
-
 
 class Group:
-    def __init__(self, value: str, start: int, end: int, children: List[Group]):
+    def __init__(self, value: str, start: int, end: int, children: list[Group]):
         self._children = children
         self._value = value
         self._start = start

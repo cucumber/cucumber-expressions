@@ -1,5 +1,4 @@
 import re
-from typing import Optional, List
 
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.parameter_type import ParameterType
@@ -13,7 +12,9 @@ class RegularExpression:
     dynamically typed languages."""
 
     def __init__(
-        self, expression_regexp, parameter_type_registry: ParameterTypeRegistry
+        self,
+        expression_regexp,
+        parameter_type_registry: ParameterTypeRegistry,
     ):
         """Creates a new instance. Use this when the transform types are not known in advance,
         and should be determined by the regular expression's capture groups. Use this with
@@ -27,19 +28,28 @@ class RegularExpression:
         self.parameter_type_registry = parameter_type_registry
         self.tree_regexp: TreeRegexp = TreeRegexp(self.expression_regexp.pattern)
 
-    def match(self, text) -> Optional[List[Argument]]:
+    def match(self, text) -> list[Argument] | None:
         return Argument.build(
-            self.tree_regexp, text, list(self.generate_parameter_types(text))
+            self.tree_regexp,
+            text,
+            list(self.generate_parameter_types(text)),
         )
 
     def generate_parameter_types(self, text):
         for group_builder in self.tree_regexp.group_builder.children:
             parameter_type_regexp = group_builder.source
             possible_regexp = self.parameter_type_registry.lookup_by_regexp(
-                parameter_type_regexp, self.expression_regexp, text
+                parameter_type_regexp,
+                self.expression_regexp,
+                text,
             )
             yield possible_regexp or ParameterType(
-                None, parameter_type_regexp, str, lambda *s: s[0], False, False
+                None,
+                parameter_type_regexp,
+                str,
+                lambda *s: s[0],
+                False,
+                False,
             )
 
     @property

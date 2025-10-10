@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import re
-from typing import Callable, Optional, Pattern
+from collections.abc import Callable
+from re import Pattern
 
 from cucumber_expressions.errors import CucumberExpressionError
 
@@ -15,7 +16,7 @@ class ParameterType:
         """Checks if a parameter type name is allowed"""
         if not self._is_valid_parameter_type_name(type_name):
             raise CucumberExpressionError(
-                f"Illegal character in parameter name {type_name}. Parameter names may not contain '[]()$.|?*+'"
+                f"Illegal character in parameter name {type_name}. Parameter names may not contain '[]()$.|?*+'",
             )
 
     @staticmethod
@@ -47,7 +48,7 @@ class ParameterType:
         name,
         regexp,
         type,
-        transformer: Optional[Callable] = None,
+        transformer: Callable | None = None,
         use_for_snippets: bool = True,
         prefer_for_regexp_match: bool = False,
     ):
@@ -84,7 +85,7 @@ class ParameterType:
 
     @staticmethod
     def _get_regexp_source(regexp_pattern: Pattern) -> str:
-        invalid_flags = [re.I, re.M]
+        invalid_flags = [re.IGNORECASE, re.MULTILINE]
         for invalid_flag in invalid_flags:
             _regexp_flags = regexp_pattern.flags
             _regexp_flags = (
@@ -92,7 +93,7 @@ class ParameterType:
             )
             if invalid_flag.real in _regexp_flags:
                 raise CucumberExpressionError(
-                    f"ParameterType Regexps can't use flag: {str(invalid_flag)}"
+                    f"ParameterType Regexps can't use flag: {str(invalid_flag)}",
                 )
         return regexp_pattern.pattern
 

@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import Optional, List
-
+from cucumber_expressions.errors import CucumberExpressionError
 from cucumber_expressions.group import Group
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.tree_regexp import TreeRegexp
-from cucumber_expressions.errors import CucumberExpressionError
 
 
 class Argument:
@@ -15,8 +13,10 @@ class Argument:
 
     @staticmethod
     def build(
-        tree_regexp: TreeRegexp, text: str, parameter_types: List
-    ) -> Optional[List[Argument]]:
+        tree_regexp: TreeRegexp,
+        text: str,
+        parameter_types: list,
+    ) -> list[Argument] | None:
         match_group = tree_regexp.match(text)
         if not match_group:
             return None
@@ -25,12 +25,14 @@ class Argument:
 
         if len(arg_groups) != len(parameter_types):
             raise CucumberExpressionError(
-                f"Group has {len(arg_groups)} capture groups, but there were {len(parameter_types)} parameter types"
+                f"Group has {len(arg_groups)} capture groups, but there were {len(parameter_types)} parameter types",
             )
 
         return [
             Argument(arg_group, parameter_type)
-            for parameter_type, arg_group in zip(parameter_types, arg_groups)
+            for parameter_type, arg_group in zip(
+                parameter_types, arg_groups, strict=False
+            )
         ]
 
     @property
