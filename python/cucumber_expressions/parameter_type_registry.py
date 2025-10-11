@@ -1,9 +1,8 @@
 import functools
 import re
 from decimal import Decimal
-from typing import Optional, List
+from typing import Optional, List, Union
 
-from cucumber_expressions.expression_generator import CucumberExpressionGenerator
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.errors import (
     CucumberExpressionError,
@@ -85,13 +84,23 @@ class ParameterTypeRegistry:
         return self.parameter_type_by_name.get(name)
 
     def lookup_by_regexp(
-        self, parameter_type_regexp: str, expression_regexp, text: str
+        self,
+        parameter_type_regexp: str,
+        expression_regexp: Union[str, re.Pattern],
+        text: str,
     ):
-        raw_regex = rf"{parameter_type_regexp}"
-        parameter_types = self.parameter_types_by_regexp.get(raw_regex)
+        """
+        Lookup and match the text using parameter types, then transform the results.
+        Supports both named and unnamed capture groups.
+        """
+        parameter_types = self.parameter_types_by_regexp.get(parameter_type_regexp)
         if not parameter_types:
             return None
         if len(parameter_types) > 1 and not parameter_types[0].prefer_for_regexp_match:
+            from cucumber_expressions.expression_generator import (
+                CucumberExpressionGenerator,
+            )
+
             generated_expressions = CucumberExpressionGenerator(
                 self
             ).generate_expressions(text)

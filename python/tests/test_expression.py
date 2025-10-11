@@ -1,5 +1,6 @@
 from decimal import Decimal
 from pathlib import Path
+from typing import Optional, Any, Tuple
 
 from tests.definitions import TESTDATA_ROOT_DIR
 
@@ -12,18 +13,14 @@ from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 
 def get_expectation_yamls():
     yaml_dir = Path(TESTDATA_ROOT_DIR) / "cucumber-expression" / "matching"
-    return [
-        Path(yaml_dir) / file
-        for file in Path(yaml_dir).iterdir()
-        if file.suffix == ".yaml"
-    ]
+    return [yaml_dir / file for file in yaml_dir.iterdir() if file.suffix == ".yaml"]
 
 
 def match(
     expression: str,
     match_text: str,
     parameter_registry: ParameterTypeRegistry = ParameterTypeRegistry(),
-):
+) -> Optional[Tuple[Any, str]]:
     cucumber_expression = CucumberExpression(expression, parameter_registry)
     matches = cucumber_expression.match(match_text)
 
@@ -34,7 +31,7 @@ def match(
             return str(value)
         return value
 
-    return matches and [transform_value(arg.value) for arg in matches]
+    return matches and [(transform_value(arg.value), arg.name) for arg in matches]
 
 
 class TestCucumberExpression:
@@ -47,11 +44,24 @@ class TestCucumberExpression:
             assert excinfo.value.args[0] == expectation["exception"]
         else:
             values = match(expectation["expression"], expectation["text"])
-            assert values == expectation["expected_args"]
+            actual_result = None if values is None else [value[0] for value in values]
+            assert actual_result == expectation["expected_args"]
 
     def test_documents_match_arguments(self):
         values = match("I have {int} cuke(s)", "I have 7 cukes")
-        assert values[0] == 7
+        assert values[0] == (7, None)
+
+    def test_documents_match_arguments_with_names(self):
+        values = match("I have {cuke_count:int} cuke(s)", "I have 7 cukes")
+        assert values[0] == (7, "cuke_count")
+
+    def test_documents_match_arguments_with_names_and_spaces(self):
+        values = match(
+            "I have {  cuke_count : int  } cuke(s) and {gherkin_count: int} gherkin(s)",
+            "I have 7 cukes and 4 gherkins",
+        )
+        assert values[0] == (7, "cuke_count")
+        assert values[1] == (4, "gherkin_count")
 
     def test_matches_float(self):
         assert match("{float}", "") is None
@@ -63,38 +73,42 @@ class TestCucumberExpression:
         assert match("{float}", ",1") is None
         assert match("{float}", "1.") is None
 
-        assert match("{float}", "1") == [1]
-        assert match("{float}", "-1") == [-1]
-        assert match("{float}", "1.1") == [1.1]
+        assert match("{float}", "1") == [(1, None)]
+        assert match("{float}", "-1") == [(-1, None)]
+        assert match("{float}", "1.1") == [(1.1, None)]
         assert match("{float}", "1,000") is None
         assert match("{float}", "1,000,0") is None
         assert match("{float}", "1,000.1") is None
         assert match("{float}", "1,000,10") is None
         assert match("{float}", "1,0.1") is None
         assert match("{float}", "1,000,000.1") is None
-        assert match("{float}", "-1.1") == [-1.1]
+        assert match("{float}", "-1.1") == [(-1.1, None)]
 
-        assert match("{float}", ".1") == [0.1]
-        assert match("{float}", "-.1") == [-0.1]
-        assert match("{float}", "-.1000001") == [-0.1000001]
-        assert match("{float}", "1E1") == [10.0]
-        assert match("{float}", ".1E1") == [1]
+        assert match("{float}", ".1") == [(0.1, None)]
+        assert match("{float}", "-.1") == [(-0.1, None)]
+        assert match("{float}", "-.1000001") == [(-0.1000001, None)]
+        assert match("{float}", "1E1") == [(10.0, None)]
+        assert match("{float}", ".1E1") == [(1, None)]
         assert match("{float}", "E1") is None
-        assert match("{float}", "-.1E-1") == [-0.01]
-        assert match("{float}", "-.1E-2") == [-0.001]
-        assert match("{float}", "-.1E+1") == [-1]
-        assert match("{float}", "-.1E+2") == [-10]
-        assert match("{float}", "-.1E1") == [-1]
-        assert match("{float}", "-.1E2") == [-10]
+        assert match("{float}", "-.1E-1") == [(-0.01, None)]
+        assert match("{float}", "-.1E-2") == [(-0.001, None)]
+        assert match("{float}", "-.1E+1") == [(-1, None)]
+        assert match("{float}", "-.1E+2") == [(-10, None)]
+        assert match("{float}", "-.1E1") == [(-1, None)]
+        assert match("{float}", "-.1E2") == [(-10, None)]
 
     def test_float_with_zero(self):
-        assert match("{float}", "0") == [0.0]
+        assert match("{float}", "0") == [(0.0, None)]
 
     def test_matches_anonymous(self):
-        assert match("{}", "0.22") == ["0.22"]
+        assert match("{}", "0.22") == [("0.22", None)]
 
     def test_exposes_source(self):
         expr = "I have {int} cuke(s)"
+        assert CucumberExpression(expr, ParameterTypeRegistry()).source == expr
+
+    def test_with_name_exposes_source(self):
+        expr = "I have {cuke_count:int} cuke(s)"
         assert CucumberExpression(expr, ParameterTypeRegistry()).source == expr
 
     def test_unmatched_optional_groups_have_undefined_values(self):
@@ -110,11 +124,11 @@ class TestCucumberExpression:
             )
         )
 
-        assert match("{textAndOrNumber}", "TLA", parameter_type_registry)[0] == [
-            "TLA",
+        assert match("{textAndOrNumber}", "TLA", parameter_type_registry)[0] == (
+            ["TLA", None],
             None,
-        ]
-        assert match("{textAndOrNumber}", "123", parameter_type_registry)[0] == [
+        )
+        assert match("{textAndOrNumber}", "123", parameter_type_registry)[0] == (
+            [None, "123"],
             None,
-            "123",
-        ]
+        )

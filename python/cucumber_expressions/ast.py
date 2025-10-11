@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional, List
+from typing import Optional, List, Any
 
 
 class NodeType(Enum):
@@ -78,7 +78,7 @@ class Node:
     def text(self) -> str:
         return self.token or "".join([node_value.text for node_value in self.nodes])
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         json_obj = {"type": self.ast_type.value}
         if self.nodes is not None:
             json_obj["nodes"] = [node_value.to_json() for node_value in self.nodes]
@@ -140,7 +140,7 @@ class Token:
         return TokenType.TEXT
 
     @staticmethod
-    def symbol_of(token: TokenType):
+    def symbol_of(token: TokenType) -> str:
         possible_token_character_key = token.name + "_CHARACTER"
         if any(
             e.name
@@ -151,7 +151,7 @@ class Token:
         return ""
 
     @staticmethod
-    def purpose_of(token: TokenType):
+    def purpose_of(token: TokenType) -> str:
         if token in [TokenType.BEGIN_OPTIONAL, TokenType.END_OPTIONAL]:
             return "optional text"
         if token in [TokenType.BEGIN_PARAMETER, TokenType.END_PARAMETER]:
@@ -160,7 +160,7 @@ class Token:
             return "alternation"
         return ""
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         return {
             "type": self.ast_type.value,
             "text": self.text,

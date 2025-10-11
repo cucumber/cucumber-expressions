@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, Callable, List
+from typing import NamedTuple, Optional, Callable, List, Tuple, Union
 
 from cucumber_expressions.ast import Token, TokenType, Node, NodeType
 from cucumber_expressions.errors import (
@@ -171,7 +171,7 @@ class CucumberExpressionParser:
         begin_token: TokenType,
         end_token: TokenType,
         parsers: List,
-    ) -> Callable[[Parser], Result | tuple[int, Node]]:
+    ) -> Callable[[Parser], Union[Result, Tuple[int, Node]]]:
         def _parse_between(parser: Parser):
             if not self.looking_at(parser.tokens, parser.current, begin_token):
                 return Result(0, None)
@@ -221,7 +221,7 @@ class CucumberExpressionParser:
         tokens: List[Token],
         start_at: int,
         end_tokens: List[TokenType],
-    ) -> tuple[int, List[Node]]:
+    ) -> Tuple[int, List[Node]]:
         current = start_at
         size = len(tokens)
         ast: List[Node] = []

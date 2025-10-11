@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Callable, Optional, Pattern
+from typing import Callable, Optional, Pattern, Union, List
 
 from cucumber_expressions.errors import CucumberExpressionError
 
@@ -44,8 +44,8 @@ class ParameterType:
 
     def __init__(
         self,
-        name,
-        regexp,
+        name: str | None,
+        regexp: Union[List[str], str, List[Pattern], Pattern],
         type,
         transformer: Optional[Callable] = None,
         use_for_snippets: bool = True,
@@ -96,9 +96,11 @@ class ParameterType:
                 )
         return regexp_pattern.pattern
 
-    def to_array(self, regexps: list[str] | str | list[Pattern] | Pattern) -> list[str]:
+    def to_array(
+        self, regexps: Union[List[str], str, List[Pattern], Pattern]
+    ) -> List[str]:
         """Make a list of regexps if not already"""
-        array: list = regexps if isinstance(regexps, list) else [regexps]
+        array: List = regexps if isinstance(regexps, list) else [regexps]
         return [
             regexp if isinstance(regexp, str) else self._get_regexp_source(regexp)
             for regexp in array
