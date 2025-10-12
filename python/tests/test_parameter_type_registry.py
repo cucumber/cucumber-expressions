@@ -1,11 +1,11 @@
 import pytest
 
+from cucumber_expressions.errors import (
+    AmbiguousParameterTypeError,
+    CucumberExpressionError,
+)
 from cucumber_expressions.parameter_type import ParameterType
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
-from cucumber_expressions.errors import (
-    CucumberExpressionError,
-    AmbiguousParameterTypeError,
-)
 
 CAPITALISED_WORD = r"[A-Z]+\w+"
 
@@ -28,31 +28,56 @@ class TestParameterTypeRegistration:
     ):
         registry = ParameterTypeRegistry()
         registry.define_parameter_type(
-            ParameterType("name", CAPITALISED_WORD, Name, lambda s: Name(), True, True)
+            ParameterType("name", CAPITALISED_WORD, Name, lambda s: Name(), True, True),
         )
         registry.define_parameter_type(
             ParameterType(
-                "person", CAPITALISED_WORD, Person, lambda s: Person(), True, False
-            )
+                "person",
+                CAPITALISED_WORD,
+                Person,
+                lambda s: Person(),
+                True,
+                False,
+            ),
         )
         with pytest.raises(CucumberExpressionError):
             registry.define_parameter_type(
                 ParameterType(
-                    "place", CAPITALISED_WORD, Place, lambda s: Place(), True, True
-                )
+                    "place",
+                    CAPITALISED_WORD,
+                    Place,
+                    lambda s: Place(),
+                    True,
+                    True,
+                ),
             )
 
     def test_looks_up_prefer_for_regexp_match_parameter_type_by_regexp(self):
         registry = ParameterTypeRegistry()
 
         name = ParameterType(
-            "name", CAPITALISED_WORD, Name, lambda s: Name(), True, False
+            "name",
+            CAPITALISED_WORD,
+            Name,
+            lambda s: Name(),
+            True,
+            False,
         )
         person = ParameterType(
-            "person", CAPITALISED_WORD, Person, lambda s: Person(), True, True
+            "person",
+            CAPITALISED_WORD,
+            Person,
+            lambda s: Person(),
+            True,
+            True,
         )
         place = ParameterType(
-            "place", CAPITALISED_WORD, Place, lambda s: Place(), True, False
+            "place",
+            CAPITALISED_WORD,
+            Place,
+            lambda s: Place(),
+            True,
+            False,
         )
 
         registry.define_parameter_type(name)
@@ -61,7 +86,9 @@ class TestParameterTypeRegistration:
 
         assert (
             registry.lookup_by_regexp(
-                str(CAPITALISED_WORD), r"([A-Z]+\w+) and ([A-Z]+\w+)", "Lisa and Bob"
+                str(CAPITALISED_WORD),
+                r"([A-Z]+\w+) and ([A-Z]+\w+)",
+                "Lisa and Bob",
             )
             == person
         )
@@ -72,13 +99,28 @@ class TestParameterTypeRegistration:
         registry = ParameterTypeRegistry()
 
         name = ParameterType(
-            "name", CAPITALISED_WORD, Name, lambda s: Name(), True, False
+            "name",
+            CAPITALISED_WORD,
+            Name,
+            lambda s: Name(),
+            True,
+            False,
         )
         person = ParameterType(
-            "person", CAPITALISED_WORD, Person, lambda s: Person(), True, False
+            "person",
+            CAPITALISED_WORD,
+            Person,
+            lambda s: Person(),
+            True,
+            False,
         )
         place = ParameterType(
-            "place", CAPITALISED_WORD, Place, lambda s: Place(), True, False
+            "place",
+            CAPITALISED_WORD,
+            Place,
+            lambda s: Place(),
+            True,
+            False,
         )
 
         registry.define_parameter_type(name)
@@ -88,7 +130,9 @@ class TestParameterTypeRegistration:
         with pytest.raises(AmbiguousParameterTypeError):
             assert (
                 registry.lookup_by_regexp(
-                    CAPITALISED_WORD, r"([A-Z]+\w+) and ([A-Z]+\w+)", "Lisa and Bob"
+                    CAPITALISED_WORD,
+                    r"([A-Z]+\w+) and ([A-Z]+\w+)",
+                    "Lisa and Bob",
                 )
                 == person
             )

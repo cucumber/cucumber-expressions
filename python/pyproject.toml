@@ -1,8 +1,13 @@
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build>=0.9.0,<0.10.0"]
+
 [project]
 name = "cucumber-expressions"
 version = "18.0.1"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
 readme = "README.md"
+requires-python = ">=3.10"
 authors = [
     {name = "Jason Allen", email = "jsa34@noreply.github.com"},
 ]
@@ -17,11 +22,11 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Testing",
@@ -36,35 +41,31 @@ Download = "https://pypi.python.org/pypi/cucumber-expressions"
 Issues = "https://github.com/cucumber/cucumber-expressions/issues"
 Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
 
-[tool.poetry]
-packages = [
-    { include = "cucumber_expressions"}
+[tool.ruff.lint]
+extend-select = [
+  "B",
+  "C4",
+  "COM",
+  "FURB",
+  "I",
+  "ISC",
+  "N",
+  "PERF",
+  "PIE",
+  "RET",
+  "TID",
+  "UP",
 ]
-include = [
-    { path = "tests", format = "sdist" }
+ignore = [
+    "B023",
+    "COM812",
+    "N818",
+    "PERF401",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.3"
-pytest = "^8.0.0"
-PyYAML = "^6.0"
-
-[build-system]
-requires = ["poetry-core>=2.2.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-py_version = 38
-profile = "black"
-force_single_line = true
-combine_as_imports = true
-lines_between_types = 1
-lines_after_imports = 2
-src_paths = ["cucumber_expressions", "tests"]
-
-
-[tool.black]
-target-version = ['py38']
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pyyaml>=6.0.3",
+]
