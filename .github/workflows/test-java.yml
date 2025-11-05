@@ -13,11 +13,11 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os:
           - ubuntu-latest
-        java: ['11', '17']
+        java: ['17', '21']
         include:
           - os: windows-latest
             java: '17'
@@ -25,8 +25,8 @@ jobs:
             java: '17'
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}

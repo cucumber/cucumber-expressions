@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-[Java] Make CucumberExpressionParser.parse public ([#340](https://github.com/cucumber/cucumber-expressions/pull/340))
+- [Java] Make CucumberExpressionParser.parse public ([#340](https://github.com/cucumber/cucumber-expressions/pull/340))
+### Changed
+- [Ruby] Minor cosmetic / CI changes for development (Nothing front-facing)
+- [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))
+
+### Removed
+- [Python] Remove support for end-of-life Python 3.8 and 3.9 ([#359](https://github.com/cucumber/cucumber-expressions/pull/359))
 
 ## [18.0.1] - 2024-10-28
 ### Fixed

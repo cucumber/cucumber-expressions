@@ -1,12 +1,10 @@
 from pathlib import Path
-from typing import Optional, List
-
-from tests.definitions import TESTDATA_ROOT_DIR
 
 import pytest
 
 from cucumber_expressions.parameter_type_registry import ParameterTypeRegistry
 from cucumber_expressions.regular_expression import RegularExpression
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():
@@ -45,7 +43,7 @@ class TestRegularExpression:
 
     def test_matches_empty_string_when_there_is_an_empty_string_match(self):
         assert self._match(r'^The value equals "([^"]*)"$', 'The value equals ""') == [
-            ""
+            "",
         ]
 
     def test_matches_nested_capture_group_without_match(self):
@@ -53,7 +51,8 @@ class TestRegularExpression:
 
     def test_matches_nested_capture_group_with_match(self):
         assert self._match(
-            r'^a user( named "([^"]*)")?$', 'a user named "Charlie"'
+            r'^a user( named "([^"]*)")?$',
+            'a user named "Charlie"',
         ) == ["Charlie"]
 
     def test_ignores_non_capturing_groups(self):
@@ -80,7 +79,7 @@ class TestRegularExpression:
         assert expression.regexp == regexp
 
     @staticmethod
-    def _match(expression: str, text: str) -> Optional[List[str]]:
+    def _match(expression: str, text: str) -> list[str] | None:
         regular_expression = RegularExpression(expression, ParameterTypeRegistry())
         arguments = regular_expression.match(text)
         return arguments and [arg.value for arg in arguments]

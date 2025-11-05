@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import re
 from re import Pattern
-from typing import Union
 
 from cucumber_expressions.parameter_type import ParameterType
 
@@ -11,7 +10,7 @@ class ParameterTypeMatcher:
     def __init__(
         self,
         parameter_type: ParameterType,
-        regexp: Union[str, Pattern],
+        regexp: str | Pattern,
         text: str,
         match_position: int = 0,
     ):
@@ -27,12 +26,18 @@ class ParameterTypeMatcher:
     def advance_to(self, new_match_position: int) -> ParameterTypeMatcher:
         for advanced_position in range(new_match_position, len(self.text)):
             matcher = ParameterTypeMatcher(
-                self.parameter_type, self.regexp, self.text, advanced_position
+                self.parameter_type,
+                self.regexp,
+                self.text,
+                advanced_position,
             )
             if matcher.find and matcher.full_word:
                 return matcher
         return ParameterTypeMatcher(
-            self.parameter_type, self.regexp, self.text, len(self.text)
+            self.parameter_type,
+            self.regexp,
+            self.text,
+            len(self.text),
         )
 
     @property
@@ -57,7 +62,8 @@ class ParameterTypeMatcher:
 
     @staticmethod
     def compare(
-        this_object: ParameterTypeMatcher, that_object: ParameterTypeMatcher
+        this_object: ParameterTypeMatcher,
+        that_object: ParameterTypeMatcher,
     ) -> int:
         pos_comparison = this_object.start - that_object.start
         if pos_comparison != 0:
@@ -69,11 +75,11 @@ class ParameterTypeMatcher:
 
     def match_start_word(self) -> bool:
         return bool(
-            self.start == 0 or not self.text[self.start - 1 : self.start].isalnum()
+            self.start == 0 or not self.text[self.start - 1 : self.start].isalnum(),
         )
 
     def match_end_word(self) -> bool:
         return bool(
             self.end == len(self.text)
-            or not self.text[self.end : self.end + 1].isalnum()
+            or not self.text[self.end : self.end + 1].isalnum(),
         )

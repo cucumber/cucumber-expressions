@@ -1,64 +1,71 @@
-[tool.poetry]
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build>=0.9.0,<0.10.0"]
+
+[project]
 name = "cucumber-expressions"
 version = "18.0.1"
 description = "Cucumber Expressions - a simpler alternative to Regular Expressions"
-authors = ["Jason Allen <jsa34@noreply.github.com>"]
-license = "MIT"
-
 readme = "README.md"
-
-packages = [
-    { include = "cucumber_expressions"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Jason Allen", email = "jsa34@noreply.github.com"},
 ]
-include = [
-    { path = "tests", format = "sdist" }
+keywords = ["cucumber", "BDD", "testing", "expressions"]
+license = "MIT"
+license-files = [
+    "LICENSE"
 ]
-
-homepage = "https://github.com/cucumber/cucumber-expressions"
-repository = "https://github.com/cucumber/cucumber-expressions"
-documentation = "https://github.com/cucumber/cucumber-expressions"
-
-keywords = ["BDD", "testing", "cucumber", "expressions"]
-
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Testing",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: MIT License",  # for compatibility with tooling such as pip-licenses",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
+[project.urls]
+Homepage = "https://github.com/cucumber/cucumber-expressions"
+Repository = "https://github.com/cucumber/cucumber-expressions.git"
+Download = "https://pypi.python.org/pypi/cucumber-expressions"
+Issues = "https://github.com/cucumber/cucumber-expressions/issues"
+Changelog = "https://github.com/cucumber/cucumber-expressions/releases"
 
-[tool.poetry.dev-dependencies]
-pre-commit = "^3.3"
-pytest = "^8.0.0"
-PyYAML = "^6.0"
+[tool.ruff.lint]
+extend-select = [
+  "B",
+  "C4",
+  "COM",
+  "FURB",
+  "I",
+  "ISC",
+  "N",
+  "PERF",
+  "PIE",
+  "RET",
+  "TID",
+  "UP",
+]
+ignore = [
+    "B023",
+    "COM812",
+    "N818",
+    "PERF401",
+]
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-py_version = 38
-profile = "black"
-force_single_line = true
-combine_as_imports = true
-lines_between_types = 1
-lines_after_imports = 2
-src_paths = ["cucumber_expressions", "tests"]
-
-
-[tool.black]
-target-version = ['py38']
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pyyaml>=6.0.3",
+]

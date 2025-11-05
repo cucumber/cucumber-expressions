@@ -1,10 +1,14 @@
 repos:
--   repo: https://github.com/psf/black
-    rev: 22.3.0
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.3
     hooks:
-    -   id: black
--   repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+-   repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.7
     hooks:
-    -   id: flake8
-        args: ['--max-line-length=130','--ignore=E203,W503']
+      # Ensure the uv lock file is up to date
+      - id: uv-lock
+        files: pyproject.toml
+        args: [--project, python]

@@ -2,7 +2,11 @@ from cucumber_expressions.ast import Token
 
 
 def generate_message(
-    index: int, expression: str, pointer: str, problem: str, solution: str
+    index: int,
+    expression: str,
+    pointer: str,
+    problem: str,
+    solution: str,
 ):
     return "\n".join(
         [
@@ -12,7 +16,7 @@ def generate_message(
             pointer,
             problem + ".",
             solution,
-        ]
+        ],
     )
 
 
@@ -43,7 +47,7 @@ class AlternativeMayNotExclusivelyContainOptionals(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem="An alternative may not exclusively contain optionals",
                 solution="If you did not mean to use an optional you can use '\\(' to escape the '('",
-            )
+            ),
         )
 
 
@@ -56,7 +60,7 @@ class AlternativeMayNotBeEmpty(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem="Alternative may not be empty",
                 solution="If you did not mean to use an alternative you can use '\\/' to escape the '/'",
-            )
+            ),
         )
 
 
@@ -69,7 +73,7 @@ class CantEscape(CucumberExpressionError):
                 pointer=point_at(index),
                 problem="Only the characters '{', '}', '(', ')', '\\', '/' and whitespace can be escaped",
                 solution="If you did mean to use an '\\' you can use '\\\\' to escape it",
-            )
+            ),
         )
 
 
@@ -82,7 +86,7 @@ class OptionalMayNotBeEmpty(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem="An optional must contain some text",
                 solution="If you did not mean to use an optional you can use '\\(' to escape the '('",
-            )
+            ),
         )
 
 
@@ -95,7 +99,7 @@ class ParameterIsNotAllowedInOptional(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem="An optional may not contain a parameter type",
                 solution="If you did not mean to use an parameter type you can use '\\{' to escape the '{'",
-            )
+            ),
         )
 
 
@@ -111,7 +115,7 @@ class OptionalIsNotAllowedInOptional(CucumberExpressionError):
                     "If you did not mean to use an optional type you can use '\\(' to escape the '('. "
                     "For more complicated expressions consider using a regular expression instead."
                 ),
-            )
+            ),
         )
 
 
@@ -128,7 +132,7 @@ class MissingEndToken(CucumberExpressionError):
                 pointer=point_at_located(current),
                 problem=f"The '{begin_symbol}' does not have a matching '{end_symbol}'",
                 solution=f"If you did not intend to use {purpose} you can use '\\{begin_symbol}' to escape the {purpose}",
-            )
+            ),
         )
 
 
@@ -144,7 +148,7 @@ class AlternationNotAllowedInOptional(CucumberExpressionError):
                     "If you did not mean to use an alternation you can use '\\/' to escape the '/'. "
                     "Otherwise rephrase your expression or consider using a regular expression instead."
                 ),
-            )
+            ),
         )
 
 
@@ -154,7 +158,7 @@ class InvalidParameterTypeName(CucumberExpressionError):
             "Illegal character in parameter name {"
             + type_name
             + "}. "
-            + "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'"
+            + "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
         )
 
 
@@ -167,7 +171,7 @@ class InvalidParameterTypeNameInNode(CucumberExpressionError):
                 pointer=point_at_located(token),
                 problem="Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
                 solution="Did you mean to use a regular expression?",
-            )
+            ),
         )
 
 
@@ -180,7 +184,7 @@ class UndefinedParameterTypeError(CucumberExpressionError):
                 pointer=point_at_located(node),
                 problem=f"Undefined parameter type '{undefined_parameter_type_name}'",
                 solution=f"Please register a ParameterType for '{undefined_parameter_type_name}'",
-            )
+            ),
         )
 
 
@@ -224,5 +228,5 @@ class TheEndOfLineCannotBeEscaped(CucumberExpressionError):
                 pointer=point_at(index),
                 problem="The end of line can not be escaped",
                 solution="You can use '\\\\' to escape the '\\'",
-            )
+            ),
         )
