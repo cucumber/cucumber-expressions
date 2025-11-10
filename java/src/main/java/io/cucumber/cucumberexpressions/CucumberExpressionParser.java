@@ -3,6 +3,7 @@ package io.cucumber.cucumberexpressions;
 import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
 import io.cucumber.cucumberexpressions.Ast.Token.TokenType;
+import org.apiguardian.api.API;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +28,12 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createMissingEndToken;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 /**
  * A parser for Cucumber expressions
  */
+@API(since = "18.1", status = EXPERIMENTAL)
 public final class CucumberExpressionParser {
 
     /*
