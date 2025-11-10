@@ -1,12 +1,16 @@
 package io.cucumber.cucumberexpressions;
 
+import org.apiguardian.api.API;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
+@API(since = "18.1", status = EXPERIMENTAL)
 public final class Ast {
 
     public static final char escapeCharacter = '\\';
@@ -25,21 +29,21 @@ public final class Ast {
 
     public static final class Node implements Located {
 
-        private final Type type;
+        private final NodeType type;
         private final List<Node> nodes;
         private final String token;
         private final int start;
         private final int end;
 
-        Node(Type type, int start, int end, String token) {
+        Node(NodeType type, int start, int end, String token) {
             this(type, start, end, null, requireNonNull(token));
         }
 
-        Node(Type type, int start, int end, List<Node> nodes) {
+        Node(NodeType type, int start, int end, List<Node> nodes) {
             this(type, start, end, requireNonNull(nodes), null);
         }
 
-        private Node(Type type, int start, int end, List<Node> nodes, String token) {
+        private Node(NodeType type, int start, int end, List<Node> nodes, String token) {
             this.type = requireNonNull(type);
             this.nodes = nodes;
             this.token = token;
@@ -47,7 +51,7 @@ public final class Ast {
             this.end = end;
         }
 
-        public enum Type {
+        public enum NodeType {
             TEXT_NODE,
             OPTIONAL_NODE,
             ALTERNATION_NODE,
@@ -71,7 +75,7 @@ public final class Ast {
             return nodes;
         }
 
-        public Type type() {
+        public NodeType type() {
             return type;
         }
 
@@ -155,11 +159,11 @@ public final class Ast {
     static final class Token implements Located {
 
         final String text;
-        final Token.Type type;
+        final TokenType type;
         final int start;
         final int end;
 
-        Token(String text, Token.Type type, int start, int end) {
+        Token(String text, TokenType type, int start, int end) {
             this.text = requireNonNull(text);
             this.type = requireNonNull(type);
             this.start = start;
@@ -182,23 +186,23 @@ public final class Ast {
             return false;
         }
 
-        static Type typeOf(Integer token) {
+        static TokenType typeOf(Integer token) {
             if (Character.isWhitespace(token)) {
-                return Type.WHITE_SPACE;
+                return TokenType.WHITE_SPACE;
             }
             switch (token) {
                 case (int) alternationCharacter:
-                    return Type.ALTERNATION;
+                    return TokenType.ALTERNATION;
                 case (int) beginParameterCharacter:
-                    return Type.BEGIN_PARAMETER;
+                    return TokenType.BEGIN_PARAMETER;
                 case (int) endParameterCharacter:
-                    return Type.END_PARAMETER;
+                    return TokenType.END_PARAMETER;
                 case (int) beginOptionalCharacter:
-                    return Type.BEGIN_OPTIONAL;
+                    return TokenType.BEGIN_OPTIONAL;
                 case (int) endOptionalCharacter:
-                    return Type.END_OPTIONAL;
+                    return TokenType.END_OPTIONAL;
             }
-            return Type.TEXT;
+            return TokenType.TEXT;
         }
 
         static boolean isEscapeCharacter(int token) {
@@ -241,7 +245,7 @@ public final class Ast {
                     .toString();
         }
 
-        enum Type {
+        enum TokenType {
             START_OF_LINE,
             END_OF_LINE,
             WHITE_SPACE,
@@ -255,11 +259,11 @@ public final class Ast {
             private final String symbol;
             private final String purpose;
 
-            Type() {
+            TokenType() {
                 this(null, null);
             }
 
-            Type(String symbol, String purpose) {
+            TokenType(String symbol, String purpose) {
                 this.symbol = symbol;
                 this.purpose = purpose;
             }

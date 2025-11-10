@@ -2,26 +2,26 @@ package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
-import io.cucumber.cucumberexpressions.Ast.Token.Type;
+import io.cucumber.cucumberexpressions.Ast.Token.TokenType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATIVE_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.EXPRESSION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.OPTIONAL_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.PARAMETER_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.TEXT_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.ALTERNATION;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_OPTIONAL;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_PARAMETER;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_OF_LINE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_OPTIONAL;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_PARAMETER;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.START_OF_LINE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.WHITE_SPACE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.ALTERNATION_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.ALTERNATIVE_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.EXPRESSION_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.OPTIONAL_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.PARAMETER_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.TEXT_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.ALTERNATION;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.BEGIN_OPTIONAL;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.BEGIN_PARAMETER;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.END_OF_LINE;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.END_OPTIONAL;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.END_PARAMETER;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.START_OF_LINE;
+import static io.cucumber.cucumberexpressions.Ast.Token.TokenType.WHITE_SPACE;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternationNotAllowedInOptional;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createInvalidParameterTypeName;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createMissingEndToken;
@@ -197,9 +197,9 @@ public final class CucumberExpressionParser {
     }
 
     private static Parser parseBetween(
-            Node.Type type,
-            Type beginToken,
-            Type endToken,
+            Node.NodeType type,
+            TokenType beginToken,
+            TokenType endToken,
             List<Parser> parsers) {
         return (expression, tokens, current) -> {
             if (!lookingAt(tokens, current, beginToken)) {
@@ -225,7 +225,7 @@ public final class CucumberExpressionParser {
             List<Parser> parsers,
             List<Token> tokens,
             int startAt,
-            Type... endTokens) {
+            TokenType... endTokens) {
         int current = startAt;
         int size = tokens.size();
         List<Node> ast = new ArrayList<>();
@@ -259,8 +259,8 @@ public final class CucumberExpressionParser {
         throw new IllegalStateException("No eligible parsers for " + tokens);
     }
 
-    private static boolean lookingAtAny(List<Token> tokens, int at, Type... tokenTypes) {
-        for (Type tokeType : tokenTypes) {
+    private static boolean lookingAtAny(List<Token> tokens, int at, TokenType... tokenTypes) {
+        for (TokenType tokeType : tokenTypes) {
             if (lookingAt(tokens, at, tokeType)) {
                 return true;
             }
@@ -268,7 +268,7 @@ public final class CucumberExpressionParser {
         return false;
     }
 
-    private static boolean lookingAt(List<Token> tokens, int at, Type token) {
+    private static boolean lookingAt(List<Token> tokens, int at, TokenType token) {
         if (at < 0) {
             // If configured correctly this will never happen
             // Keep for completeness

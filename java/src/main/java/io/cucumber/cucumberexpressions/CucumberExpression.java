@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Node;
+import io.cucumber.cucumberexpressions.Ast.Node.NodeType;
 import org.apiguardian.api.API;
 
 import java.lang.reflect.Type;
@@ -9,16 +10,14 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.OPTIONAL_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.PARAMETER_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.TEXT_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.OPTIONAL_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.PARAMETER_NODE;
+import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.TEXT_NODE;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternativeMayNotBeEmpty;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternativeMayNotExclusivelyContainOptionals;
-import static io.cucumber.cucumberexpressions.CucumberExpressionException.createInvalidParameterTypeName;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createOptionalIsNotAllowedInOptional;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createOptionalMayNotBeEmpty;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createParameterIsNotAllowedInOptional;
-import static io.cucumber.cucumberexpressions.ParameterType.isValidParameterTypeName;
 import static io.cucumber.cucumberexpressions.RegexpUtils.escapeRegex;
 import static io.cucumber.cucumberexpressions.UndefinedParameterTypeException.createUndefinedParameterType;
 import static java.util.stream.Collectors.joining;
@@ -130,8 +129,8 @@ public final class CucumberExpression implements Expression {
         assertNoNodeOfType(OPTIONAL_NODE, node, createNodeContainedAnOptionalException);
     }
 
-    private void assertNoNodeOfType(Node.Type nodeType, Node node,
-            Function<Node, CucumberExpressionException> createException) {
+    private void assertNoNodeOfType(NodeType nodeType, Node node,
+                                    Function<Node, CucumberExpressionException> createException) {
         node.nodes()
                 .stream()
                 .filter(astNode -> nodeType.equals(astNode.type()))

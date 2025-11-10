@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Token;
+import io.cucumber.cucumberexpressions.Ast.Token.TokenType;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
@@ -76,7 +77,7 @@ class CucumberExpressionTokenizerTest {
 
     static class YamlableToken {
         public String text;
-        public Token.Type type;
+        public TokenType type;
         public int start;
         public int end;
 
