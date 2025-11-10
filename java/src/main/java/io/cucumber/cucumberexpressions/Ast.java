@@ -1,21 +1,11 @@
 package io.cucumber.cucumberexpressions;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 
 final class Ast {
-
-    private static final char escapeCharacter = '\\';
-    private static final char alternationCharacter = '/';
-    private static final char beginParameterCharacter = '{';
-    private static final char endParameterCharacter = '}';
-    private static final char beginOptionalCharacter = '(';
-    private static final char endOptionalCharacter = ')';
 
     interface Located {
         int start();
@@ -24,133 +14,21 @@ final class Ast {
 
     }
 
-    static final class Node implements Located {
-
-        private final Type type;
-        private final List<Node> nodes;
-        private final String token;
-        private final int start;
-        private final int end;
-
-        Node(Type type, int start, int end, String token) {
-            this(type, start, end, null, token);
-        }
-
-        Node(Type type, int start, int end, List<Node> nodes) {
-            this(type, start, end, nodes, null);
-        }
-
-        private Node(Type type, int start, int end, List<Node> nodes, String token) {
-            this.type = requireNonNull(type);
-            this.nodes = nodes;
-            this.token = token;
-            this.start = start;
-            this.end = end;
-        }
-
-        enum Type {
-            TEXT_NODE,
-            OPTIONAL_NODE,
-            ALTERNATION_NODE,
-            ALTERNATIVE_NODE,
-            PARAMETER_NODE,
-            EXPRESSION_NODE
-        }
-
-        public int start() {
-            return start;
-        }
-
-        public int end() {
-            return end;
-        }
-
-        List<Node> nodes() {
-            return nodes;
-        }
-
-        Type type() {
-            return type;
-        }
-
-        String text() {
-            if (nodes == null)
-                return token;
-
-            return nodes().stream()
-                    .map(Node::text)
-                    .collect(joining());
-        }
-
-        @Override
-        public String toString() {
-            return toString(0).toString();
-        }
-
-        private StringBuilder toString(int depth) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < depth; i++) {
-                sb.append("  ");
-            }
-            sb.append("{")
-                    .append("\"type\": \"").append(type)
-                    .append("\", \"start\": ")
-                    .append(start)
-                    .append(", \"end\": ")
-                    .append(end);
-
-            if (token != null) {
-                sb.append(", \"token\": \"").append(token.replaceAll("\\\\", "\\\\\\\\")).append("\"");
-            }
-
-            if (nodes != null) {
-                sb.append(", \"nodes\": ");
-                if (!nodes.isEmpty()) {
-                StringBuilder padding = new StringBuilder();
-                for (int i = 0; i < depth; i++) {
-                    padding.append("  ");
-                }
-                sb.append(nodes.stream()
-                        .map(node -> node.toString(depth + 1))
-                        .collect(joining(",\n", "[\n", "\n" +padding + "]")));
-
-                } else {
-                    sb.append("[]");
-                }
-            }
-            sb.append("}");
-            return sb;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
-            Node node = (Node) o;
-            return start == node.start &&
-                    end == node.end &&
-                    type == node.type &&
-                    Objects.equals(nodes, node.nodes) &&
-                    Objects.equals(token, node.token);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(type, nodes, token, start, end);
-        }
-
-    }
-
     static final class Token implements Located {
 
+        private static final char escapeCharacter = '\\';
+        private static final char alternationCharacter = '/';
+        private static final char beginParameterCharacter = '{';
+        private static final char endParameterCharacter = '}';
+        private static final char beginOptionalCharacter = '(';
+        private static final char endOptionalCharacter = ')';
+        
         final String text;
-        final Token.Type type;
+        final Type type;
         final int start;
         final int end;
 
-        Token(String text, Token.Type type, int start, int end) {
+        Token(String text, Type type, int start, int end) {
             this.text = requireNonNull(text);
             this.type = requireNonNull(type);
             this.start = start;
@@ -224,10 +102,10 @@ final class Ast {
 
         @Override
         public String toString() {
-            return new StringJoiner(", ", "" + "{", "}")
+            return new StringJoiner(", ", "{", "}")
                     .add("\"type\": \"" + type + "\"")
-                    .add("\"start\": " + start + "")
-                    .add("\"end\": " + end + "")
+                    .add("\"start\": " + start)
+                    .add("\"end\": " + end)
                     .add("\"text\": \"" + text + "\"")
                     .toString();
         }

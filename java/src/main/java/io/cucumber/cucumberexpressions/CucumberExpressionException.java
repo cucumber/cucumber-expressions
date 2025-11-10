@@ -1,7 +1,6 @@
 package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Located;
-import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
 import io.cucumber.cucumberexpressions.Ast.Token.Type;
 import org.apiguardian.api.API;
@@ -18,7 +17,7 @@ public class CucumberExpressionException extends RuntimeException {
     }
 
     static CucumberExpressionException createMissingEndToken(String expression, Type beginToken, Type endToken,
-            Token current) {
+                                                             Token current) {
         return new CucumberExpressionException(message(
                 current.start(),
                 expression,
