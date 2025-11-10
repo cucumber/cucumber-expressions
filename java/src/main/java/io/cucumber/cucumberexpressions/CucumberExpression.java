@@ -1,18 +1,16 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Node;
-import io.cucumber.cucumberexpressions.Ast.Node.NodeType;
+import io.cucumber.cucumberexpressions.Node.Type;
 import org.apiguardian.api.API;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.OPTIONAL_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.PARAMETER_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.NodeType.TEXT_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.OPTIONAL_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.PARAMETER_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.TEXT_NODE;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternativeMayNotBeEmpty;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternativeMayNotExclusivelyContainOptionals;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createOptionalIsNotAllowedInOptional;
@@ -129,7 +127,7 @@ public final class CucumberExpression implements Expression {
         assertNoNodeOfType(OPTIONAL_NODE, node, createNodeContainedAnOptionalException);
     }
 
-    private void assertNoNodeOfType(NodeType nodeType, Node node,
+    private void assertNoNodeOfType(Type nodeType, Node node,
                                     Function<Node, CucumberExpressionException> createException) {
         node.nodes()
                 .stream()
@@ -143,7 +141,7 @@ public final class CucumberExpression implements Expression {
 
 
     @Override
-    public List<Argument<?>> match(String text, Type... typeHints) {
+    public List<Argument<?>> match(String text, java.lang.reflect.Type... typeHints) {
         final Group group = treeRegexp.match(text);
         if (group == null) {
             return null;
@@ -152,7 +150,7 @@ public final class CucumberExpression implements Expression {
         List<ParameterType<?>> parameterTypes = new ArrayList<>(this.parameterTypes);
         for (int i = 0; i < parameterTypes.size(); i++) {
             ParameterType<?> parameterType = parameterTypes.get(i);
-            Type type = i < typeHints.length ? typeHints[i] : String.class;
+            java.lang.reflect.Type type = i < typeHints.length ? typeHints[i] : String.class;
             if (parameterType.isAnonymous()) {
                 ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
                 parameterTypes.set(i, parameterType.deAnonymize(type, arg -> defaultTransformer.transform(arg, type)));

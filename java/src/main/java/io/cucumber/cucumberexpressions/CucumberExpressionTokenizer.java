@@ -1,7 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Token;
-import io.cucumber.cucumberexpressions.Ast.Token.TokenType;
+import io.cucumber.cucumberexpressions.Ast.Token.Type;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,8 +30,8 @@ final class CucumberExpressionTokenizer {
         private final OfInt codePoints;
 
         private StringBuilder buffer = new StringBuilder();
-        private TokenType previousTokenType = null;
-        private TokenType currentTokenType = TokenType.START_OF_LINE;
+        private Type previousTokenType = null;
+        private Type currentTokenType = Type.START_OF_LINE;
         private boolean treatAsText;
         private int bufferStartIndex;
         private int escaped;
@@ -41,9 +41,9 @@ final class CucumberExpressionTokenizer {
             this.codePoints = expression.codePoints().iterator();
         }
 
-        private Token convertBufferToToken(TokenType tokenType) {
+        private Token convertBufferToToken(Type tokenType) {
             int escapeTokens = 0;
-            if (tokenType == TokenType.TEXT) {
+            if (tokenType == Type.TEXT) {
                 escapeTokens = escaped;
                 escaped = 0;
             }
@@ -59,25 +59,25 @@ final class CucumberExpressionTokenizer {
             currentTokenType = null;
         }
 
-        private TokenType tokenTypeOf(Integer token, boolean treatAsText) {
+        private Type tokenTypeOf(Integer token, boolean treatAsText) {
             if (!treatAsText) {
                 return Token.typeOf(token);
             }
             if (Token.canEscape(token)) {
-                return TokenType.TEXT;
+                return Type.TEXT;
             }
             throw createCantEscape(expression, bufferStartIndex + buffer.codePointCount(0, buffer.length()) + escaped);
         }
 
-        private boolean shouldContinueTokenType(TokenType previousTokenType,
-                                                TokenType currentTokenType) {
+        private boolean shouldContinueTokenType(Type previousTokenType,
+                                                Type currentTokenType) {
             return currentTokenType == previousTokenType
-                    && (currentTokenType == TokenType.WHITE_SPACE || currentTokenType == TokenType.TEXT);
+                    && (currentTokenType == Type.WHITE_SPACE || currentTokenType == Type.TEXT);
         }
 
         @Override
         public boolean hasNext() {
-            return previousTokenType != TokenType.END_OF_LINE;
+            return previousTokenType != Type.END_OF_LINE;
         }
 
         @Override
@@ -85,7 +85,7 @@ final class CucumberExpressionTokenizer {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            if (currentTokenType == TokenType.START_OF_LINE) {
+            if (currentTokenType == Type.START_OF_LINE) {
                 Token token = convertBufferToToken(currentTokenType);
                 advanceTokenTypes();
                 return token;
@@ -101,7 +101,7 @@ final class CucumberExpressionTokenizer {
                 currentTokenType = tokenTypeOf(codePoint, treatAsText);
                 treatAsText = false;
 
-                if (previousTokenType == TokenType.START_OF_LINE ||
+                if (previousTokenType == Type.START_OF_LINE ||
                         shouldContinueTokenType(previousTokenType, currentTokenType)) {
                     advanceTokenTypes();
                     buffer.appendCodePoint(codePoint);
@@ -119,7 +119,7 @@ final class CucumberExpressionTokenizer {
                 return token;
             }
 
-            currentTokenType = TokenType.END_OF_LINE;
+            currentTokenType = Type.END_OF_LINE;
             if (treatAsText) {
                 throw createTheEndOfLineCanNotBeEscaped(expression);
             }

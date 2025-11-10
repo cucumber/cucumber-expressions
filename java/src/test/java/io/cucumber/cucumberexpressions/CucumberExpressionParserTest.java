@@ -1,7 +1,6 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Node;
-import io.cucumber.cucumberexpressions.Ast.Node.NodeType;
+import io.cucumber.cucumberexpressions.Node.Type;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
@@ -72,7 +71,7 @@ class CucumberExpressionParserTest {
     }
 
     static class YamlableNode {
-        public NodeType type;
+        public Type type;
         public List<YamlableNode> nodes;
         public String token;
         public int start;
