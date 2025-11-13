@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.de.siegmar.fastcsv.util.Nullable;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -112,12 +113,7 @@ public class CucumberExpressionGeneratorTest {
                 "currency",
                 "[A-Z]{3}",
                 Currency.class,
-                new Transformer<Currency>() {
-                    @Override
-                    public Currency transform(String arg) {
-                        return Currency.getInstance(arg);
-                    }
-                }
+                (Transformer<Currency>) Currency::getInstance
         ));
         assertExpression(
                 "I have a {currency} account and a {currency} account", asList("currency", "currency2"),
@@ -130,12 +126,7 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                },
+                (Transformer<String>) arg -> arg,
                 true,
                 false
         ));
@@ -150,12 +141,7 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                },
+                (Transformer<String>) arg -> arg,
                 true,
                 false
         ));
@@ -176,12 +162,7 @@ public class CucumberExpressionGeneratorTest {
                 "left",
                 "b c",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                }
+                (Transformer<String>) arg -> arg
         ));
         assertExpression(
                 "a {left} d e f g", singletonList("left"),
@@ -221,9 +202,9 @@ public class CucumberExpressionGeneratorTest {
                 "date",
                 "x",
                 Date.class,
-                new Transformer<Date>() {
+                new Transformer<>() {
                     @Override
-                    public Date transform(String arg) {
+                    public Date transform(@Nullable String arg) {
                         try {
                             return df.parse(arg);
                         } catch (ParseException e) {

@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @API(status = API.Status.STABLE)
-public class GeneratedExpression {
+public final class GeneratedExpression {
     private static final Collator ENGLISH_COLLATOR = Collator.getInstance(Locale.ENGLISH);
     private static final String[] JAVA_KEYWORDS = {
             "abstract", "assert", "boolean", "break", "byte", "case",
@@ -34,8 +35,8 @@ public class GeneratedExpression {
         this.parameterTypes = parameterTypes;
     }
 
-    private static boolean isJavaKeyword(String keyword) {
-        return (Arrays.binarySearch(JAVA_KEYWORDS, keyword, ENGLISH_COLLATOR) >= 0);
+    private static boolean isJavaKeyword(@Nullable String keyword) {
+        return Arrays.binarySearch(JAVA_KEYWORDS, keyword, ENGLISH_COLLATOR) >= 0;
     }
 
     public String getSource() {

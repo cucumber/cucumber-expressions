@@ -12,8 +12,7 @@ final class NumberParser {
 
     NumberParser(Locale locale) {
         numberFormat = DecimalFormat.getNumberInstance(locale);
-        if (numberFormat instanceof DecimalFormat) {
-            DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        if (numberFormat instanceof DecimalFormat decimalFormat) {
             decimalFormat.setParseBigDecimal(true);
             DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
             decimalFormat.setDecimalFormatSymbols(symbols);

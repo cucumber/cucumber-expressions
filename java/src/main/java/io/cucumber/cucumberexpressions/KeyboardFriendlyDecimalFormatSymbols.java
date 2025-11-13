@@ -8,8 +8,12 @@ import java.util.Locale;
  * <p>
  * Note quite complete, feel free to make a suggestion.
  */
-class KeyboardFriendlyDecimalFormatSymbols {
+final class KeyboardFriendlyDecimalFormatSymbols {
 
+    private KeyboardFriendlyDecimalFormatSymbols(){
+        // utility class
+    }
+    
     static DecimalFormatSymbols getInstance(Locale locale) {
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(locale);
 

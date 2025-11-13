@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Java] Make CucumberExpressionParser.parse public ([#340](https://github.com/cucumber/cucumber-expressions/pull/340))
 ### Changed
 - [Ruby] Minor cosmetic / CI changes for development (Nothing front-facing)
 - [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))

@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,25 +20,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newDirectoryStream;
 import static java.nio.file.Files.newInputStream;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.compile;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class RegularExpressionTest {
+final class RegularExpressionTest {
 
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
 
-    private static List<Path> acceptance_tests_pass() throws IOException {
+    static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "regular-expression", "matching")).forEach(paths::add);
+        try (var directories = newDirectoryStream(Paths.get("..", "testdata", "regular-expression", "matching"))) {
+            directories.forEach(paths::add);
+        }
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
@@ -50,232 +53,222 @@ public class RegularExpressionTest {
                 .map(Argument::getValue)
                 .collect(Collectors.toList());
 
-        assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
-    }
-
-    static class Expectation {
-        public String expression;
-        public String text;
-        public List<?> expected_args;
-    }
-
-    static class Converter implements ArgumentConverter {
-        Yaml yaml = new Yaml();
-
-        @Override
-        public Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
-            try {
-                Path path = (Path) source;
-                InputStream inputStream = newInputStream(path);
-                return yaml.loadAs(inputStream, Expectation.class);
-            } catch (IOException e) {
-                throw new ArgumentConversionException("Could not load " + source, e);
-            }
-        }
+        assertThat(values).isEqualTo(expectation.expectedArgs);
     }
 
     @Test
-    public void documentation_match_arguments() {
+    void documentation_match_arguments() {
         Pattern expr = Pattern.compile("I have (\\d+) cukes? in my (\\w+) now");
         Expression expression = new RegularExpression(expr, parameterTypeRegistry);
         List<Argument<?>> match = expression.match("I have 7 cukes in my belly now");
-        assertEquals(7, match.get(0).getValue());
-        assertEquals("belly", match.get(1).getValue());
+        assertThat(match).extracting(Argument::getValue).map(Object.class::cast).containsExactly(7, "belly");
     }
 
     @Test
-    public void matches_positive_int() {
-        List<?> match = match(compile("(\\d+)"), "22");
-        assertEquals(singletonList(22), match);
+    void matches_positive_int() {
+        List<Object> match = match(compile("(\\d+)"), "22");
+        assertThat(match).containsExactly(22);
     }
 
     @Test
-    public void matches_positive_int_with_hint() {
-        List<?> match = match(compile("(\\d+)"), "22", Integer.class);
-        assertEquals(singletonList(22), match);
+    void matches_positive_int_with_hint() {
+        List<Object> match = match(compile("(\\d+)"), "22", Integer.class);
+        assertThat(match).containsExactly(22);
     }
 
     @Test
-    public void matches_positive_int_with_conflicting_type_hint() {
-        List<?> match = match(compile("(\\d+)"), "22", String.class);
-        assertEquals(singletonList("22"), match);
+    void matches_positive_int_with_conflicting_type_hint() {
+        List<Object> match = match(compile("(\\d+)"), "22", String.class);
+        assertThat(match).containsExactly("22");
     }
 
     @Test
-    public void matches_nested_capture_group_without_match() {
-        List<?> match = match(compile("^a user( named \"([^\"]*)\")?$"), "a user");
-        assertEquals(singletonList(null), match);
+    void matches_nested_capture_group_without_match() {
+        List<Object> match = match(compile("^a user( named \"([^\"]*)\")?$"), "a user");
+        assertThat(match).containsExactly((Object) null);
     }
 
     @Test
-    public void matches_nested_capture_group_with_match() {
-        List<?> match = match(compile("^a user( named \"([^\"]*)\")?$"), "a user named \"Charlie\"");
-        assertEquals(singletonList("Charlie"), match);
+    void matches_nested_capture_group_with_match() {
+        List<Object> match = match(compile("^a user( named \"([^\"]*)\")?$"), "a user named \"Charlie\"");
+        assertThat(match).containsExactly("Charlie");
     }
 
     @Test
-    public void ignores_non_capturing_groups() {
+    void ignores_non_capturing_groups() {
         String expr = "(\\S+) ?(can|cannot)? (?:delete|cancel) the (\\d+)(?:st|nd|rd|th) (attachment|slide) ?(?:upload)?";
         String step = "I can cancel the 1st slide upload";
-        List<?> match = match(compile(expr), step);
-        assertEquals(asList("I", "can", 1, "slide"), match);
+        List<Object> match = match(compile(expr), step);
+        assertThat(match).isEqualTo(asList("I", "can", 1, "slide"));
     }
 
     @Test
-    public void matches_capture_group_nested_in_optional_one() {
+    void matches_capture_group_nested_in_optional_one() {
         String regex = "^a (pre-commercial transaction |pre buyer fee model )?purchase(?: for \\$(\\d+))?$";
-        assertEquals(asList(null, null), match(compile(regex), "a purchase"));
-        assertEquals(asList(null, 33), match(compile(regex), "a purchase for $33"));
-        assertEquals(asList("pre buyer fee model ", null), match(compile(regex), "a pre buyer fee model purchase"));
+        assertThat(match(Pattern.compile(regex), "a purchase")).containsExactly(null, null);
+        assertThat(match(Pattern.compile(regex), "a purchase for $33")).containsExactly(null, 33);
+        assertThat(match(Pattern.compile(regex), "a pre buyer fee model purchase")).containsExactly("pre buyer fee model ", null);
     }
 
     @Test
-    public void works_with_escaped_parenthesis() {
+    void works_with_escaped_parenthesis() {
         String expr = "Across the line\\(s\\)";
         String step = "Across the line(s)";
-        List<?> match = match(compile(expr), step);
-        assertEquals(emptyList(), match);
+        List<Object> match = match(compile(expr), step);
+        assertThat(match).isEmpty();
     }
 
     @Test
-    public void exposes_source_and_regexp() {
+    void exposes_source_and_regexp() {
         String regexp = "I have (\\d+) cukes? in my (.+) now";
-        RegularExpression expression = new RegularExpression(Pattern.compile(regexp),
-                new ParameterTypeRegistry(Locale.ENGLISH));
-        assertEquals(regexp, expression.getSource());
-        assertEquals(regexp, expression.getRegexp().pattern());
+        RegularExpression expression = new RegularExpression(Pattern.compile(regexp), new ParameterTypeRegistry(Locale.ENGLISH));
+        assertThat(expression.getSource()).isEqualTo(regexp);
+        assertThat(expression.getRegexp().pattern()).isEqualTo(regexp);
     }
 
     @Test
-    public void uses_float_type_hint_when_group_doesnt_match_known_param_type() {
-        List<?> match = match(compile("a (.*)"), "a 22", Float.class);
-        assertEquals(Float.class, match.get(0).getClass());
-        assertEquals(22f, (Float) match.get(0), 0.00001);
+    void uses_float_type_hint_when_group_doesnt_match_known_param_type() {
+        List<Object> match = match(compile("a (.*)"), "a 22", Float.class);
+        assertThat(match.get(0).getClass()).isEqualTo(Float.class);
+        assertThat(match.get(0)).isEqualTo(22f);
     }
 
     @Test
-    public void uses_double_type_hint_when_group_doesnt_match_known_param_type() {
-        List<?> match = match(compile("a (\\d\\d.\\d)"), "a 33.5", Double.class);
-        assertEquals(Double.class, match.get(0).getClass());
-        assertEquals(33.5d, (Double) match.get(0), 0.00001);
+    void uses_double_type_hint_when_group_doesnt_match_known_param_type() {
+        List<Object> match = match(compile("a (\\d\\d.\\d)"), "a 33.5", Double.class);
+        assertThat(match.get(0).getClass()).isEqualTo(Double.class);
+        assertThat(match.get(0)).isEqualTo(33.5d);
     }
 
     @Test
-    public void matches_empty_string() {
-        List<?> match = match(compile("^The value equals \"([^\"]*)\"$"), "The value equals \"\"", String.class);
-        assertEquals(String.class, match.get(0).getClass());
-        assertEquals("", match.get(0));
+    void matches_empty_string() {
+        List<Object> match = match(compile("^The value equals \"([^\"]*)\"$"), "The value equals \"\"", String.class);
+        assertThat(match.get(0).getClass()).isEqualTo(String.class);
+        assertThat(match.get(0)).isEqualTo("");
     }
 
     @Test
-    public void uses_two_type_hints_to_resolve_anonymous_parameter_type() {
-        List<?> match = match(compile("a (.*) and a (.*)"), "a 22 and a 33.5", Float.class, Double.class);
+    void uses_two_type_hints_to_resolve_anonymous_parameter_type() {
+        List<Object> match = match(compile("a (.*) and a (.*)"), "a 22 and a 33.5", Float.class, Double.class);
 
-        assertEquals(Float.class, match.get(0).getClass());
-        assertEquals(22f, (Float) match.get(0), 0.00001);
+        assertThat(match.get(0).getClass()).isEqualTo(Float.class);
+        assertThat(match.get(0)).isEqualTo(22f);
 
-        assertEquals(Double.class, match.get(1).getClass());
-        assertEquals(33.5d, (Double) match.get(1), 0.00001);
+        assertThat(match.get(1).getClass()).isEqualTo(Double.class);
+        assertThat(match.get(1)).isEqualTo(33.5d);
     }
 
     @Test
-    public void retains_all_content_captured_by_the_capture_group() {
-        List<?> match = match(compile("a quote ([\"a-z ]+)"), "a quote \" and quote \"", String.class);
-        assertEquals(singletonList("\" and quote \""), match);
+    void retains_all_content_captured_by_the_capture_group() {
+        List<Object> match = match(compile("a quote ([\"a-z ]+)"), "a quote \" and quote \"", String.class);
+        assertThat(match).containsExactly("\" and quote \"");
     }
 
     @Test
-    public void uses_parameter_type_registry_when_parameter_type_is_defined() {
+    void uses_parameter_type_registry_when_parameter_type_is_defined() {
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "test",
                 "[\"a-z ]+",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String s) {
-                        return s.toUpperCase();
-                    }
-                }
+                (@Nullable String s) -> requireNonNull(s).toUpperCase(Locale.US)
         ));
-        List<?> match = match(compile("a quote ([\"a-z ]+)"), "a quote \" and quote \"", String.class);
-        assertEquals(singletonList("\" AND QUOTE \""), match);
+        List<Object> match = match(compile("a quote ([\"a-z ]+)"), "a quote \" and quote \"", String.class);
+        assertThat(match).containsExactly("\" AND QUOTE \"");
     }
 
     @Test
-    public void ignores_type_hint_when_parameter_type_has_strong_type_hint() {
+    void ignores_type_hint_when_parameter_type_has_strong_type_hint() {
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "test",
                 "one|two|three",
                 Integer.class,
-                new Transformer<Integer>() {
-                    @Override
-                    public Integer transform(String s) {
-                        return 42;
-                    }
-                }, false, false, true
+                s -> 42,
+                false,
+                false,
+                true
         ));
-        assertEquals(asList(42), match(compile("(one|two|three)"), "one", String.class));
+        assertThat(match(Pattern.compile("(one|two|three)"), "one", String.class)).containsExactly(42);
     }
 
     @Test
-    public void follows_type_hint_when_parameter_type_does_not_have_strong_type_hint() {
+    void follows_type_hint_when_parameter_type_does_not_have_strong_type_hint() {
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "test",
                 "one|two|three",
                 Integer.class,
-                new Transformer<Integer>() {
-                    @Override
-                    public Integer transform(String s) {
-                        return 42;
-                    }
-                }, false, false, false
+                s -> 42,
+                false,
+                false,
+                false
         ));
-        assertEquals(asList("one"), match(compile("(one|two|three)"), "one", String.class));
+        assertThat(match(Pattern.compile("(one|two|three)"), "one", String.class)).containsExactly("one");
     }
 
     @Test
-    public void matches_anonymous_parameter_type_with_hint() {
-        assertEquals(singletonList(0.22f), match(compile("(.*)"), "0.22", Float.class));
+    void matches_anonymous_parameter_type_with_hint() {
+        assertThat(match(Pattern.compile("(.*)"), "0.22", Float.class)).containsExactly(0.22f);
     }
 
     @Test
-    public void matches_anonymous_parameter_type() {
-        assertEquals(singletonList("0.22"), match(compile("(.*)"), "0.22"));
+    void matches_anonymous_parameter_type() {
+        assertThat(match(Pattern.compile("(.*)"), "0.22")).containsExactly("0.22");
     }
 
     @Test
-    public void matches_optional_boolean_capture_group() {
+    void matches_optional_boolean_capture_group() {
         Pattern pattern = compile("^(true|false)?$");
-        assertEquals(singletonList(true), match(pattern, "true", Boolean.class));
-        assertEquals(singletonList(false), match(pattern, "false", Boolean.class));
-        assertEquals(singletonList(null), match(pattern, "", Boolean.class));
+        assertThat(match(pattern, "true", Boolean.class)).containsExactly(true);
+        assertThat(match(pattern, "false", Boolean.class)).containsExactly(false);
+        assertThat(match(pattern, "", Boolean.class)).containsExactly((Object) null);
     }
 
     @Test
-    public void parameter_types_can_be_optional_when_used_in_regex() {
+    void parameter_types_can_be_optional_when_used_in_regex() {
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "test",
                 ".+",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String s) {
-                        return s;
-                    }
-                }
+                (@Nullable String s) -> s
         ));
-        List<?> match = match(compile("^text(?: (.+))? text2$"), "text text2", String.class);
-        assertEquals(singletonList(null), match);
+        List<Object> match = match(compile("^text(?: (.+))? text2$"), "text text2", String.class);
+        assertThat(match).containsExactly((Object) null);
     }
 
-    private List<?> match(Pattern pattern, String text, Type... types) {
+    private List<Object> match(Pattern pattern, String text, Type... types) {
         RegularExpression regularExpression = new RegularExpression(pattern, parameterTypeRegistry);
         List<Argument<?>> arguments = regularExpression.match(text, types);
         List<Object> values = new ArrayList<>();
-        for (Argument<?> argument : arguments) {
+        for (Argument<?> argument : requireNonNull(arguments)) {
             values.add(argument.getValue());
         }
         return values;
+    }
+
+
+    record Expectation(String expression, String text, List<?> expectedArgs) {
+    }
+
+    @NullMarked
+    static class Converter implements ArgumentConverter {
+        Yaml yaml = new Yaml();
+
+        @Override
+        public Expectation convert(@Nullable Object source, ParameterContext context) throws ArgumentConversionException {
+            if (source == null) {
+                throw new ArgumentConversionException("Could not load null");
+            }
+            try {
+                Path path = (Path) source;
+                InputStream inputStream = newInputStream(path);
+                Map<String, ?> expectation = yaml.loadAs(inputStream, Map.class);
+                return new Expectation(
+                        (String) requireNonNull(expectation.get("expression")),
+                        (String) requireNonNull(expectation.get("text")),
+                        (List<?>) requireNonNull(expectation.get("expected_args")));
+            } catch (IOException e) {
+                throw new ArgumentConversionException("Could not load " + source, e);
+            }
+        }
     }
 
 }

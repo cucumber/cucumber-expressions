@@ -1,9 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import io.cucumber.cucumberexpressions.Ast.Located;
-import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
-import io.cucumber.cucumberexpressions.Ast.Token.Type;
 import org.apiguardian.api.API;
 
 @API(status = API.Status.STABLE)
@@ -17,8 +15,8 @@ public class CucumberExpressionException extends RuntimeException {
         super(message, cause);
     }
 
-    static CucumberExpressionException createMissingEndToken(String expression, Type beginToken, Type endToken,
-            Token current) {
+    static CucumberExpressionException createMissingEndToken(String expression, Token.Type beginToken, Token.Type endToken,
+                                                             Token current) {
         return new CucumberExpressionException(message(
                 current.start(),
                 expression,
@@ -66,6 +64,7 @@ public class CucumberExpressionException extends RuntimeException {
                 "An optional may not contain a parameter type",
                 "If you did not mean to use an parameter type you can use '\\{' to escape the '{'"));
     }
+
     static CucumberExpressionException createOptionalIsNotAllowedInOptional(Node node, String expression) {
         return new CucumberExpressionException(message(
                 node.start(),
@@ -85,7 +84,7 @@ public class CucumberExpressionException extends RuntimeException {
     }
 
     static CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(Node node,
-            String expression) {
+                                                                                          String expression) {
         return new CucumberExpressionException(message(
                 node.start(),
                 expression,
@@ -131,7 +130,7 @@ public class CucumberExpressionException extends RuntimeException {
     }
 
     static String message(int index, String expression, String pointer, String problem,
-            String solution) {
+                          String solution) {
         return thisCucumberExpressionHasAProblemAt(index) +
                 "\n" +
                 expression + "\n" +

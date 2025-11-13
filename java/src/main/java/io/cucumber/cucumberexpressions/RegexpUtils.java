@@ -1,6 +1,6 @@
 package io.cucumber.cucumberexpressions;
 
-class RegexpUtils {
+final class RegexpUtils {
     /**
      * List of characters to be escaped.
      * The last char is '}' with index 125, so we need only 126 characters.
@@ -24,6 +24,10 @@ class RegexpUtils {
         CHAR_TO_ESCAPE['\\'] = true;
     }
 
+    private RegexpUtils(){
+        // utility class
+    }
+
     /**
      * Escapes the regexp characters (the ones from "^$(){}[].+*?\")
      * from the given text, so that they are not considered as regexp
@@ -32,7 +36,7 @@ class RegexpUtils {
      * @param text the non-null input text
      * @return the input text with escaped regexp characters
      */
-    public static String escapeRegex(String text) {
+    static String escapeRegex(String text) {
         /*
         Note on performance: this code has been benchmarked for
         escaping frequencies of 100%, 50%, 20%, 10%, 1%, 0.1%.
@@ -40,7 +44,8 @@ class RegexpUtils {
         this variant is the faster on all escaping frequencies.
         */
         int length = text.length();
-        StringBuilder sb = null; // lazy initialization
+        // lazy initialization
+        StringBuilder sb = null; 
         int blockStart = 0;
         int maxChar = CHAR_TO_ESCAPE.length;
         for (int i = 0; i < length; i++) {

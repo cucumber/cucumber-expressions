@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -18,11 +20,12 @@ final class BuiltInParameterTransformer implements ParameterByTypeTransformer {
     }
 
     @Override
-    public Object transform(String fromValue, Type toValueType) {
+    public @Nullable Object transform(@Nullable String fromValue, Type toValueType) {
         return doTransform(fromValue, toValueType, toValueType);
     }
 
-    private Object doTransform(String fromValue, Type toValueType, Type originalToValueType) {
+    @Nullable
+    private Object doTransform(@Nullable String fromValue, Type toValueType, Type originalToValueType) {
         Type optionalValueType;
         if ((optionalValueType = getOptionalGenericType(toValueType)) != null) {
             Object wrappedValue = doTransform(fromValue, optionalValueType, originalToValueType);
@@ -99,16 +102,16 @@ final class BuiltInParameterTransformer implements ParameterByTypeTransformer {
         throw createIllegalArgumentException(fromValue, originalToValueType);
     }
 
+    @Nullable
     private Type getOptionalGenericType(Type type) {
         if (Optional.class.equals(type)) {
             return Object.class;
         }
 
-        if (!(type instanceof ParameterizedType)) {
+        if (!(type instanceof ParameterizedType parameterizedType)) {
             return null;
         }
 
-        ParameterizedType parameterizedType = (ParameterizedType) type;
         if (Optional.class.equals(parameterizedType.getRawType())) {
             return parameterizedType.getActualTypeArguments()[0];
         }
@@ -116,7 +119,7 @@ final class BuiltInParameterTransformer implements ParameterByTypeTransformer {
         return null;
     }
 
-    private IllegalArgumentException createIllegalArgumentException(String fromValue, Type toValueType) {
+    private IllegalArgumentException createIllegalArgumentException(@Nullable String fromValue, Type toValueType) {
         return new IllegalArgumentException(
                 "Can't transform '" + fromValue + "' to " + toValueType + "\n" +
                         "BuiltInParameterTransformer only supports a limited number of class types\n" +

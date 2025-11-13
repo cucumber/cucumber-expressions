@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.de.siegmar.fastcsv.util.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,31 +47,31 @@ public class CombinatorialGeneratedExpressionFactoryTest {
     }
 
     public static class Color {
-        Color(String s) {
+        Color(@Nullable String s) {
             assertNotNull(s);
         }
     }
 
     public static class CssColor {
-        CssColor(String s) {
+        CssColor(@Nullable String s) {
             assertNotNull(s);
         }
     }
 
     public static class Date {
-        Date(String s) {
+        Date(@Nullable String s) {
             assertNotNull(s);
         }
     }
 
     public static class DateTime {
-        DateTime(String s) {
+        DateTime(@Nullable String s) {
             assertNotNull(s);
         }
     }
 
     public static class Timestamp {
-        Timestamp(String s) {
+        Timestamp(@Nullable String s) {
             assertNotNull(s);
         }
     }

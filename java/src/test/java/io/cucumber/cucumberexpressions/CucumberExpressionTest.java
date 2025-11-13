@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.function.Executable;
@@ -15,30 +17,40 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newDirectoryStream;
 import static java.nio.file.Files.newInputStream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@NullMarked
 class CucumberExpressionTest {
     private final ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
 
-    private static List<Path> acceptance_tests_pass() throws IOException {
+    static List<Path> acceptance_tests_pass() throws IOException {
         List<Path> paths = new ArrayList<>();
-        newDirectoryStream(Paths.get("..", "testdata", "cucumber-expression", "matching")).forEach(paths::add);
+        Path path = Paths.get("..", "testdata", "cucumber-expression", "matching");
+        try (DirectoryStream<Path> directories = newDirectoryStream(path)) {
+            directories.forEach(paths::add);
+        }
         paths.sort(Comparator.naturalOrder());
         return paths;
     }
@@ -48,44 +60,27 @@ class CucumberExpressionTest {
     void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
         if (expectation.exception == null) {
             CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
-            List<Argument<?>> match = expression.match(expectation.text);
+            List<Argument<?>> match = expression.match(requireNonNull(expectation.text));
             List<?> values = match == null ? null : match.stream()
                     .map(Argument::getValue)
                     .collect(Collectors.toList());
 
-            assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expected_args));
+            if (expectation.expectedArgs == null) {
+                assertThat(values, nullValue());
+            } else {
+                assertThat(values, CustomMatchers.equalOrCloseTo(expectation.expectedArgs));
+            }
         } else {
             Executable executable = () -> {
                 CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
-                expression.match(expectation.text);
+                if (expectation.text != null) {
+                    expression.match(expectation.text);
+                }
             };
             CucumberExpressionException exception = assertThrows(CucumberExpressionException.class, executable);
             assertThat(exception.getMessage(), equalTo(expectation.exception));
         }
     }
-
-    static class Expectation {
-        public String expression;
-        public String text;
-        public List<?> expected_args;
-        public String exception;
-    }
-
-    static class Converter implements ArgumentConverter {
-        Yaml yaml = new Yaml();
-
-        @Override
-        public Expectation convert(Object source, ParameterContext context) throws ArgumentConversionException {
-            try {
-                Path path = (Path) source;
-                InputStream inputStream = newInputStream(path);
-                return yaml.loadAs(inputStream, Expectation.class);
-            } catch (IOException e) {
-                throw new ArgumentConversionException("Could not load " + source, e);
-            }
-        }
-    }
-
     // Misc tests
 
     @Test
@@ -105,6 +100,7 @@ class CucumberExpressionTest {
         String expr = "I have {int} cuke(s)";
         Expression expression = new CucumberExpression(expr, parameterTypeRegistry);
         List<Argument<?>> args = expression.match("I have 7 cukes");
+        assertNotNull(args);
         assertEquals(7, args.get(0).getValue());
     }
 
@@ -145,7 +141,7 @@ class CucumberExpressionTest {
     @Test
     void matches_float_with_zero() {
         List<?> values = match("{float}", "0", Locale.ENGLISH);
-        assertEquals(0.0f, values.get(0));
+        assertEquals(singletonList(0.0f), values);
     }
 
     @Test
@@ -158,8 +154,8 @@ class CucumberExpressionTest {
                 }.getType(),
                 new CaptureGroupTransformer<List<String>>() {
                     @Override
-                    public List<String> transform(String... args) {
-                        return asList(args);
+                    public List<String> transform(@Nullable String[] args) {
+                        return Arrays.asList(args);
                     }
                 },
                 false,
@@ -169,15 +165,18 @@ class CucumberExpressionTest {
         assertThat(match("{textAndOrNumber}", "123", parameterTypeRegistry), is(singletonList(asList(null, "123"))));
     }
 
+    @Nullable
     private List<?> match(String expr, String text, Type... typeHints) {
         return match(expr, text, parameterTypeRegistry, typeHints);
     }
 
+    @Nullable
     private List<?> match(String expr, String text, Locale locale, Type... typeHints) {
         ParameterTypeRegistry parameterTypeRegistry = new ParameterTypeRegistry(locale);
         return match(expr, text, parameterTypeRegistry, typeHints);
     }
 
+    @Nullable
     private List<?> match(String expr, String text, ParameterTypeRegistry parameterTypeRegistry, Type... typeHints) {
         CucumberExpression expression = new CucumberExpression(expr, parameterTypeRegistry);
         List<Argument<?>> args = expression.match(text, typeHints);
@@ -190,6 +189,37 @@ class CucumberExpressionTest {
                 list.add(value);
             }
             return list;
+        }
+    }
+
+
+    public record Expectation(String expression, @Nullable String text, @Nullable List<?> expectedArgs,
+                              @Nullable String exception) {
+    }
+
+    @NullMarked
+    static class Converter implements ArgumentConverter {
+        Yaml yaml = new Yaml();
+
+        @Override
+        public Expectation convert(@Nullable Object source, ParameterContext context) throws ArgumentConversionException {
+            if (source == null) {
+                throw new ArgumentConversionException("Could not load null");
+            }
+
+            try {
+                Path path = (Path) source;
+                InputStream inputStream = newInputStream(path);
+                Map<String, ?> document = yaml.loadAs(inputStream, Map.class);
+                return new Expectation(
+                        (String) requireNonNull(document.get("expression")),
+                        (String) document.get("text"),
+                        (List<?>) document.get("expected_args"),
+                        (String) document.get("exception")
+                );
+            } catch (IOException e) {
+                throw new ArgumentConversionException("Could not load " + source, e);
+            }
         }
     }
 }

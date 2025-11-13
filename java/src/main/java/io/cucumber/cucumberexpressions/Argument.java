@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public final class Argument<T> {
         return group;
     }
 
-    public T getValue() {
+    public @Nullable T getValue() {
         return parameterType.transform(group.getValues());
     }
 

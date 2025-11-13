@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -8,10 +9,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 
 @API(status = API.Status.STABLE)
 public final class ParameterType<T> implements Comparable<ParameterType<?>> {
-    @SuppressWarnings("RegExpRedundantEscape") // Android can't parse unescaped braces
+
+    // Android can't parse unescaped braces
+    @SuppressWarnings("RegExpRedundantEscape") 
     private static final Pattern ILLEGAL_PARAMETER_NAME_PATTERN = Pattern.compile("([{}()\\\\/])");
     private static final Pattern UNESCAPE_PATTERN = Pattern.compile("(\\\\([\\[$.|?*+\\]]))");
 
@@ -24,10 +28,11 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     private final boolean anonymous;
     private final boolean useRegexpMatchAsStrongTypeHint;
 
-    static void checkParameterTypeName(String name) {
+    static String requireValidParameterTypeName(String name) {
         if (!isValidParameterTypeName(name)) {
             throw CucumberExpressionException.createInvalidParameterTypeName(name);
         }
+        return name;
     }
 
     static boolean isValidParameterTypeName(String name) {
@@ -37,17 +42,13 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     static ParameterType<Object> createAnonymousParameterType(String regexp) {
-        return new ParameterType<>("", singletonList(regexp), Object.class, new CaptureGroupTransformer<Object>() {
-
-            public Object transform(String[] arg) {
-                throw new UnsupportedOperationException("Anonymous transform must be deanonymized before use");
-            }
+        return new ParameterType<>("", singletonList(regexp), Object.class, arg -> {
+            throw new UnsupportedOperationException("Anonymous transform must be deanonymized before use");
         }, false, true, false, true);
     }
 
-    @SuppressWarnings("unchecked")
-    static <E extends Enum> ParameterType<E> fromEnum(final Class<E> enumClass) {
-        Enum[] enumConstants = enumClass.getEnumConstants();
+    static <E extends Enum<E>> ParameterType<E> fromEnum(final Class<E> enumClass) {
+        var enumConstants = enumClass.getEnumConstants();
         StringBuilder regexpBuilder = new StringBuilder();
         for (int i = 0; i < enumConstants.length; i++) {
             if (i > 0)
@@ -58,25 +59,24 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
                 enumClass.getSimpleName(),
                 regexpBuilder.toString(),
                 enumClass,
-                (String arg) -> (E) Enum.valueOf(enumClass, arg)
+                (@Nullable String arg) -> arg == null ? null : Enum.valueOf(enumClass, arg)
         );
     }
 
-    private ParameterType(String name, List<String> regexps, Type type, CaptureGroupTransformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint,
-            boolean anonymous) {
-        if (regexps == null)
-            throw new NullPointerException("regexps cannot be null");
-        if (type == null)
-            throw new NullPointerException("type cannot be null");
-        if (transformer == null)
-            throw new NullPointerException("transformer cannot be null");
-        if (name != null)
-            checkParameterTypeName(name);
-        this.name = name;
-        this.regexps = regexps;
-        this.type = type;
-        this.transformer = transformer;
+    private ParameterType(
+            String name,
+            List<String> regexps,
+            Type type,
+            CaptureGroupTransformer<T> transformer,
+            boolean useForSnippets,
+            boolean preferForRegexpMatch,
+            boolean useRegexpMatchAsStrongTypeHint,
+            boolean anonymous
+    ) {
+        this.name = requireValidParameterTypeName(requireNonNull(name));
+        this.regexps = requireNonNull(regexps);
+        this.type = requireNonNull(type);
+        this.transformer = requireNonNull(transformer);
         this.useForSnippets = useForSnippets;
         this.preferForRegexpMatch = preferForRegexpMatch;
         this.anonymous = anonymous;
@@ -84,13 +84,13 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     public ParameterType(String name, List<String> regexps, Type type, CaptureGroupTransformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
+                         boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
         this(name, regexps, type, transformer, useForSnippets, preferForRegexpMatch, useRegexpMatchAsStrongTypeHint,
                 false);
     }
 
     public ParameterType(String name, List<String> regexps, Type type, CaptureGroupTransformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch) {
+                         boolean useForSnippets, boolean preferForRegexpMatch) {
         // Unless explicitly set useRegexpMatchAsStrongTypeHint is true.
         //
         // Reasoning:
@@ -111,12 +111,12 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     public ParameterType(String name, List<String> regexps, Class<T> type, CaptureGroupTransformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch) {
+                         boolean useForSnippets, boolean preferForRegexpMatch) {
         this(name, regexps, (Type) type, transformer, useForSnippets, preferForRegexpMatch);
     }
 
     public ParameterType(String name, String regexp, Class<T> type, CaptureGroupTransformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch) {
+                         boolean useForSnippets, boolean preferForRegexpMatch) {
         this(name, singletonList(regexp), type, transformer, useForSnippets, preferForRegexpMatch);
     }
 
@@ -129,35 +129,35 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     public ParameterType(String name, List<String> regexps, Type type, Transformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
+                         boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
         this(name, regexps, type, new TransformerAdaptor<>(transformer), useForSnippets, preferForRegexpMatch,
                 useRegexpMatchAsStrongTypeHint);
     }
 
     public ParameterType(String name, List<String> regexps, Type type, Transformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch) {
+                         boolean useForSnippets, boolean preferForRegexpMatch) {
         this(name, regexps, type, new TransformerAdaptor<>(transformer), useForSnippets, preferForRegexpMatch);
     }
 
     public ParameterType(String name, List<String> regexps, Class<T> type, Transformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
+                         boolean useForSnippets, boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
         this(name, regexps, (Type) type, transformer, useForSnippets, preferForRegexpMatch,
                 useRegexpMatchAsStrongTypeHint);
     }
 
     public ParameterType(String name, List<String> regexps, Class<T> type, Transformer<T> transformer,
-            boolean useForSnippets, boolean preferForRegexpMatch) {
+                         boolean useForSnippets, boolean preferForRegexpMatch) {
         this(name, regexps, (Type) type, transformer, useForSnippets, preferForRegexpMatch);
     }
 
     public ParameterType(String name, String regexp, Class<T> type, Transformer<T> transformer, boolean useForSnippets,
-            boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
+                         boolean preferForRegexpMatch, boolean useRegexpMatchAsStrongTypeHint) {
         this(name, singletonList(regexp), type, transformer, useForSnippets, preferForRegexpMatch,
                 useRegexpMatchAsStrongTypeHint);
     }
 
     public ParameterType(String name, String regexp, Class<T> type, Transformer<T> transformer, boolean useForSnippets,
-            boolean preferForRegexpMatch) {
+                         boolean preferForRegexpMatch) {
         this(name, singletonList(regexp), type, transformer, useForSnippets, preferForRegexpMatch);
     }
 
@@ -172,7 +172,7 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     /**
      * This is used in the type name in typed expressions
      *
-     * @return human readable type name
+     * @return human-readable type name
      */
     public String getName() {
         return name;
@@ -207,7 +207,7 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     /**
-     * Indicates whether or not this is a parameter type should be used for generating
+     * Indicates whether this is a parameter type should be used for generating
      * {@link GeneratedExpression}s from text. Typically, parameter types with greedy regexps
      * should return false.
      *
@@ -240,17 +240,18 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
                 preferForRegexpMatch, useRegexpMatchAsStrongTypeHint, anonymous);
     }
 
+    @Nullable
     T transform(List<String> groupValues) {
         if (transformer instanceof TransformerAdaptor) {
             if (groupValues.size() > 1) {
                 if (isAnonymous()) {
-                    throw new CucumberExpressionException(String.format("" +
+                    throw new CucumberExpressionException(String.format(
                             "Anonymous ParameterType has multiple capture groups %s. " +
-                            "You can only use a single capture group in an anonymous ParameterType.", regexps));
+                                    "You can only use a single capture group in an anonymous ParameterType.", regexps));
                 }
-                throw new CucumberExpressionException(String.format("" +
+                throw new CucumberExpressionException(String.format(
                         "ParameterType {%s} was registered with a Transformer but has multiple capture groups %s. " +
-                        "Did you mean to use a CaptureGroupTransformer?", name, regexps));
+                                "Did you mean to use a CaptureGroupTransformer?", name, regexps));
             }
         }
 
@@ -267,14 +268,12 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     @Override
-    public int compareTo(ParameterType<?> o) {
-        if (preferForRegexpMatch() && !o.preferForRegexpMatch())
+    public int compareTo(ParameterType<?> that) {
+        if (preferForRegexpMatch() && !that.preferForRegexpMatch())
             return -1;
-        if (o.preferForRegexpMatch() && !preferForRegexpMatch())
+        if (that.preferForRegexpMatch() && !preferForRegexpMatch())
             return 1;
-        String name = getName() != null ? getName() : "";
-        String otherName = o.getName() != null ? o.getName() : "";
-        return name.compareTo(otherName);
+        return getName().compareTo(that.getName());
     }
 
     public int weight() {
@@ -289,13 +288,12 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
         private final Transformer<T> transformer;
 
         private TransformerAdaptor(Transformer<T> transformer) {
-            if (transformer == null)
-                throw new NullPointerException("transformer cannot be null");
+            requireNonNull(transformer);
             this.transformer = transformer;
         }
 
         @Override
-        public T transform(String[] args) throws Throwable {
+        public @Nullable T transform(@Nullable String[] args) throws Throwable {
             return transformer.transform(args[0]);
         }
 

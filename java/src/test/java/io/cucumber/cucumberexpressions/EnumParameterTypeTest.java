@@ -2,12 +2,11 @@ package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Locale;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class EnumParameterTypeTest {
+class EnumParameterTypeTest {
 
     public enum Mood {
         happy,
@@ -16,13 +15,15 @@ public class EnumParameterTypeTest {
     }
 
     @Test
-    public void converts_to_enum() {
-        ParameterTypeRegistry registry = new ParameterTypeRegistry(Locale.ENGLISH);
+    void converts_to_enum() {
+        var registry = new ParameterTypeRegistry(Locale.ENGLISH);
         registry.defineParameterType(ParameterType.fromEnum(Mood.class));
 
-        CucumberExpression expression = new CucumberExpression("I am {Mood}", registry);
-        List<Argument<?>> args = expression.match("I am happy");
-        assertEquals(Mood.happy, args.get(0).getValue());
+        var expression = new CucumberExpression("I am {Mood}", registry);
+        var args = expression.match("I am happy");
+        assertThat(args).singleElement()
+                .extracting(Argument::getValue)
+                .isEqualTo(Mood.happy);
     }
 
 }

@@ -1,19 +1,16 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
-import io.cucumber.cucumberexpressions.Ast.Token.Type;
+import org.apiguardian.api.API;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATIVE_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.EXPRESSION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.OPTIONAL_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.PARAMETER_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.TEXT_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.ALTERNATION_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.ALTERNATIVE_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.EXPRESSION_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.OPTIONAL_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.TEXT_NODE;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.ALTERNATION;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_OPTIONAL;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_PARAMETER;
@@ -27,8 +24,13 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createMissingEndToken;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
-final class CucumberExpressionParser {
+/**
+ * A parser for Cucumber expressions
+ */
+@API(since = "18.1", status = EXPERIMENTAL)
+public final class CucumberExpressionParser {
 
     /*
      * text := whitespace | ')' | '}' | .
@@ -58,31 +60,25 @@ final class CucumberExpressionParser {
      */
     private static final Parser nameParser = (expression, tokens, current) -> {
         Token token = tokens.get(current);
-        switch (token.type) {
-            case WHITE_SPACE:
-            case TEXT:
-                return new Result(1, new Node(TEXT_NODE, token.start(), token.end(), token.text));
-            case BEGIN_OPTIONAL:
-            case END_OPTIONAL:
-            case BEGIN_PARAMETER:
-            case END_PARAMETER:
-            case ALTERNATION:
-                throw createInvalidParameterTypeName(token, expression);
-            case START_OF_LINE:
-            case END_OF_LINE:
-            default:
-                // If configured correctly this will never happen
-                return new Result(0);
-        }
+        return switch (token.type) {
+            case WHITE_SPACE, TEXT -> new Result(1, new Node(TEXT_NODE, token.start(), token.end(), token.text));
+            case BEGIN_OPTIONAL,
+                 END_OPTIONAL,
+                 BEGIN_PARAMETER,
+                 END_PARAMETER,
+                 ALTERNATION -> throw createInvalidParameterTypeName(token, expression);
+            // If configured correctly this will never happen
+            default -> new Result(0);
+        };
     };
 
     /*
      * parameter := '{' + name* + '}'
      */
     private static final Parser parameterParser = parseBetween(
-            PARAMETER_NODE,
-            BEGIN_PARAMETER,
-            END_PARAMETER,
+            Node.Type.PARAMETER_NODE,
+            Token.Type.BEGIN_PARAMETER,
+            Token.Type.END_PARAMETER,
             singletonList(nameParser)
     );
 
@@ -91,6 +87,7 @@ final class CucumberExpressionParser {
      * option := optional | parameter | text
      */
     private static final Parser optionalParser;
+
     static {
         List<Parser> parsers = new ArrayList<>();
         optionalParser = parseBetween(
@@ -160,37 +157,24 @@ final class CucumberExpressionParser {
             )
     );
 
-    Node parse(String expression) {
+    /**
+     * Parses as Cucumber expression into an AST of {@link Node nodes}.
+     *
+     * @param expression the expression to parse
+     * @return an AST of nodes
+     * @throws CucumberExpressionException if the expression could not be parsed
+     */
+    public Node parse(String expression) {
         CucumberExpressionTokenizer tokenizer = new CucumberExpressionTokenizer();
         List<Token> tokens = tokenizer.tokenize(expression);
         Result result = cucumberExpressionParser.parse(expression, tokens, 0);
         return result.ast.get(0);
     }
 
-    private interface Parser {
-        Result parse(String expression, List<Token> tokens, int current);
-
-    }
-
-    private static final class Result {
-        final int consumed;
-        final List<Node> ast;
-
-        private Result(int consumed, Node... ast) {
-            this(consumed, Arrays.asList(ast));
-        }
-
-        private Result(int consumed, List<Node> ast) {
-            this.consumed = consumed;
-            this.ast = ast;
-        }
-
-    }
-
     private static Parser parseBetween(
             Node.Type type,
-            Type beginToken,
-            Type endToken,
+            Token.Type beginToken,
+            Token.Type endToken,
             List<Parser> parsers) {
         return (expression, tokens, current) -> {
             if (!lookingAt(tokens, current, beginToken)) {
@@ -216,7 +200,7 @@ final class CucumberExpressionParser {
             List<Parser> parsers,
             List<Token> tokens,
             int startAt,
-            Type... endTokens) {
+            Token.Type... endTokens) {
         int current = startAt;
         int size = tokens.size();
         List<Node> ast = new ArrayList<>();
@@ -238,8 +222,8 @@ final class CucumberExpressionParser {
     }
 
     private static Result parseToken(String expression, List<Parser> parsers,
-            List<Token> tokens,
-            int startAt) {
+                                     List<Token> tokens,
+                                     int startAt) {
         for (Parser parser : parsers) {
             Result result = parser.parse(expression, tokens, startAt);
             if (result.consumed != 0) {
@@ -250,8 +234,8 @@ final class CucumberExpressionParser {
         throw new IllegalStateException("No eligible parsers for " + tokens);
     }
 
-    private static boolean lookingAtAny(List<Token> tokens, int at, Type... tokenTypes) {
-        for (Type tokeType : tokenTypes) {
+    private static boolean lookingAtAny(List<Token> tokens, int at, Token.Type... tokenTypes) {
+        for (Token.Type tokeType : tokenTypes) {
             if (lookingAt(tokens, at, tokeType)) {
                 return true;
             }
@@ -259,7 +243,7 @@ final class CucumberExpressionParser {
         return false;
     }
 
-    private static boolean lookingAt(List<Token> tokens, int at, Type token) {
+    private static boolean lookingAt(List<Token> tokens, int at, Token.Type token) {
         if (at < 0) {
             // If configured correctly this will never happen
             // Keep for completeness
@@ -302,10 +286,20 @@ final class CucumberExpressionParser {
             } else {
                 Node leftSeparator = separators.get(i - 1);
                 Node rightSeparator = separators.get(i);
-                nodes.add(new Node(ALTERNATIVE_NODE, leftSeparator.end(), rightSeparator.start(), n));
+                nodes.add(new Node(ALTERNATIVE_NODE, /* start= */leftSeparator.end(), /* end= */rightSeparator.start(), n));
             }
         }
         return nodes;
     }
 
+    private interface Parser {
+        Result parse(String expression, List<Token> tokens, int current);
+
+    }
+
+    private record Result(int consumed, List<Node> ast) {
+        private Result(int consumed, Node... ast) {
+            this(consumed, asList(ast));
+        }
+    }
 }

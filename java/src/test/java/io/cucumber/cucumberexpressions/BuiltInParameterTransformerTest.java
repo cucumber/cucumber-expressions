@@ -26,10 +26,10 @@ public class BuiltInParameterTransformerTest {
         Type abstractListOfE = ArrayList.class.getGenericSuperclass();
         final Executable testMethod = () -> objectMapper.transform("something", abstractListOfE);
 
-        String expected = "" +
-                "Can't transform 'something' to java.util.AbstractList<E>\n" +
-                "BuiltInParameterTransformer only supports a limited number of class types\n" +
-                "Consider using a different object mapper or register a parameter type for java.util.AbstractList<E>";
+        String expected = """
+                Can't transform 'something' to java.util.AbstractList<E>
+                BuiltInParameterTransformer only supports a limited number of class types
+                Consider using a different object mapper or register a parameter type for java.util.AbstractList<E>""";
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(expected)));
@@ -42,9 +42,10 @@ public class BuiltInParameterTransformerTest {
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(
-                "Can't transform 'something' to class java.util.Date\n" +
-                        "BuiltInParameterTransformer only supports a limited number of class types\n" +
-                        "Consider using a different object mapper or register a parameter type for class java.util.Date"
+                """
+                        Can't transform 'something' to class java.util.Date
+                        BuiltInParameterTransformer only supports a limited number of class types
+                        Consider using a different object mapper or register a parameter type for class java.util.Date"""
         )));
     }
 
@@ -56,9 +57,10 @@ public class BuiltInParameterTransformerTest {
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(
-                "Can't transform 'something' to java.util.Optional<java.util.Date>\n" +
-                        "BuiltInParameterTransformer only supports a limited number of class types\n" +
-                        "Consider using a different object mapper or register a parameter type for java.util.Optional<java.util.Date>"
+                """
+                        Can't transform 'something' to java.util.Optional<java.util.Date>
+                        BuiltInParameterTransformer only supports a limited number of class types
+                        Consider using a different object mapper or register a parameter type for java.util.Optional<java.util.Date>"""
         )));
     }
 
@@ -70,9 +72,10 @@ public class BuiltInParameterTransformerTest {
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(
-                "Can't transform 'something' to java.util.function.Supplier<java.lang.String>\n" +
-                        "BuiltInParameterTransformer only supports a limited number of class types\n" +
-                        "Consider using a different object mapper or register a parameter type for java.util.function.Supplier<java.lang.String>"
+                """
+                        Can't transform 'something' to java.util.function.Supplier<java.lang.String>
+                        BuiltInParameterTransformer only supports a limited number of class types
+                        Consider using a different object mapper or register a parameter type for java.util.function.Supplier<java.lang.String>"""
         )));
     }
 
@@ -107,8 +110,10 @@ public class BuiltInParameterTransformerTest {
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(
-                "Can't transform '' to class java.lang.Character\nBuiltInParameterTransformer only supports a limited number of class types\n" +
-                        "Consider using a different object mapper or register a parameter type for class java.lang.Character"
+                """
+                        Can't transform '' to class java.lang.Character
+                        BuiltInParameterTransformer only supports a limited number of class types
+                        Consider using a different object mapper or register a parameter type for class java.lang.Character"""
         )));
     }
 
@@ -118,8 +123,10 @@ public class BuiltInParameterTransformerTest {
 
         final IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, testMethod);
         assertThat("Unexpected message", thrownException.getMessage(), is(equalTo(
-                "Can't transform 'ab' to class java.lang.Character\nBuiltInParameterTransformer only supports a limited number of class types\n" +
-                        "Consider using a different object mapper or register a parameter type for class java.lang.Character"
+                """
+                        Can't transform 'ab' to class java.lang.Character
+                        BuiltInParameterTransformer only supports a limited number of class types
+                        Consider using a different object mapper or register a parameter type for class java.lang.Character"""
         )));
     }
 
