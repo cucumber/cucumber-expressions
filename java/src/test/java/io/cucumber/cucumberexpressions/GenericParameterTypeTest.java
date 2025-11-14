@@ -1,10 +1,13 @@
 package io.cucumber.cucumberexpressions;
 
+import org.assertj.core.api.AbstractObjectAssert;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -19,16 +22,23 @@ public class GenericParameterTypeTest {
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "stringlist",
                 singletonList(".*"),
-                new TypeReference<List<String>>() {}.getType(),
+                new TypeReference<List<String>>() {
+                }.getType(),
                 (@Nullable String arg) -> asList(requireNonNull(arg).split(",")),
                 false,
                 false)
         );
         var expression = new CucumberExpression("I have {stringlist} yay", parameterTypeRegistry);
         var args = expression.match("I have three,blind,mice yay");
-        assertThat(args).singleElement()
-                .extracting(Argument::getValue)
-                .isEqualTo(asList("three", "blind", "mice"));
+        asserThatSingleArgumentValue(args).isEqualTo(asList("three", "blind", "mice"));
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private static AbstractObjectAssert<?, Object> asserThatSingleArgumentValue(Optional<List<Argument<?>>> match) {
+        return assertThat(match).get()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .map(Argument.class::cast)
+                .singleElement()
+                .extracting(Argument::getValue);
+    }
 }

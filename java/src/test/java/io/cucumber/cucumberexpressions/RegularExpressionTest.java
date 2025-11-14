@@ -1,5 +1,6 @@
 package io.cucumber.cucumberexpressions;
 
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,12 @@ import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -48,8 +51,9 @@ final class RegularExpressionTest {
     @MethodSource
     void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
         RegularExpression expression = new RegularExpression(Pattern.compile(expectation.expression), parameterTypeRegistry);
-        List<Argument<?>> match = expression.match(expectation.text);
-        List<?> values = match == null ? null : match.stream()
+        Optional<List<Argument<?>>> match = expression.match(expectation.text);
+        List<?> values = match.isEmpty() ? null : match.stream()
+                .flatMap(Collection::stream)
                 .map(Argument::getValue)
                 .collect(Collectors.toList());
 
@@ -60,8 +64,12 @@ final class RegularExpressionTest {
     void documentation_match_arguments() {
         Pattern expr = Pattern.compile("I have (\\d+) cukes? in my (\\w+) now");
         Expression expression = new RegularExpression(expr, parameterTypeRegistry);
-        List<Argument<?>> match = expression.match("I have 7 cukes in my belly now");
-        assertThat(match).extracting(Argument::getValue).map(Object.class::cast).containsExactly(7, "belly");
+        Optional<List<Argument<?>>> match = expression.match("I have 7 cukes in my belly now");
+        assertThat(match).get()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .map(Argument.class::cast)
+                .map(Argument::getValue)                
+                .containsExactly(7, "belly");
     }
 
     @Test
@@ -236,14 +244,13 @@ final class RegularExpressionTest {
 
     private List<Object> match(Pattern pattern, String text, Type... types) {
         RegularExpression regularExpression = new RegularExpression(pattern, parameterTypeRegistry);
-        List<Argument<?>> arguments = regularExpression.match(text, types);
-        List<Object> values = new ArrayList<>();
-        for (Argument<?> argument : requireNonNull(arguments)) {
-            values.add(argument.getValue());
-        }
-        return values;
+        Optional<List<Argument<?>>> match = regularExpression.match(text, types);
+        return match.stream()
+                .flatMap(Collection::stream)
+                .map(Argument::getValue)
+                .map(Object.class::cast)
+                .toList();
     }
-
 
     record Expectation(String expression, String text, List<?> expectedArgs) {
     }

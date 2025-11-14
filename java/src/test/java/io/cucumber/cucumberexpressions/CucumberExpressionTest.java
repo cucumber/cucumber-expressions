@@ -22,10 +22,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.nio.file.Files.newDirectoryStream;
@@ -60,8 +62,9 @@ class CucumberExpressionTest {
     void acceptance_tests_pass(@ConvertWith(Converter.class) Expectation expectation) {
         if (expectation.exception == null) {
             CucumberExpression expression = new CucumberExpression(expectation.expression, parameterTypeRegistry);
-            List<Argument<?>> match = expression.match(requireNonNull(expectation.text));
-            List<?> values = match == null ? null : match.stream()
+            Optional<List<Argument<?>>> match = expression.match(requireNonNull(expectation.text));
+            List<?> values = match.isEmpty() ? null : match.stream()
+                    .flatMap(Collection::stream)
                     .map(Argument::getValue)
                     .collect(Collectors.toList());
 
@@ -99,9 +102,9 @@ class CucumberExpressionTest {
     void documents_match_arguments() {
         String expr = "I have {int} cuke(s)";
         Expression expression = new CucumberExpression(expr, parameterTypeRegistry);
-        List<Argument<?>> args = expression.match("I have 7 cukes");
+        Optional<List<Argument<?>>> args = expression.match("I have 7 cukes");
         assertNotNull(args);
-        assertEquals(7, args.get(0).getValue());
+        assertEquals(7, args.get().get(0).getValue());
     }
 
     @Test
@@ -179,16 +182,15 @@ class CucumberExpressionTest {
     @Nullable
     private List<?> match(String expr, String text, ParameterTypeRegistry parameterTypeRegistry, Type... typeHints) {
         CucumberExpression expression = new CucumberExpression(expr, parameterTypeRegistry);
-        List<Argument<?>> args = expression.match(text, typeHints);
-        if (args == null) {
+        Optional<List<Argument<?>>> match = expression.match(text, typeHints);
+        if (match.isEmpty()) {
             return null;
         } else {
-            List<Object> list = new ArrayList<>();
-            for (Argument<?> arg : args) {
-                Object value = arg.getValue();
-                list.add(value);
-            }
-            return list;
+            return match.stream()
+                    .flatMap(Collection::stream)
+                    .map(Argument::getValue)
+                    .map(Object.class::cast)
+                    .toList();
         }
     }
 

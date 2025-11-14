@@ -139,15 +139,13 @@ public final class ParameterTypeRegistry {
     }
 
     public void defineParameterType(ParameterType<?> parameterType) {
-        if (parameterType.getName() != null) {
-            if (parameterTypeByName.containsKey(parameterType.getName())) {
-                if (parameterType.getName().isEmpty()) {
-                    throw new DuplicateTypeNameException("The anonymous parameter type has already been defined");
-                }
-                throw new DuplicateTypeNameException(String.format("There is already a parameter type with name %s", parameterType.getName()));
+        if (parameterTypeByName.containsKey(parameterType.getName())) {
+            if (parameterType.getName().isEmpty()) {
+                throw new DuplicateTypeNameException("The anonymous parameter type has already been defined");
             }
-            parameterTypeByName.put(parameterType.getName(), parameterType);
+            throw new DuplicateTypeNameException(String.format("There is already a parameter type with name %s", parameterType.getName()));
         }
+        parameterTypeByName.put(parameterType.getName(), parameterType);
 
         for (String parameterTypeRegexp : parameterType.getRegexps()) {
             if (!parameterTypesByRegexp.containsKey(parameterTypeRegexp)) {

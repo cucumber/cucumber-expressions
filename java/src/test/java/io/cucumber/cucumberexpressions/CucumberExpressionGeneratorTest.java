@@ -11,6 +11,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -34,20 +35,20 @@ public class CucumberExpressionGeneratorTest {
 
     @Test
     public void generates_expression_for_no_args() {
-        assertExpression("hello", Collections.<String>emptyList(), "hello");
+        assertExpression("hello", Collections.emptyList(), "hello");
     }
 
     @Test
     public void generates_expression_with_escaped_left_parenthesis() {
         assertExpression(
-                "\\(iii)", Collections.<String>emptyList(),
+                "\\(iii)", Collections.emptyList(),
                 "(iii)");
     }
 
     @Test
     public void generates_expression_with_escaped_left_curly_brace() {
         assertExpression(
-                "\\{iii}", Collections.<String>emptyList(),
+                "\\{iii}", Collections.emptyList(),
                 "{iii}");
     }
 
@@ -131,7 +132,7 @@ public class CucumberExpressionGeneratorTest {
                 false
         ));
         assertExpression(
-                "I like muppets", Collections.<String>emptyList(),
+                "I like muppets", Collections.emptyList(),
                 "I like muppets");
     }
 
@@ -318,11 +319,11 @@ public class CucumberExpressionGeneratorTest {
 
         // Check that the generated expression matches the text
         CucumberExpression cucumberExpression = new CucumberExpression(generatedExpression.getSource(), parameterTypeRegistry);
-        List<Argument<?>> match = cucumberExpression.match(text);
-        if (match == null) {
+        Optional<List<Argument<?>>> match = cucumberExpression.match(text);
+        if (match.isEmpty()) {
             fail(String.format("Expected text '%s' to match generated expression '%s'", text, generatedExpression.getSource()));
         }
-        assertEquals(expectedArgumentNames.size(), match.size());
+        assertEquals(expectedArgumentNames.size(), match.get().size());
     }
 
 }
