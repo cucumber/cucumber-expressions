@@ -1,7 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.de.siegmar.fastcsv.util.Nullable;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,7 +14,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -76,7 +78,7 @@ public class CucumberExpressionGeneratorTest {
     @Test
     public void generates_expression_for_numbers_with_text_on_both_sides() {
         assertExpression(
-                "i18n", asList(),
+                "i18n", emptyList(),
                 "i18n");
     }
 
@@ -114,7 +116,7 @@ public class CucumberExpressionGeneratorTest {
                 "currency",
                 "[A-Z]{3}",
                 Currency.class,
-                (Transformer<Currency>) Currency::getInstance
+                (@Nullable String s) -> Currency.getInstance(requireNonNull(s))
         ));
         assertExpression(
                 "I have a {currency} account and a {currency} account", asList("currency", "currency2"),
@@ -127,7 +129,7 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         ));
@@ -142,7 +144,7 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         ));
@@ -157,13 +159,13 @@ public class CucumberExpressionGeneratorTest {
                 "right",
                 "c d",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "left",
                 "b c",
                 String.class,
-                (Transformer<String>) arg -> arg
+                (@Nullable String arg) -> arg
         ));
         assertExpression(
                 "a {left} d e f g", singletonList("left"),
@@ -176,13 +178,13 @@ public class CucumberExpressionGeneratorTest {
                 "airport",
                 "[A-Z]{3}",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "leg",
                 "[A-Z]{3}-[A-Z]{3}",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         assertExpression(
                 "leg {leg}", singletonList("leg"),
@@ -195,7 +197,7 @@ public class CucumberExpressionGeneratorTest {
                 "currency",
                 "x",
                 Currency.class,
-                (Transformer<Currency>) Currency::getInstance,
+                (@Nullable String s) -> Currency.getInstance(requireNonNull(s)),
                 true,
                 true
         ));
@@ -248,7 +250,7 @@ public class CucumberExpressionGeneratorTest {
                 "optional-flight",
                 "(1st flight)?",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -256,7 +258,7 @@ public class CucumberExpressionGeneratorTest {
                 "optional-hotel",
                 "(1 hotel)?",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -274,7 +276,7 @@ public class CucumberExpressionGeneratorTest {
                     "my-type-" + i,
                     "[a-z]",
                     String.class,
-                    (Transformer<String>) arg -> arg,
+                    (@Nullable String arg) -> arg,
                     true,
                     false
             );
@@ -291,7 +293,7 @@ public class CucumberExpressionGeneratorTest {
                 "zero-or-more",
                 "[a-z]*",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -300,7 +302,7 @@ public class CucumberExpressionGeneratorTest {
                 "exactly-one",
                 "[a-z]",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
