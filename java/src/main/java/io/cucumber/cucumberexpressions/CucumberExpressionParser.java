@@ -1,6 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Token;
 import org.apiguardian.api.API;
 
 import java.util.ArrayList;
@@ -11,14 +10,14 @@ import static io.cucumber.cucumberexpressions.Node.Type.ALTERNATIVE_NODE;
 import static io.cucumber.cucumberexpressions.Node.Type.EXPRESSION_NODE;
 import static io.cucumber.cucumberexpressions.Node.Type.OPTIONAL_NODE;
 import static io.cucumber.cucumberexpressions.Node.Type.TEXT_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.ALTERNATION;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_OPTIONAL;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_PARAMETER;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_OF_LINE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_OPTIONAL;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.END_PARAMETER;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.START_OF_LINE;
-import static io.cucumber.cucumberexpressions.Ast.Token.Type.WHITE_SPACE;
+import static io.cucumber.cucumberexpressions.Token.Type.ALTERNATION;
+import static io.cucumber.cucumberexpressions.Token.Type.BEGIN_OPTIONAL;
+import static io.cucumber.cucumberexpressions.Token.Type.BEGIN_PARAMETER;
+import static io.cucumber.cucumberexpressions.Token.Type.END_OF_LINE;
+import static io.cucumber.cucumberexpressions.Token.Type.END_OPTIONAL;
+import static io.cucumber.cucumberexpressions.Token.Type.END_PARAMETER;
+import static io.cucumber.cucumberexpressions.Token.Type.START_OF_LINE;
+import static io.cucumber.cucumberexpressions.Token.Type.WHITE_SPACE;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createAlternationNotAllowedInOptional;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createInvalidParameterTypeName;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createMissingEndToken;

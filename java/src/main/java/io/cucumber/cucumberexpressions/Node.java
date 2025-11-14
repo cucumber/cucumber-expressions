@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.joining;
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 @API(since = "18.1", status = EXPERIMENTAL)
-public final class Node implements Ast.Located {
+public final class Node implements Located {
 
     private final Type type;
     private final @Nullable List<Node> nodes;

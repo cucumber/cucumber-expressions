@@ -1,6 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Token;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
