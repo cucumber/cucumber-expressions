@@ -1,11 +1,11 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
-import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static io.cucumber.cucumberexpressions.ParameterType.createAnonymousParameterType;
@@ -31,10 +31,10 @@ public final class RegularExpression implements Expression {
     }
 
     @Override
-    public @Nullable List<Argument<?>> match(String text, Type... typeHints) {
+    public Optional<List<Argument<?>>> match(String text, Type... typeHints) {
         final Group group = treeRegexp.match(text);
         if (group == null) {
-            return null;
+            return Optional.empty();
         }
 
         final ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
@@ -70,7 +70,7 @@ public final class RegularExpression implements Expression {
             parameterTypes.add(parameterType);
         }
 
-        return Argument.build(group, parameterTypes);
+        return Optional.of(Argument.build(group, parameterTypes));
     }
 
     @Override

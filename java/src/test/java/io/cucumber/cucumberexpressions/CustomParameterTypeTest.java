@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.assertj.core.api.AbstractObjectAssert;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
@@ -54,10 +57,7 @@ class CustomParameterTypeTest {
     void matches_CucumberExpression_parameters_with_custom_parameter_type() {
         var expression = new CucumberExpression("I have a {color} ball", parameterTypeRegistry);
         var arguments = expression.match("I have a red ball");
-
-        assertThat(arguments).singleElement()
-                .extracting(Argument::getValue)
-                .isEqualTo(new Color("red"));
+        asserThatSingleArgumentValue(arguments).isEqualTo(new Color("red"));
     }
 
     @Test
@@ -75,8 +75,10 @@ class CustomParameterTypeTest {
         var arguments = expression.match("A 5 thick line from 10,20,30 to 40,50,60");
 
         assertThat(arguments)
+                .get()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .map(Argument.class::cast)
                 .extracting(Argument::getValue)
-                .map(Object.class::cast)
                 .containsExactly(
                         5,
                         new Coordinate(10, 20, 30),
@@ -100,10 +102,8 @@ class CustomParameterTypeTest {
         var expression = new CucumberExpression("A {int} thick line from {coordinate} to {coordinate}", parameterTypeRegistry);
         var arguments = expression.match("A 5 thick line from 10,20,30 to 40,50,60");
 
-        assertDoesNotThrow(() -> {
-            requireNonNull(arguments).get(0).getValue();
-        });
-        var exception = assertThrows(CucumberExpressionException.class, () -> requireNonNull(arguments).get(1).getValue());
+        assertDoesNotThrow(() -> getArgumentValue(arguments, 0));
+        var exception = assertThrows(CucumberExpressionException.class, () -> getArgumentValue(arguments, 1));
         assertThat(exception).hasMessage(
                 "ParameterType {coordinate} was registered with a Transformer but has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. " +
                         "Did you mean to use a CaptureGroupTransformer?"
@@ -114,15 +114,13 @@ class CustomParameterTypeTest {
     void warns_when_anonymous_parameter_has_multiple_capture_groups() {
         parameterTypeRegistry = new ParameterTypeRegistry(Locale.ENGLISH);
         Expression expression = new RegularExpression(Pattern.compile("^A (\\d+) thick line from ((\\d+),\\s*(\\d+),\\s*(\\d+)) to ((\\d+),\\s*(\\d+),\\s*(\\d+))$"), parameterTypeRegistry);
-        List<Argument<?>> arguments = expression.match("A 5 thick line from 10,20,30 to 40,50,60",
+        var arguments = expression.match("A 5 thick line from 10,20,30 to 40,50,60",
                 Integer.class, Coordinate.class, Coordinate.class);
 
         assertNotNull(arguments);
-        assertDoesNotThrow(() -> {
-            arguments.get(0).getValue();
-        });
+        assertDoesNotThrow(() -> getArgumentValue(arguments, 0));
 
-        var exception = assertThrows(CucumberExpressionException.class, () -> arguments.get(1).getValue());
+        var exception = assertThrows(CucumberExpressionException.class, () -> getArgumentValue(arguments, 1));
         assertThat(exception).hasMessage(
                 "Anonymous ParameterType has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. " +
                         "You can only use a single capture group in an anonymous ParameterType."
@@ -143,9 +141,7 @@ class CustomParameterTypeTest {
         var expression = new CucumberExpression("I have a {color} ball", parameterTypeRegistry);
         var match = expression.match("I have a dark red ball");
 
-        assertThat(match).singleElement()
-                .extracting(Argument::getValue)
-                .isEqualTo(new Color("dark red"));
+        asserThatSingleArgumentValue(match).isEqualTo(new Color("dark red"));
     }
 
     @Test
@@ -163,7 +159,7 @@ class CustomParameterTypeTest {
         var expression = new CucumberExpression("I have a {throwing} parameter", parameterTypeRegistry);
         var arguments = expression.match("I have a bad parameter");
 
-        var exception = assertThrows(RuntimeException.class, () -> requireNonNull(arguments).get(0).getValue());
+        var exception = assertThrows(RuntimeException.class, () -> getArgumentValue(arguments, 0));
         assertThat(exception).hasMessage("ParameterType {throwing} failed to transform [bad] to " + CssColor.class, exception.getMessage());
     }
 
@@ -205,15 +201,11 @@ class CustomParameterTypeTest {
                 false
         ));
 
-        var cssColorMatch = new CucumberExpression("I have a {css-color} ball", parameterTypeRegistry).match("I have a blue ball");
-        assertThat(cssColorMatch).singleElement()
-                        .extracting(Argument::getValue)
-                                .isEqualTo(new CssColor("blue"));
+        var cssColorArguments = new CucumberExpression("I have a {css-color} ball", parameterTypeRegistry).match("I have a blue ball");
+        asserThatSingleArgumentValue(cssColorArguments).isEqualTo(new CssColor("blue"));
         
-        var colorMatch = new CucumberExpression("I have a {color} ball", parameterTypeRegistry).match("I have a blue ball");
-        assertThat(colorMatch).singleElement()
-                        .extracting(Argument::getValue)
-                                .isEqualTo(new Color("blue"));
+        var colorArguments = new CucumberExpression("I have a {color} ball", parameterTypeRegistry).match("I have a blue ball");
+        asserThatSingleArgumentValue(colorArguments).isEqualTo(new Color("blue"));
         
     }
 
@@ -230,10 +222,22 @@ class CustomParameterTypeTest {
         ));
 
         var expression = new RegularExpression(compile("I have a (red|blue|yellow) ball"), parameterTypeRegistry);
-        var match = expression.match("I have a red ball");
-        assertThat(match).singleElement()
-                .extracting(Argument::getValue)
-                .isEqualTo(new Color("red"));
+        var arguments = expression.match("I have a red ball");
+        asserThatSingleArgumentValue(arguments).isEqualTo(new Color("red"));
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private static void getArgumentValue(Optional<List<Argument<?>>> match, int index) {
+        match.ifPresent(arguments -> arguments.get(index).getValue());
+    }
+    
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private static AbstractObjectAssert<?, Object> asserThatSingleArgumentValue(Optional<List<Argument<?>>> match) {
+        return assertThat(match).get()
+                .asInstanceOf(InstanceOfAssertFactories.LIST)
+                .map(Argument.class::cast)
+                .singleElement()
+                .extracting(Argument::getValue);
     }
 
     private record Coordinate(int x, int y, int z) {

@@ -1,11 +1,11 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
-import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -132,10 +132,10 @@ public final class CucumberExpression implements Expression {
 
 
     @Override
-    public @Nullable List<Argument<?>> match(String text, Type... typeHints) {
+    public Optional<List<Argument<?>>> match(String text, Type... typeHints) {
         final Group group = treeRegexp.match(text);
         if (group == null) {
-            return null;
+            return Optional.empty();
         }
 
         List<ParameterType<?>> parameterTypes = new ArrayList<>(this.parameterTypes);
@@ -148,7 +148,7 @@ public final class CucumberExpression implements Expression {
             }
         }
 
-        return Argument.build(group, parameterTypes);
+        return Optional.of(Argument.build(group, parameterTypes));
     }
 
     @Override
