@@ -2,7 +2,6 @@ package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -11,9 +10,9 @@ import java.util.regex.PatternSyntaxException;
  * using heuristics. This is particularly useful for languages that don't have a
  * literal syntax for regular expressions. In Java, a regular expression has to be represented as a String.
  *
- *  A string that starts with `^` and/or ends with `$` (or written in script style, i.e. starting with `/` 
- *  and ending with `/`) is considered a regular expression.
- *  Everything else is considered a Cucumber expression.
+ * <p>A string that starts with `^` and/or ends with `$` (or written in script style, i.e. starting with `/`
+ * and ending with `/`) is considered a regular expression.
+ * Everything else is considered a Cucumber expression.
  */
 @API(status = API.Status.STABLE)
 public final class ExpressionFactory {

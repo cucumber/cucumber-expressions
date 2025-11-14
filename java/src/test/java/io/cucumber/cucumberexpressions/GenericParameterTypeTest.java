@@ -1,13 +1,15 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Locale;
 
+import static io.cucumber.cucumberexpressions.Assertions.asserThatSingleArgumentValue;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static java.util.Objects.requireNonNull;
 
 public class GenericParameterTypeTest {
 
@@ -19,18 +21,13 @@ public class GenericParameterTypeTest {
                 singletonList(".*"),
                 new TypeReference<List<String>>() {
                 }.getType(),
-                new CaptureGroupTransformer<List<String>>() {
-                    @Override
-                    public List<String> transform(String... args) {
-                        return asList(args[0].split(","));
-                    }
-                },
+                (@Nullable String arg) -> asList(requireNonNull(arg).split(",")),
                 false,
                 false)
         );
-        Expression expression = new CucumberExpression("I have {stringlist} yay", parameterTypeRegistry);
-        List<Argument<?>> args = expression.match("I have three,blind,mice yay");
-        assertEquals(asList("three", "blind", "mice"), args.get(0).getValue());
+        var expression = new CucumberExpression("I have {stringlist} yay", parameterTypeRegistry);
+        var args = expression.match("I have three,blind,mice yay");
+        asserThatSingleArgumentValue(args).isEqualTo(asList("three", "blind", "mice"));
     }
 
 }

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.util.Locale;
 
-import static java.util.Collections.singleton;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;

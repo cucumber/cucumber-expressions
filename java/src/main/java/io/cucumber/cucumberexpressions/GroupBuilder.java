@@ -1,15 +1,19 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import static java.util.Objects.requireNonNull;
+
 final class GroupBuilder {
     private final List<GroupBuilder> groupBuilders = new ArrayList<>();
     private boolean capturing = true;
-    private String source;
-    private int startIndex;
+    private @Nullable String source;
+    private final int startIndex;
     private int endIndex;
 
     GroupBuilder(int startIndex) {
@@ -48,7 +52,7 @@ final class GroupBuilder {
     }
 
     String getSource() {
-        return source;
+        return requireNonNull(source); 
     }
 
     void setSource(String source) {

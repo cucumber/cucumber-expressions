@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -12,19 +13,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @API(status = API.Status.STABLE)
-public class Group {
+public final class Group {
     private final List<Group> children;
-    private final String value;
+    private final @Nullable String value;
     private final int start;
     private final int end;
 
-    Group(String value, int start, int end, List<Group> children) {
+    Group(@Nullable String value, int start, int end, List<Group> children) {
         this.value = value;
         this.start = start;
         this.end = end;
         this.children = children;
     }
-
+    
+    @Nullable
     public String getValue() {
         return value;
     }
@@ -62,11 +64,9 @@ public class Group {
 
     private static List<Group> toGroups(List<GroupBuilder> children) {
         List<Group> list = new ArrayList<>();
-        if (children != null) {
-            for (GroupBuilder child : children) {
-                list.add(new Group(child.getSource(), child.getStartIndex(), child.getEndIndex(),
-                        toGroups(child.getChildren())));
-            }
+        for (GroupBuilder child : children) {
+            list.add(new Group(child.getSource(), child.getStartIndex(), child.getEndIndex(),
+                    toGroups(child.getChildren())));
         }
         return list;
     }

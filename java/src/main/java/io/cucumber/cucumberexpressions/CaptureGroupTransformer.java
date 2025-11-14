@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Transformer for a @{@link ParameterType} with (multiple) capture groups.
@@ -20,5 +21,5 @@ public interface CaptureGroupTransformer<T> {
      * @return the transformed object
      * @throws Throwable if transformation failed
      */
-    T transform(String[] args) throws Throwable;
+    @Nullable T transform(@Nullable String[] args) throws Throwable;
 }

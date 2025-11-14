@@ -79,7 +79,9 @@ public final class CucumberExpressionGenerator {
     }
 
     private String escape(String s) {
-        return s.replaceAll("%", "%%") // Escape for String.format
+        return s
+                // Escape for String.format
+                .replaceAll("%", "%%")
                 .replaceAll("\\(", "\\\\(")
                 .replaceAll("\\{", "\\\\{")
                 .replaceAll("/", "\\\\/");
