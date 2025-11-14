@@ -1,18 +1,15 @@
 package io.cucumber.cucumberexpressions;
 
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
+import static io.cucumber.cucumberexpressions.Assertions.asserThatSingleArgumentValue;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GenericParameterTypeTest {
 
@@ -33,12 +30,4 @@ public class GenericParameterTypeTest {
         asserThatSingleArgumentValue(args).isEqualTo(asList("three", "blind", "mice"));
     }
 
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private static AbstractObjectAssert<?, Object> asserThatSingleArgumentValue(Optional<List<Argument<?>>> match) {
-        return assertThat(match).get()
-                .asInstanceOf(InstanceOfAssertFactories.LIST)
-                .map(Argument.class::cast)
-                .singleElement()
-                .extracting(Argument::getValue);
-    }
 }

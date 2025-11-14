@@ -1,17 +1,14 @@
 package io.cucumber.cucumberexpressions;
 
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static io.cucumber.cucumberexpressions.Assertions.asserThatSingleArgumentValue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -170,15 +167,6 @@ public class ParameterTypeRegistryTest {
         asserThatSingleArgumentValue(expression.match("1.000.000,1")).isEqualTo(new BigDecimal("1000000.1"));
         asserThatSingleArgumentValue(expression.match("-1,1")).isEqualTo(new BigDecimal("-1.1"));
         asserThatSingleArgumentValue(expression.match("-,1E1")).isEqualTo(new BigDecimal("-1"));
-    }
-    
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private static AbstractObjectAssert<?, Object> asserThatSingleArgumentValue(Optional<List<Argument<?>>> match) {
-        return assertThat(match).get()
-                .asInstanceOf(InstanceOfAssertFactories.LIST)
-                .map(Argument.class::cast)
-                .singleElement()
-                .extracting(Argument::getValue);
     }
 
     public static class Name {

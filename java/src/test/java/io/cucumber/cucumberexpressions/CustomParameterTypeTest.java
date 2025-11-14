@@ -1,6 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import org.assertj.core.api.AbstractObjectAssert;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +11,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static io.cucumber.cucumberexpressions.Assertions.asserThatSingleArgumentValue;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -229,15 +229,6 @@ class CustomParameterTypeTest {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private static void getArgumentValue(Optional<List<Argument<?>>> match, int index) {
         match.ifPresent(arguments -> arguments.get(index).getValue());
-    }
-    
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private static AbstractObjectAssert<?, Object> asserThatSingleArgumentValue(Optional<List<Argument<?>>> match) {
-        return assertThat(match).get()
-                .asInstanceOf(InstanceOfAssertFactories.LIST)
-                .map(Argument.class::cast)
-                .singleElement()
-                .extracting(Argument::getValue);
     }
 
     private record Coordinate(int x, int y, int z) {
