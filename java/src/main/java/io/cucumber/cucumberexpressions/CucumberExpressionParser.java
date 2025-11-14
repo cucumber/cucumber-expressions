@@ -37,8 +37,10 @@ public final class CucumberExpressionParser {
     private static final Parser textParser = (expression, tokens, current) -> {
         Token token = tokens.get(current);
         return switch (token.type) {
-            case WHITE_SPACE, TEXT, END_PARAMETER, END_OPTIONAL ->
-                    new Result(1, new Node(TEXT_NODE, token.start(), token.end(), token.text));
+            case WHITE_SPACE, 
+                 TEXT, 
+                 END_PARAMETER, 
+                 END_OPTIONAL -> new Result(1, new Node(TEXT_NODE, token.start(), token.end(), token.text));
             case ALTERNATION -> throw createAlternationNotAllowedInOptional(expression, token);
             // If configured correctly this will never happen
             default -> new Result(0);
