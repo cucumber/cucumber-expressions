@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.apiguardian.api.API;
+
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
@@ -8,6 +10,7 @@ import java.util.Locale;
  * <p>
  * Note quite complete, feel free to make a suggestion.
  */
+@API(status = API.Status.EXPERIMENTAL)
 public final class KeyboardFriendlyDecimalFormatSymbols {
 
     public static DecimalFormatSymbols getInstance(Locale locale) {
