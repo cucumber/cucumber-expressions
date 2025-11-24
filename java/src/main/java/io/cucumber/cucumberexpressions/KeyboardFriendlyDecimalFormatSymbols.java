@@ -8,7 +8,7 @@ import java.util.Locale;
  * <p>
  * Note quite complete, feel free to make a suggestion.
  */
-public class KeyboardFriendlyDecimalFormatSymbols {
+public final class KeyboardFriendlyDecimalFormatSymbols {
 
     public static DecimalFormatSymbols getInstance(Locale locale) {
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(locale);
