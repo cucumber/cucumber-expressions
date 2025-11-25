@@ -47,14 +47,16 @@ public final class ParameterTypeRegistry {
      * To maintain consistency with `datatable` we don't use the mutable default
      * transformer to handle build in in conversions yet.
      */
-    private final ParameterByTypeTransformer internalParameterTransformer;
-    private ParameterByTypeTransformer defaultParameterTransformer;
+    private final LocaleParameterByTypeTransformer internalParameterTransformer;
+    private LocaleParameterByTypeTransformer defaultParameterTransformer;
+    private Locale locale;
 
     public ParameterTypeRegistry(Locale locale) {
         this(new BuiltInParameterTransformer(locale), locale);
+        this.locale = locale;
     }
 
-    private ParameterTypeRegistry(ParameterByTypeTransformer defaultParameterTransformer, Locale locale) {
+    private ParameterTypeRegistry(LocaleParameterByTypeTransformer defaultParameterTransformer, Locale locale) {
         this.internalParameterTransformer = defaultParameterTransformer;
         this.defaultParameterTransformer = defaultParameterTransformer;
 
@@ -161,11 +163,21 @@ public final class ParameterTypeRegistry {
         }
     }
 
-    ParameterByTypeTransformer getDefaultParameterTransformer() {
+    LocaleParameterByTypeTransformer getDefaultParameterTransformer() {
         return defaultParameterTransformer;
     }
 
     public void setDefaultParameterTransformer(ParameterByTypeTransformer defaultParameterTransformer) {
+        final LocaleParameterByTypeTransformer localeParameterTransformer;
+        if (defaultParameterTransformer instanceof LocaleParameterByTypeTransformer) {
+            localeParameterTransformer = (LocaleParameterByTypeTransformer) defaultParameterTransformer;
+        } else {
+            localeParameterTransformer = defaultParameterTransformer::transform;
+        }
+        setDefaultParameterTransformer(localeParameterTransformer);
+    }
+
+    public void setDefaultParameterTransformer(LocaleParameterByTypeTransformer defaultParameterTransformer) {
         this.defaultParameterTransformer = defaultParameterTransformer;
     }
 
@@ -184,6 +196,10 @@ public final class ParameterTypeRegistry {
             throw new AmbiguousParameterTypeException(parameterTypeRegexp, expressionRegexp, parameterTypes, generatedExpressions);
         }
         return (ParameterType<T>) parameterTypes.first();
+    }
+
+    Locale getLocale() {
+        return locale;
     }
 
     Collection<ParameterType<?>> getParameterTypes() {

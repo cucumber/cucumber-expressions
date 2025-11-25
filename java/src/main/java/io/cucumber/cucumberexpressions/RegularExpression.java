@@ -36,7 +36,7 @@ public final class RegularExpression implements Expression {
             return null;
         }
 
-        final ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
+        final LocaleParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
         final List<ParameterType<?>> parameterTypes = new ArrayList<>();
         int typeHintIndex = 0;
         for (GroupBuilder groupBuilder : treeRegexp.getGroupBuilder().getChildren()) {
@@ -63,7 +63,8 @@ public final class RegularExpression implements Expression {
 
             // Either from createAnonymousParameterType or lookupByRegexp
             if (parameterType.isAnonymous()) {
-                parameterType = parameterType.deAnonymize(typeHint, arg -> defaultTransformer.transform(arg, typeHint));
+                parameterType = parameterType.deAnonymize(typeHint, arg -> defaultTransformer.transform(arg, typeHint,
+                    parameterTypeRegistry.getLocale()));
             }
 
             parameterTypes.add(parameterType);

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
-final class BuiltInParameterTransformer implements ParameterByTypeTransformer {
+final class BuiltInParameterTransformer implements LocaleParameterByTypeTransformer {
 
     private final NumberParser numberParser;
 

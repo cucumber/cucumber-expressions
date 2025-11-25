@@ -155,8 +155,9 @@ public final class CucumberExpression implements Expression {
             ParameterType<?> parameterType = parameterTypes.get(i);
             Type type = i < typeHints.length ? typeHints[i] : String.class;
             if (parameterType.isAnonymous()) {
-                ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
-                parameterTypes.set(i, parameterType.deAnonymize(type, arg -> defaultTransformer.transform(arg, type)));
+                LocaleParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
+                parameterTypes.set(i, parameterType.deAnonymize(type, arg -> defaultTransformer.transform(arg, type,
+                    parameterTypeRegistry.getLocale())));
             }
         }
 
