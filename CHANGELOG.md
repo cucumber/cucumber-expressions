@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Java] Add OSGi metadata
 ### Added
 - [Java] class `KeyboardFriendlyDecimalFormatSymbols` is now `public` and can be used when creating a custom `Locale`-aware type transformation method ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
+- [Java] interface `LocaleParameterByTypeTransformer` to support `Locale`-aware type transformation ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
 
 ### Removed
 - [Python] Remove support for end-of-life Python 3.8 and 3.9 ([#359](https://github.com/cucumber/cucumber-expressions/pull/359))
