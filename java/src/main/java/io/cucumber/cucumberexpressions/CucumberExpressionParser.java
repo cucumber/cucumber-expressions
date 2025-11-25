@@ -1,19 +1,19 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Node;
 import io.cucumber.cucumberexpressions.Ast.Token;
 import io.cucumber.cucumberexpressions.Ast.Token.Type;
+import org.apiguardian.api.API;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.ALTERNATIVE_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.EXPRESSION_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.OPTIONAL_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.PARAMETER_NODE;
-import static io.cucumber.cucumberexpressions.Ast.Node.Type.TEXT_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.ALTERNATION_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.ALTERNATIVE_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.EXPRESSION_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.OPTIONAL_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.PARAMETER_NODE;
+import static io.cucumber.cucumberexpressions.Node.Type.TEXT_NODE;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.ALTERNATION;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_OPTIONAL;
 import static io.cucumber.cucumberexpressions.Ast.Token.Type.BEGIN_PARAMETER;
@@ -27,8 +27,13 @@ import static io.cucumber.cucumberexpressions.CucumberExpressionException.create
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createMissingEndToken;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
-final class CucumberExpressionParser {
+/**
+ * A parser for Cucumber expressions
+ */
+@API(since = "18.1", status = EXPERIMENTAL)
+public final class CucumberExpressionParser {
 
     /*
      * text := whitespace | ')' | '}' | .
@@ -160,7 +165,13 @@ final class CucumberExpressionParser {
             )
     );
 
-    Node parse(String expression) {
+    /**
+     * Parses as Cucumber expression into an AST of {@link Node nodes}. 
+     * @param expression the expression to parse
+     * @return an AST of nodes
+     * @throws CucumberExpressionException if the expression could not be parsed
+     */
+    public Node parse(String expression) {
         CucumberExpressionTokenizer tokenizer = new CucumberExpressionTokenizer();
         List<Token> tokens = tokenizer.tokenize(expression);
         Result result = cucumberExpressionParser.parse(expression, tokens, 0);

@@ -70,7 +70,7 @@ final class CucumberExpressionTokenizer {
         }
 
         private boolean shouldContinueTokenType(Type previousTokenType,
-                Type currentTokenType) {
+                                                Type currentTokenType) {
             return currentTokenType == previousTokenType
                     && (currentTokenType == Type.WHITE_SPACE || currentTokenType == Type.TEXT);
         }
