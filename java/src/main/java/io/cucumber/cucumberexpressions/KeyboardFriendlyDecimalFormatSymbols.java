@@ -11,7 +11,7 @@ import java.util.Locale;
 final class KeyboardFriendlyDecimalFormatSymbols {
 
     private KeyboardFriendlyDecimalFormatSymbols(){
-        // utility class
+        /* no-op */
     }
     
     static DecimalFormatSymbols getInstance(Locale locale) {

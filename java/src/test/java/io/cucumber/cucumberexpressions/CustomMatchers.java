@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.equalTo;
 final class CustomMatchers {
     
     private CustomMatchers(){
-        // utility class
+        /* no-op */
     }
     
     @SuppressWarnings({"unchecked", "rawtypes"})

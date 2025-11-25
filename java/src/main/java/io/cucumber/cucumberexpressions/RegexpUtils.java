@@ -25,7 +25,7 @@ final class RegexpUtils {
     }
 
     private RegexpUtils(){
-        // utility class
+        /* no-op */
     }
 
     /**

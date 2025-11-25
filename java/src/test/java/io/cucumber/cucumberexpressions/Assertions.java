@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 final class Assertions {
     
     private Assertions(){
-        // utility class
+        /* no-op */
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
