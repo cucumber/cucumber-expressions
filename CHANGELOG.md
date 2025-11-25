@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Ruby] Minor cosmetic / CI changes for development (Nothing front-facing)
 - [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))
 - [Java] Add OSGi metadata
+### Added
+- [Java] class `KeyboardFriendlyDecimalFormatSymbols` is now `public` and can be used when creating a custom `Locale`-aware type transformation method ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
 
 ### Removed
 - [Python] Remove support for end-of-life Python 3.8 and 3.9 ([#359](https://github.com/cucumber/cucumber-expressions/pull/359))
