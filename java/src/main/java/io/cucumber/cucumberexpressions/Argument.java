@@ -7,6 +7,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 @API(status = API.Status.STABLE)
 public final class Argument<T> {
     private final ParameterType<T> parameterType;
@@ -31,8 +33,8 @@ public final class Argument<T> {
     }
 
     private Argument(Group group, ParameterType<T> parameterType) {
-        this.group = group;
-        this.parameterType = parameterType;
+        this.group = requireNonNull(group);
+        this.parameterType = requireNonNull(parameterType);
     }
 
     public Group getGroup() {

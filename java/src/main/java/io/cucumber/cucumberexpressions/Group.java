@@ -26,8 +26,7 @@ public final class Group {
         this.children = children;
     }
     
-    @Nullable
-    public String getValue() {
+    public @Nullable String getValue() {
         return value;
     }
 
@@ -43,7 +42,7 @@ public final class Group {
         return children;
     }
 
-    public List<String> getValues() {
+    public List<@Nullable String> getValues() {
         List<Group> groups = getChildren().isEmpty() ? singletonList(this) : getChildren();
         return groups.stream()
                 .map(Group::getValue)

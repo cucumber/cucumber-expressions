@@ -241,7 +241,7 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
     }
 
     @Nullable
-    T transform(List<String> groupValues) {
+    T transform(List<@Nullable String> groupValues) {
         if (transformer instanceof TransformerAdaptor) {
             if (groupValues.size() > 1) {
                 if (isAnonymous()) {
