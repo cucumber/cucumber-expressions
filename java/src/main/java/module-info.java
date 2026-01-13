@@ -1,6 +1,6 @@
-module io.cucumber.cucumberexpressions {
+module io.cucumber.messages {
     requires org.jspecify;
-    requires transitive org.apiguardian.api;
+    requires org.apiguardian.api;
 
     exports io.cucumber.cucumberexpressions;
     
