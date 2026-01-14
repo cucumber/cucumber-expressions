@@ -323,7 +323,10 @@ public class CucumberExpressionGeneratorTest {
         CucumberExpression cucumberExpression = new CucumberExpression(generatedExpression.getSource(), parameterTypeRegistry);
         Optional<List<Argument<?>>> match = cucumberExpression.match(text);
         if (match.isEmpty()) {
-            fail(String.format("Expected text '%s' to match generated expression '%s'", text, generatedExpression.getSource()));
+            fail("Expected text '%s' to match generated expression '%s'".formatted(
+                    text, 
+                    generatedExpression.getSource()
+            ));
         }
         assertEquals(expectedArgumentNames.size(), match.get().size());
     }

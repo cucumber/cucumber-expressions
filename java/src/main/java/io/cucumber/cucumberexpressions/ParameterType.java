@@ -15,7 +15,7 @@ import static java.util.Objects.requireNonNull;
 public final class ParameterType<T> implements Comparable<ParameterType<?>> {
 
     // Android can't parse unescaped braces
-    @SuppressWarnings("RegExpRedundantEscape") 
+    @SuppressWarnings("RegExpRedundantEscape")
     private static final Pattern ILLEGAL_PARAMETER_NAME_PATTERN = Pattern.compile("([{}()\\\\/])");
     private static final Pattern UNESCAPE_PATTERN = Pattern.compile("(\\\\([\\[$.|?*+\\]]))");
 
@@ -245,13 +245,13 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
         if (transformer instanceof TransformerAdaptor) {
             if (groupValues.size() > 1) {
                 if (isAnonymous()) {
-                    throw new CucumberExpressionException(String.format(
-                            "Anonymous ParameterType has multiple capture groups %s. " +
-                                    "You can only use a single capture group in an anonymous ParameterType.", regexps));
+                    throw new CucumberExpressionException("""
+                            Anonymous ParameterType has multiple capture groups %s.
+                            You can only use a single capture group in an anonymous ParameterType.""".formatted(regexps));
                 }
-                throw new CucumberExpressionException(String.format(
-                        "ParameterType {%s} was registered with a Transformer but has multiple capture groups %s. " +
-                                "Did you mean to use a CaptureGroupTransformer?", name, regexps));
+                throw new CucumberExpressionException("""
+                        ParameterType {%s} was registered with a Transformer but has multiple capture groups %s.
+                        Did you mean to use a CaptureGroupTransformer?""".formatted(name, regexps));
             }
         }
 
@@ -262,7 +262,11 @@ public final class ParameterType<T> implements Comparable<ParameterType<?>> {
             throw e;
         } catch (Throwable throwable) {
             throw new CucumberExpressionException(
-                    String.format("ParameterType {%s} failed to transform %s to %s", name, groupValues, type),
+                    "ParameterType {%s} failed to transform %s to %s".formatted(
+                            name,
+                            groupValues,
+                            type
+                    ),
                     throwable);
         }
     }

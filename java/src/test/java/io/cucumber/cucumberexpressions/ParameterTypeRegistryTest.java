@@ -35,7 +35,9 @@ public class ParameterTypeRegistryTest {
         ));
 
         var exception = assertThrows(CucumberExpressionException.class, testMethod);
-        assertThat(exception).hasMessage("There can only be one preferential parameter type per regexp. The regexp /[A-Z]+\\w+/ is used for two preferential parameter types, {name} and {place}");
+        assertThat(exception).hasMessage("""
+                There can only be one preferential parameter type per regexp.
+                The regexp /[A-Z]+\\w+/ is used for two preferential parameter types, {name} and {place}""");
     }
 
     @Test

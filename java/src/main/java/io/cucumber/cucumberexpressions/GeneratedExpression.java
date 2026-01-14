@@ -45,7 +45,7 @@ public final class GeneratedExpression {
             String name = parameterType.getName();
             parameterTypeNames.add(name);
         }
-        return String.format(expressionTemplate, parameterTypeNames.toArray());
+        return expressionTemplate.formatted(parameterTypeNames.toArray());
     }
 
     private String getParameterName(String typeName, Map<String, Integer> usageByTypeName) {

@@ -105,8 +105,9 @@ class CustomParameterTypeTest {
         assertDoesNotThrow(() -> getArgumentValue(arguments, 0));
         var exception = assertThrows(CucumberExpressionException.class, () -> getArgumentValue(arguments, 1));
         assertThat(exception).hasMessage(
-                "ParameterType {coordinate} was registered with a Transformer but has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. " +
-                        "Did you mean to use a CaptureGroupTransformer?"
+                """
+                        ParameterType {coordinate} was registered with a Transformer but has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. 
+                        Did you mean to use a CaptureGroupTransformer?"""
         );
     }
 
@@ -122,8 +123,9 @@ class CustomParameterTypeTest {
 
         var exception = assertThrows(CucumberExpressionException.class, () -> getArgumentValue(arguments, 1));
         assertThat(exception).hasMessage(
-                "Anonymous ParameterType has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. " +
-                        "You can only use a single capture group in an anonymous ParameterType."
+                """
+                        Anonymous ParameterType has multiple capture groups [(\\d+),\\s*(\\d+),\\s*(\\d+)]. 
+                        You can only use a single capture group in an anonymous ParameterType."""
         );
     }
 
@@ -151,7 +153,7 @@ class CustomParameterTypeTest {
                 "bad",
                 CssColor.class,
                 (@Nullable String arg) -> {
-                    throw new RuntimeException(String.format("Can't transform [%s]", arg));
+                    throw new RuntimeException("Can't transform [%s]".formatted(arg));
                 },
                 false,
                 false
@@ -203,10 +205,10 @@ class CustomParameterTypeTest {
 
         var cssColorArguments = new CucumberExpression("I have a {css-color} ball", parameterTypeRegistry).match("I have a blue ball");
         asserThatSingleArgumentValue(cssColorArguments).isEqualTo(new CssColor("blue"));
-        
+
         var colorArguments = new CucumberExpression("I have a {color} ball", parameterTypeRegistry).match("I have a blue ball");
         asserThatSingleArgumentValue(colorArguments).isEqualTo(new Color("blue"));
-        
+
     }
 
     @Test

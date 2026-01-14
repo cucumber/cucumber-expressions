@@ -143,7 +143,9 @@ public final class ParameterTypeRegistry {
             if (parameterType.getName().isEmpty()) {
                 throw new DuplicateTypeNameException("The anonymous parameter type has already been defined");
             }
-            throw new DuplicateTypeNameException(String.format("There is already a parameter type with name %s", parameterType.getName()));
+            throw new DuplicateTypeNameException("There is already a parameter type with name %s".formatted(
+                    parameterType.getName()
+            ));
         }
         parameterTypeByName.put(parameterType.getName(), parameterType);
 
@@ -153,11 +155,12 @@ public final class ParameterTypeRegistry {
             }
             SortedSet<ParameterType<?>> parameterTypes = parameterTypesByRegexp.get(parameterTypeRegexp);
             if (!parameterTypes.isEmpty() && parameterTypes.first().preferForRegexpMatch() && parameterType.preferForRegexpMatch()) {
-                throw new CucumberExpressionException(String.format(
-                        "There can only be one preferential parameter type per regexp. " +
-                                "The regexp /%s/ is used for two preferential parameter types, {%s} and {%s}",
-                        parameterTypeRegexp, parameterTypes.first().getName(), parameterType.getName()
-                ));
+                throw new CucumberExpressionException("""
+                        There can only be one preferential parameter type per regexp.
+                        The regexp /%s/ is used for two preferential parameter types, {%s} and {%s}""".formatted(
+                        parameterTypeRegexp, 
+                        parameterTypes.first().getName(), 
+                        parameterType.getName()));
             }
             parameterTypes.add(parameterType);
         }
