@@ -26,7 +26,12 @@ final class GroupBuilder {
         for (GroupBuilder childGroupBuilder : groupBuilders) {
             children.add(childGroupBuilder.build(matcher, groupIndices));
         }
-        return new Group(matcher.group(groupIndex), matcher.start(groupIndex), matcher.end(groupIndex), children);
+        return new Group(
+                matcher.group(groupIndex), // 
+                matcher.start(groupIndex),  //
+                matcher.end(groupIndex),  //
+                children.isEmpty() ? null : children //
+        );
     }
 
     void setNonCapturing() {

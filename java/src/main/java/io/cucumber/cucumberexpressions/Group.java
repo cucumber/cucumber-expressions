@@ -3,6 +3,7 @@ package io.cucumber.cucumberexpressions;
 import org.apiguardian.api.API;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -37,13 +38,14 @@ public class Group {
         return end;
     }
 
-    public List<Group> getChildren() {
-        return children;
+    public Optional<List<Group>> getChildren() {
+        return Optional.ofNullable(children);
     }
 
     public List<String> getValues() {
-        List<Group> groups = getChildren().isEmpty() ? singletonList(this) : getChildren();
-        return groups.stream()
+        return getChildren()
+                .orElseGet(() -> singletonList(this))
+                .stream()
                 .map(Group::getValue)
                 .collect(Collectors.toList());
     }
