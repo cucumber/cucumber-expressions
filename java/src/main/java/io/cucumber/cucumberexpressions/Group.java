@@ -37,7 +37,12 @@ public class Group {
     public int getEnd() {
         return end;
     }
-
+    
+    /**
+     * A groups children.
+     * 
+     * <p>There are either one or more children or the value is absent. 
+     */
     public Optional<List<Group>> getChildren() {
         return Optional.ofNullable(children);
     }
