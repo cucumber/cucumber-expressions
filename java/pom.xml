@@ -17,7 +17,6 @@
 
     <properties>
         <project.build.outputTimestamp>1730115215</project.build.outputTimestamp>
-        <osgi.bundle-symbolic-name>io.cucumber.cucumberexpressions</osgi.bundle-symbolic-name>
     </properties>
 
     <scm>
