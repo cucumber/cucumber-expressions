@@ -39,7 +39,12 @@ public class GroupBuilder
         }
 
         var matcherGroup = matcher.Groups[groupIndex];
-        return new Group(matcherGroup.Success ? matcherGroup.Value : null, matcherGroup.Index, matcherGroup.Index + matcherGroup.Length, children);
+        return new Group(
+            matcherGroup.Success ? matcherGroup.Value : null, 
+            matcherGroup.Index, 
+            matcherGroup.Index + matcherGroup.Length, 
+            children.Any() ? children : null
+        );
     }
 
     public void SetNonCapturing()

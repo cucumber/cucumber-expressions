@@ -22,9 +22,10 @@ public class Group
 
     public string[] GetValues()
     {
-        List<Group> groups = !Children.Any() ?
-            new List<Group> { this } : Children;
-        return groups.Select(g => g.Value).ToArray();
+        if(Children == null) {
+            return new string[]{ Value }
+        }
+        return Children.Select(g => g.Value).ToArray();
     }
 
     /**
