@@ -26,4 +26,5 @@ class Group:
 
     @property
     def values(self):
-        return [v.value for v in self.children or [self]]
+        return [self.value] if self.children is None \
+            else [v.value for v in self.children]

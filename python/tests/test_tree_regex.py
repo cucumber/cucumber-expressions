@@ -58,13 +58,13 @@ class TestTreeRegexp:
         tree_regexp = TreeRegexp("a(?=(?P<tmp>b))(?P=tmp)c")
         group = tree_regexp.match("abc")
         assert "abc" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
 
     def test_matches_named_capturing_group(self):
         tree_regexp = TreeRegexp("a(?P<name>b)c$")
         group = tree_regexp.match("abc")
         assert "abc" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
 
     def test_matches_optional_group(self):
         tree_regexp = TreeRegexp("^Something( with an optional argument)?")
@@ -127,7 +127,7 @@ class TestTreeRegexp:
         group = tree_regexp.match("drawings: FU(BAR)")
         assert "drawings: FU(BAR)" == group.value
         assert "FU(BAR)" == group.children[0].value
-        assert 0 == len(group.children[0].children)
+        assert None == group.children[0].children
 
     def test_works_with_flags(self):
         tree_regexp = TreeRegexp(re.compile(r"HELLO", re.IGNORECASE))
@@ -138,13 +138,13 @@ class TestTreeRegexp:
         tree_regexp = TreeRegexp(re.compile(r"(?i)HELLO"))
         group = tree_regexp.match("hello")
         assert "hello" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
 
     def test_works_with_non_capturing_inline_flags(self):
         tree_regexp = TreeRegexp(re.compile(r"(?i:HELLO)"))
         group = tree_regexp.match("hello")
         assert "hello" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
 
     def test_empty_capturing_group(self):
         tree_regexp = TreeRegexp(re.compile(r"()"))
@@ -156,10 +156,10 @@ class TestTreeRegexp:
         tree_regexp = TreeRegexp(re.compile("(?:)"))
         group = tree_regexp.match("")
         assert "" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
 
     def test_empty_look_ahead(self):
         tree_regexp = TreeRegexp(re.compile(r"(?<=)"))
         group = tree_regexp.match("")
         assert "" == group.value
-        assert 0 == len(group.children)
+        assert None == group.children
