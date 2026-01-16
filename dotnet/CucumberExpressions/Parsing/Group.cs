@@ -23,7 +23,7 @@ public class Group
     public string[] GetValues()
     {
         if(Children == null) {
-            return new string[]{ Value }
+            return new string[]{ Value };
         }
         return Children.Select(g => g.Value).ToArray();
     }

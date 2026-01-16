@@ -202,7 +202,7 @@ public class TreeRegexpTest
         var tr = new TreeRegexp(new Regex("(?i)HELLO"));
         var g = tr.Match("hello");
         Assert.Equal("hello", g.Value);
-        Assert.Empty(g.Children);
+        Assert.IsNull(g.Children);
     }
 
     [Fact]
@@ -211,7 +211,7 @@ public class TreeRegexpTest
         var tr = new TreeRegexp(new Regex("(?i:HELLO)"));
         var g = tr.Match("hello");
         Assert.Equal("hello", g.Value);
-        Assert.Empty(g.Children);
+        Assert.IsNull(g.Children);
     }
 
     [Fact]
@@ -229,7 +229,7 @@ public class TreeRegexpTest
         var tr = new TreeRegexp(new Regex("(?:)"));
         var g = tr.Match("");
         Assert.Equal("", g.Value);
-        Assert.Empty(g.Children);
+        Assert.IsNull(g.Children);
     }
 
     [Fact]
@@ -238,6 +238,6 @@ public class TreeRegexpTest
         var tr = new TreeRegexp(new Regex("(?<=)"));
         var g = tr.Match("");
         Assert.Equal("", g.Value);
-        Assert.Empty(g.Children);
+        Assert.IsNull(g.Children);
     }
 }
