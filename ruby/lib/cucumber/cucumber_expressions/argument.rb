@@ -12,7 +12,7 @@ module Cucumber
         group = tree_regexp.match(text)
         return nil if group.nil?
 
-        arg_groups = group.children
+        arg_groups = group.children.nil? ? [] : group.children
 
         if arg_groups.length != parameter_types.length
           raise CucumberExpressionError.new(

@@ -19,7 +19,12 @@ module Cucumber
       def build(match, group_indices)
         group_index = group_indices.next
         children = @group_builders.map { |gb| gb.build(match, group_indices) }
-        Group.new(match[group_index], match.offset(group_index)[0], match.offset(group_index)[1], children)
+        Group.new(
+            match[group_index], 
+            match.offset(group_index)[0], 
+            match.offset(group_index)[1], 
+            children.empty? ? nil : children
+        )
       end
 
       def set_non_capturing!

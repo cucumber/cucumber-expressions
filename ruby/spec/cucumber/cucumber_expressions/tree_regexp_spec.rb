@@ -15,7 +15,7 @@ module Cucumber
         group = tr.match('ac')
         expect(group.value).to eq('ac')
         expect(group.children[0].value).to eq('a')
-        expect(group.children[0].children).to eq([])
+        expect(group.children[0].children).to be nil
         expect(group.children[1].value).to eq('c')
       end
 
@@ -70,7 +70,7 @@ module Cucumber
         tr = described_class.new(/a(?>b)c/)
         group = tr.match('abc')
         expect(group.value).to eq('abc')
-        expect(group.children.length).to eq 0
+        expect(group.children).to be nil
       end
 
       it 'throws an error when there are named capture groups because they are buggy in Ruby' do
@@ -150,14 +150,14 @@ module Cucumber
         tr = described_class.new(/(?i)HELLO/)
         group = tr.match('hello')
         expect(group.value).to eq('hello')
-        expect(group.children.length).to eq 0
+        expect(group.children).to be nil
       end
 
       it 'works with non-capturing inline flags' do
         tr = described_class.new(/(?i:HELLO)/)
         group = tr.match('hello')
         expect(group.value).to eq('hello')
-        expect(group.children.length).to eq 0
+        expect(group.children).to be nil
       end
 
       it 'works with empty capturing groups' do
@@ -172,14 +172,14 @@ module Cucumber
         tr = described_class.new(/(?:)/)
         group = tr.match('')
         expect(group.value).to eq('')
-        expect(group.children.length).to eq 0
+        expect(group.children).to be nil
       end
 
       it 'works with empty non-look ahead groups' do
         tr = described_class.new(/(?<=)/)
         group = tr.match('')
         expect(group.value).to eq('')
-        expect(group.children.length).to eq 0
+        expect(group.children).to be nil
       end
     end
   end
