@@ -127,7 +127,7 @@ class TestTreeRegexp:
         group = tree_regexp.match("drawings: FU(BAR)")
         assert "drawings: FU(BAR)" == group.value
         assert "FU(BAR)" == group.children[0].value
-        assert group.children is None[0].children
+        assert group.children[0].children is None
 
     def test_works_with_flags(self):
         tree_regexp = TreeRegexp(re.compile(r"HELLO", re.IGNORECASE))
