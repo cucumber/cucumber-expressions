@@ -13,7 +13,11 @@ module Cucumber
       end
 
       def values
-        (children.empty? ? [self] : children).map(&:value)
+        if children.nil?
+          [self.value]
+        else
+          children.map(&:value)
+        end
       end
     end
   end

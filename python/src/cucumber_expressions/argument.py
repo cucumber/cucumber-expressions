@@ -21,7 +21,7 @@ class Argument:
         if not match_group:
             return None
 
-        arg_groups = match_group.children
+        arg_groups = match_group.children if match_group.children is not None else []
 
         if len(arg_groups) != len(parameter_types):
             raise CucumberExpressionError(
