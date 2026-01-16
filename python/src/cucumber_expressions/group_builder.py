@@ -23,7 +23,7 @@ class GroupBuilder:
             value=match.group(group_index),
             start=match.regs[group_index][0],
             end=match.regs[group_index][1],
-            children=children if len(children) else None
+            children=children if len(children) else None,
         )
 
     def move_children_to(self, group_builder: GroupBuilder) -> None:
