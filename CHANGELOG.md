@@ -6,12 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [18.1.0] - 2026-01-20
+### Added
+- [Java] Add OSGi metadata
+- [Java] class `KeyboardFriendlyDecimalFormatSymbols` is now `public` and can be used when creating a custom `Locale`-aware type transformation method ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
+
 ### Changed
 - [Ruby] Minor cosmetic / CI changes for development (Nothing front-facing)
 - [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))
-- [Java] Add OSGi metadata
-### Added
-- [Java] class `KeyboardFriendlyDecimalFormatSymbols` is now `public` and can be used when creating a custom `Locale`-aware type transformation method ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
 
 ### Removed
 - [Python] Remove support for end-of-life Python 3.8 and 3.9 ([#359](https://github.com/cucumber/cucumber-expressions/pull/359))
@@ -782,7 +785,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.1.0...HEAD
+[18.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...v18.1.0
 [18.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...v18.0.1
 [18.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...v18.0.0
 [17.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...v17.1.0
