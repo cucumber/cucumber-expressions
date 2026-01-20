@@ -51,14 +51,14 @@ public class GroupBuilder
     public List<Group> ToGroups()
     {
         var list = new List<Group>();
-        foreach (GroupBuilder child in children)
+        foreach (GroupBuilder child in _groupBuilders)
         {
-            List<Group> children = child.ToGroups();
+            List<Group> groups = child.ToGroups();
             list.Add(new Group(
                 child.Source,
                 child.StartIndex,
                 child.EndIndex,
-                children.Any() ? children : null
+                groups.Any() ? groups : null
             ));
         }
         return list;
