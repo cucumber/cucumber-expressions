@@ -9,12 +9,13 @@ final class GroupBuilder {
     private final List<GroupBuilder> groupBuilders = new ArrayList<>();
     private boolean capturing = true;
     private String source;
-    private int startIndex;
+    private final int startIndex;
     private int endIndex;
 
     GroupBuilder(int startIndex) {
         this.startIndex = startIndex;
     }
+
 
     void add(GroupBuilder groupBuilder) {
         groupBuilders.add(groupBuilder);
@@ -32,6 +33,19 @@ final class GroupBuilder {
                 matcher.end(groupIndex),  //
                 children.isEmpty() ? null : children //
         );
+    }
+
+    List<Group> toGroups() {
+        List<Group> list = new ArrayList<>();
+        for (GroupBuilder child : groupBuilders) {
+            List<Group> groups = child.toGroups();
+            list.add(new Group(
+                    child.getSource(),
+                    child.getStartIndex(),
+                    child.getEndIndex(),
+                    groups.isEmpty() ? null : groups));
+        }
+        return list;
     }
 
     void setNonCapturing() {
