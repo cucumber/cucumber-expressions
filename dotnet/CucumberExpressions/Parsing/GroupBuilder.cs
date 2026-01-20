@@ -48,7 +48,7 @@ public class GroupBuilder
         );
     }
 
-    private List<Group> ToGroups()
+    public List<Group> ToGroups()
     {
         var list = new List<Group>();
         foreach (GroupBuilder child in children)
