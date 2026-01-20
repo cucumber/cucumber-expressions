@@ -48,6 +48,22 @@ public class GroupBuilder
         );
     }
 
+    private List<Group> ToGroups()
+    {
+        var list = new List<Group>();
+        foreach (GroupBuilder child in children)
+        {
+            List<Group> children = child.ToGroups();
+            list.Add(new Group(
+                child.Source,
+                child.StartIndex,
+                child.EndIndex,
+                children.Any() ? children : null
+            ));
+        }
+        return list;
+    }
+
     public void SetNonCapturing()
     {
         IsCapturing = false;
