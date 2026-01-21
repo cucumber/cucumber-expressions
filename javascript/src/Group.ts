@@ -3,10 +3,15 @@ export default class Group {
     public readonly value: string,
     public readonly start: number | undefined,
     public readonly end: number | undefined,
-    public readonly children: readonly Group[]
+    /**
+     * A groups children.
+     *
+     * There are either one or more children or the attribute is undefined.
+     */
+    public readonly children: readonly Group[] | undefined
   ) {}
 
   get values(): string[] | null {
-    return (this.children.length === 0 ? [this] : this.children).map((g) => g.value)
+    return (this.children === undefined ? [this] : this.children).map((g) => g.value)
   }
 }

@@ -7,7 +7,7 @@ export default class Argument {
     group: Group,
     parameterTypes: readonly ParameterType<unknown>[]
   ): readonly Argument[] {
-    const argGroups = group.children
+    const argGroups = group.children || []
 
     if (argGroups.length !== parameterTypes.length) {
       throw new CucumberExpressionError(

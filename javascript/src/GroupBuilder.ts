@@ -18,7 +18,7 @@ export default class GroupBuilder {
     const index = match.indices[groupIndex]
     const start = index ? index[0] : undefined
     const end = index ? index[1] : undefined
-    return new Group(value, start, end, children)
+    return new Group(value, start, end, children.length === 0 ? undefined : children)
   }
 
   public setNonCapturing() {
