@@ -15,17 +15,19 @@ public final class AmbiguousParameterTypeException extends CucumberExpressionExc
     private final List<GeneratedExpression> generatedExpressions;
 
     AmbiguousParameterTypeException(String parameterTypeRegexp, Pattern expressionRegexp, SortedSet<ParameterType<?>> parameterTypes, List<GeneratedExpression> generatedExpressions) {
-        super(String.format("Your Regular Expression /%s/\n" +
-                        "matches multiple parameter types with regexp /%s/:\n" +
-                        "   %s\n" +
-                        "\n" +
-                        "I couldn't decide which one to use. You have two options:\n" +
-                        "\n" +
-                        "1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:\n" +
-                        "   %s\n" +
-                        "\n" +
-                        "2) Make one of the parameter types preferential and continue to use a Regular Expression.\n" +
-                        "\n",
+        super("""
+                Your Regular Expression /%s/
+                matches multiple parameter types with regexp /%s/:
+                   %s
+                
+                I couldn't decide which one to use. You have two options:
+                
+                1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:
+                   %s
+                
+                2) Make one of the parameter types preferential and continue to use a Regular Expression.
+                
+                """.formatted(
                 expressionRegexp.pattern(),
                 parameterTypeRegexp,
                 parameterTypeNames(parameterTypes),

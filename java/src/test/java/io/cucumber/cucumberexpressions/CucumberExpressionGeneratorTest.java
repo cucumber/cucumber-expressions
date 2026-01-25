@@ -1,5 +1,6 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -10,9 +11,12 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -33,20 +37,20 @@ public class CucumberExpressionGeneratorTest {
 
     @Test
     public void generates_expression_for_no_args() {
-        assertExpression("hello", Collections.<String>emptyList(), "hello");
+        assertExpression("hello", Collections.emptyList(), "hello");
     }
 
     @Test
     public void generates_expression_with_escaped_left_parenthesis() {
         assertExpression(
-                "\\(iii)", Collections.<String>emptyList(),
+                "\\(iii)", Collections.emptyList(),
                 "(iii)");
     }
 
     @Test
     public void generates_expression_with_escaped_left_curly_brace() {
         assertExpression(
-                "\\{iii}", Collections.<String>emptyList(),
+                "\\{iii}", Collections.emptyList(),
                 "{iii}");
     }
 
@@ -74,7 +78,7 @@ public class CucumberExpressionGeneratorTest {
     @Test
     public void generates_expression_for_numbers_with_text_on_both_sides() {
         assertExpression(
-                "i18n", asList(),
+                "i18n", emptyList(),
                 "i18n");
     }
 
@@ -112,12 +116,7 @@ public class CucumberExpressionGeneratorTest {
                 "currency",
                 "[A-Z]{3}",
                 Currency.class,
-                new Transformer<Currency>() {
-                    @Override
-                    public Currency transform(String arg) {
-                        return Currency.getInstance(arg);
-                    }
-                }
+                (@Nullable String s) -> Currency.getInstance(requireNonNull(s))
         ));
         assertExpression(
                 "I have a {currency} account and a {currency} account", asList("currency", "currency2"),
@@ -130,17 +129,12 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                },
+                (@Nullable String arg) -> arg,
                 true,
                 false
         ));
         assertExpression(
-                "I like muppets", Collections.<String>emptyList(),
+                "I like muppets", Collections.emptyList(),
                 "I like muppets");
     }
 
@@ -150,12 +144,7 @@ public class CucumberExpressionGeneratorTest {
                 "direction",
                 "(up|down)",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                },
+                (@Nullable String arg) -> arg,
                 true,
                 false
         ));
@@ -170,18 +159,13 @@ public class CucumberExpressionGeneratorTest {
                 "right",
                 "c d",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "left",
                 "b c",
                 String.class,
-                new Transformer<String>() {
-                    @Override
-                    public String transform(String arg) {
-                        return arg;
-                    }
-                }
+                (@Nullable String arg) -> arg
         ));
         assertExpression(
                 "a {left} d e f g", singletonList("left"),
@@ -194,13 +178,13 @@ public class CucumberExpressionGeneratorTest {
                 "airport",
                 "[A-Z]{3}",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         parameterTypeRegistry.defineParameterType(new ParameterType<>(
                 "leg",
                 "[A-Z]{3}-[A-Z]{3}",
                 String.class,
-                (Transformer<String>) s -> s
+                (@Nullable String arg) -> arg
         ));
         assertExpression(
                 "leg {leg}", singletonList("leg"),
@@ -213,7 +197,7 @@ public class CucumberExpressionGeneratorTest {
                 "currency",
                 "x",
                 Currency.class,
-                (Transformer<Currency>) Currency::getInstance,
+                (@Nullable String s) -> Currency.getInstance(requireNonNull(s)),
                 true,
                 true
         ));
@@ -221,9 +205,9 @@ public class CucumberExpressionGeneratorTest {
                 "date",
                 "x",
                 Date.class,
-                new Transformer<Date>() {
+                new Transformer<>() {
                     @Override
-                    public Date transform(String arg) {
+                    public Date transform(@Nullable String arg) {
                         try {
                             return df.parse(arg);
                         } catch (ParseException e) {
@@ -266,7 +250,7 @@ public class CucumberExpressionGeneratorTest {
                 "optional-flight",
                 "(1st flight)?",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -274,7 +258,7 @@ public class CucumberExpressionGeneratorTest {
                 "optional-hotel",
                 "(1 hotel)?",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -292,7 +276,7 @@ public class CucumberExpressionGeneratorTest {
                     "my-type-" + i,
                     "[a-z]",
                     String.class,
-                    (Transformer<String>) arg -> arg,
+                    (@Nullable String arg) -> arg,
                     true,
                     false
             );
@@ -309,7 +293,7 @@ public class CucumberExpressionGeneratorTest {
                 "zero-or-more",
                 "[a-z]*",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -318,7 +302,7 @@ public class CucumberExpressionGeneratorTest {
                 "exactly-one",
                 "[a-z]",
                 String.class,
-                (Transformer<String>) arg -> arg,
+                (@Nullable String arg) -> arg,
                 true,
                 false
         );
@@ -337,11 +321,14 @@ public class CucumberExpressionGeneratorTest {
 
         // Check that the generated expression matches the text
         CucumberExpression cucumberExpression = new CucumberExpression(generatedExpression.getSource(), parameterTypeRegistry);
-        List<Argument<?>> match = cucumberExpression.match(text);
-        if (match == null) {
-            fail(String.format("Expected text '%s' to match generated expression '%s'", text, generatedExpression.getSource()));
+        Optional<List<Argument<?>>> match = cucumberExpression.match(text);
+        if (match.isEmpty()) {
+            fail("Expected text '%s' to match generated expression '%s'".formatted(
+                    text, 
+                    generatedExpression.getSource()
+            ));
         }
-        assertEquals(expectedArgumentNames.size(), match.size());
+        assertEquals(expectedArgumentNames.size(), match.get().size());
     }
 
 }

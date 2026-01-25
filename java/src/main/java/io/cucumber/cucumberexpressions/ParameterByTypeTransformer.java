@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 
@@ -13,5 +14,6 @@ import java.lang.reflect.Type;
 @FunctionalInterface
 public interface ParameterByTypeTransformer {
 
-    Object transform(String fromValue, Type toValueType) throws Throwable;
+    @Nullable
+    Object transform(@Nullable String fromValue, Type toValueType) throws Throwable;
 }

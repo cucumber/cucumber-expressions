@@ -1,7 +1,8 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,6 +85,7 @@ final class TreeRegexp {
         return pattern;
     }
 
+    @Nullable
     Group match(CharSequence s) {
         final Matcher matcher = pattern.matcher(s);
         if (!matcher.matches())
@@ -91,7 +93,7 @@ final class TreeRegexp {
         return groupBuilder.build(matcher, IntStream.rangeClosed(0, matcher.groupCount()).iterator());
     }
 
-    public GroupBuilder getGroupBuilder() {
+    GroupBuilder getGroupBuilder() {
         return groupBuilder;
     }
 

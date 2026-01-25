@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Java] Make `CucumberExpressionParser::parse` public ([#340](https://github.com/cucumber/cucumber-expressions/pull/340))
+
 ### Changed
 - Make StepMatchArgument.Group.children optional ([#370](https://github.com/cucumber/cucumber-expressions/pull/370))
+- [Java] Set release version to 17 ([#374](https://github.com/cucumber/cucumber-expressions/pull/374))
 
 ## [18.1.0] - 2026-01-20
 ### Added

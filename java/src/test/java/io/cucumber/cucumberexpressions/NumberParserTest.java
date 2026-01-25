@@ -29,12 +29,11 @@ class NumberParserTest {
 
     @Test
     void can_parse_double() {
-        assertEquals(1042.000000000000002, english.parseDouble("1,042.000000000000002"), 0);
-        assertEquals(1042.000000000000002, canadian.parseDouble("1,042.000000000000002"), 0);
-
-        assertEquals(1042.000000000000002, german.parseDouble("1.042,000000000000002"), 0);
-        assertEquals(1042.000000000000002, canadianFrench.parseDouble("1.042,000000000000002"), 0);
-        assertEquals(1042.000000000000002, norwegian.parseDouble("1.042,000000000000002"), 0);
+        assertEquals(Double.parseDouble("1042.000000000000002"), english.parseDouble("1,042.000000000000002"), 0);
+        assertEquals(Double.parseDouble("1042.000000000000002"), canadian.parseDouble("1,042.000000000000002"), 0);
+        assertEquals(Double.parseDouble("1042.000000000000002"), german.parseDouble("1.042,000000000000002"), 0);
+        assertEquals(Double.parseDouble("1042.000000000000002"), canadianFrench.parseDouble("1.042,000000000000002"), 0);
+        assertEquals(Double.parseDouble("1042.000000000000002"), norwegian.parseDouble("1.042,000000000000002"), 0);
     }
 
     @Test

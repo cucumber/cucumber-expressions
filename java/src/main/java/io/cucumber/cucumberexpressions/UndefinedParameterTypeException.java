@@ -1,6 +1,5 @@
 package io.cucumber.cucumberexpressions;
 
-import io.cucumber.cucumberexpressions.Ast.Node;
 import org.apiguardian.api.API;
 
 @API(status = API.Status.STABLE)

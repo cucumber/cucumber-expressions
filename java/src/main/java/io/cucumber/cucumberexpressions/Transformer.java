@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Transformer for a @{@link ParameterType} with zero or one capture groups.
  *
@@ -12,11 +14,11 @@ public interface Transformer<T> {
      * from the sole capture group or matches the whole expression. Nested
      * capture groups are ignored.
      * <p>
-     * If the capture group is optional <code>arg</code> may be null.
+     * If the capture group is optional {@code arg} may be {@code null}.
      *
      * @param arg the value of the single capture group
      * @return the transformed object
      * @throws Throwable if transformation failed
      */
-    T transform(String arg) throws Throwable;
+    @Nullable T transform(@Nullable String arg) throws Throwable;
 }

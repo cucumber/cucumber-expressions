@@ -13,6 +13,10 @@ import java.util.Locale;
 @API(status = API.Status.EXPERIMENTAL)
 public final class KeyboardFriendlyDecimalFormatSymbols {
 
+    private KeyboardFriendlyDecimalFormatSymbols(){
+        /* no-op */
+    }
+
     public static DecimalFormatSymbols getInstance(Locale locale) {
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(locale);
 

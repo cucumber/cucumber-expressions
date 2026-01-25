@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -66,64 +67,67 @@ public final class ParameterTypeRegistry {
                 .replace("{expnt}", "" + numberFormat.getExponentSeparator())
         );
 
-        defineParameterType(new ParameterType<>("biginteger", INTEGER_REGEXPS, BigInteger.class, new Transformer<BigInteger>() {
+        defineParameterType(new ParameterType<>("biginteger", INTEGER_REGEXPS, BigInteger.class, new Transformer<>() {
             @Override
-            public BigInteger transform(String arg) throws Throwable {
+            public @Nullable BigInteger transform(@Nullable String arg) throws Throwable {
                 return (BigInteger) internalParameterTransformer.transform(arg, BigInteger.class);
             }
         }, false, false, false));
-        defineParameterType(new ParameterType<>("bigdecimal", localizedFloatRegexp, BigDecimal.class, new Transformer<BigDecimal>() {
+        defineParameterType(new ParameterType<>("bigdecimal", localizedFloatRegexp, BigDecimal.class, new Transformer<>() {
             @Override
-            public BigDecimal transform(String arg) throws Throwable {
+            public @Nullable BigDecimal transform(@Nullable String arg) throws Throwable {
                 return (BigDecimal) internalParameterTransformer.transform(arg, BigDecimal.class);
             }
         }, false, false, false));
-        defineParameterType(new ParameterType<>("byte", INTEGER_REGEXPS, Byte.class, new Transformer<Byte>() {
+        defineParameterType(new ParameterType<>("byte", INTEGER_REGEXPS, Byte.class, new Transformer<>() {
             @Override
-            public Byte transform(String arg) throws Throwable {
+            public @Nullable Byte transform(@Nullable String arg) throws Throwable {
                 return (Byte) internalParameterTransformer.transform(arg, Byte.class);
             }
         }, false, false, false));
-        defineParameterType(new ParameterType<>("short", INTEGER_REGEXPS, Short.class, new Transformer<Short>() {
+        defineParameterType(new ParameterType<>("short", INTEGER_REGEXPS, Short.class, new Transformer<>() {
             @Override
-            public Short transform(String arg) throws Throwable {
+            public @Nullable Short transform(@Nullable String arg) throws Throwable {
                 return (Short) internalParameterTransformer.transform(arg, Short.class);
             }
         }, false, false, false));
-        defineParameterType(new ParameterType<>("int", INTEGER_REGEXPS, Integer.class, new Transformer<Integer>() {
+        defineParameterType(new ParameterType<>("int", INTEGER_REGEXPS, Integer.class, new Transformer<>() {
             @Override
-            public Integer transform(String arg) throws Throwable {
+            public @Nullable Integer transform(@Nullable String arg) throws Throwable {
                 return (Integer) internalParameterTransformer.transform(arg, Integer.class);
             }
         }, true, true, false));
-        defineParameterType(new ParameterType<>("long", INTEGER_REGEXPS, Long.class, new Transformer<Long>() {
+        defineParameterType(new ParameterType<>("long", INTEGER_REGEXPS, Long.class, new Transformer<>() {
             @Override
-            public Long transform(String arg) throws Throwable {
+            public @Nullable Long transform(@Nullable String arg) throws Throwable {
                 return (Long) internalParameterTransformer.transform(arg, Long.class);
             }
         }, false, false));
-        defineParameterType(new ParameterType<>("float", localizedFloatRegexp, Float.class, new Transformer<Float>() {
+        defineParameterType(new ParameterType<>("float", localizedFloatRegexp, Float.class, new Transformer<>() {
             @Override
-            public Float transform(String arg) throws Throwable {
+            public @Nullable Float transform(@Nullable String arg) throws Throwable {
                 return (Float) internalParameterTransformer.transform(arg, Float.class);
             }
         }, false, false));
-        defineParameterType(new ParameterType<>("double", localizedFloatRegexp, Double.class, new Transformer<Double>() {
+        defineParameterType(new ParameterType<>("double", localizedFloatRegexp, Double.class, new Transformer<>() {
             @Override
-            public Double transform(String arg) throws Throwable {
+            public @Nullable Double transform(@Nullable String arg) throws Throwable {
                 return (Double) internalParameterTransformer.transform(arg, Double.class);
             }
         }, true, true, false));
-        defineParameterType(new ParameterType<>("word", WORD_REGEXPS, String.class, new Transformer<String>() {
+        defineParameterType(new ParameterType<>("word", WORD_REGEXPS, String.class, new Transformer<>() {
             @Override
-            public String transform(String arg) throws Throwable {
+            public @Nullable String transform(@Nullable String arg) throws Throwable {
                 return (String) internalParameterTransformer.transform(arg, String.class);
             }
         }, false, false, false));
         defineParameterType(new ParameterType<>("string", STRING_REGEXPS, String.class, new CaptureGroupTransformer<String>() {
             @Override
-            public String transform(String... args) throws Throwable {
+            public @Nullable String transform(@Nullable String[] args) throws Throwable {
                 String arg = args[0] != null ? args[0] : args[1];
+                if (arg == null) {
+                    return null;
+                }
                 return (String) internalParameterTransformer.transform(arg
                                 .replaceAll("\\\\\"", "\"")
                                 .replaceAll("\\\\'", "'"),
@@ -135,27 +139,28 @@ public final class ParameterTypeRegistry {
     }
 
     public void defineParameterType(ParameterType<?> parameterType) {
-        if (parameterType.getName() != null) {
-            if (parameterTypeByName.containsKey(parameterType.getName())) {
-                if (parameterType.getName().isEmpty()) {
-                    throw new DuplicateTypeNameException("The anonymous parameter type has already been defined");
-                }
-                throw new DuplicateTypeNameException(String.format("There is already a parameter type with name %s", parameterType.getName()));
+        if (parameterTypeByName.containsKey(parameterType.getName())) {
+            if (parameterType.getName().isEmpty()) {
+                throw new DuplicateTypeNameException("The anonymous parameter type has already been defined");
             }
-            parameterTypeByName.put(parameterType.getName(), parameterType);
+            throw new DuplicateTypeNameException("There is already a parameter type with name %s".formatted(
+                    parameterType.getName()
+            ));
         }
+        parameterTypeByName.put(parameterType.getName(), parameterType);
 
         for (String parameterTypeRegexp : parameterType.getRegexps()) {
             if (!parameterTypesByRegexp.containsKey(parameterTypeRegexp)) {
-                parameterTypesByRegexp.put(parameterTypeRegexp, new TreeSet<ParameterType<?>>());
+                parameterTypesByRegexp.put(parameterTypeRegexp, new TreeSet<>());
             }
             SortedSet<ParameterType<?>> parameterTypes = parameterTypesByRegexp.get(parameterTypeRegexp);
             if (!parameterTypes.isEmpty() && parameterTypes.first().preferForRegexpMatch() && parameterType.preferForRegexpMatch()) {
-                throw new CucumberExpressionException(String.format(
-                        "There can only be one preferential parameter type per regexp. " +
-                                "The regexp /%s/ is used for two preferential parameter types, {%s} and {%s}",
-                        parameterTypeRegexp, parameterTypes.first().getName(), parameterType.getName()
-                ));
+                throw new CucumberExpressionException("""
+                        There can only be one preferential parameter type per regexp.
+                        The regexp /%s/ is used for two preferential parameter types, {%s} and {%s}""".formatted(
+                        parameterTypeRegexp, 
+                        parameterTypes.first().getName(), 
+                        parameterType.getName()));
             }
             parameterTypes.add(parameterType);
         }
@@ -169,11 +174,13 @@ public final class ParameterTypeRegistry {
         this.defaultParameterTransformer = defaultParameterTransformer;
     }
 
-    <T> ParameterType<T> lookupByTypeName(String typeName) {
+    @SuppressWarnings("unchecked")
+    <T> @Nullable ParameterType<T> lookupByTypeName(String typeName) {
         return (ParameterType<T>) parameterTypeByName.get(typeName);
     }
 
-    <T> ParameterType<T> lookupByRegexp(String parameterTypeRegexp, Pattern expressionRegexp, String text) {
+    @SuppressWarnings("unchecked")
+    <T> @Nullable ParameterType<T> lookupByRegexp(String parameterTypeRegexp, Pattern expressionRegexp, String text) {
         SortedSet<ParameterType<?>> parameterTypes = parameterTypesByRegexp.get(parameterTypeRegexp);
         if (parameterTypes == null) return null;
         if (parameterTypes.size() > 1 && !parameterTypes.first().preferForRegexpMatch()) {

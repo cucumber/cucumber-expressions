@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.apiguardian.api.API;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,20 +13,20 @@ import static java.util.Collections.singletonList;
 import java.util.Collection;
 
 @API(status = API.Status.STABLE)
-public class Group {
-    private final List<Group> children;
-    private final String value;
+public final class Group {
+    private final @Nullable List<Group> children;
+    private final @Nullable String value;
     private final int start;
     private final int end;
 
-    Group(String value, int start, int end, List<Group> children) {
+    Group(@Nullable String value, int start, int end, @Nullable List<Group> children) {
         this.value = value;
         this.start = start;
         this.end = end;
         this.children = children;
     }
 
-    public String getValue() {
+    public @Nullable String getValue() {
         return value;
     }
 
@@ -36,17 +37,17 @@ public class Group {
     public int getEnd() {
         return end;
     }
-    
+
     /**
      * A groups children.
-     * 
-     * <p>There are either one or more children or the value is absent. 
+     *
+     * <p>There are either one or more children or the value is absent.
      */
     public Optional<List<Group>> getChildren() {
         return Optional.ofNullable(children);
     }
 
-    public List<String> getValues() {
+    public List<@Nullable String> getValues() {
         return getChildren()
                 .orElseGet(() -> singletonList(this))
                 .stream()
