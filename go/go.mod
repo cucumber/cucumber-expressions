@@ -1,4 +1,4 @@
-module github.com/cucumber/cucumber-expressions/go/v18
+module github.com/cucumber/cucumber-expressions/go/v19
 
 require (
 	github.com/stretchr/testify v1.11.1
