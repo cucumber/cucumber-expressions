@@ -5,6 +5,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -15,7 +16,7 @@ public final class Argument<T> {
     private final Group group;
 
     static List<Argument<?>> build(Group group, List<ParameterType<?>> parameterTypes) {
-        List<Group> argGroups = group.getChildren();
+        List<Group> argGroups = group.getChildren().orElseGet(Collections::emptyList);
 
         if (argGroups.size() != parameterTypes.size()) {
             // This requires regex injection through a Cucumber expression.

@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.apiguardian.api.API;
+
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
@@ -8,13 +10,14 @@ import java.util.Locale;
  * <p>
  * Note quite complete, feel free to make a suggestion.
  */
-final class KeyboardFriendlyDecimalFormatSymbols {
+@API(status = API.Status.EXPERIMENTAL)
+public final class KeyboardFriendlyDecimalFormatSymbols {
 
     private KeyboardFriendlyDecimalFormatSymbols(){
         /* no-op */
     }
-    
-    static DecimalFormatSymbols getInstance(Locale locale) {
+
+    public static DecimalFormatSymbols getInstance(Locale locale) {
         DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(locale);
 
         // Replace the minus sign with minus-hyphen as available on most keyboards.

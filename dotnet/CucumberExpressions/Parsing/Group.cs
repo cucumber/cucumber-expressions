@@ -10,6 +10,11 @@ public class Group
     public string Value { get; }
     public int Start { get; }
     public int End { get; }
+    /**
+     * A groups children.
+     *
+     * <p>There are either one or more children or the value is null.
+     */
     public List<Group> Children { get; }
 
     public Group(string value, int start, int end, List<Group> children)
@@ -20,11 +25,13 @@ public class Group
         Children = children;
     }
 
+
     public string[] GetValues()
     {
-        List<Group> groups = !Children.Any() ?
-            new List<Group> { this } : Children;
-        return groups.Select(g => g.Value).ToArray();
+        if(Children == null) {
+            return new string[]{ Value };
+        }
+        return Children.Select(g => g.Value).ToArray();
     }
 
     /**
@@ -36,21 +43,7 @@ public class Group
      */
     public static Group[] Parse(Regex expression)
     {
-        GroupBuilder builder = TreeRegexp.CreateGroupBuilder(expression);
-        return ToGroups(builder.Children).ToArray();
+        return TreeRegexp.CreateGroupBuilder(expression).ToGroups().ToArray();
     }
 
-    private static List<Group> ToGroups(IEnumerable<GroupBuilder> children)
-    {
-        var list = new List<Group>();
-        if (children != null)
-        {
-            foreach (GroupBuilder child in children)
-            {
-                list.Add(new Group(child.Source, child.StartIndex, child.EndIndex,
-                        ToGroups(child.Children)));
-            }
-        }
-        return list;
-    }
 }

@@ -4,28 +4,28 @@ import org.apiguardian.api.API;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @API(status = API.Status.STABLE)
 public final class Group {
-    private final List<Group> children;
+    private final @Nullable List<Group> children;
     private final @Nullable String value;
     private final int start;
     private final int end;
 
-    Group(@Nullable String value, int start, int end, List<Group> children) {
+    Group(@Nullable String value, int start, int end, @Nullable List<Group> children) {
         this.value = value;
         this.start = start;
         this.end = end;
         this.children = children;
     }
-    
+
     public @Nullable String getValue() {
         return value;
     }
@@ -38,13 +38,19 @@ public final class Group {
         return end;
     }
 
-    public List<Group> getChildren() {
-        return children;
+    /**
+     * A groups children.
+     *
+     * <p>There are either one or more children or the value is absent.
+     */
+    public Optional<List<Group>> getChildren() {
+        return Optional.ofNullable(children);
     }
 
     public List<@Nullable String> getValues() {
-        List<Group> groups = getChildren().isEmpty() ? singletonList(this) : getChildren();
-        return groups.stream()
+        return getChildren()
+                .orElseGet(() -> singletonList(this))
+                .stream()
                 .map(Group::getValue)
                 .collect(Collectors.toList());
     }
@@ -57,16 +63,7 @@ public final class Group {
      *         <code>null</code>
      */
     public static Collection<Group> parse(Pattern expression) {
-        GroupBuilder builder = TreeRegexp.createGroupBuilder(expression);
-        return toGroups(builder.getChildren());
+        return TreeRegexp.createGroupBuilder(expression).toGroups();
     }
 
-    private static List<Group> toGroups(List<GroupBuilder> children) {
-        List<Group> list = new ArrayList<>();
-        for (GroupBuilder child : children) {
-            list.add(new Group(child.getSource(), child.getStartIndex(), child.getEndIndex(),
-                    toGroups(child.getChildren())));
-        }
-        return list;
-    }
 }

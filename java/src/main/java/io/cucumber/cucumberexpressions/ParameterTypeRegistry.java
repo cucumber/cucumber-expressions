@@ -28,7 +28,7 @@ public final class ParameterTypeRegistry {
             Pattern.compile("\\d+").pattern()
     );
     private static final String SIGN = "[-+]?";
-    private static final String MUST_CONTAIN_NUMBER = "(?=.*\\d.*)";
+    private static final String MUST_CONTAIN_NUMBER = "(?=\\S*\\d\\S*)";
     private static final String SCIENTIFIC_NUMBER = "(?:\\d+[{expnt}]-?\\d+)?";
     private static final String DECIMAL_FRACTION = "(?:[{decimal}](?=\\d.*))?\\d*";
     private static final String INTEGER = "(?:\\d+(?:[{group}]?\\d+)*)*";

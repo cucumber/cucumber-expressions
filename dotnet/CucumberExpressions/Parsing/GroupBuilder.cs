@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CucumberExpressions.Parsing;
@@ -39,7 +40,28 @@ public class GroupBuilder
         }
 
         var matcherGroup = matcher.Groups[groupIndex];
-        return new Group(matcherGroup.Success ? matcherGroup.Value : null, matcherGroup.Index, matcherGroup.Index + matcherGroup.Length, children);
+        return new Group(
+            matcherGroup.Success ? matcherGroup.Value : null, 
+            matcherGroup.Index, 
+            matcherGroup.Index + matcherGroup.Length, 
+            children.Any() ? children : null
+        );
+    }
+
+    public List<Group> ToGroups()
+    {
+        var list = new List<Group>();
+        foreach (GroupBuilder child in _groupBuilders)
+        {
+            List<Group> groups = child.ToGroups();
+            list.Add(new Group(
+                child.Source,
+                child.StartIndex,
+                child.EndIndex,
+                groups.Any() ? groups : null
+            ));
+        }
+        return list;
     }
 
     public void SetNonCapturing()
