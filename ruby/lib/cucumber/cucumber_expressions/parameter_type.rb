@@ -59,17 +59,18 @@ module Cucumber
       end
 
       def regexp_source(regexp)
-        return regexp.source unless regex_options.key?(regexp.options)
+        return regexp.source unless regexp.options.between?(1, 7)
 
-        raise CucumberExpressionError.new("ParameterType Regexps can't use '#{regex_options[regexp.options]}' option")
-      end
+        # See Regexp.options for option values (Uses similar structure to binary `rwx` file modes)
+        message =
+          case regexp.options
+          when 1, 3, 5, 7; then 'IGNORECASE'
+          when 2, 6;       then 'EXTENDED'
+          when 4;          then 'MULTILINE'
+          else 'UNKNOWN'
+          end
 
-      def regex_options
-        {
-          1 => 'EXTENDED',
-          2 => 'IGNORECASE',
-          4 => 'MULTILINE'
-        }
+        raise CucumberExpressionError.new("ParameterType Regexps can't use '#{message}' option")
       end
     end
   end
