@@ -59,15 +59,17 @@ module Cucumber
       end
 
       def regexp_source(regexp)
-        [
-          'EXTENDED',
-          'IGNORECASE',
-          'MULTILINE'
-        ].each do |option_name|
-          option = Regexp.const_get(option_name)
-          raise CucumberExpressionError.new("ParameterType Regexps can't use option Regexp::#{option_name}") if regexp.options & option != 0
-        end
-        regexp.source
+        return regexp.source unless regex_options.key?(regexp.options)
+
+        raise CucumberExpressionError.new("ParameterType Regexps can't use '#{regex_options[regexp.options]}' option")
+      end
+
+      def regex_options
+        {
+          1 => 'EXTENDED',
+          2 => 'IGNORECASE',
+          4 => 'MULTILINE'
+        }
       end
     end
   end
