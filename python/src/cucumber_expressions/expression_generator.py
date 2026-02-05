@@ -41,11 +41,13 @@ class CucumberExpressionGenerator:
             best_parameter_type_matcher = matching_parameter_type_matchers[0]
             best_parameter_type_matchers = list(
                 filter(
-                    lambda m: ParameterTypeMatcher.compare(
-                        m,
-                        best_parameter_type_matcher,
-                    )
-                    == 0,
+                    lambda m: (
+                        ParameterTypeMatcher.compare(
+                            m,
+                            best_parameter_type_matcher,
+                        )
+                        == 0
+                    ),
                     matching_parameter_type_matchers,
                 ),
             )
