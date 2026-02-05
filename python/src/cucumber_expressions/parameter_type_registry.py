@@ -51,9 +51,11 @@ class ParameterTypeRegistry:
                 "string",
                 STRING_REGEXPS,
                 str,
-                lambda s1, s2: str(s2 if s1 is None else s1)
-                .replace('\\"', '"')
-                .replace("\\'", "'"),
+                lambda s1, s2: (
+                    str(s2 if s1 is None else s1)
+                    .replace('\\"', '"')
+                    .replace("\\'", "'")
+                ),
                 True,
                 False,
             ),
