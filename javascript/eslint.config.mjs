@@ -28,10 +28,6 @@ export default [js.configs.recommended, ...typescriptEslint.configs["flat/recomm
         },
     },
 }, importPlugin.flatConfigs.typescript, {
-    plugins: {
-        "simple-import-sort": simpleImportSort,
-    },
-
     rules: {
         "import/no-cycle": "error",
         "n/no-extraneous-import": "error",
