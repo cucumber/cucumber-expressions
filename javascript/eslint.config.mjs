@@ -1,34 +1,16 @@
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
-import _import from "eslint-plugin-import";
+import importPlugin from "eslint-plugin-import";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import n from "eslint-plugin-n";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
-
-export default [...fixupConfigRules(compat.extends(
-    "eslint:recommended",
-    "plugin:import/typescript",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-)), {
+export default [js.configs.recommended, ...typescriptEslint.configs["flat/recommended"], {
     plugins: {
-        import: fixupPluginRules(_import),
+        import: importPlugin,
         "simple-import-sort": simpleImportSort,
         n,
-        "@typescript-eslint": fixupPluginRules(typescriptEslint),
     },
 
     languageOptions: {
@@ -45,17 +27,18 @@ export default [...fixupConfigRules(compat.extends(
             project: "tsconfig.json",
         },
     },
+}, importPlugin.flatConfigs.typescript, {
+    plugins: {
+        "simple-import-sort": simpleImportSort,
+    },
 
     rules: {
         "import/no-cycle": "error",
         "n/no-extraneous-import": "error",
-        "@typescript-eslint/ban-ts-ignore": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-use-before-define": "off",
-        "@typescript-eslint/interface-name-prefix": "off",
-        "@typescript-eslint/member-delimiter-style": "off",
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-non-null-assertion": "error",
         "simple-import-sort/imports": "error",
