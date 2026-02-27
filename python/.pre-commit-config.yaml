@@ -6,7 +6,7 @@ repos:
         args: [--fix]
       - id: ruff-format
 -   repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.6
+    rev: 0.10.7
     hooks:
       # Ensure the uv lock file is up to date
       - id: uv-lock
