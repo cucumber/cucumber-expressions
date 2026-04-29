@@ -1,5 +1,5 @@
-import assert from 'assert'
-import fs from 'fs'
+import assert from 'node:assert'
+import fs from 'node:fs'
 import { glob } from 'glob'
 import yaml from 'js-yaml'
 
@@ -28,7 +28,7 @@ describe('CucumberExpression', () => {
           JSON.parse(
             JSON.stringify(
               matches ? matches.map((value) => value.getValue(null)) : null,
-              (key, value) => {
+              (_key, value) => {
                 return typeof value === 'bigint' ? value.toString() : value
               }
             )
@@ -99,9 +99,7 @@ describe('CucumberExpression', () => {
         'textAndOrNumber',
         /([A-Z]+)?(?: )?([0-9]+)?/,
         null,
-        function (s1, s2) {
-          return [s1, s2]
-        },
+        (s1, s2) => [s1, s2],
         false,
         true
       )
@@ -110,8 +108,8 @@ describe('CucumberExpression', () => {
 
     const world = {}
 
-    assert.deepStrictEqual(expression.match(`TLA`)![0].getValue(world), ['TLA', undefined])
-    assert.deepStrictEqual(expression.match(`123`)![0].getValue(world), [undefined, '123'])
+    assert.deepStrictEqual(expression.match(`TLA`)?.[0].getValue(world), ['TLA', undefined])
+    assert.deepStrictEqual(expression.match(`123`)?.[0].getValue(world), [undefined, '123'])
   })
 
   // JavaScript-specific

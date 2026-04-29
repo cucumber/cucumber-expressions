@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'node:assert'
 
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'

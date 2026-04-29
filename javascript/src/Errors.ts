@@ -1,7 +1,7 @@
-import { Located, Node, purposeOf, symbolOf, Token, TokenType } from './Ast.js'
+import { type Located, type Node, purposeOf, symbolOf, type Token, type TokenType } from './Ast.js'
 import CucumberExpressionError from './CucumberExpressionError.js'
-import GeneratedExpression from './GeneratedExpression.js'
-import ParameterType from './ParameterType.js'
+import type GeneratedExpression from './GeneratedExpression.js'
+import type ParameterType from './ParameterType.js'
 
 export function createAlternativeMayNotExclusivelyContainOptionals(
   node: Node,
@@ -186,15 +186,15 @@ export class AmbiguousParameterTypeError extends CucumberExpressionError {
     parameterTypes: readonly ParameterType<unknown>[],
     generatedExpressions: readonly GeneratedExpression[]
   ) {
-    return new this(
+    return new AmbiguousParameterTypeError(
       `Your Regular Expression ${expressionRegexp}
 matches multiple parameter types with regexp ${parameterTypeRegexp}:
-   ${this._parameterTypeNames(parameterTypes)}
+   ${AmbiguousParameterTypeError._parameterTypeNames(parameterTypes)}
 
 I couldn't decide which one to use. You have two options:
 
 1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:
-   ${this._expressions(generatedExpressions)}
+   ${AmbiguousParameterTypeError._expressions(generatedExpressions)}
 
 2) Make one of the parameter types preferential and continue to use a Regular Expression.
 `

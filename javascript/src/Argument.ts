@@ -1,6 +1,6 @@
 import CucumberExpressionError from './CucumberExpressionError.js'
-import Group from './Group.js'
-import ParameterType from './ParameterType.js'
+import type Group from './Group.js'
+import type ParameterType from './ParameterType.js'
 
 export default class Argument {
   public static build(

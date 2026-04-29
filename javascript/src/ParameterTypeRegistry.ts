@@ -3,7 +3,7 @@ import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
 import defineDefaultParameterTypes from './defineDefaultParameterTypes.js'
 import { AmbiguousParameterTypeError } from './Errors.js'
 import ParameterType from './ParameterType.js'
-import { DefinesParameterType } from './types.js'
+import type { DefinesParameterType } from './types.js'
 
 export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()
@@ -65,7 +65,7 @@ export default class ParameterTypeRegistry implements DefinesParameterType {
       if (!this.parameterTypesByRegexp.has(parameterTypeRegexp)) {
         this.parameterTypesByRegexp.set(parameterTypeRegexp, [])
       }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      // biome-ignore lint/style/noNonNullAssertion: presence ensured above
       const parameterTypes = this.parameterTypesByRegexp.get(parameterTypeRegexp)!
       const existingParameterType = parameterTypes[0]
       if (

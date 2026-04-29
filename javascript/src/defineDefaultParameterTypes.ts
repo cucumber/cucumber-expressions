@@ -1,5 +1,5 @@
 import ParameterType from './ParameterType.js'
-import { DefinesParameterType } from './types.js'
+import type { DefinesParameterType } from './types.js'
 
 const INTEGER_REGEXPS = [/-?\d+/, /\d+/]
 const FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?/

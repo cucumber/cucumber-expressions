@@ -1,4 +1,4 @@
-import { Node, NodeType, Token, TokenType } from './Ast.js'
+import { Node, NodeType, type Token, TokenType } from './Ast.js'
 import CucumberExpressionTokenizer from './CucumberExpressionTokenizer.js'
 import {
   createAlternationNotAllowedInOptional,
@@ -22,10 +22,6 @@ function parseText(expression: string, tokens: readonly Token[], current: number
       }
     case TokenType.alternation:
       throw createAlternationNotAllowedInOptional(expression, token)
-    case TokenType.startOfLine:
-    case TokenType.endOfLine:
-    case TokenType.beginOptional:
-    case TokenType.beginParameter:
     default:
       // If configured correctly this will never happen
       return { consumed: 0, ast: [] }
@@ -50,8 +46,6 @@ function parseName(expression: string, tokens: readonly Token[], current: number
     case TokenType.endParameter:
     case TokenType.alternation:
       throw createInvalidParameterTypeNameInNode(token, expression)
-    case TokenType.startOfLine:
-    case TokenType.endOfLine:
     default:
       // If configured correctly this will never happen
       return { consumed: 0, ast: [] }
@@ -85,7 +79,7 @@ optionalSubParsers.push(parseOptional, parseParameter, parseText)
  * alternation := alternative* + ( '/' + alternative* )+
  */
 function parseAlternativeSeparator(
-  expression: string,
+  _expression: string,
   tokens: readonly Token[],
   current: number
 ): Result {
@@ -130,7 +124,7 @@ const parseAlternation: Parser = (expression, tokens, current) => {
     TokenType.beginParameter,
   ])
   const subCurrent = current + result.consumed
-  if (!result.ast.some((astNode) => astNode.type == NodeType.alternative)) {
+  if (!result.ast.some((astNode) => astNode.type === NodeType.alternative)) {
     return { consumed: 0, ast: [] }
   }
 
@@ -170,9 +164,7 @@ export default class CucumberExpressionParser {
   }
 }
 
-interface Parser {
-  (expression: string, tokens: readonly Token[], current: number): Result
-}
+type Parser = (expression: string, tokens: readonly Token[], current: number) => Result
 
 type Result = {
   readonly consumed: number
@@ -218,12 +210,12 @@ function parseToken(
   for (let i = 0; i < parsers.length; i++) {
     const parse = parsers[i]
     const result = parse(expression, tokens, startAt)
-    if (result.consumed != 0) {
+    if (result.consumed !== 0) {
       return result
     }
   }
   // If configured correctly this will never happen
-  throw new Error('No eligible parsers for ' + tokens)
+  throw new Error(`No eligible parsers for ${tokens}`)
 }
 
 function parseTokensUntil(
@@ -241,10 +233,10 @@ function parseTokensUntil(
       break
     }
     const result = parseToken(expression, parsers, tokens, current)
-    if (result.consumed == 0) {
+    if (result.consumed === 0) {
       // If configured correctly this will never happen
       // Keep to avoid infinite loops
-      throw new Error('No eligible parsers for ' + tokens)
+      throw new Error(`No eligible parsers for ${tokens}`)
     }
     current += result.consumed
     ast.push(...result.ast)
@@ -264,12 +256,12 @@ function lookingAt(tokens: readonly Token[], at: number, token: TokenType): bool
   if (at < 0) {
     // If configured correctly this will never happen
     // Keep for completeness
-    return token == TokenType.startOfLine
+    return token === TokenType.startOfLine
   }
   if (at >= tokens.length) {
-    return token == TokenType.endOfLine
+    return token === TokenType.endOfLine
   }
-  return tokens[at].type == token
+  return tokens[at].type === token
 }
 
 function splitAlternatives(
@@ -281,7 +273,7 @@ function splitAlternatives(
   const alternatives: Node[][] = []
   let alternative: Node[] = []
   alternation.forEach((n) => {
-    if (NodeType.alternative == n.type) {
+    if (NodeType.alternative === n.type) {
       separators.push(n)
       alternatives.push(alternative)
       alternative = []
@@ -303,10 +295,10 @@ function createAlternativeNodes(
 
   for (let i = 0; i < alternatives.length; i++) {
     const n = alternatives[i]
-    if (i == 0) {
+    if (i === 0) {
       const rightSeparator = separators[i]
       nodes.push(new Node(NodeType.alternative, n, undefined, start, rightSeparator.start))
-    } else if (i == alternatives.length - 1) {
+    } else if (i === alternatives.length - 1) {
       const leftSeparator = separators[i - 1]
       nodes.push(new Node(NodeType.alternative, n, undefined, leftSeparator.end, end))
     } else {

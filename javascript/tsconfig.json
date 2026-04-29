@@ -12,9 +12,7 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "module": "ESNext",
-    "lib": [
-      "ES2022"
-    ],
+    "lib": ["ES2022"],
     "target": "ES2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
