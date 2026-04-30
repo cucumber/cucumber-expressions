@@ -1,6 +1,6 @@
 import execWithIndices from 'regexp-match-indices'
 
-import Group from './Group.js'
+import type Group from './Group.js'
 import GroupBuilder from './GroupBuilder.js'
 
 export default class TreeRegexp {

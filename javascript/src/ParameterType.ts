@@ -28,7 +28,7 @@ export default class ParameterType<T> {
   }
 
   public static checkParameterTypeName(typeName: string) {
-    if (!this.isValidParameterTypeName(typeName)) {
+    if (!ParameterType.isValidParameterTypeName(typeName)) {
       throw new CucumberExpressionError(
         `Illegal character in parameter name {${typeName}}. Parameter names may not contain '{', '}', '(', ')', '\\' or '/'`
       )

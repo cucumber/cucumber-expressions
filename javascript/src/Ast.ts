@@ -84,11 +84,11 @@ export class Token implements Located {
   }
 
   static isEscapeCharacter(codePoint: string): boolean {
-    return codePoint == escapeCharacter
+    return codePoint === escapeCharacter
   }
 
   static canEscape(codePoint: string): boolean {
-    if (codePoint == ' ') {
+    if (codePoint === ' ') {
       // TODO: Unicode whitespace?
       return true
     }
@@ -110,7 +110,7 @@ export class Token implements Located {
   }
 
   static typeOf(codePoint: string): TokenType {
-    if (codePoint == ' ') {
+    if (codePoint === ' ') {
       // TODO: Unicode whitespace?
       return TokenType.whiteSpace
     }

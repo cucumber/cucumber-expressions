@@ -1,10 +1,10 @@
-import assert from 'assert'
+import assert from 'node:assert'
 
 import CucumberExpression from '../src/CucumberExpression.js'
 import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
 import ParameterType from '../src/ParameterType.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
-import { ParameterInfo } from '../src/types.js'
+import type { ParameterInfo } from '../src/types.js'
 
 class Currency {
   constructor(public readonly s: string) {}
@@ -258,7 +258,7 @@ describe('CucumberExpressionGenerator', () => {
   it('generates at most 256 expressions', () => {
     for (let i = 0; i < 4; i++) {
       parameterTypeRegistry.defineParameterType(
-        new ParameterType('my-type-' + i, /([a-z] )*?[a-z]/, null, (s) => s, true, false)
+        new ParameterType(`my-type-${i}`, /([a-z] )*?[a-z]/, null, (s) => s, true, false)
       )
     }
     // This would otherwise generate 4^11=419430 expressions and consume just shy of 1.5GB.
