@@ -60,7 +60,7 @@
     "js-yaml": "4.1.1",
     "mocha": "11.7.5",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "regexp-match-indices": "1.0.2"
