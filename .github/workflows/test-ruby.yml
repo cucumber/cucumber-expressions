@@ -7,9 +7,17 @@ on:
     branches:
       - main
       - renovate/**
+    paths:
+      - ruby/**
+      - testdata/**
+      - .github/**
   pull_request:
     branches:
       - main
+    paths:
+      - ruby/**
+      - testdata/**
+      - .github/**
 
 jobs:
   test:

@@ -6,9 +6,19 @@ on:
   push:
     branches-ignore:
       - renovate/**
+    branches:
+      - main
+    paths:
+      - javascript/**
+      - testdata/**
+      - .github/**
   pull_request:
     branches:
       - main
+    paths:
+      - javascript/**
+      - testdata/**
+      - .github/**
 
 jobs:
   stryker:

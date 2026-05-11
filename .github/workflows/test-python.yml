@@ -7,9 +7,17 @@ on:
     branches:
       - main
       - renovate/**
+    paths:
+      - python/**
+      - testdata/**
+      - .github/**
   pull_request:
     branches:
       - main
+    paths:
+      - python/**
+      - testdata/**
+      - .github/**
 
 jobs:
   test-python-linting:
