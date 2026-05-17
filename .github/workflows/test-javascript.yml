@@ -46,7 +46,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
-    - run: npm install-test
+    - run: npm install-ci-test
       working-directory: javascript
     - run: npm run lint
       working-directory: javascript
