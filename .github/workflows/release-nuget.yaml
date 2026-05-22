@@ -1,5 +1,7 @@
 name: Release NuGet
 
+permissions: {}
+
 on:
   push:
     branches:
@@ -10,13 +12,23 @@ jobs:
     name: Publish package to NuGet.org
     runs-on: ubuntu-latest
     environment: Release
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
         with:
           dotnet-version: 8.0.x
-      - uses: cucumber/action-publish-nuget@v1.0.0
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: login
         with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+          user: ${{ secrets.NUGET_USER }}
+      - uses: cucumber/action-publish-nuget@c1fe9167b2165369697c5e3b13fe2cee64e122f8 # v1.1.0
+        with:
+          nuget-api-key: ${{ steps.login.outputs.NUGET_API_KEY }}
           working-directory: "dotnet"
