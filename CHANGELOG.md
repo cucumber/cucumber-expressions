@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [19.0.1] - 2026-05-22
 ### Fixed
 - [.Net] Downgrade dependency fluentassertions to 7.2.0 ([#423](https://github.com/cucumber/cucumber-expressions/pull/423))
 
@@ -795,7 +797,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.1...HEAD
+[19.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.0...v19.0.1
 [19.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.1.0...v19.0.0
 [18.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...v18.1.0
 [18.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...v18.0.1
