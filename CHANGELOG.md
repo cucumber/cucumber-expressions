@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- [.Net] Replace FluentAssertions with AwesomeAssertions
 
 ## [19.0.1] - 2026-05-22
 ### Fixed

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CucumberExpressions.Generation;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace CucumberExpressions.Tests;
