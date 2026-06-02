@@ -1,10 +1,10 @@
 import assert from 'node:assert'
 
-import CucumberExpression from '../src/CucumberExpression.js'
-import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator.js'
-import ParameterType from '../src/ParameterType.js'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
-import type { ParameterInfo } from '../src/types.js'
+import CucumberExpression from '../src/CucumberExpression'
+import CucumberExpressionGenerator from '../src/CucumberExpressionGenerator'
+import ParameterType from '../src/ParameterType'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
+import type { ParameterInfo } from '../src/types'
 
 class Currency {
   constructor(public readonly s: string) {}
