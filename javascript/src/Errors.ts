@@ -1,7 +1,7 @@
-import { type Located, type Node, purposeOf, symbolOf, type Token, type TokenType } from './Ast.js'
-import CucumberExpressionError from './CucumberExpressionError.js'
-import type GeneratedExpression from './GeneratedExpression.js'
-import type ParameterType from './ParameterType.js'
+import { type Located, type Node, purposeOf, symbolOf, type Token, type TokenType } from './Ast'
+import CucumberExpressionError from './CucumberExpressionError'
+import type GeneratedExpression from './GeneratedExpression'
+import type ParameterType from './ParameterType'
 
 export function createAlternativeMayNotExclusivelyContainOptionals(
   node: Node,

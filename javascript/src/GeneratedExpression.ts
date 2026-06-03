@@ -1,5 +1,5 @@
-import type ParameterType from './ParameterType.js'
-import type { ParameterInfo } from './types.js'
+import type ParameterType from './ParameterType'
+import type { ParameterInfo } from './types'
 
 export default class GeneratedExpression {
   constructor(
