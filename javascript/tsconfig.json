@@ -1,21 +1,17 @@
 {
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["src", "test"],
   "compilerOptions": {
-    "baseUrl": ".",
+    "lib": ["es2024"],
+    "target": "es2024",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node", "mocha"],
     "declaration": true,
-    "sourceMap": true,
-    "allowJs": false,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "downlevelIteration": true,
-    "skipLibCheck": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "strict": false,
     "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "module": "ESNext",
-    "lib": ["ES2022"],
-    "target": "ES2022",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "noEmit": true
+    "noImplicitAny": true
   }
 }

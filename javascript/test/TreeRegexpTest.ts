@@ -1,6 +1,6 @@
 import assert from 'node:assert'
 
-import TreeRegexp from '../src/TreeRegexp.js'
+import TreeRegexp from '../src/TreeRegexp'
 
 describe('TreeRegexp', () => {
   it('exposes group source', () => {

@@ -1,8 +1,8 @@
 import * as assert from 'node:assert'
 
-import Argument from '../src/Argument.js'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
-import TreeRegexp from '../src/TreeRegexp.js'
+import Argument from '../src/Argument'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
+import TreeRegexp from '../src/TreeRegexp'
 
 describe('Argument', () => {
   it('exposes getParameterTypeName()', () => {

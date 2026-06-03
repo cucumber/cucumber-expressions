@@ -1,7 +1,7 @@
-import Argument from './Argument.js'
-import { type Node, NodeType } from './Ast.js'
-import type CucumberExpressionError from './CucumberExpressionError.js'
-import CucumberExpressionParser from './CucumberExpressionParser.js'
+import Argument from './Argument'
+import { type Node, NodeType } from './Ast'
+import type CucumberExpressionError from './CucumberExpressionError'
+import CucumberExpressionParser from './CucumberExpressionParser'
 import {
   createAlternativeMayNotBeEmpty,
   createAlternativeMayNotExclusivelyContainOptionals,
@@ -9,11 +9,11 @@ import {
   createOptionalMayNotBeEmpty,
   createParameterIsNotAllowedInOptional,
   createUndefinedParameterType,
-} from './Errors.js'
-import type ParameterType from './ParameterType.js'
-import type ParameterTypeRegistry from './ParameterTypeRegistry.js'
-import TreeRegexp from './TreeRegexp.js'
-import type { Expression } from './types.js'
+} from './Errors'
+import type ParameterType from './ParameterType'
+import type ParameterTypeRegistry from './ParameterTypeRegistry'
+import TreeRegexp from './TreeRegexp'
+import type { Expression } from './types'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 

@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import { glob } from 'glob'
 import yaml from 'js-yaml'
 
-import CucumberExpression from '../src/CucumberExpression.js'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
-import { testDataDir } from './testDataDir.js'
+import CucumberExpression from '../src/CucumberExpression'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
+import { testDataDir } from './testDataDir'
 
 type Expectation = {
   expression: string
