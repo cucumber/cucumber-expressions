@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - [.Net] Replace FluentAssertions with AwesomeAssertions
 
+### Changed
+- [JavaScript] BREAKING CHANGE: Switch to ESM ([#431](https://github.com/cucumber/cucumber-expressions/pull/431))
+
 ## [19.0.1] - 2026-05-22
 ### Fixed
 - [.Net] Downgrade dependency fluentassertions to 7.2.0 ([#423](https://github.com/cucumber/cucumber-expressions/pull/423))
