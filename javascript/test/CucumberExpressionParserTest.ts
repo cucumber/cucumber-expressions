@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import { glob } from 'glob'
 import yaml from 'js-yaml'
 
-import CucumberExpressionError from '../src/CucumberExpressionError'
-import CucumberExpressionParser from '../src/CucumberExpressionParser'
-import { testDataDir } from './testDataDir'
+import CucumberExpressionError from '../src/CucumberExpressionError.js'
+import CucumberExpressionParser from '../src/CucumberExpressionParser.js'
+import { testDataDir } from './testDataDir.js'
 
 type Expectation = {
   expression: string

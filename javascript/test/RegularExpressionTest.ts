@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import { glob } from 'glob'
 import yaml from 'js-yaml'
 
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
-import RegularExpression from '../src/RegularExpression'
-import { testDataDir } from './testDataDir'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import RegularExpression from '../src/RegularExpression.js'
+import { testDataDir } from './testDataDir.js'
 
 interface Expectation {
   expression: string

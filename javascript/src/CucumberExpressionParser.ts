@@ -1,10 +1,10 @@
-import { Node, NodeType, type Token, TokenType } from './Ast'
-import CucumberExpressionTokenizer from './CucumberExpressionTokenizer'
+import { Node, NodeType, type Token, TokenType } from './Ast.js'
+import CucumberExpressionTokenizer from './CucumberExpressionTokenizer.js'
 import {
   createAlternationNotAllowedInOptional,
   createInvalidParameterTypeNameInNode,
   createMissingEndToken,
-} from './Errors'
+} from './Errors.js'
 
 /*
  * text := whitespace | ')' | '}' | .

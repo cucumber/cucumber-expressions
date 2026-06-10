@@ -1,9 +1,9 @@
 import assert from 'node:assert'
 
-import CucumberExpression from '../src/CucumberExpression'
-import ParameterType from '../src/ParameterType'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
-import RegularExpression from '../src/RegularExpression'
+import CucumberExpression from '../src/CucumberExpression.js'
+import ParameterType from '../src/ParameterType.js'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
+import RegularExpression from '../src/RegularExpression.js'
 
 class Color {
   constructor(public readonly name: string) {}

@@ -1,7 +1,7 @@
 import execWithIndices from 'regexp-match-indices'
 
-import type Group from './Group'
-import GroupBuilder from './GroupBuilder'
+import type Group from './Group.js'
+import GroupBuilder from './GroupBuilder.js'
 
 export default class TreeRegexp {
   public readonly regexp: RegExp
