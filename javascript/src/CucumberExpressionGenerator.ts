@@ -1,7 +1,7 @@
-import CombinatorialGeneratedExpressionFactory from './CombinatorialGeneratedExpressionFactory'
-import type GeneratedExpression from './GeneratedExpression'
-import ParameterType from './ParameterType'
-import ParameterTypeMatcher from './ParameterTypeMatcher'
+import CombinatorialGeneratedExpressionFactory from './CombinatorialGeneratedExpressionFactory.js'
+import type GeneratedExpression from './GeneratedExpression.js'
+import ParameterType from './ParameterType.js'
+import ParameterTypeMatcher from './ParameterTypeMatcher.js'
 
 export default class CucumberExpressionGenerator {
   constructor(private readonly parameterTypes: () => Iterable<ParameterType<unknown>>) {}

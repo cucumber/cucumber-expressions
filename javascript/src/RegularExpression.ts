@@ -1,8 +1,8 @@
-import Argument from './Argument'
-import ParameterType from './ParameterType'
-import type ParameterTypeRegistry from './ParameterTypeRegistry'
-import TreeRegexp from './TreeRegexp'
-import type { Expression } from './types'
+import Argument from './Argument.js'
+import ParameterType from './ParameterType.js'
+import type ParameterTypeRegistry from './ParameterTypeRegistry.js'
+import TreeRegexp from './TreeRegexp.js'
+import type { Expression } from './types.js'
 
 export default class RegularExpression implements Expression {
   private readonly treeRegexp: TreeRegexp

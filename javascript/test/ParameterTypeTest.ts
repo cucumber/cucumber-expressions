@@ -1,7 +1,7 @@
 import * as assert from 'node:assert'
 
-import ParameterType from '../src/ParameterType'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
+import ParameterType from '../src/ParameterType.js'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 
 describe('ParameterType', () => {
   it('does not allow ignore flag on regexp', () => {

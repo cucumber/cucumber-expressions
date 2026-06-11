@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 
-import ParameterType from '../src/ParameterType'
-import ParameterTypeRegistry from '../src/ParameterTypeRegistry'
+import ParameterType from '../src/ParameterType.js'
+import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
 
 class Name {
   constructor(public readonly name: string) {}

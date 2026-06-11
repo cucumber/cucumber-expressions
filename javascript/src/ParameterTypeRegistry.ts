@@ -1,9 +1,9 @@
-import CucumberExpressionError from './CucumberExpressionError'
-import CucumberExpressionGenerator from './CucumberExpressionGenerator'
-import defineDefaultParameterTypes from './defineDefaultParameterTypes'
-import { AmbiguousParameterTypeError } from './Errors'
-import ParameterType from './ParameterType'
-import type { DefinesParameterType } from './types'
+import CucumberExpressionError from './CucumberExpressionError.js'
+import CucumberExpressionGenerator from './CucumberExpressionGenerator.js'
+import defineDefaultParameterTypes from './defineDefaultParameterTypes.js'
+import { AmbiguousParameterTypeError } from './Errors.js'
+import ParameterType from './ParameterType.js'
+import type { DefinesParameterType } from './types.js'
 
 export default class ParameterTypeRegistry implements DefinesParameterType {
   private readonly parameterTypeByName = new Map<string, ParameterType<unknown>>()

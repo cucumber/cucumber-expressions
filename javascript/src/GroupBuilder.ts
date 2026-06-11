@@ -1,6 +1,6 @@
 import type { RegExpExecArray } from 'regexp-match-indices'
 
-import Group from './Group'
+import Group from './Group.js'
 
 export default class GroupBuilder {
   public source: string

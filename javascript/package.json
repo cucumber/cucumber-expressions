@@ -2,6 +2,7 @@
   "name": "@cucumber/cucumber-expressions",
   "version": "19.0.1",
   "description": "Cucumber Expressions - a simpler alternative to Regular Expressions",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -9,6 +10,7 @@
   ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json && cp ../README.md dist",
+    "postbuild": "node -e \"require('.')\"",
     "test": "mocha",
     "stryker": "cross-env CUCUMBER_EXPRESSIONS_TEST_DATA_DIR=$(pwd)/../testdata stryker run",
     "prepublishOnly": "npm run build",
