@@ -9,14 +9,14 @@
     </parent>
 
     <artifactId>cucumber-expressions</artifactId>
-    <version>19.0.2-SNAPSHOT</version>
+    <version>20.0.0</version>
     <packaging>jar</packaging>
     <name>Cucumber Expressions</name>
     <description>Cucumber Expressions are simple patterns for matching Step Definitions with Gherkin steps</description>
     <url>https://github.com/cucumber/cucumber-expressions-java</url>
 
     <properties>
-        <project.build.outputTimestamp>1779479175</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1781162003</project.build.outputTimestamp>
         <osgi.bundle-symbolic-name>io.cucumber.cucumberexpressions</osgi.bundle-symbolic-name>
     </properties>
 
@@ -24,7 +24,7 @@
         <connection>scm:git:git://github.com/cucumber/cucumber-expressions.git</connection>
         <developerConnection>scm:git:git@github.com:cucumber/cucumber-expressions.git</developerConnection>
         <url>git://github.com/cucumber/cucumber-expressions.git</url>
-        <tag>HEAD</tag>
+        <tag>v20.0.0</tag>
     </scm>
 
     <dependencyManagement>

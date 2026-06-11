@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- [.Net] Replace FluentAssertions with AwesomeAssertions
 
+## [20.0.0] - 2026-06-11
 ### Changed
 - [JavaScript] BREAKING CHANGE: Switch to ESM ([#431](https://github.com/cucumber/cucumber-expressions/pull/431))
 
@@ -801,7 +801,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v20.0.0...HEAD
+[20.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.1...v20.0.0
 [19.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.0...v19.0.1
 [19.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.1.0...v19.0.0
 [18.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...v18.1.0

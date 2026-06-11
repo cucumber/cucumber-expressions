@@ -1,6 +1,6 @@
 {
   "name": "@cucumber/cucumber-expressions",
-  "version": "19.0.1",
+  "version": "20.0.0",
   "description": "Cucumber Expressions - a simpler alternative to Regular Expressions",
   "type": "module",
   "main": "dist/index.js",
