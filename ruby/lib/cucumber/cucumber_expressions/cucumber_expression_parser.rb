@@ -22,7 +22,7 @@ module Cucumber
             return [0, nil]
           end
           # If configured correctly this will never happen
-          return [0, nil]
+          [0, nil]
         end
 
         # name := whitespace | .
@@ -30,15 +30,15 @@ module Cucumber
           token = tokens[current]
           case token.type
           when TokenType::WHITE_SPACE, TokenType::TEXT
-            return [1, [Node.new(NodeType::TEXT, nil, token.text, token.start, token.end)]]
+            [1, [Node.new(NodeType::TEXT, nil, token.text, token.start, token.end)]]
           when TokenType::BEGIN_PARAMETER, TokenType::END_PARAMETER, TokenType::BEGIN_OPTIONAL, TokenType::END_OPTIONAL, TokenType::ALTERNATION
             raise InvalidParameterTypeNameInNode.new(expression, token)
           when TokenType::START_OF_LINE, TokenType::END_OF_LINE
             # If configured correctly this will never happen
-            return [0, nil]
+            [0, nil]
           else
             # If configured correctly this will never happen
-            return [0, nil]
+            [0, nil]
           end
         end
 
@@ -56,7 +56,7 @@ module Cucumber
           return [0, nil] unless looking_at(tokens, current, TokenType::ALTERNATION)
 
           token = tokens[current]
-          return [1, [Node.new(NodeType::ALTERNATIVE, nil, token.text, token.start, token.end)]]
+          [1, [Node.new(NodeType::ALTERNATIVE, nil, token.text, token.start, token.end)]]
         end
 
         alternative_parsers = [
@@ -81,7 +81,7 @@ module Cucumber
           start = tokens[current].start
           _end = tokens[sub_current].start
           # Does not consume right hand boundary token
-          return [consumed, [Node.new(NodeType::ALTERNATION, split_alternatives(start, _end, ast), nil, start, _end)]]
+          [consumed, [Node.new(NodeType::ALTERNATION, split_alternatives(start, _end, ast), nil, start, _end)]]
         end
 
         #
@@ -118,7 +118,7 @@ module Cucumber
           _end = tokens[sub_current].end
           consumed = sub_current + 1 - current
           ast = [Node.new(type, ast, nil, start, _end)]
-          return [consumed, ast]
+          [consumed, ast]
         end
       end
 
@@ -171,7 +171,7 @@ module Cucumber
         alternatives = []
         alternative = []
         alternation.each do |n|
-          if NodeType::ALTERNATIVE == n.type
+          if n.type == NodeType::ALTERNATIVE
             separators.push(n)
             alternatives.push(alternative)
             alternative = []

@@ -83,10 +83,10 @@ module Cucumber
       end
 
       def escape(s)
-        s.gsub(/%/, '%%')
-         .gsub(/\(/, '\\(')
+        s.gsub('%', '%%')
+         .gsub('(', '\\(')
          .gsub(/{/, '\\{')
-         .gsub(/\//, '\\/')
+         .gsub('/', '\\/')
       end
     end
   end

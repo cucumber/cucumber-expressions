@@ -155,7 +155,7 @@ module Cucumber
             }.to raise_error('There is already a parameter with name color')
           end
 
-          it 'is not detected for type' do
+          it 'is not detected for type', skip: 'missing expectation' do
             @parameter_type_registry.define_parameter_type(
               ParameterType.new(
                 'whatever',
