@@ -15,9 +15,11 @@ import java.util.regex.Pattern;
 public interface PatternCompiler {
 
     /**
+     * Returns a new {@link Pattern} instance from provided {@code regexp}
+     * 
      * @param regexp regular expression
      * @param flags  additional flags (e.g. {@link Pattern#UNICODE_CHARACTER_CLASS})
-     * @return new {@link Pattern} instance from provided {@code regexp}
+     * @return a new pattern
      */
     Pattern compile(String regexp, int flags);
 }

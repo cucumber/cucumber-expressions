@@ -14,7 +14,13 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class CustomMatchers {
+final class CustomMatchers {
+    
+    private CustomMatchers(){
+        /* no-op */
+    }
+    
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Iterable<?>> equalOrCloseTo(List<?> list) {
         if (list == null || list.isEmpty()) return equalTo(list);
         List<Matcher<?>> matchers = list.stream().map(EqualOrCloseTo::new).collect(Collectors.toList());
@@ -24,10 +30,11 @@ public class CustomMatchers {
     private static class EqualOrCloseTo<T> extends BaseMatcher<T> {
         private final Object expectedValue;
 
-        public EqualOrCloseTo(Object expectedValue) {
+        EqualOrCloseTo(Object expectedValue) {
             this.expectedValue = expectedValue;
         }
 
+        @SuppressWarnings({"rawtypes", "unchecked"})
         @Override
         public boolean matches(Object actual) {
             if(actual instanceof BigDecimal) {
@@ -35,7 +42,7 @@ public class CustomMatchers {
             } else if(actual instanceof BigInteger) {
                 return new IsEqual(this.expectedValue).matches(actual.toString());
             } else if(actual instanceof Double || actual instanceof Float) {
-                return new IsCloseTo(((Double)this.expectedValue), 0.0001).matches(((Number)actual).doubleValue());
+                return new IsCloseTo((Double)this.expectedValue, 0.0001).matches(((Number)actual).doubleValue());
             } else if(actual instanceof Byte) {
                 return new IsEqual(((Integer)this.expectedValue).byteValue()).matches(actual);
             } else if(actual instanceof Short) {

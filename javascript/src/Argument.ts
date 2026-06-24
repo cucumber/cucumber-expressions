@@ -1,13 +1,13 @@
 import CucumberExpressionError from './CucumberExpressionError.js'
-import Group from './Group.js'
-import ParameterType from './ParameterType.js'
+import type Group from './Group.js'
+import type ParameterType from './ParameterType.js'
 
 export default class Argument {
   public static build(
     group: Group,
     parameterTypes: readonly ParameterType<unknown>[]
   ): readonly Argument[] {
-    const argGroups = group.children
+    const argGroups = group.children || []
 
     if (argGroups.length !== parameterTypes.length) {
       throw new CucumberExpressionError(

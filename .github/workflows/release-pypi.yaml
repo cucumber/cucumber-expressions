@@ -1,12 +1,14 @@
 name: Release Python
 
+permissions: {}
+
 on:
   push:
-    branches: [ release/* ]
+    branches: [release/*]
 
 jobs:
-  release:
-    name: Release
+  publish-pypi:
+    name: Publish PyPI Package
     runs-on: ubuntu-latest
     environment: Release
     permissions:
@@ -15,23 +17,18 @@ jobs:
       run:
         working-directory: python
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          python-version: "3.13"
-
-      - name: Show Python version
-        run: python --version
+          persist-credentials: false
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        with:
+          enable-cache: false
+          python-version: "3.14"
+          version: "0.11.24"
 
       - name: Build package
-        run: |
-          python -m pip install build twine
-          python -m build
-          twine check --strict dist/*
+        run: uv build
 
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: python/dist
+      - name: Publish package
+        run: uv publish

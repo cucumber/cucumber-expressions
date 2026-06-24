@@ -1,4 +1,4 @@
-import { RegExpExecArray } from 'regexp-match-indices'
+import type { RegExpExecArray } from 'regexp-match-indices'
 
 import Group from './Group.js'
 
@@ -18,7 +18,7 @@ export default class GroupBuilder {
     const index = match.indices[groupIndex]
     const start = index ? index[0] : undefined
     const end = index ? index[1] : undefined
-    return new Group(value, start, end, children)
+    return new Group(value, start, end, children.length === 0 ? undefined : children)
   }
 
   public setNonCapturing() {
@@ -30,6 +30,8 @@ export default class GroupBuilder {
   }
 
   public moveChildrenTo(groupBuilder: GroupBuilder) {
-    this.groupBuilders.forEach((child) => groupBuilder.add(child))
+    for (const child of this.groupBuilders) {
+      groupBuilder.add(child)
+    }
   }
 }

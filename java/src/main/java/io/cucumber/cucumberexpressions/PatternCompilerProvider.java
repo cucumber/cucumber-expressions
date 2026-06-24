@@ -1,5 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.ServiceLoader;
 
 final class PatternCompilerProvider {
     // visible from tests
-    static PatternCompiler service;
+    static @Nullable PatternCompiler service;
 
     private PatternCompilerProvider() {
     }
@@ -16,23 +18,23 @@ final class PatternCompilerProvider {
         if (service == null) {
             ServiceLoader<PatternCompiler> loader = ServiceLoader.load(PatternCompiler.class);
             Iterator<PatternCompiler> iterator = loader.iterator();
-            findPatternCompiler(iterator);
+            service = findPatternCompiler(iterator);
         }
         return service;
     }
 
-    static void findPatternCompiler(Iterator<PatternCompiler> iterator) {
+    static PatternCompiler findPatternCompiler(Iterator<PatternCompiler> iterator) {
         if (iterator.hasNext()) {
-            service = iterator.next();
+            PatternCompiler service = iterator.next();
             if (iterator.hasNext()) {
-                throwMoreThanOneCompilerException(iterator);
+                throwMoreThanOneCompilerException(service, iterator);
             }
-        } else {
-            service = new DefaultPatternCompiler();
+            return service;
         }
+        return new DefaultPatternCompiler();
     }
 
-    private static void throwMoreThanOneCompilerException(Iterator<PatternCompiler> iterator) {
+    private static void throwMoreThanOneCompilerException(PatternCompiler service, Iterator<PatternCompiler> iterator) {
         List<Class<? extends PatternCompiler>> allCompilers = new ArrayList<>();
         allCompilers.add(service.getClass());
         while (iterator.hasNext()) {

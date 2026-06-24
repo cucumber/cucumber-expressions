@@ -1,4 +1,4 @@
-import ParameterType from './ParameterType.js'
+import type ParameterType from './ParameterType.js'
 
 export default class ParameterTypeMatcher {
   private readonly match: RegExpExecArray | null
@@ -40,7 +40,9 @@ export default class ParameterTypeMatcher {
   }
 
   get start() {
-    if (!this.match) throw new Error('No match')
+    if (!this.match) {
+      throw new Error('No match')
+    }
     return this.matchPosition + this.match.index
   }
 
@@ -61,7 +63,9 @@ export default class ParameterTypeMatcher {
   }
 
   get group() {
-    if (!this.match) throw new Error('No match')
+    if (!this.match) {
+      throw new Error('No match')
+    }
     return this.match[0]
   }
 

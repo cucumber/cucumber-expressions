@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - [Ruby] Updated rubocop and rubocop gems (RSpec/Rake/Performance), also autofixed some styles affected by the updated rules ([#342](https://github.com/cucumber/cucumber-expressions/pull/342))
 
+## [20.0.0] - 2026-06-11
+### Changed
+- [JavaScript] BREAKING CHANGE: Switch to ESM ([#431](https://github.com/cucumber/cucumber-expressions/pull/431))
+
+## [19.0.1] - 2026-05-22
+### Fixed
+- [.Net] Downgrade dependency fluentassertions to 7.2.0 ([#423](https://github.com/cucumber/cucumber-expressions/pull/423))
+
+## [19.0.0] - 2026-01-25
+### Added
+- [Java] Make `CucumberExpressionParser::parse` public ([#340](https://github.com/cucumber/cucumber-expressions/pull/340))
+
+### Changed
+- Make StepMatchArgument.Group.children optional ([#370](https://github.com/cucumber/cucumber-expressions/pull/370))
+- [Java] Set release version to 17 ([#374](https://github.com/cucumber/cucumber-expressions/pull/374))
+
+## [18.1.0] - 2026-01-20
+### Added
+- [Java] Add OSGi metadata
+- [Java] class `KeyboardFriendlyDecimalFormatSymbols` is now `public` and can be used when creating a custom `Locale`-aware type transformation method ([#376](https://github.com/cucumber/cucumber-expressions/issues/376) [antagoony](https://github.com/antagoony))
+
+### Changed
+- [Ruby] Minor cosmetic / CI changes for development (Nothing front-facing)
+- [Python] PEP 639 licence metadata specification ([#361](https://github.com/cucumber/cucumber-expressions/pull/361))
+
+### Removed
+- [Python] Remove support for end-of-life Python 3.8 and 3.9 ([#359](https://github.com/cucumber/cucumber-expressions/pull/359))
+
 ## [18.0.1] - 2024-10-28
 ### Fixed
 - [Python] Release process didn't release to pypi correctly
@@ -775,7 +803,11 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v20.0.0...HEAD
+[20.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.1...v20.0.0
+[19.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.0...v19.0.1
+[19.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.1.0...v19.0.0
+[18.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.1...v18.1.0
 [18.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v18.0.0...v18.0.1
 [18.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.1.0...v18.0.0
 [17.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v17.0.2...v17.1.0

@@ -1,5 +1,5 @@
-import ParameterType from './ParameterType.js'
-import { ParameterInfo } from './types.js'
+import type ParameterType from './ParameterType.js'
+import type { ParameterInfo } from './types.js'
 
 export default class GeneratedExpression {
   constructor(
@@ -57,5 +57,5 @@ function getParameterInfo(
 }
 
 function format(pattern: string, ...args: readonly string[]): string {
-  return pattern.replace(/{(\d+)}/g, (match, number) => args[number])
+  return pattern.replace(/{(\d+)}/g, (_match, number) => args[number])
 }

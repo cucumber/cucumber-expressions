@@ -1,6 +1,7 @@
 package io.cucumber.cucumberexpressions;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.de.siegmar.fastcsv.util.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,30 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ParameterTypeComparatorTest {
 
-    public static class A {
-        A(String s) {
-            assertNotNull(s);
-        }
-    }
-
-    public static class B {
-        B(String s) {
-            assertNotNull(s);
-        }
-    }
-
-    public static class C {
-        C(String s) {
-            assertNotNull(s);
-        }
-    }
-
-    public static class D {
-        D(String s) {
-            assertNotNull(s);
-        }
-    }
-
     @Test
     public void sorts_parameter_types_by_preferential_then_name() {
         SortedSet<ParameterType<?>> set = new TreeSet<>();
@@ -46,10 +23,33 @@ public class ParameterTypeComparatorTest {
         set.add(new ParameterType<>("b", "b", B.class, B::new, false, true));
 
         List<String> names = new ArrayList<>();
-        for (ParameterType parameterType : set) {
+        for (ParameterType<?> parameterType : set) {
             names.add(parameterType.getName());
         }
         assertEquals(asList("b", "c", "a", "d"), names);
     }
 
+    public static class A {
+        A(@Nullable String s) {
+            assertNotNull(s);
+        }
+    }
+
+    public static class B {
+        B(@Nullable String s) {
+            assertNotNull(s);
+        }
+    }
+
+    public static class C {
+        C(@Nullable String s) {
+            assertNotNull(s);
+        }
+    }
+
+    public static class D {
+        D(@Nullable String s) {
+            assertNotNull(s);
+        }
+    }
 }

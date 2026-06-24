@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'node:assert'
 
 import CucumberExpression from '../src/CucumberExpression.js'
 import ParameterType from '../src/ParameterType.js'

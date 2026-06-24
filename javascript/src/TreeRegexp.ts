@@ -1,6 +1,6 @@
 import execWithIndices from 'regexp-match-indices'
 
-import Group from './Group.js'
+import type Group from './Group.js'
 import GroupBuilder from './GroupBuilder.js'
 
 export default class TreeRegexp {
@@ -39,7 +39,9 @@ export default class TreeRegexp {
         stack.push(groupBuilder)
       } else if (c === ')' && !escaping && !charClass) {
         const gb = stack.pop()
-        if (!gb) throw new Error('Empty stack')
+        if (!gb) {
+          throw new Error('Empty stack')
+        }
         const groupStart = groupStartStack.pop()
         if (gb.capturing) {
           gb.source = source.substring((groupStart || 0) + 1, i)
@@ -51,7 +53,9 @@ export default class TreeRegexp {
       escaping = c === '\\' && !escaping
     }
     const result = stack.pop()
-    if (!result) throw new Error('Empty stack')
+    if (!result) {
+      throw new Error('Empty stack')
+    }
     return result
   }
 

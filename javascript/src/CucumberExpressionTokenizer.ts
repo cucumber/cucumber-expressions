@@ -13,7 +13,7 @@ export default class CucumberExpressionTokenizer {
 
     function convertBufferToToken(tokenType: TokenType): Token {
       let escapeTokens = 0
-      if (tokenType == TokenType.text) {
+      if (tokenType === TokenType.text) {
         escapeTokens = escaped
         escaped = 0
       }
@@ -36,13 +36,13 @@ export default class CucumberExpressionTokenizer {
     }
 
     function shouldCreateNewToken(previousTokenType: TokenType, currentTokenType: TokenType) {
-      if (currentTokenType != previousTokenType) {
+      if (currentTokenType !== previousTokenType) {
         return true
       }
-      return currentTokenType != TokenType.whiteSpace && currentTokenType != TokenType.text
+      return currentTokenType !== TokenType.whiteSpace && currentTokenType !== TokenType.text
     }
 
-    if (codePoints.length == 0) {
+    if (codePoints.length === 0) {
       tokens.push(new Token(TokenType.startOfLine, '', 0, 0))
     }
 

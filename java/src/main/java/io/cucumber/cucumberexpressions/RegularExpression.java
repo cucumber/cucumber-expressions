@@ -5,6 +5,7 @@ import org.apiguardian.api.API;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static io.cucumber.cucumberexpressions.ParameterType.createAnonymousParameterType;
@@ -30,10 +31,10 @@ public final class RegularExpression implements Expression {
     }
 
     @Override
-    public List<Argument<?>> match(String text, Type... typeHints) {
+    public Optional<List<Argument<?>>> match(String text, Type... typeHints) {
         final Group group = treeRegexp.match(text);
         if (group == null) {
-            return null;
+            return Optional.empty();
         }
 
         final ParameterByTypeTransformer defaultTransformer = parameterTypeRegistry.getDefaultParameterTransformer();
@@ -48,7 +49,7 @@ public final class RegularExpression implements Expression {
 
             // When there is a conflict between the type hint from the regular expression and the method
             // prefer the parameter type associated with the regular expression. This ensures we will
-            // use the internal/user registered parameter transformer rather then the default.
+            // use the internal/user registered parameter transformer rather than the default.
             //
             // Unless the parameter type indicates it is the stronger type hint.
             if (parameterType != null && hasTypeHint && !parameterType.useRegexpMatchAsStrongTypeHint()) {
@@ -69,7 +70,7 @@ public final class RegularExpression implements Expression {
             parameterTypes.add(parameterType);
         }
 
-        return Argument.build(group, parameterTypes);
+        return Optional.of(Argument.build(group, parameterTypes));
     }
 
     @Override

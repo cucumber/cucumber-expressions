@@ -1,16 +1,15 @@
 from pathlib import Path
 
-from tests.definitions import TESTDATA_ROOT_DIR
-
 import pytest
 
-from cucumber_expressions.expression_tokenizer import (
-    CucumberExpressionTokenizer,
-)
 from cucumber_expressions.errors import (
     CantEscape,
     TheEndOfLineCannotBeEscaped,
 )
+from cucumber_expressions.expression_tokenizer import (
+    CucumberExpressionTokenizer,
+)
+from tests.definitions import TESTDATA_ROOT_DIR
 
 
 def get_expectation_yamls():

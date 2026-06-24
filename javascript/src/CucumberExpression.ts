@@ -1,6 +1,6 @@
 import Argument from './Argument.js'
-import { Node, NodeType } from './Ast.js'
-import CucumberExpressionError from './CucumberExpressionError.js'
+import { type Node, NodeType } from './Ast.js'
+import type CucumberExpressionError from './CucumberExpressionError.js'
 import CucumberExpressionParser from './CucumberExpressionParser.js'
 import {
   createAlternativeMayNotBeEmpty,
@@ -10,10 +10,10 @@ import {
   createParameterIsNotAllowedInOptional,
   createUndefinedParameterType,
 } from './Errors.js'
-import ParameterType from './ParameterType.js'
-import ParameterTypeRegistry from './ParameterTypeRegistry.js'
+import type ParameterType from './ParameterType.js'
+import type ParameterTypeRegistry from './ParameterTypeRegistry.js'
 import TreeRegexp from './TreeRegexp.js'
-import { Expression } from './types.js'
+import type { Expression } from './types.js'
 
 const ESCAPE_PATTERN = () => /([\\^[({$.|?*+})\]])/g
 
@@ -75,7 +75,7 @@ export default class CucumberExpression implements Expression {
   private rewriteAlternation(node: Node) {
     // Make sure the alternative parts aren't empty and don't contain parameter types
     for (const alternative of node.nodes || []) {
-      if (!alternative.nodes || alternative.nodes.length == 0) {
+      if (!alternative.nodes || alternative.nodes.length === 0) {
         throw createAlternativeMayNotBeEmpty(alternative, this.expression)
       }
       this.assertNotEmpty(alternative, (astNode) =>
@@ -98,7 +98,7 @@ export default class CucumberExpression implements Expression {
     }
     this.parameterTypes.push(parameterType)
     const regexps = parameterType.regexpStrings
-    if (regexps.length == 1) {
+    if (regexps.length === 1) {
       return `(${regexps[0]})`
     }
     return `((?:${regexps.join(')|(?:')}))`
@@ -113,9 +113,9 @@ export default class CucumberExpression implements Expression {
     node: Node,
     createNodeWasNotEmptyException: (astNode: Node) => CucumberExpressionError
   ) {
-    const textNodes = (node.nodes || []).filter((astNode) => NodeType.text == astNode.type)
+    const textNodes = (node.nodes || []).filter((astNode) => NodeType.text === astNode.type)
 
-    if (textNodes.length == 0) {
+    if (textNodes.length === 0) {
       throw createNodeWasNotEmptyException(node)
     }
   }
@@ -125,7 +125,7 @@ export default class CucumberExpression implements Expression {
     createNodeContainedAParameterError: (astNode: Node) => CucumberExpressionError
   ) {
     const parameterNodes = (node.nodes || []).filter(
-      (astNode) => NodeType.parameter == astNode.type
+      (astNode) => NodeType.parameter === astNode.type
     )
     if (parameterNodes.length > 0) {
       throw createNodeContainedAParameterError(parameterNodes[0])
@@ -136,7 +136,9 @@ export default class CucumberExpression implements Expression {
     node: Node,
     createNodeContainedAnOptionalError: (astNode: Node) => CucumberExpressionError
   ) {
-    const parameterNodes = (node.nodes || []).filter((astNode) => NodeType.optional == astNode.type)
+    const parameterNodes = (node.nodes || []).filter(
+      (astNode) => NodeType.optional === astNode.type
+    )
     if (parameterNodes.length > 0) {
       throw createNodeContainedAnOptionalError(parameterNodes[0])
     }

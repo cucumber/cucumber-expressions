@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CucumberExpressions.Parsing;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 using Xunit.Abstractions;
 

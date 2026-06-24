@@ -1,5 +1,5 @@
 import CombinatorialGeneratedExpressionFactory from './CombinatorialGeneratedExpressionFactory.js'
-import GeneratedExpression from './GeneratedExpression.js'
+import type GeneratedExpression from './GeneratedExpression.js'
 import ParameterType from './ParameterType.js'
 import ParameterTypeMatcher from './ParameterTypeMatcher.js'
 
@@ -50,7 +50,7 @@ export default class CucumberExpressionGenerator {
 
         parameterTypeCombinations.push(parameterTypes)
 
-        expressionTemplate += escape(text.slice(pos, bestParameterTypeMatcher.start))
+        expressionTemplate += escapeText(text.slice(pos, bestParameterTypeMatcher.start))
         expressionTemplate += `{{${counter++}}}`
 
         pos = bestParameterTypeMatcher.start + bestParameterTypeMatcher.group.length
@@ -63,7 +63,7 @@ export default class CucumberExpressionGenerator {
       }
     }
 
-    expressionTemplate += escape(text.slice(pos))
+    expressionTemplate += escapeText(text.slice(pos))
     return new CombinatorialGeneratedExpressionFactory(
       expressionTemplate,
       parameterTypeCombinations
@@ -92,6 +92,6 @@ export default class CucumberExpressionGenerator {
   }
 }
 
-function escape(s: string): string {
+function escapeText(s: string): string {
   return s.replace(/\(/g, '\\(').replace(/{/g, '\\{').replace(/\//g, '\\/')
 }

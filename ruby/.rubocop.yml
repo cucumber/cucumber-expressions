@@ -21,7 +21,7 @@ Layout/LineLength:
   Max: 200
 
 # This is documented in this spec to showcase why it's not working and people shouldn't use it
-# cf:
+# cf: https://github.com/cucumber/cucumber/issues/329
 Lint/MixedRegexpCaptureTypes:
   Exclude:
     - 'spec/cucumber/cucumber_expressions/tree_regexp_spec.rb'

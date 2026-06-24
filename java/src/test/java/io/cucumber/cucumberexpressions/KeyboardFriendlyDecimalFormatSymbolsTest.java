@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
 
 class KeyboardFriendlyDecimalFormatSymbolsTest {
 
@@ -51,7 +50,7 @@ class KeyboardFriendlyDecimalFormatSymbolsTest {
                 .entrySet()
                 .stream()
                 .sorted(comparing(entry -> entry.getKey().getKey()))
-                .forEach((entry) -> {
+                .forEach(entry -> {
                     SimpleEntry<Character, Character> characters = entry.getKey();
                     List<Locale> locales = entry.getValue();
                     System.out.println(render(characters.getKey()) + " " + render(characters.getValue()) + " " + render(locales));
@@ -92,7 +91,7 @@ class KeyboardFriendlyDecimalFormatSymbolsTest {
         return locales.size() + ": " + locales.stream()
                 .sorted(comparing(Locale::getDisplayName))
                 .map(Locale::getDisplayName)
-                .collect(toList());
+                .toList();
     }
 
 }

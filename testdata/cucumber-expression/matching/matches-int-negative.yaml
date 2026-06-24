@@ -1,0 +1,5 @@
+---
+expression: "{int}"
+text: '-2147483647'
+expected_args:
+- -2147483647
