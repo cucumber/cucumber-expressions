@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import fs from 'node:fs'
 import { glob } from 'glob'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 import CucumberExpression from '../src/CucumberExpression.js'
 import ParameterTypeRegistry from '../src/ParameterTypeRegistry.js'
