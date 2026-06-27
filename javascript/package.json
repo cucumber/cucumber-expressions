@@ -46,7 +46,7 @@
     "cross-env": "10.1.0",
     "esbuild": "0.28.1",
     "glob": "13.0.6",
-    "js-yaml": "5.1.0",
+    "js-yaml": "5.2.0",
     "mocha": "11.7.6",
     "ts-node": "10.9.2",
     "typescript": "6.0.3"
