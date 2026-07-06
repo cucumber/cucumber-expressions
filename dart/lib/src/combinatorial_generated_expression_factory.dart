@@ -1,5 +1,5 @@
-import 'generated_expression.dart';
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/generated_expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 // 256 generated expressions ought to be enough for anybody
 const int _maxExpressions = 256;

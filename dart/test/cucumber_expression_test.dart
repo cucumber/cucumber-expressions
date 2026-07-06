@@ -125,9 +125,9 @@ void main() {
       parameterTypeRegistry.defineParameterType(
         ParameterType<List<String?>>(
           'textAndOrNumber',
-          RegExp(r'([A-Z]+)?(?: )?([0-9]+)?'),
+          RegExp('([A-Z]+)?(?: )?([0-9]+)?'),
           null,
-          (s) => [s.isNotEmpty ? s[0] : null, s.length > 1 ? s[1] : null],
+          (s) => [if (s.isNotEmpty) s[0] else null, if (s.length > 1) s[1] else null],
           useForSnippets: false,
           preferForRegexpMatch: true,
         ),

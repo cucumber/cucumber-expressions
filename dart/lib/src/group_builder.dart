@@ -1,4 +1,4 @@
-import 'group.dart';
+import 'package:cucumber_expressions/src/group.dart';
 
 class GroupBuilder {
   String source = '';

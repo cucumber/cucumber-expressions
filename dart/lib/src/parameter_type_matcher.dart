@@ -1,4 +1,4 @@
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 final RegExp _wordBoundary = RegExp(r'\p{Z}|\p{P}|\p{S}', unicode: true);
 

@@ -33,18 +33,18 @@ void main() {
       registry.defineParameterType(
         ParameterType<Name>(
             'name', capitalisedWord, 'Name', (s) => Name(s.first!),
-            useForSnippets: true, preferForRegexpMatch: true),
+            useForSnippets: true, preferForRegexpMatch: true,),
       );
       registry.defineParameterType(
         ParameterType<Person>(
             'person', capitalisedWord, 'Person', (s) => Person(s.first!),
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
       expect(
         () => registry.defineParameterType(
           ParameterType<Place>(
               'place', capitalisedWord, 'Place', (s) => Place(s.first!),
-              useForSnippets: true, preferForRegexpMatch: true),
+              useForSnippets: true, preferForRegexpMatch: true,),
         ),
         throwsA(
           isA<CucumberExpressionException>().having(
@@ -63,13 +63,13 @@ void main() {
     test('looks up preferential parameter type by regexp', () {
       final name = ParameterType<Name>(
           'name', RegExp(r'[A-Z]+\w+'), 'Name', (s) => Name(s.first!),
-          useForSnippets: true, preferForRegexpMatch: false);
+          useForSnippets: true, preferForRegexpMatch: false,);
       final person = ParameterType<Person>(
           'person', RegExp(r'[A-Z]+\w+'), 'Person', (s) => Person(s.first!),
-          useForSnippets: true, preferForRegexpMatch: true);
+          useForSnippets: true, preferForRegexpMatch: true,);
       final place = ParameterType<Place>(
           'place', RegExp(r'[A-Z]+\w+'), 'Place', (s) => Place(s.first!),
-          useForSnippets: true, preferForRegexpMatch: false);
+          useForSnippets: true, preferForRegexpMatch: false,);
 
       registry.defineParameterType(name);
       registry.defineParameterType(person);

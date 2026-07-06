@@ -1,11 +1,11 @@
-import 'argument.dart';
-import 'ast.dart';
-import 'cucumber_expression_parser.dart';
-import 'errors.dart';
-import 'expression.dart';
-import 'parameter_type.dart';
-import 'parameter_type_registry.dart';
-import 'tree_regexp.dart';
+import 'package:cucumber_expressions/src/argument.dart';
+import 'package:cucumber_expressions/src/ast.dart';
+import 'package:cucumber_expressions/src/cucumber_expression_parser.dart';
+import 'package:cucumber_expressions/src/errors.dart';
+import 'package:cucumber_expressions/src/expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_registry.dart';
+import 'package:cucumber_expressions/src/tree_regexp.dart';
 
 final RegExp _escapePattern = RegExp(r'([\\^\[({$.|?*+})\]])');
 
@@ -42,7 +42,7 @@ class CucumberExpression implements Expression {
 
   static String _escapeRegex(String expression) {
     return expression.replaceAllMapped(
-        _escapePattern, (m) => '\\${m.group(1)}');
+        _escapePattern, (m) => '\\${m.group(1)}',);
   }
 
   String _rewriteOptional(Node node) {
@@ -59,7 +59,7 @@ class CucumberExpression implements Expression {
       (astNode) => createOptionalMayNotBeEmpty(astNode, _expression),
     );
     final regex =
-        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join();
+        (node.nodes ?? []).map(_rewriteToRegex).join();
     return '(?:$regex)?';
   }
 
@@ -79,13 +79,13 @@ class CucumberExpression implements Expression {
       );
     }
     final regex =
-        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join('|');
+        (node.nodes ?? []).map(_rewriteToRegex).join('|');
     return '(?:$regex)';
   }
 
   String _rewriteAlternative(Node node) {
     return (node.nodes ?? [])
-        .map((lastNode) => _rewriteToRegex(lastNode))
+        .map(_rewriteToRegex)
         .join();
   }
 
@@ -105,7 +105,7 @@ class CucumberExpression implements Expression {
 
   String _rewriteExpression(Node node) {
     final regex =
-        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join();
+        (node.nodes ?? []).map(_rewriteToRegex).join();
     return '^$regex\$';
   }
 

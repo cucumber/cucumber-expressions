@@ -1,5 +1,5 @@
-import 'group.dart';
-import 'group_builder.dart';
+import 'package:cucumber_expressions/src/group.dart';
+import 'package:cucumber_expressions/src/group_builder.dart';
 
 class TreeRegexp {
   TreeRegexp(RegExp regexp)
@@ -42,7 +42,7 @@ class TreeRegexp {
           gb.moveChildrenTo(stack.last);
         }
       }
-      escaping = c == '\\' && !escaping;
+      escaping = c == r'\' && !escaping;
     }
     return stack.removeLast();
   }

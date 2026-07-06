@@ -1,4 +1,4 @@
-import 'errors.dart';
+import 'package:cucumber_expressions/src/errors.dart';
 
 final RegExp _illegalParameterNamePattern = RegExp(r'([\[\]()$.|?*+])');
 RegExp _unescapePattern() => RegExp(r'(\\([\[$.|?*+\]]))');
@@ -57,7 +57,7 @@ class ParameterType<T> {
     if (!isValidParameterTypeName(typeName)) {
       throw CucumberExpressionException(
         'Illegal character in parameter name {$typeName}. '
-        "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
+        r"Parameter names may not contain '{', '}', '(', ')', '\' or '/'",
       );
     }
   }
@@ -74,7 +74,7 @@ class ParameterType<T> {
 }
 
 List<String> _stringArray(Object regexps) {
-  final List<Object> array =
+  final array =
       regexps is List<Object> ? regexps : <Object>[regexps];
   return array
       .map((r) => r is RegExp ? _regexpSource(r) : r as String)
@@ -82,13 +82,13 @@ List<String> _stringArray(Object regexps) {
 }
 
 String _regexpSource(RegExp regexp) {
-  if (regexp.isCaseSensitive == false) {
+  if (!regexp.isCaseSensitive) {
     throw CucumberExpressionException(
-        "ParameterType Regexps can't use flag 'i'");
+        "ParameterType Regexps can't use flag 'i'",);
   }
   if (regexp.isMultiLine) {
     throw CucumberExpressionException(
-        "ParameterType Regexps can't use flag 'm'");
+        "ParameterType Regexps can't use flag 'm'",);
   }
   return regexp.pattern;
 }

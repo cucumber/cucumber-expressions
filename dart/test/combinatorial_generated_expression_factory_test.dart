@@ -9,21 +9,21 @@ void main() {
         [
           ParameterType<String?>(
               'color', RegExp('red|blue|yellow'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true),
+              useForSnippets: false, preferForRegexpMatch: true,),
           ParameterType<String?>(
               'csscolor', RegExp('red|blue|yellow'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true),
+              useForSnippets: false, preferForRegexpMatch: true,),
         ],
         [
           ParameterType<String?>(
               'date', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true),
+              useForSnippets: false, preferForRegexpMatch: true,),
           ParameterType<String?>(
               'datetime', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true),
+              useForSnippets: false, preferForRegexpMatch: true,),
           ParameterType<String?>(
               'timestamp', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true),
+              useForSnippets: false, preferForRegexpMatch: true,),
         ],
       ];
 

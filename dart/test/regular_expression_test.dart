@@ -65,11 +65,11 @@ void main() {
     test('matches empty string', () {
       expect(
           match(RegExp(r'^The value equals "([^"]*)"$'), 'The value equals ""'),
-          equals(['']));
+          equals(['']),);
     });
 
     test('exposes source', () {
-      final regexp = r'I have (\d+) cukes? in my (.+) now';
+      const regexp = r'I have (\d+) cukes? in my (.+) now';
       final regularExpression =
           RegularExpression(RegExp(regexp), ParameterTypeRegistry());
       expect(regularExpression.source, equals(regexp));

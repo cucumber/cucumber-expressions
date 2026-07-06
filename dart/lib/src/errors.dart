@@ -1,6 +1,6 @@
-import 'ast.dart';
-import 'generated_expression.dart';
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/ast.dart';
+import 'package:cucumber_expressions/src/generated_expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 class CucumberExpressionException implements Exception {
   CucumberExpressionException(this.message);
@@ -21,7 +21,7 @@ CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(
       expression,
       _pointAtLocated(node),
       'An alternative may not exclusively contain optionals',
-      "If you did not mean to use an optional you can use '\\(' to escape the '('",
+      r"If you did not mean to use an optional you can use '\(' to escape the '('",
     ),
   );
 }
@@ -36,7 +36,7 @@ CucumberExpressionException createAlternativeMayNotBeEmpty(
       expression,
       _pointAtLocated(node),
       'Alternative may not be empty',
-      "If you did not mean to use an alternative you can use '\\/' to escape the '/'",
+      r"If you did not mean to use an alternative you can use '\/' to escape the '/'",
     ),
   );
 }
@@ -51,7 +51,7 @@ CucumberExpressionException createOptionalMayNotBeEmpty(
       expression,
       _pointAtLocated(node),
       'An optional must contain some text',
-      "If you did not mean to use an optional you can use '\\(' to escape the '('",
+      r"If you did not mean to use an optional you can use '\(' to escape the '('",
     ),
   );
 }
@@ -66,7 +66,7 @@ CucumberExpressionException createParameterIsNotAllowedInOptional(
       expression,
       _pointAtLocated(node),
       'An optional may not contain a parameter type',
-      "If you did not mean to use an parameter type you can use '\\{' to escape the '{'",
+      r"If you did not mean to use an parameter type you can use '\{' to escape the '{'",
     ),
   );
 }
@@ -81,7 +81,7 @@ CucumberExpressionException createOptionalIsNotAllowedInOptional(
       expression,
       _pointAtLocated(node),
       'An optional may not contain an other optional',
-      "If you did not mean to use an optional type you can use '\\(' to escape the '('. For more complicated expressions consider using a regular expression instead.",
+      r"If you did not mean to use an optional type you can use '\(' to escape the '('. For more complicated expressions consider using a regular expression instead.",
     ),
   );
 }
@@ -96,7 +96,7 @@ CucumberExpressionException createTheEndOfLineCanNotBeEscaped(
       expression,
       _pointAt(index),
       'The end of line can not be escaped',
-      "You can use '\\\\' to escape the '\\'",
+      r"You can use '\\' to escape the '\'",
     ),
   );
 }
@@ -131,7 +131,7 @@ CucumberExpressionException createAlternationNotAllowedInOptional(
       expression,
       _pointAtLocated(current),
       'An alternation can not be used inside an optional',
-      "If you did not mean to use an alternation you can use '\\/' to escape the '/'. Otherwise rephrase your expression or consider using a regular expression instead.",
+      r"If you did not mean to use an alternation you can use '\/' to escape the '/'. Otherwise rephrase your expression or consider using a regular expression instead.",
     ),
   );
 }
@@ -142,8 +142,8 @@ CucumberExpressionException createCantEscaped(String expression, int index) {
       index,
       expression,
       _pointAt(index),
-      "Only the characters '{', '}', '(', ')', '\\', '/' and whitespace can be escaped",
-      "If you did mean to use an '\\' you can use '\\\\' to escape it",
+      r"Only the characters '{', '}', '(', ')', '\', '/' and whitespace can be escaped",
+      r"If you did mean to use an '\' you can use '\\' to escape it",
     ),
   );
 }
@@ -157,7 +157,7 @@ CucumberExpressionException createInvalidParameterTypeNameInNode(
       token.start,
       expression,
       _pointAtLocated(token),
-      "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
+      r"Parameter names may not contain '{', '}', '(', ')', '\' or '/'",
       'Did you mean to use a regular expression?',
     ),
   );
@@ -234,7 +234,7 @@ class AmbiguousParameterTypeException extends CucumberExpressionException {
 
 class UndefinedParameterTypeException extends CucumberExpressionException {
   UndefinedParameterTypeException(
-      this.undefinedParameterTypeName, super.message);
+      this.undefinedParameterTypeName, super.message,);
 
   final String undefinedParameterTypeName;
 }

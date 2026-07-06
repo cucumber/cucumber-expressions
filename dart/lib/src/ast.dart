@@ -1,4 +1,4 @@
-const String escapeCharacter = '\\';
+const String escapeCharacter = r'\';
 const String alternationCharacter = '/';
 const String beginParameterCharacter = '{';
 const String endParameterCharacter = '}';

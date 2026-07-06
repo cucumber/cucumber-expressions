@@ -31,7 +31,7 @@ void main() {
       parameterTypeRegistry.defineParameterType(
         ParameterType<Color>(
             'color', RegExp('red|blue|yellow'), 'Color', (s) => Color(s.first!),
-            useForSnippets: false, preferForRegexpMatch: true),
+            useForSnippets: false, preferForRegexpMatch: true,),
       );
     });
 
@@ -39,14 +39,14 @@ void main() {
       test('throws exception for illegal character in parameter name', () {
         expect(
           () => ParameterType<String?>(
-              '[string]', RegExp('.*'), 'String', (s) => s.first),
+              '[string]', RegExp('.*'), 'String', (s) => s.first,),
           throwsA(
             isA<CucumberExpressionException>().having(
               (e) => e.message,
               'message',
               equals(
                 'Illegal character in parameter name {[string]}. '
-                "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
+                r"Parameter names may not contain '{', '}', '(', ')', '\' or '/'",
               ),
             ),
           ),
@@ -154,7 +154,7 @@ void main() {
             () => parameterTypeRegistry.defineParameterType(
               ParameterType<CssColor>(
                   'color', RegExp('.*'), 'CssColor', (s) => CssColor(s.first!),
-                  useForSnippets: false, preferForRegexpMatch: true),
+                  useForSnippets: false, preferForRegexpMatch: true,),
             ),
             throwsA(
               isA<CucumberExpressionException>().having(
@@ -170,7 +170,7 @@ void main() {
           parameterTypeRegistry.defineParameterType(
             ParameterType<Color>(
                 'whatever', RegExp('.*'), 'Color', (s) => Color(s.first!),
-                useForSnippets: false, preferForRegexpMatch: false),
+                useForSnippets: false, preferForRegexpMatch: false,),
           );
         });
 
@@ -178,19 +178,19 @@ void main() {
           parameterTypeRegistry.defineParameterType(
             ParameterType<CssColor>('css-color', RegExp('red|blue|yellow'),
                 'CssColor', (s) => CssColor(s.first!),
-                useForSnippets: true, preferForRegexpMatch: false),
+                useForSnippets: true, preferForRegexpMatch: false,),
           );
 
           expect(
             CucumberExpression(
-                    'I have a {css-color} ball', parameterTypeRegistry)
+                    'I have a {css-color} ball', parameterTypeRegistry,)
                 .match('I have a blue ball')?[0]
                 .getValue(),
             isA<CssColor>(),
           );
           expect(
             (CucumberExpression(
-                        'I have a {css-color} ball', parameterTypeRegistry)
+                        'I have a {css-color} ball', parameterTypeRegistry,)
                     .match('I have a blue ball')?[0]
                     .getValue() as CssColor?)
                 ?.name,

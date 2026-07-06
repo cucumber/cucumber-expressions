@@ -1,4 +1,4 @@
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 class ParameterInfo {
   ParameterInfo({required this.type, required this.name, required this.count});

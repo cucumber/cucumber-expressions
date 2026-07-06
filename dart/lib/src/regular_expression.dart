@@ -1,8 +1,8 @@
-import 'argument.dart';
-import 'expression.dart';
-import 'parameter_type.dart';
-import 'parameter_type_registry.dart';
-import 'tree_regexp.dart';
+import 'package:cucumber_expressions/src/argument.dart';
+import 'package:cucumber_expressions/src/expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_registry.dart';
+import 'package:cucumber_expressions/src/tree_regexp.dart';
 
 class RegularExpression implements Expression {
   RegularExpression(this.regexp, this._parameterTypeRegistry)
@@ -33,7 +33,7 @@ class RegularExpression implements Expression {
             null,
             parameterTypeRegexp,
             'String',
-            (List<String?> s) => s.first,
+            (s) => s.first,
             useForSnippets: false,
             preferForRegexpMatch: false,
           );

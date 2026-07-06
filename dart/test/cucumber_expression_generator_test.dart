@@ -1,6 +1,5 @@
 import 'package:cucumber_expressions/src/cucumber_expression.dart';
 import 'package:cucumber_expressions/src/cucumber_expression_generator.dart';
-import 'package:cucumber_expressions/src/generated_expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
@@ -13,7 +12,7 @@ void main() {
     setUp(() {
       parameterTypeRegistry = ParameterTypeRegistry();
       generator = CucumberExpressionGenerator(
-          () => parameterTypeRegistry.parameterTypes);
+          () => parameterTypeRegistry.parameterTypes,);
     });
 
     Map<String, Object?> info(String? type, String name, int count) =>
@@ -26,8 +25,8 @@ void main() {
     ) {
       final generatedExpression = generator.generateExpressions(text)[0];
       final actualInfos = generatedExpression.parameterInfos
-          .map((ParameterInfo i) =>
-              {'type': i.type, 'name': i.name, 'count': i.count})
+          .map((i) =>
+              {'type': i.type, 'name': i.name, 'count': i.count},)
           .toList();
       expect(actualInfos, equals(expectedParameterInfo));
       expect(generatedExpression.source, equals(expectedExpression));
@@ -37,16 +36,16 @@ void main() {
       final match = cucumberExpression.match(text);
       expect(match, isNotNull,
           reason:
-              "Expected text '$text' to match generated expression '${generatedExpression.source}'");
+              "Expected text '$text' to match generated expression '${generatedExpression.source}'",);
       expect(match!.length, equals(expectedParameterInfo.length));
     }
 
     test('documents expression generation', () {
-      final undefinedStepText = 'I have 2 cucumbers and 1.5 tomato';
+      const undefinedStepText = 'I have 2 cucumbers and 1.5 tomato';
       final generatedExpression =
           generator.generateExpressions(undefinedStepText)[0];
       expect(generatedExpression.source,
-          equals('I have {int} cucumbers and {float} tomato'));
+          equals('I have {int} cucumbers and {float} tomato'),);
       expect(generatedExpression.parameterNames[0], equals('int'));
       expect(generatedExpression.parameterTypes[1].name, equals('float'));
     });
@@ -106,11 +105,11 @@ void main() {
     test('generates all combinations when several parameter types match', () {
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>('currency', RegExp('x'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>('date', RegExp('x'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
 
       final generatedExpressions =
@@ -142,8 +141,8 @@ void main() {
       for (var i = 0; i < 4; i++) {
         parameterTypeRegistry.defineParameterType(
           ParameterType<String?>(
-              'my-type-$i', RegExp(r'([a-z] )*?[a-z]'), null, (s) => s.first,
-              useForSnippets: true, preferForRegexpMatch: false),
+              'my-type-$i', RegExp('([a-z] )*?[a-z]'), null, (s) => s.first,
+              useForSnippets: true, preferForRegexpMatch: false,),
         );
       }
       final expressions =
@@ -155,51 +154,51 @@ void main() {
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>(
             'zero-or-more', RegExp('[a-z]*'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>(
             'exactly-one', RegExp('[a-z]'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
 
       final expressions = generator.generateExpressions('a simple step');
       expect(expressions.length, equals(2));
       expect(expressions[0].source,
-          equals('{exactly-one} {zero-or-more} {zero-or-more}'));
+          equals('{exactly-one} {zero-or-more} {zero-or-more}'),);
       expect(expressions[1].source,
-          equals('{zero-or-more} {zero-or-more} {zero-or-more}'));
+          equals('{zero-or-more} {zero-or-more} {zero-or-more}'),);
     });
 
     test('does suggest parameter that are a full word', () {
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>(
             'direction', RegExp('(up|down)'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
 
       expect(generator.generateExpressions('When I go down the road')[0].source,
-          equals('When I go {direction} the road'));
+          equals('When I go {direction} the road'),);
       expect(generator.generateExpressions('When I walk up the hill')[0].source,
-          equals('When I walk {direction} the hill'));
+          equals('When I walk {direction} the hill'),);
       expect(
           generator
               .generateExpressions('up the hill, the road goes down')[0]
               .source,
-          equals('{direction} the hill, the road goes {direction}'));
+          equals('{direction} the hill, the road goes {direction}'),);
     });
 
     test('does not consider punctuation as being part of a word', () {
       parameterTypeRegistry.defineParameterType(
         ParameterType<String?>(
             'direction', RegExp('(up|down)'), null, (s) => s.first,
-            useForSnippets: true, preferForRegexpMatch: false),
+            useForSnippets: true, preferForRegexpMatch: false,),
       );
 
       expect(generator.generateExpressions('direction is:down')[0].source,
-          equals('direction is:{direction}'));
+          equals('direction is:{direction}'),);
       expect(generator.generateExpressions('direction is down.')[0].source,
-          equals('direction is {direction}.'));
+          equals('direction is {direction}.'),);
     });
   });
 }

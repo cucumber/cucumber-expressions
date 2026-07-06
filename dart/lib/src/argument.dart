@@ -1,6 +1,6 @@
-import 'errors.dart';
-import 'group.dart';
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/errors.dart';
+import 'package:cucumber_expressions/src/group.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 class Argument<T> {
   Argument(this.group, this.parameterType);

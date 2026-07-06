@@ -20,7 +20,7 @@ void main() {
                     'start': t.start,
                     'end': t.end,
                     'text': t.text,
-                  })
+                  },)
               .toList();
           final expected = (expectation['expected_tokens'] as YamlList)
               .map((t) => {
@@ -28,7 +28,7 @@ void main() {
                     'start': t['start'],
                     'end': t['end'],
                     'text': t['text'],
-                  })
+                  },)
               .toList();
           expect(actual, equals(expected));
         } else if (expectation['exception'] != null) {

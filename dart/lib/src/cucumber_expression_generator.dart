@@ -1,7 +1,7 @@
-import 'combinatorial_generated_expression_factory.dart';
-import 'generated_expression.dart';
-import 'parameter_type.dart';
-import 'parameter_type_matcher.dart';
+import 'package:cucumber_expressions/src/combinatorial_generated_expression_factory.dart';
+import 'package:cucumber_expressions/src/generated_expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_matcher.dart';
 
 class CucumberExpressionGenerator {
   CucumberExpressionGenerator(this._parameterTypes);

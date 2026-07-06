@@ -1,6 +1,6 @@
-import 'ast.dart';
-import 'cucumber_expression_tokenizer.dart';
-import 'errors.dart';
+import 'package:cucumber_expressions/src/ast.dart';
+import 'package:cucumber_expressions/src/cucumber_expression_tokenizer.dart';
+import 'package:cucumber_expressions/src/errors.dart';
 
 class _Result {
   const _Result(this.consumed, this.ast);

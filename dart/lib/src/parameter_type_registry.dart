@@ -1,8 +1,8 @@
-import 'cucumber_expression_generator.dart';
-import 'define_default_parameter_types.dart';
-import 'errors.dart';
-import 'expression.dart';
-import 'parameter_type.dart';
+import 'package:cucumber_expressions/src/cucumber_expression_generator.dart';
+import 'package:cucumber_expressions/src/define_default_parameter_types.dart';
+import 'package:cucumber_expressions/src/errors.dart';
+import 'package:cucumber_expressions/src/expression.dart';
+import 'package:cucumber_expressions/src/parameter_type.dart';
 
 class ParameterTypeRegistry implements DefinesParameterType {
   ParameterTypeRegistry() {
@@ -33,7 +33,7 @@ class ParameterTypeRegistry implements DefinesParameterType {
       // ambiguity when we look up by Regexp. Users of CucumberExpression should
       // not be restricted.
       final generatedExpressions =
-          CucumberExpressionGenerator(() => parameterTypes.cast())
+          CucumberExpressionGenerator(parameterTypes.cast)
               .generateExpressions(text);
       throw AmbiguousParameterTypeException.forRegExp(
         parameterTypeRegexp,

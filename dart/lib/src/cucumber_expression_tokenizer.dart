@@ -1,10 +1,10 @@
-import 'ast.dart';
-import 'errors.dart';
+import 'package:cucumber_expressions/src/ast.dart';
+import 'package:cucumber_expressions/src/errors.dart';
 
 class CucumberExpressionTokenizer {
   List<Token> tokenize(String expression) {
     final codePoints =
-        expression.runes.map((r) => String.fromCharCode(r)).toList();
+        expression.runes.map(String.fromCharCode).toList();
     final tokens = <Token>[];
     var buffer = <String>[];
     var previousTokenType = TokenType.startOfLine;

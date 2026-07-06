@@ -1,7 +1,7 @@
-import 'cucumber_expression.dart';
-import 'expression.dart';
-import 'parameter_type_registry.dart';
-import 'regular_expression.dart';
+import 'package:cucumber_expressions/src/cucumber_expression.dart';
+import 'package:cucumber_expressions/src/expression.dart';
+import 'package:cucumber_expressions/src/parameter_type_registry.dart';
+import 'package:cucumber_expressions/src/regular_expression.dart';
 
 class ExpressionFactory {
   ExpressionFactory(this._parameterTypeRegistry);
