@@ -4,7 +4,10 @@ import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
+/// A registry of [ParameterType]s, seeded with the built-in types and used to
+/// resolve parameter references in expressions.
 class ParameterTypeRegistry implements DefinesParameterType {
+  /// Creates a registry populated with the default parameter types.
   ParameterTypeRegistry() {
     defineDefaultParameterTypes(this);
   }
@@ -12,13 +15,19 @@ class ParameterTypeRegistry implements DefinesParameterType {
   final Map<String, ParameterType<Object?>> _parameterTypeByName = {};
   final Map<String, List<ParameterType<Object?>>> _parameterTypesByRegexp = {};
 
+  /// All registered parameter types.
   Iterable<ParameterType<Object?>> get parameterTypes =>
       _parameterTypeByName.values;
 
+  /// Looks up a parameter type by its [typeName], or `null` if not registered.
   ParameterType<Object?>? lookupByTypeName(String typeName) {
     return _parameterTypeByName[typeName];
   }
 
+  /// Looks up the parameter type for [parameterTypeRegexp].
+  ///
+  /// Throws an [AmbiguousParameterTypeException] if multiple non-preferential
+  /// types share the regexp.
   ParameterType<Object?>? lookupByRegexp(
     String parameterTypeRegexp,
     RegExp expressionRegexp,
@@ -81,8 +90,9 @@ class ParameterTypeRegistry implements DefinesParameterType {
         );
       }
       if (!parameterTypes.contains(parameterType)) {
-        parameterTypes.add(parameterType);
-        parameterTypes.sort(ParameterType.compare);
+        parameterTypes
+          ..add(parameterType)
+          ..sort(ParameterType.compare);
       }
     }
   }

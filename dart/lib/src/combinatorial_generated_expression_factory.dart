@@ -4,7 +4,11 @@ import 'package:cucumber_expressions/src/parameter_type.dart';
 // 256 generated expressions ought to be enough for anybody
 const int _maxExpressions = 256;
 
+/// Generates all combinations of [GeneratedExpression]s from an expression
+/// template and the possible parameter types for each placeholder.
 class CombinatorialGeneratedExpressionFactory {
+  /// Creates a factory for the given [_expressionTemplate] and the possible
+  /// [_parameterTypeCombinations] for each placeholder in the template.
   CombinatorialGeneratedExpressionFactory(
     this._expressionTemplate,
     this._parameterTypeCombinations,
@@ -13,6 +17,7 @@ class CombinatorialGeneratedExpressionFactory {
   final String _expressionTemplate;
   final List<List<ParameterType<Object?>>> _parameterTypeCombinations;
 
+  /// Generates every combination of parameter types, up to a fixed limit.
   List<GeneratedExpression> generateExpressions() {
     final generatedExpressions = <GeneratedExpression>[];
     _generatePermutations(generatedExpressions, 0, <ParameterType<Object?>>[]);

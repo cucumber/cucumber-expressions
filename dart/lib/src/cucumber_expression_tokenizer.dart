@@ -1,7 +1,9 @@
 import 'package:cucumber_expressions/src/ast.dart';
 import 'package:cucumber_expressions/src/errors.dart';
 
+/// Splits a Cucumber Expression string into a list of [Token]s.
 class CucumberExpressionTokenizer {
+  /// Tokenizes [expression] into a list of tokens, handling escaping.
   List<Token> tokenize(String expression) {
     final codePoints = expression.runes.map(String.fromCharCode).toList();
     final tokens = <Token>[];
@@ -26,7 +28,7 @@ class CucumberExpressionTokenizer {
       return t;
     }
 
-    TokenType tokenTypeOf(String codePoint, bool treatAsText) {
+    TokenType tokenTypeOf(String codePoint, {required bool treatAsText}) {
       if (!treatAsText) {
         return Token.typeOf(codePoint);
       }
@@ -60,7 +62,8 @@ class CucumberExpressionTokenizer {
         treatAsText = true;
         continue;
       }
-      final currentTokenType = tokenTypeOf(codePoint, treatAsText);
+      final currentTokenType =
+          tokenTypeOf(codePoint, treatAsText: treatAsText);
       treatAsText = false;
 
       if (shouldCreateNewToken(previousTokenType, currentTokenType)) {

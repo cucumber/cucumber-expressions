@@ -39,8 +39,8 @@ void main() {
       expect(
         match,
         isNotNull,
-        reason:
-            "Expected text '$text' to match generated expression '${generatedExpression.source}'",
+        reason: "Expected text '$text' to match generated expression "
+            "'${generatedExpression.source}'",
       );
       expect(match!.length, equals(expectedParameterInfo.length));
     }
@@ -110,26 +110,27 @@ void main() {
     });
 
     test('generates all combinations when several parameter types match', () {
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<String?>(
-          'currency',
-          RegExp('x'),
-          null,
-          (s) => s.first,
-          useForSnippets: true,
-          preferForRegexpMatch: false,
-        ),
-      );
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<String?>(
-          'date',
-          RegExp('x'),
-          null,
-          (s) => s.first,
-          useForSnippets: true,
-          preferForRegexpMatch: false,
-        ),
-      );
+      parameterTypeRegistry
+        ..defineParameterType(
+          ParameterType<String?>(
+            'currency',
+            RegExp('x'),
+            null,
+            (s) => s.first,
+            useForSnippets: true,
+            preferForRegexpMatch: false,
+          ),
+        )
+        ..defineParameterType(
+          ParameterType<String?>(
+            'date',
+            RegExp('x'),
+            null,
+            (s) => s.first,
+            useForSnippets: true,
+            preferForRegexpMatch: false,
+          ),
+        );
 
       final generatedExpressions =
           generator.generateExpressions('I have x and x and another x');
@@ -175,26 +176,27 @@ void main() {
     });
 
     test('prefers expression with longest non empty match', () {
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<String?>(
-          'zero-or-more',
-          RegExp('[a-z]*'),
-          null,
-          (s) => s.first,
-          useForSnippets: true,
-          preferForRegexpMatch: false,
-        ),
-      );
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<String?>(
-          'exactly-one',
-          RegExp('[a-z]'),
-          null,
-          (s) => s.first,
-          useForSnippets: true,
-          preferForRegexpMatch: false,
-        ),
-      );
+      parameterTypeRegistry
+        ..defineParameterType(
+          ParameterType<String?>(
+            'zero-or-more',
+            RegExp('[a-z]*'),
+            null,
+            (s) => s.first,
+            useForSnippets: true,
+            preferForRegexpMatch: false,
+          ),
+        )
+        ..defineParameterType(
+          ParameterType<String?>(
+            'exactly-one',
+            RegExp('[a-z]'),
+            null,
+            (s) => s.first,
+            useForSnippets: true,
+            preferForRegexpMatch: false,
+          ),
+        );
 
       final expressions = generator.generateExpressions('a simple step');
       expect(expressions.length, equals(2));

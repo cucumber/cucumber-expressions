@@ -2,15 +2,19 @@ import 'package:cucumber_expressions/src/ast.dart';
 import 'package:cucumber_expressions/src/generated_expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
+/// Thrown when a Cucumber Expression is malformed or cannot be processed.
 class CucumberExpressionException implements Exception {
+  /// Creates an exception with the given human readable [message].
   CucumberExpressionException(this.message);
 
+  /// A human readable description of the problem.
   final String message;
 
   @override
   String toString() => message;
 }
 
+/// Creates an exception for an alternative that only contains optionals.
 CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(
   Node node,
   String expression,
@@ -26,6 +30,7 @@ CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(
   );
 }
 
+/// Creates an exception for an empty alternative.
 CucumberExpressionException createAlternativeMayNotBeEmpty(
   Node node,
   String expression,
@@ -41,6 +46,7 @@ CucumberExpressionException createAlternativeMayNotBeEmpty(
   );
 }
 
+/// Creates an exception for an empty optional.
 CucumberExpressionException createOptionalMayNotBeEmpty(
   Node node,
   String expression,
@@ -56,6 +62,7 @@ CucumberExpressionException createOptionalMayNotBeEmpty(
   );
 }
 
+/// Creates an exception for a parameter type inside an optional.
 CucumberExpressionException createParameterIsNotAllowedInOptional(
   Node node,
   String expression,
@@ -71,6 +78,7 @@ CucumberExpressionException createParameterIsNotAllowedInOptional(
   );
 }
 
+/// Creates an exception for an optional nested inside another optional.
 CucumberExpressionException createOptionalIsNotAllowedInOptional(
   Node node,
   String expression,
@@ -86,6 +94,7 @@ CucumberExpressionException createOptionalIsNotAllowedInOptional(
   );
 }
 
+/// Creates an exception for a trailing escape character at end of line.
 CucumberExpressionException createTheEndOfLineCanNotBeEscaped(
   String expression,
 ) {
@@ -101,6 +110,7 @@ CucumberExpressionException createTheEndOfLineCanNotBeEscaped(
   );
 }
 
+/// Creates an exception for a begin token without a matching end token.
 CucumberExpressionException createMissingEndToken(
   String expression,
   TokenType beginToken,
@@ -121,6 +131,7 @@ CucumberExpressionException createMissingEndToken(
   );
 }
 
+/// Creates an exception for an alternation used inside an optional.
 CucumberExpressionException createAlternationNotAllowedInOptional(
   String expression,
   Token current,
@@ -136,6 +147,7 @@ CucumberExpressionException createAlternationNotAllowedInOptional(
   );
 }
 
+/// Creates an exception for an illegal escape sequence.
 CucumberExpressionException createCantEscaped(String expression, int index) {
   return CucumberExpressionException(
     _message(
@@ -148,6 +160,7 @@ CucumberExpressionException createCantEscaped(String expression, int index) {
   );
 }
 
+/// Creates an exception for an invalid parameter type name.
 CucumberExpressionException createInvalidParameterTypeNameInNode(
   Token token,
   String expression,
@@ -198,10 +211,16 @@ String _pointAtLocated(Located node) {
   return pointer.join();
 }
 
+/// Thrown when a regular expression matches more than one parameter type and
+/// no preferential type can be chosen.
 class AmbiguousParameterTypeException extends CucumberExpressionException {
+  /// Creates an exception with the given human readable [message].
   AmbiguousParameterTypeException(super.message);
 
-  static AmbiguousParameterTypeException forRegExp(
+  /// Creates an exception describing that [expressionRegexp] matches multiple
+  /// [parameterTypes] via [parameterTypeRegexp], suggesting the
+  /// [generatedExpressions] as alternatives.
+  factory AmbiguousParameterTypeException.forRegExp(
     String parameterTypeRegexp,
     RegExp expressionRegexp,
     List<ParameterType<Object?>> parameterTypes,
@@ -214,10 +233,12 @@ class AmbiguousParameterTypeException extends CucumberExpressionException {
       '\n'
       "I couldn't decide which one to use. You have two options:\n"
       '\n'
-      '1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:\n'
+      '1) Use a Cucumber Expression instead of a Regular Expression. '
+      'Try one of these:\n'
       '   ${_expressions(generatedExpressions)}\n'
       '\n'
-      '2) Make one of the parameter types preferential and continue to use a Regular Expression.\n',
+      '2) Make one of the parameter types preferential and continue to use '
+      'a Regular Expression.\n',
     );
   }
 
@@ -232,15 +253,20 @@ class AmbiguousParameterTypeException extends CucumberExpressionException {
   }
 }
 
+/// Thrown when an expression references a parameter type that has not been
+/// registered.
 class UndefinedParameterTypeException extends CucumberExpressionException {
+  /// Creates an exception for the [undefinedParameterTypeName] with [message].
   UndefinedParameterTypeException(
     this.undefinedParameterTypeName,
     super.message,
   );
 
+  /// The name of the parameter type that was not defined.
   final String undefinedParameterTypeName;
 }
 
+/// Creates an exception for an undefined parameter type.
 UndefinedParameterTypeException createUndefinedParameterType(
   Node node,
   String expression,

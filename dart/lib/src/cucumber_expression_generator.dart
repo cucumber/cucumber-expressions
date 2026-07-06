@@ -3,11 +3,15 @@ import 'package:cucumber_expressions/src/generated_expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 import 'package:cucumber_expressions/src/parameter_type_matcher.dart';
 
+/// Generates candidate Cucumber Expressions for a piece of step text based on
+/// the available parameter types.
 class CucumberExpressionGenerator {
+  /// Creates a generator that reads its parameter types from [_parameterTypes].
   CucumberExpressionGenerator(this._parameterTypes);
 
   final Iterable<ParameterType<Object?>> Function() _parameterTypes;
 
+  /// Generates candidate expressions that would match [text].
   List<GeneratedExpression> generateExpressions(String text) {
     final parameterTypeCombinations = <List<ParameterType<Object?>>>[];
     final parameterTypeMatchers = _createParameterTypeMatchers(text);

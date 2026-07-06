@@ -4,10 +4,15 @@ import 'package:cucumber_expressions/src/parameter_type.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:cucumber_expressions/src/tree_regexp.dart';
 
+/// An [Expression] backed by a plain [RegExp], resolving capture groups to
+/// parameter types via a registry.
 class RegularExpression implements Expression {
+  /// Creates a regular expression matcher for [regexp] using
+  /// [_parameterTypeRegistry] to resolve capture groups.
   RegularExpression(this.regexp, this._parameterTypeRegistry)
       : _treeRegexp = TreeRegexp(regexp);
 
+  /// The underlying regular expression.
   final RegExp regexp;
   final ParameterTypeRegistry _parameterTypeRegistry;
   final TreeRegexp _treeRegexp;

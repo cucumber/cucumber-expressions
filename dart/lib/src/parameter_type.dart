@@ -7,7 +7,15 @@ RegExp _unescapePattern() => RegExp(r'(\\([\[$.|?*+\]]))');
 /// [T]. The list may contain `null` entries for unmatched optional groups.
 typedef Transformer<T> = T Function(List<String?> groupValues);
 
+/// Describes a `{name}` parameter type: how to match it and how to transform
+/// the captured text into a value of type [T].
 class ParameterType<T> {
+  /// Creates a parameter type.
+  ///
+  /// [name] is the type name used in expressions, [regexps] is a single
+  /// pattern or list of patterns (as [String] or [RegExp]), [type] is a human
+  /// readable type description, and [transform] converts captured groups into
+  /// a value of type [T].
   ParameterType(
     this.name,
     Object regexps,
@@ -33,13 +41,21 @@ class ParameterType<T> {
   /// generator when building snippet parameter names. May be `null`.
   final String? type;
 
+  /// Whether this type should be considered when generating snippets.
   final bool useForSnippets;
+
+  /// Whether this type is preferred when matching by regular expression.
   final bool preferForRegexpMatch;
+
+  /// Whether this is a built-in parameter type.
   final bool? builtin;
 
+  /// The regular expression pattern strings this type matches.
   final List<String> regexpStrings;
   final Transformer<T> _transformFn;
 
+  /// Orders parameter types, preferring [preferForRegexpMatch] types and then
+  /// sorting by name.
   static int compare(
     ParameterType<Object?> pt1,
     ParameterType<Object?> pt2,
@@ -53,6 +69,8 @@ class ParameterType<T> {
     return (pt1.name ?? '').compareTo(pt2.name ?? '');
   }
 
+  /// Throws a [CucumberExpressionException] if [typeName] is not a valid
+  /// parameter type name.
   static void checkParameterTypeName(String typeName) {
     if (!isValidParameterTypeName(typeName)) {
       throw CucumberExpressionException(
@@ -62,12 +80,14 @@ class ParameterType<T> {
     }
   }
 
+  /// Whether [typeName] is a valid parameter type name.
   static bool isValidParameterTypeName(String typeName) {
     final unescapedTypeName =
         typeName.replaceAllMapped(_unescapePattern(), (m) => m.group(2)!);
     return !_illegalParameterNamePattern.hasMatch(unescapedTypeName);
   }
 
+  /// Transforms the captured [groupValues] into a value of type [T].
   T transform(List<String?> groupValues) {
     return _transformFn(groupValues);
   }

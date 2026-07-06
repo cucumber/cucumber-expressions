@@ -28,7 +28,10 @@ _Result _parseText(String expression, List<Token> tokens, int current) {
       ]);
     case TokenType.alternation:
       throw createAlternationNotAllowedInOptional(expression, token);
-    default:
+    case TokenType.startOfLine:
+    case TokenType.endOfLine:
+    case TokenType.beginOptional:
+    case TokenType.beginParameter:
       // If configured correctly this will never happen
       return const _Result(0, []);
   }
@@ -49,7 +52,8 @@ _Result _parseName(String expression, List<Token> tokens, int current) {
     case TokenType.endParameter:
     case TokenType.alternation:
       throw createInvalidParameterTypeNameInNode(token, expression);
-    default:
+    case TokenType.startOfLine:
+    case TokenType.endOfLine:
       // If configured correctly this will never happen
       return const _Result(0, []);
   }
@@ -148,13 +152,16 @@ final _Parser _parseCucumberExpression = _parseBetween(
   [_parseAlternation, _parseOptional, _parseParameter, _parseText],
 );
 
+/// Parses a Cucumber Expression string into an abstract syntax tree.
 class CucumberExpressionParser {
+  /// Creates a parser, wiring up the recursive optional sub-parsers.
   CucumberExpressionParser() {
     if (_optionalSubParsers.isEmpty) {
       _optionalSubParsers.addAll([_parseOptional, _parseParameter, _parseText]);
     }
   }
 
+  /// Parses [expression] and returns the root [Node] of the resulting tree.
   Node parse(String expression) {
     final tokenizer = CucumberExpressionTokenizer();
     final tokens = tokenizer.tokenize(expression);
