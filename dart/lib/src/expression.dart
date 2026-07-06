@@ -16,7 +16,6 @@ abstract class Expression {
 ///
 /// This is an interface implemented by registries and used as an abstraction
 /// point, so it is intentionally an abstract class rather than a function.
-// ignore: one_member_abstracts
 abstract class DefinesParameterType {
   /// Registers [parameterType] so it can be referenced in expressions.
   void defineParameterType<T>(ParameterType<T> parameterType);

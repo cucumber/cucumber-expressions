@@ -62,8 +62,7 @@ class CucumberExpressionTokenizer {
         treatAsText = true;
         continue;
       }
-      final currentTokenType =
-          tokenTypeOf(codePoint, treatAsText: treatAsText);
+      final currentTokenType = tokenTypeOf(codePoint, treatAsText: treatAsText);
       treatAsText = false;
 
       if (shouldCreateNewToken(previousTokenType, currentTokenType)) {

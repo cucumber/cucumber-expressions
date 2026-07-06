@@ -55,9 +55,7 @@ void main() {
           expect(
             () {
               final registry = ParameterTypeRegistry();
-              final cucumberExpression =
-                  CucumberExpression(expression, registry);
-              cucumberExpression.match(text ?? '');
+              CucumberExpression(expression, registry).match(text ?? '');
             },
             throwsA(
               isA<CucumberExpressionException>().having(
@@ -121,20 +119,20 @@ void main() {
     });
 
     test('unmatched optional groups have null values', () {
-      final parameterTypeRegistry = ParameterTypeRegistry();
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<List<String?>>(
-          'textAndOrNumber',
-          RegExp('([A-Z]+)?(?: )?([0-9]+)?'),
-          null,
-          (s) => [
-            if (s.isNotEmpty) s[0] else null,
-            if (s.length > 1) s[1] else null
-          ],
-          useForSnippets: false,
-          preferForRegexpMatch: true,
-        ),
-      );
+      final parameterTypeRegistry = ParameterTypeRegistry()
+        ..defineParameterType(
+          ParameterType<List<String?>>(
+            'textAndOrNumber',
+            RegExp('([A-Z]+)?(?: )?([0-9]+)?'),
+            null,
+            (s) => [
+              if (s.isNotEmpty) s[0] else null,
+              if (s.length > 1) s[1] else null,
+            ],
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
+        );
       final expression =
           CucumberExpression('{textAndOrNumber}', parameterTypeRegistry);
 

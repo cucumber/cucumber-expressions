@@ -25,6 +25,7 @@ void main() {
               )
               .toList();
           final expected = (expectation['expected_tokens'] as YamlList)
+              .cast<YamlMap>()
               .map(
                 (t) => {
                   'type': t['type'],

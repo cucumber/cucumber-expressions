@@ -30,26 +30,27 @@ void main() {
 
     test('does not allow more than one preferential parameter type per regexp',
         () {
-      registry.defineParameterType(
-        ParameterType<Name>(
-          'name',
-          capitalisedWord,
-          'Name',
-          (s) => Name(s.first!),
-          useForSnippets: true,
-          preferForRegexpMatch: true,
-        ),
-      );
-      registry.defineParameterType(
-        ParameterType<Person>(
-          'person',
-          capitalisedWord,
-          'Person',
-          (s) => Person(s.first!),
-          useForSnippets: true,
-          preferForRegexpMatch: false,
-        ),
-      );
+      registry
+        ..defineParameterType(
+          ParameterType<Name>(
+            'name',
+            capitalisedWord,
+            'Name',
+            (s) => Name(s.first!),
+            useForSnippets: true,
+            preferForRegexpMatch: true,
+          ),
+        )
+        ..defineParameterType(
+          ParameterType<Person>(
+            'person',
+            capitalisedWord,
+            'Person',
+            (s) => Person(s.first!),
+            useForSnippets: true,
+            preferForRegexpMatch: false,
+          ),
+        );
       expect(
         () => registry.defineParameterType(
           ParameterType<Place>(
@@ -101,9 +102,10 @@ void main() {
         preferForRegexpMatch: false,
       );
 
-      registry.defineParameterType(name);
-      registry.defineParameterType(person);
-      registry.defineParameterType(place);
+      registry
+        ..defineParameterType(name)
+        ..defineParameterType(person)
+        ..defineParameterType(place);
 
       expect(
         registry.lookupByRegexp(

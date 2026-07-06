@@ -27,17 +27,17 @@ void main() {
     late ParameterTypeRegistry parameterTypeRegistry;
 
     setUp(() {
-      parameterTypeRegistry = ParameterTypeRegistry();
-      parameterTypeRegistry.defineParameterType(
-        ParameterType<Color>(
-          'color',
-          RegExp('red|blue|yellow'),
-          'Color',
-          (s) => Color(s.first!),
-          useForSnippets: false,
-          preferForRegexpMatch: true,
-        ),
-      );
+      parameterTypeRegistry = ParameterTypeRegistry()
+        ..defineParameterType(
+          ParameterType<Color>(
+            'color',
+            RegExp('red|blue|yellow'),
+            'Color',
+            (s) => Color(s.first!),
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
+        );
     });
 
     group('CucumberExpression', () {
@@ -106,20 +106,20 @@ void main() {
       });
 
       test('matches custom parameter type using optional capture group', () {
-        parameterTypeRegistry = ParameterTypeRegistry();
-        parameterTypeRegistry.defineParameterType(
-          ParameterType<Color>(
-            'color',
-            [
-              RegExp('red|blue|yellow'),
-              RegExp('(?:dark|light) (?:red|blue|yellow)'),
-            ],
-            'Color',
-            (s) => Color(s.first!),
-            useForSnippets: false,
-            preferForRegexpMatch: true,
-          ),
-        );
+        parameterTypeRegistry = ParameterTypeRegistry()
+          ..defineParameterType(
+            ParameterType<Color>(
+              'color',
+              [
+                RegExp('red|blue|yellow'),
+                RegExp('(?:dark|light) (?:red|blue|yellow)'),
+              ],
+              'Color',
+              (s) => Color(s.first!),
+              useForSnippets: false,
+              preferForRegexpMatch: true,
+            ),
+          );
         final expression =
             CucumberExpression('I have a {color} ball', parameterTypeRegistry);
         final value =
