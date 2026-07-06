@@ -127,7 +127,10 @@ void main() {
           'textAndOrNumber',
           RegExp('([A-Z]+)?(?: )?([0-9]+)?'),
           null,
-          (s) => [if (s.isNotEmpty) s[0] else null, if (s.length > 1) s[1] else null],
+          (s) => [
+            if (s.isNotEmpty) s[0] else null,
+            if (s.length > 1) s[1] else null
+          ],
           useForSnippets: false,
           preferForRegexpMatch: true,
         ),

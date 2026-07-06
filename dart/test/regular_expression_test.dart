@@ -64,8 +64,9 @@ void main() {
 
     test('matches empty string', () {
       expect(
-          match(RegExp(r'^The value equals "([^"]*)"$'), 'The value equals ""'),
-          equals(['']),);
+        match(RegExp(r'^The value equals "([^"]*)"$'), 'The value equals ""'),
+        equals(['']),
+      );
     });
 
     test('exposes source', () {

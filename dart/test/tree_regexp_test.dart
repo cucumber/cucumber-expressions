@@ -73,8 +73,11 @@ void main() {
     });
 
     test('matches nested groups', () {
-      final tr = TreeRegexp(RegExp(
-          r'^A (\d+) thick line from ((\d+),\s*(\d+),\s*(\d+)) to ((\d+),\s*(\d+),\s*(\d+))',),);
+      final tr = TreeRegexp(
+        RegExp(
+          r'^A (\d+) thick line from ((\d+),\s*(\d+),\s*(\d+)) to ((\d+),\s*(\d+),\s*(\d+))',
+        ),
+      );
       final group = tr.match('A 5 thick line from 10,20,30 to 40,50,60')!;
       expect(group.children![0].value, equals('5'));
       expect(group.children![1].value, equals('10,20,30'));

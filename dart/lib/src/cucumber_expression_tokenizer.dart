@@ -3,8 +3,7 @@ import 'package:cucumber_expressions/src/errors.dart';
 
 class CucumberExpressionTokenizer {
   List<Token> tokenize(String expression) {
-    final codePoints =
-        expression.runes.map(String.fromCharCode).toList();
+    final codePoints = expression.runes.map(String.fromCharCode).toList();
     final tokens = <Token>[];
     var buffer = <String>[];
     var previousTokenType = TokenType.startOfLine;

@@ -8,22 +8,47 @@ void main() {
       final parameterTypeCombinations = <List<ParameterType<Object?>>>[
         [
           ParameterType<String?>(
-              'color', RegExp('red|blue|yellow'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true,),
+            'color',
+            RegExp('red|blue|yellow'),
+            null,
+            (s) => s.first,
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
           ParameterType<String?>(
-              'csscolor', RegExp('red|blue|yellow'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true,),
+            'csscolor',
+            RegExp('red|blue|yellow'),
+            null,
+            (s) => s.first,
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
         ],
         [
           ParameterType<String?>(
-              'date', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true,),
+            'date',
+            RegExp(r'\d{4}-\d{2}-\d{2}'),
+            null,
+            (s) => s.first,
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
           ParameterType<String?>(
-              'datetime', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true,),
+            'datetime',
+            RegExp(r'\d{4}-\d{2}-\d{2}'),
+            null,
+            (s) => s.first,
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
           ParameterType<String?>(
-              'timestamp', RegExp(r'\d{4}-\d{2}-\d{2}'), null, (s) => s.first,
-              useForSnippets: false, preferForRegexpMatch: true,),
+            'timestamp',
+            RegExp(r'\d{4}-\d{2}-\d{2}'),
+            null,
+            (s) => s.first,
+            useForSnippets: false,
+            preferForRegexpMatch: true,
+          ),
         ],
       ];
 

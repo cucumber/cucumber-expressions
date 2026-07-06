@@ -234,7 +234,9 @@ class AmbiguousParameterTypeException extends CucumberExpressionException {
 
 class UndefinedParameterTypeException extends CucumberExpressionException {
   UndefinedParameterTypeException(
-      this.undefinedParameterTypeName, super.message,);
+    this.undefinedParameterTypeName,
+    super.message,
+  );
 
   final String undefinedParameterTypeName;
 }

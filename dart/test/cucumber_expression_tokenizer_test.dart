@@ -15,20 +15,24 @@ void main() {
         if (expectation['expected_tokens'] != null) {
           final tokens = CucumberExpressionTokenizer().tokenize(expression);
           final actual = tokens
-              .map((t) => {
-                    'type': t.type.value,
-                    'start': t.start,
-                    'end': t.end,
-                    'text': t.text,
-                  },)
+              .map(
+                (t) => {
+                  'type': t.type.value,
+                  'start': t.start,
+                  'end': t.end,
+                  'text': t.text,
+                },
+              )
               .toList();
           final expected = (expectation['expected_tokens'] as YamlList)
-              .map((t) => {
-                    'type': t['type'],
-                    'start': t['start'],
-                    'end': t['end'],
-                    'text': t['text'],
-                  },)
+              .map(
+                (t) => {
+                  'type': t['type'],
+                  'start': t['start'],
+                  'end': t['end'],
+                  'text': t['text'],
+                },
+              )
               .toList();
           expect(actual, equals(expected));
         } else if (expectation['exception'] != null) {

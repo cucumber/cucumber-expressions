@@ -42,7 +42,9 @@ class CucumberExpression implements Expression {
 
   static String _escapeRegex(String expression) {
     return expression.replaceAllMapped(
-        _escapePattern, (m) => '\\${m.group(1)}',);
+      _escapePattern,
+      (m) => '\\${m.group(1)}',
+    );
   }
 
   String _rewriteOptional(Node node) {
@@ -58,8 +60,7 @@ class CucumberExpression implements Expression {
       node,
       (astNode) => createOptionalMayNotBeEmpty(astNode, _expression),
     );
-    final regex =
-        (node.nodes ?? []).map(_rewriteToRegex).join();
+    final regex = (node.nodes ?? []).map(_rewriteToRegex).join();
     return '(?:$regex)?';
   }
 
@@ -78,15 +79,12 @@ class CucumberExpression implements Expression {
         ),
       );
     }
-    final regex =
-        (node.nodes ?? []).map(_rewriteToRegex).join('|');
+    final regex = (node.nodes ?? []).map(_rewriteToRegex).join('|');
     return '(?:$regex)';
   }
 
   String _rewriteAlternative(Node node) {
-    return (node.nodes ?? [])
-        .map(_rewriteToRegex)
-        .join();
+    return (node.nodes ?? []).map(_rewriteToRegex).join();
   }
 
   String _rewriteParameter(Node node) {
@@ -104,8 +102,7 @@ class CucumberExpression implements Expression {
   }
 
   String _rewriteExpression(Node node) {
-    final regex =
-        (node.nodes ?? []).map(_rewriteToRegex).join();
+    final regex = (node.nodes ?? []).map(_rewriteToRegex).join();
     return '^$regex\$';
   }
 

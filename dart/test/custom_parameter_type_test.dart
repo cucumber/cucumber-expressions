@@ -30,8 +30,13 @@ void main() {
       parameterTypeRegistry = ParameterTypeRegistry();
       parameterTypeRegistry.defineParameterType(
         ParameterType<Color>(
-            'color', RegExp('red|blue|yellow'), 'Color', (s) => Color(s.first!),
-            useForSnippets: false, preferForRegexpMatch: true,),
+          'color',
+          RegExp('red|blue|yellow'),
+          'Color',
+          (s) => Color(s.first!),
+          useForSnippets: false,
+          preferForRegexpMatch: true,
+        ),
       );
     });
 
@@ -39,7 +44,11 @@ void main() {
       test('throws exception for illegal character in parameter name', () {
         expect(
           () => ParameterType<String?>(
-              '[string]', RegExp('.*'), 'String', (s) => s.first,),
+            '[string]',
+            RegExp('.*'),
+            'String',
+            (s) => s.first,
+          ),
           throwsA(
             isA<CucumberExpressionException>().having(
               (e) => e.message,
@@ -153,8 +162,13 @@ void main() {
           expect(
             () => parameterTypeRegistry.defineParameterType(
               ParameterType<CssColor>(
-                  'color', RegExp('.*'), 'CssColor', (s) => CssColor(s.first!),
-                  useForSnippets: false, preferForRegexpMatch: true,),
+                'color',
+                RegExp('.*'),
+                'CssColor',
+                (s) => CssColor(s.first!),
+                useForSnippets: false,
+                preferForRegexpMatch: true,
+              ),
             ),
             throwsA(
               isA<CucumberExpressionException>().having(
@@ -169,30 +183,40 @@ void main() {
         test('is not detected for type', () {
           parameterTypeRegistry.defineParameterType(
             ParameterType<Color>(
-                'whatever', RegExp('.*'), 'Color', (s) => Color(s.first!),
-                useForSnippets: false, preferForRegexpMatch: false,),
+              'whatever',
+              RegExp('.*'),
+              'Color',
+              (s) => Color(s.first!),
+              useForSnippets: false,
+              preferForRegexpMatch: false,
+            ),
           );
         });
 
         test('is not detected for regexp', () {
           parameterTypeRegistry.defineParameterType(
-            ParameterType<CssColor>('css-color', RegExp('red|blue|yellow'),
-                'CssColor', (s) => CssColor(s.first!),
-                useForSnippets: true, preferForRegexpMatch: false,),
+            ParameterType<CssColor>(
+              'css-color',
+              RegExp('red|blue|yellow'),
+              'CssColor',
+              (s) => CssColor(s.first!),
+              useForSnippets: true,
+              preferForRegexpMatch: false,
+            ),
           );
 
           expect(
             CucumberExpression(
-                    'I have a {css-color} ball', parameterTypeRegistry,)
-                .match('I have a blue ball')?[0]
-                .getValue(),
+              'I have a {css-color} ball',
+              parameterTypeRegistry,
+            ).match('I have a blue ball')?[0].getValue(),
             isA<CssColor>(),
           );
           expect(
             (CucumberExpression(
-                        'I have a {css-color} ball', parameterTypeRegistry,)
-                    .match('I have a blue ball')?[0]
-                    .getValue() as CssColor?)
+              'I have a {css-color} ball',
+              parameterTypeRegistry,
+            ).match('I have a blue ball')?[0].getValue() as CssColor?)
                 ?.name,
             equals('blue'),
           );

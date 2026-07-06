@@ -74,8 +74,7 @@ class ParameterType<T> {
 }
 
 List<String> _stringArray(Object regexps) {
-  final array =
-      regexps is List<Object> ? regexps : <Object>[regexps];
+  final array = regexps is List<Object> ? regexps : <Object>[regexps];
   return array
       .map((r) => r is RegExp ? _regexpSource(r) : r as String)
       .toList();
@@ -84,11 +83,13 @@ List<String> _stringArray(Object regexps) {
 String _regexpSource(RegExp regexp) {
   if (!regexp.isCaseSensitive) {
     throw CucumberExpressionException(
-        "ParameterType Regexps can't use flag 'i'",);
+      "ParameterType Regexps can't use flag 'i'",
+    );
   }
   if (regexp.isMultiLine) {
     throw CucumberExpressionException(
-        "ParameterType Regexps can't use flag 'm'",);
+      "ParameterType Regexps can't use flag 'm'",
+    );
   }
   return regexp.pattern;
 }
