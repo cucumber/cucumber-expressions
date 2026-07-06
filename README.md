@@ -4,6 +4,7 @@
 [![test-python](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml)
 [![test-ruby](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml)
 [![test-dotnet](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml)
+[![test-dart](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dart.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dart.yml)
 
 # Cucumber Expressions
 

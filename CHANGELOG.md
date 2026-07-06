@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Dart] Add a Dart implementation of Cucumber Expressions
 
 ## [20.0.0] - 2026-06-11
 ### Changed

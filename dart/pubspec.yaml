@@ -1,0 +1,15 @@
+name: cucumber_expressions
+version: 0.0.1
+description: >-
+  A simpler alternative to Regular Expressions.
+repository: https://github.com/cucumber/cucumber-expressions
+issue_tracker: https://github.com/cucumber/cucumber-expressions/issues
+homepage: https://github.com/cucumber/cucumber-expressions#readme
+
+environment:
+  sdk: ^3.5.0
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0
+  yaml: ^3.1.2

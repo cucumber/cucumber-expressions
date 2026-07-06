@@ -1,0 +1,160 @@
+import 'argument.dart';
+import 'ast.dart';
+import 'cucumber_expression_parser.dart';
+import 'errors.dart';
+import 'expression.dart';
+import 'parameter_type.dart';
+import 'parameter_type_registry.dart';
+import 'tree_regexp.dart';
+
+final RegExp _escapePattern = RegExp(r'([\\^\[({$.|?*+})\]])');
+
+class CucumberExpression implements Expression {
+  CucumberExpression(this._expression, this._parameterTypeRegistry) {
+    final parser = CucumberExpressionParser();
+    ast = parser.parse(_expression);
+    final pattern = _rewriteToRegex(ast);
+    _treeRegexp = TreeRegexp.fromString(pattern);
+  }
+
+  final String _expression;
+  final ParameterTypeRegistry _parameterTypeRegistry;
+  final List<ParameterType<Object?>> _parameterTypes = [];
+  late final TreeRegexp _treeRegexp;
+  late final Node ast;
+
+  String _rewriteToRegex(Node node) {
+    switch (node.type) {
+      case NodeType.text:
+        return _escapeRegex(node.text());
+      case NodeType.optional:
+        return _rewriteOptional(node);
+      case NodeType.alternation:
+        return _rewriteAlternation(node);
+      case NodeType.alternative:
+        return _rewriteAlternative(node);
+      case NodeType.parameter:
+        return _rewriteParameter(node);
+      case NodeType.expression:
+        return _rewriteExpression(node);
+    }
+  }
+
+  static String _escapeRegex(String expression) {
+    return expression.replaceAllMapped(
+        _escapePattern, (m) => '\\${m.group(1)}');
+  }
+
+  String _rewriteOptional(Node node) {
+    _assertNoParameters(
+      node,
+      (astNode) => createParameterIsNotAllowedInOptional(astNode, _expression),
+    );
+    _assertNoOptionals(
+      node,
+      (astNode) => createOptionalIsNotAllowedInOptional(astNode, _expression),
+    );
+    _assertNotEmpty(
+      node,
+      (astNode) => createOptionalMayNotBeEmpty(astNode, _expression),
+    );
+    final regex =
+        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join();
+    return '(?:$regex)?';
+  }
+
+  String _rewriteAlternation(Node node) {
+    // Make sure the alternative parts aren't empty and don't contain parameters
+    for (final alternative in node.nodes ?? <Node>[]) {
+      final altNodes = alternative.nodes;
+      if (altNodes == null || altNodes.isEmpty) {
+        throw createAlternativeMayNotBeEmpty(alternative, _expression);
+      }
+      _assertNotEmpty(
+        alternative,
+        (astNode) => createAlternativeMayNotExclusivelyContainOptionals(
+          astNode,
+          _expression,
+        ),
+      );
+    }
+    final regex =
+        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join('|');
+    return '(?:$regex)';
+  }
+
+  String _rewriteAlternative(Node node) {
+    return (node.nodes ?? [])
+        .map((lastNode) => _rewriteToRegex(lastNode))
+        .join();
+  }
+
+  String _rewriteParameter(Node node) {
+    final name = node.text();
+    final parameterType = _parameterTypeRegistry.lookupByTypeName(name);
+    if (parameterType == null) {
+      throw createUndefinedParameterType(node, _expression, name);
+    }
+    _parameterTypes.add(parameterType);
+    final regexps = parameterType.regexpStrings;
+    if (regexps.length == 1) {
+      return '(${regexps[0]})';
+    }
+    return '((?:${regexps.join(')|(?:')}))';
+  }
+
+  String _rewriteExpression(Node node) {
+    final regex =
+        (node.nodes ?? []).map((node) => _rewriteToRegex(node)).join();
+    return '^$regex\$';
+  }
+
+  void _assertNotEmpty(
+    Node node,
+    CucumberExpressionException Function(Node astNode) createException,
+  ) {
+    final textNodes =
+        (node.nodes ?? []).where((astNode) => NodeType.text == astNode.type);
+    if (textNodes.isEmpty) {
+      throw createException(node);
+    }
+  }
+
+  void _assertNoParameters(
+    Node node,
+    CucumberExpressionException Function(Node astNode) createException,
+  ) {
+    final parameterNodes = (node.nodes ?? [])
+        .where((astNode) => NodeType.parameter == astNode.type)
+        .toList();
+    if (parameterNodes.isNotEmpty) {
+      throw createException(parameterNodes[0]);
+    }
+  }
+
+  void _assertNoOptionals(
+    Node node,
+    CucumberExpressionException Function(Node astNode) createException,
+  ) {
+    final optionalNodes = (node.nodes ?? [])
+        .where((astNode) => NodeType.optional == astNode.type)
+        .toList();
+    if (optionalNodes.isNotEmpty) {
+      throw createException(optionalNodes[0]);
+    }
+  }
+
+  @override
+  List<Argument<Object?>>? match(String text) {
+    final group = _treeRegexp.match(text);
+    if (group == null) {
+      return null;
+    }
+    return Argument.build(group, _parameterTypes);
+  }
+
+  RegExp get regexp => _treeRegexp.regexp;
+
+  @override
+  String get source => _expression;
+}
