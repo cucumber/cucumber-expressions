@@ -118,8 +118,7 @@ class Token implements Located {
   }
 
   static bool canEscape(String codePoint) {
-    if (codePoint == ' ') {
-      // TODO: Unicode whitespace?
+    if (_isWhitespace(codePoint)) {
       return true;
     }
     switch (codePoint) {
@@ -135,8 +134,7 @@ class Token implements Located {
   }
 
   static TokenType typeOf(String codePoint) {
-    if (codePoint == ' ') {
-      // TODO: Unicode whitespace?
+    if (_isWhitespace(codePoint)) {
       return TokenType.whiteSpace;
     }
     switch (codePoint) {
@@ -152,5 +150,11 @@ class Token implements Located {
         return TokenType.endOptional;
     }
     return TokenType.text;
+  }
+
+  static final RegExp _whitespacePattern = RegExp(r'\s', unicode: true);
+
+  static bool _isWhitespace(String codePoint) {
+    return _whitespacePattern.hasMatch(codePoint);
   }
 }
