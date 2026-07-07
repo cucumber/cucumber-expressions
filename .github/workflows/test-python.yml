@@ -34,7 +34,7 @@ jobs:
       with:
         enable-cache: true
         python-version: "3.14"
-        version: "0.11.26"
+        version: "0.11.27"
 
     - name: Linting
       run: uvx pre-commit run --all-files
@@ -64,7 +64,7 @@ jobs:
       with:
         enable-cache: true
         python-version: ${{ matrix.python-version }}
-        version: "0.11.26"
+        version: "0.11.27"
 
     - name: Run pytest
       run: uv run --with pytest-github-actions-annotate-failures pytest -p no:sugar --quiet tests/
