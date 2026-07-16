@@ -54,10 +54,6 @@ void main() {
       expect(match(RegExp(r'(\d\d)'), '22'), equals(['22']));
     });
 
-    test('transforms int to int', () {
-      expect(match(RegExp(r'(\d\d)'), '22'), equals(['22']));
-    });
-
     test('transforms with builtin int type', () {
       expect(match(RegExp(r'(-?\d+)'), '22'), equals([22]));
     });

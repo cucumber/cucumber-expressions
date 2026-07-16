@@ -38,7 +38,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toInt,
         useForSnippets: true,
         preferForRegexpMatch: true,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -49,7 +48,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toDouble,
         useForSnippets: true,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -60,7 +58,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toStringValue,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -75,7 +72,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         },
         useForSnippets: true,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -86,7 +82,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toStringValue,
         useForSnippets: false,
         preferForRegexpMatch: true,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -97,7 +92,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toDouble,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -108,7 +102,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toStringValue,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -119,7 +112,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toInt,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -130,7 +122,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toInt,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -141,7 +132,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toInt,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     )
     ..defineParameterType(
@@ -152,7 +142,6 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         _toBigInt,
         useForSnippets: false,
         preferForRegexpMatch: false,
-        builtin: true,
       ),
     );
 }

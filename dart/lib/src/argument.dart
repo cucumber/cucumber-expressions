@@ -45,7 +45,4 @@ class Argument<T> {
     final groupValues = group.values ?? <String?>[];
     return parameterType.transform(groupValues);
   }
-
-  /// The parameter type associated with this argument.
-  ParameterType<T> getParameterType() => parameterType;
 }

@@ -23,7 +23,6 @@ class ParameterType<T> {
     Transformer<T>? transform, {
     bool? useForSnippets,
     bool? preferForRegexpMatch,
-    this.builtin,
   })  : useForSnippets = useForSnippets ?? true,
         preferForRegexpMatch = preferForRegexpMatch ?? false,
         regexpStrings = _stringArray(regexps),
@@ -46,9 +45,6 @@ class ParameterType<T> {
 
   /// Whether this type is preferred when matching by regular expression.
   final bool preferForRegexpMatch;
-
-  /// Whether this is a built-in parameter type.
-  final bool? builtin;
 
   /// The regular expression pattern strings this type matches.
   final List<String> regexpStrings;

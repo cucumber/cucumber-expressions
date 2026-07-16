@@ -15,7 +15,7 @@ class CucumberExpression implements Expression {
   /// Parses [_expression] using types from [_parameterTypeRegistry].
   CucumberExpression(this._expression, this._parameterTypeRegistry) {
     final parser = CucumberExpressionParser();
-    ast = parser.parse(_expression);
+    final ast = parser.parse(_expression);
     final pattern = _rewriteToRegex(ast);
     _treeRegexp = TreeRegexp.fromString(pattern);
   }
@@ -24,9 +24,6 @@ class CucumberExpression implements Expression {
   final ParameterTypeRegistry _parameterTypeRegistry;
   final List<ParameterType<Object?>> _parameterTypes = [];
   late final TreeRegexp _treeRegexp;
-
-  /// The parsed abstract syntax tree of the expression.
-  late final Node ast;
 
   String _rewriteToRegex(Node node) {
     switch (node.type) {
