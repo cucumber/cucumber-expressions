@@ -1,15 +1,14 @@
 import 'package:cucumber_expressions/src/cucumber_expression_generator.dart';
 import 'package:cucumber_expressions/src/define_default_parameter_types.dart';
 import 'package:cucumber_expressions/src/errors.dart';
-import 'package:cucumber_expressions/src/expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
 /// A registry of [ParameterType]s, seeded with the built-in types and used to
 /// resolve parameter references in expressions.
-class ParameterTypeRegistry implements DefinesParameterType {
+class ParameterTypeRegistry {
   /// Creates a registry populated with the default parameter types.
   ParameterTypeRegistry() {
-    defineDefaultParameterTypes(this);
+    defineDefaultParameterTypes(defineParameterType);
   }
 
   final Map<String, ParameterType<Object?>> _parameterTypeByName = {};
@@ -54,7 +53,6 @@ class ParameterTypeRegistry implements DefinesParameterType {
     return parameterTypes[0];
   }
 
-  @override
   void defineParameterType<T>(ParameterType<T> parameterType) {
     final name = parameterType.name;
     if (name != null) {

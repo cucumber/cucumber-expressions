@@ -1,4 +1,3 @@
-import 'package:cucumber_expressions/src/expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
 const List<String> _integerRegexps = [r'-?\d+', r'\d+'];
@@ -27,10 +26,12 @@ BigInt? _toBigInt(List<String?> s) {
 String? _toStringValue(List<String?> s) => s.first;
 
 /// Registers the built-in parameter types (such as `{int}`, `{float}` and
-/// `{string}`) on [registry].
-void defineDefaultParameterTypes(DefinesParameterType registry) {
-  registry
-    ..defineParameterType(
+/// `{string}`) through [defineParameterType].
+void defineDefaultParameterTypes(
+  void Function<T>(ParameterType<T>) defineParameterType,
+) {
+  defineParameterType
+    ..call(
       ParameterType<int?>(
         'int',
         _integerRegexps,
@@ -40,7 +41,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: true,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<double?>(
         'float',
         _floatRegexp,
@@ -50,7 +51,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<String?>(
         'word',
         _wordRegexp,
@@ -60,7 +61,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<String?>(
         'string',
         _stringRegexp,
@@ -74,7 +75,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<String?>(
         '',
         _anonymousRegexp,
@@ -84,7 +85,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: true,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<double?>(
         'double',
         _floatRegexp,
@@ -94,7 +95,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<String?>(
         'bigdecimal',
         _floatRegexp,
@@ -104,7 +105,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<int?>(
         'byte',
         _integerRegexps,
@@ -114,7 +115,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<int?>(
         'short',
         _integerRegexps,
@@ -124,7 +125,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<int?>(
         'long',
         _integerRegexps,
@@ -134,7 +135,7 @@ void defineDefaultParameterTypes(DefinesParameterType registry) {
         preferForRegexpMatch: false,
       ),
     )
-    ..defineParameterType(
+    ..call(
       ParameterType<BigInt?>(
         'biginteger',
         _integerRegexps,
