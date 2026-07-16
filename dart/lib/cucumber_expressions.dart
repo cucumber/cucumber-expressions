@@ -9,7 +9,6 @@
 library;
 
 export 'src/argument.dart';
-export 'src/ast.dart' show Located, Node, NodeType, Token, TokenType;
 export 'src/cucumber_expression.dart';
 export 'src/cucumber_expression_generator.dart';
 export 'src/errors.dart'
@@ -24,4 +23,3 @@ export 'src/group.dart';
 export 'src/parameter_type.dart';
 export 'src/parameter_type_registry.dart';
 export 'src/regular_expression.dart';
-export 'src/tree_regexp.dart' show TreeRegexp;
