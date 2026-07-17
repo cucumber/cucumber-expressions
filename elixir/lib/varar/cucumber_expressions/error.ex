@@ -1,0 +1,112 @@
+defmodule Varar.CucumberExpressions.Error do
+  @moduledoc """
+  Error raised (or returned as `{:error, %Error{}}`) when a Cucumber Expression
+  is invalid.
+
+  Messages are byte-for-byte identical to the other language ports — they are
+  part of the conformance surface verified by the shared testdata.
+  """
+
+  defexception [:message]
+
+  alias Varar.CucumberExpressions.Token
+
+  @type t :: %__MODULE__{message: String.t()}
+
+  @doc false
+  def cant_escape(expression, index) do
+    build(
+      index,
+      expression,
+      point_at(index),
+      "Only the characters '{', '}', '(', ')', '\\', '/' and whitespace can be escaped",
+      "If you did mean to use an '\\' you can use '\\\\' to escape it"
+    )
+  end
+
+  @doc false
+  def end_of_line_can_not_be_escaped(expression) do
+    index = codepoint_length(expression) - 1
+
+    build(
+      index,
+      expression,
+      point_at(index),
+      "The end of line can not be escaped",
+      "You can use '\\\\' to escape the '\\'"
+    )
+  end
+
+  @doc false
+  def missing_end_token(expression, begin_type, end_type, %Token{start: start} = current) do
+    build(
+      start,
+      expression,
+      point_at_located(current),
+      "The '#{Token.symbol(begin_type)}' does not have a matching '#{Token.symbol(end_type)}'",
+      "If you did not intend to use #{Token.purpose(begin_type)} you can use " <>
+        "'\\#{Token.symbol(begin_type)}' to escape the #{Token.purpose(begin_type)}"
+    )
+  end
+
+  @doc false
+  def alternation_not_allowed_in_optional(expression, %Token{start: start} = current) do
+    build(
+      start,
+      expression,
+      point_at_located(current),
+      "An alternation can not be used inside an optional",
+      "If you did not mean to use an alternation you can use '\\/' to escape the '/'. " <>
+        "Otherwise rephrase your expression or consider using a regular expression instead."
+    )
+  end
+
+  @doc false
+  def invalid_parameter_type_name_in_node(expression, %Token{start: start} = token) do
+    build(
+      start,
+      expression,
+      point_at_located(token),
+      "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'",
+      "Did you mean to use a regular expression?"
+    )
+  end
+
+  @doc """
+  Builds an error whose message points at a location in the expression.
+
+  `located` is anything with `start` and `end` fields (a token or an AST node).
+  """
+  def build_at(expression, located, problem, solution) do
+    build(located.start, expression, point_at_located(located), problem, solution)
+  end
+
+  defp build(index, expression, pointer, problem, solution) do
+    %__MODULE__{
+      message:
+        "This Cucumber Expression has a problem at column #{index + 1}:\n" <>
+          "\n" <>
+          expression <>
+          "\n" <>
+          pointer <>
+          "\n" <>
+          problem <>
+          ".\n" <>
+          solution
+    }
+  end
+
+  defp point_at(index), do: String.duplicate(" ", index) <> "^"
+
+  defp point_at_located(%{start: start, end: end_} = _located) do
+    pointer = point_at(start)
+
+    if start + 1 < end_ do
+      pointer <> String.duplicate("-", end_ - start - 2) <> "^"
+    else
+      pointer
+    end
+  end
+
+  defp codepoint_length(string), do: length(String.to_charlist(string))
+end
