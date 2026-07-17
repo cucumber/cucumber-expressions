@@ -1,0 +1,48 @@
+name: test-elixir
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+      - elixir
+      - renovate/**
+    paths:
+      - elixir/**
+      - testdata/**
+      - .github/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - elixir/**
+      - testdata/**
+      - .github/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - elixir: '1.15'
+            otp: '26'
+          - elixir: '1.18'
+            otp: '27'
+    defaults:
+      run:
+        working-directory: elixir
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24.1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+          version-type: loose
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix test
