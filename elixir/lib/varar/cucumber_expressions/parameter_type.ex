@@ -129,10 +129,15 @@ defmodule Varar.CucumberExpressions.ParameterType do
   defp regexp_source(source) when is_binary(source), do: {:ok, source}
 
   defp regexp_source(%Regex{} = regexp) do
-    if Regex.opts(regexp) in ["", "u"] do
+    if unicode_only_opts?(Regex.opts(regexp)) do
       {:ok, Regex.source(regexp)}
     else
       {:error, %Error{message: "ParameterType Regexps can't use flags"}}
     end
   end
+
+  # Regex.opts/1 returns an atom list on recent Elixir versions and a string
+  # of modifiers on older ones.
+  defp unicode_only_opts?(opts) when is_list(opts), do: opts -- [:unicode, :ucp] == []
+  defp unicode_only_opts?(opts) when is_binary(opts), do: opts in ["", "u"]
 end
