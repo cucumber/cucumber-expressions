@@ -44,4 +44,43 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistryTest do
 
     assert looked_up.name == "person"
   end
+
+  test "raises ambiguous exception when no parameter types are preferential" do
+    registry =
+      ParameterTypeRegistry.new()
+      |> ParameterTypeRegistry.add!(type("name", false))
+      |> ParameterTypeRegistry.add!(type("person", false))
+      |> ParameterTypeRegistry.add!(type("place", false))
+
+    error =
+      assert_raise Varar.CucumberExpressions.AmbiguousParameterTypeError, fn ->
+        ParameterTypeRegistry.lookup_by_regexp(
+          registry,
+          @capitalised_word,
+          "([A-Z]+\\w+) and ([A-Z]+\\w+)",
+          "Lisa and Bob"
+        )
+      end
+
+    assert Exception.message(error) ==
+             "Your Regular Expression /([A-Z]+\\w+) and ([A-Z]+\\w+)/\n" <>
+               "matches multiple parameter types with regexp /[A-Z]+\\w+/:\n" <>
+               "   {name}\n   {person}\n   {place}\n" <>
+               "\n" <>
+               "I couldn't decide which one to use. You have two options:\n" <>
+               "\n" <>
+               "1) Use a Cucumber Expression instead of a Regular Expression. Try one of these:\n" <>
+               "   {name} and {name}\n" <>
+               "   {name} and {person}\n" <>
+               "   {name} and {place}\n" <>
+               "   {person} and {name}\n" <>
+               "   {person} and {person}\n" <>
+               "   {person} and {place}\n" <>
+               "   {place} and {name}\n" <>
+               "   {place} and {person}\n" <>
+               "   {place} and {place}\n" <>
+               "\n" <>
+               "2) Make one of the parameter types preferential and continue to use a Regular Expression.\n" <>
+               "\n"
+  end
 end
