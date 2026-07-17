@@ -72,6 +72,66 @@ defmodule Varar.CucumberExpressions.Error do
     )
   end
 
+  @doc false
+  def optional_may_not_be_empty(expression, node) do
+    build_at(
+      expression,
+      node,
+      "An optional must contain some text",
+      "If you did not mean to use an optional you can use '\\(' to escape the '('"
+    )
+  end
+
+  @doc false
+  def parameter_is_not_allowed_in_optional(expression, node) do
+    build_at(
+      expression,
+      node,
+      "An optional may not contain a parameter type",
+      "If you did not mean to use an parameter type you can use '\\{' to escape the '{'"
+    )
+  end
+
+  @doc false
+  def optional_is_not_allowed_in_optional(expression, node) do
+    build_at(
+      expression,
+      node,
+      "An optional may not contain an other optional",
+      "If you did not mean to use an optional type you can use '\\(' to escape the '('. " <>
+        "For more complicated expressions consider using a regular expression instead."
+    )
+  end
+
+  @doc false
+  def alternative_may_not_be_empty(expression, node) do
+    build_at(
+      expression,
+      node,
+      "Alternative may not be empty",
+      "If you did not mean to use an alternative you can use '\\/' to escape the '/'"
+    )
+  end
+
+  @doc false
+  def alternative_may_not_exclusively_contain_optionals(expression, node) do
+    build_at(
+      expression,
+      node,
+      "An alternative may not exclusively contain optionals",
+      "If you did not mean to use an optional you can use '\\(' to escape the '('"
+    )
+  end
+
+  @doc false
+  def invalid_parameter_type_name(type_name) do
+    %__MODULE__{
+      message:
+        "Illegal character in parameter name {#{type_name}}. " <>
+          "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'"
+    }
+  end
+
   @doc """
   Builds an error whose message points at a location in the expression.
 
@@ -81,19 +141,27 @@ defmodule Varar.CucumberExpressions.Error do
     build(located.start, expression, point_at_located(located), problem, solution)
   end
 
+  @doc """
+  Formats the standard problem-pointer message used by all located errors.
+  """
+  def format_message(expression, located, problem, solution) do
+    format(located.start, expression, point_at_located(located), problem, solution)
+  end
+
   defp build(index, expression, pointer, problem, solution) do
-    %__MODULE__{
-      message:
-        "This Cucumber Expression has a problem at column #{index + 1}:\n" <>
-          "\n" <>
-          expression <>
-          "\n" <>
-          pointer <>
-          "\n" <>
-          problem <>
-          ".\n" <>
-          solution
-    }
+    %__MODULE__{message: format(index, expression, pointer, problem, solution)}
+  end
+
+  defp format(index, expression, pointer, problem, solution) do
+    "This Cucumber Expression has a problem at column #{index + 1}:\n" <>
+      "\n" <>
+      expression <>
+      "\n" <>
+      pointer <>
+      "\n" <>
+      problem <>
+      ".\n" <>
+      solution
   end
 
   defp point_at(index), do: String.duplicate(" ", index) <> "^"
