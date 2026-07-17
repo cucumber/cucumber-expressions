@@ -50,6 +50,9 @@ defmodule Varar.CucumberExpressions.TreeRegexp do
 
   defp walk([], _i, _source, [root], _group_starts, _escaping, _char_class), do: root
 
+  # A direct port of the upstream source walker; kept in one function for
+  # fidelity with the other language implementations.
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp walk([c | rest], i, source, stack, group_starts, escaping, char_class) do
     {stack, group_starts, char_class} =
       cond do

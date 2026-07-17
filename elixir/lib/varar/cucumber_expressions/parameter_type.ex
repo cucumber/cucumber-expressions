@@ -137,7 +137,9 @@ defmodule Varar.CucumberExpressions.ParameterType do
   end
 
   # Regex.opts/1 returns an atom list on recent Elixir versions and a string
-  # of modifiers on older ones.
+  # of modifiers on older ones; the string clause is unreachable on the
+  # version Dialyzer runs under.
+  @dialyzer {:no_match, unicode_only_opts?: 1}
   defp unicode_only_opts?(opts) when is_list(opts), do: opts -- [:unicode, :ucp] == []
   defp unicode_only_opts?(opts) when is_binary(opts), do: opts in ["", "u"]
 end

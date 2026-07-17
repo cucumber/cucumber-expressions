@@ -123,9 +123,7 @@ defmodule Varar.CucumberExpressions.Parser do
   # right-boundary := whitespace | { | $
   # alternative := optional | parameter | text
   defp parse_alternation(expression, tokens, current) do
-    if not looking_at_any(tokens, current - 1, [:start_of_line, :white_space, :end_parameter]) do
-      {:ok, 0, nil}
-    else
+    if looking_at_any(tokens, current - 1, [:start_of_line, :white_space, :end_parameter]) do
       parsers = [
         &parse_alternative_separator/3,
         &parse_optional/3,
@@ -141,23 +139,29 @@ defmodule Varar.CucumberExpressions.Parser do
                current,
                [:white_space, :end_of_line, :begin_parameter]
              ) do
-        if Enum.any?(sub_ast, &(&1.type == :alternative_node)) do
-          # Does not consume the right hand boundary token
-          start = elem(tokens, current).start
-          end_ = elem(tokens, current + consumed).start
-
-          node = %Node{
-            type: :alternation_node,
-            start: start,
-            end: end_,
-            nodes: split_alternatives(start, end_, sub_ast)
-          }
-
-          {:ok, consumed, node}
-        else
-          {:ok, 0, nil}
-        end
+        build_alternation(tokens, current, consumed, sub_ast)
       end
+    else
+      {:ok, 0, nil}
+    end
+  end
+
+  defp build_alternation(tokens, current, consumed, sub_ast) do
+    if Enum.any?(sub_ast, &(&1.type == :alternative_node)) do
+      # Does not consume the right hand boundary token
+      start = elem(tokens, current).start
+      end_ = elem(tokens, current + consumed).start
+
+      node = %Node{
+        type: :alternation_node,
+        start: start,
+        end: end_,
+        nodes: split_alternatives(start, end_, sub_ast)
+      }
+
+      {:ok, consumed, node}
+    else
+      {:ok, 0, nil}
     end
   end
 
@@ -173,25 +177,46 @@ defmodule Varar.CucumberExpressions.Parser do
   end
 
   defp parse_between(node_type, begin_type, end_type, parsers, expression, tokens, current) do
-    if not looking_at(tokens, current, begin_type) do
-      {:ok, 0, nil}
-    else
+    if looking_at(tokens, current, begin_type) do
       with {:ok, consumed, sub_ast} <-
              parse_tokens_until(expression, parsers, tokens, current + 1, [end_type, :end_of_line]) do
         sub_current = current + 1 + consumed
 
-        if not looking_at(tokens, sub_current, end_type) do
-          {:error,
-           Error.missing_end_token(expression, begin_type, end_type, elem(tokens, current))}
-        else
-          # Consumes the end token
-          start = elem(tokens, current).start
-          end_ = elem(tokens, sub_current).end
-
-          {:ok, sub_current + 1 - current,
-           %Node{type: node_type, start: start, end: end_, nodes: sub_ast}}
-        end
+        close_between(
+          node_type,
+          begin_type,
+          end_type,
+          expression,
+          tokens,
+          current,
+          sub_current,
+          sub_ast
+        )
       end
+    else
+      {:ok, 0, nil}
+    end
+  end
+
+  defp close_between(
+         node_type,
+         begin_type,
+         end_type,
+         expression,
+         tokens,
+         current,
+         sub_current,
+         sub_ast
+       ) do
+    if looking_at(tokens, sub_current, end_type) do
+      # Consumes the end token
+      start = elem(tokens, current).start
+      end_ = elem(tokens, sub_current).end
+
+      {:ok, sub_current + 1 - current,
+       %Node{type: node_type, start: start, end: end_, nodes: sub_ast}}
+    else
+      {:error, Error.missing_end_token(expression, begin_type, end_type, elem(tokens, current))}
     end
   end
 

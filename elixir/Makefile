@@ -1,6 +1,8 @@
 default: .deps
 	mix format --check-formatted
-	mix test
+	mix credo
+	mix dialyzer
+	mix test --cover
 .PHONY: default
 
 .deps: mix.exs
@@ -12,5 +14,5 @@ update-dependencies:
 .PHONY: update-dependencies
 
 clean:
-	rm -rf _build deps .deps
+	rm -rf _build deps doc cover .deps
 .PHONY: clean

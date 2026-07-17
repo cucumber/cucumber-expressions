@@ -17,7 +17,8 @@ defmodule Varar.CucumberExpressions.MixProject do
         "Cucumber Expressions - a simpler alternative to Regular Expressions. " <>
           "Elixir port maintained by Oselvar.",
       package: package(),
-      docs: docs()
+      docs: docs(),
+      test_coverage: [summary: [threshold: 85]]
     ]
   end
 
