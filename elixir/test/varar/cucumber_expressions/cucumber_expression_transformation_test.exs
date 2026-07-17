@@ -10,7 +10,7 @@ defmodule Varar.CucumberExpressions.CucumberExpressionTransformationTest do
       registry = ParameterTypeRegistry.new()
 
       assert {:ok, compiled} = CucumberExpression.compile(expression, registry)
-      assert Regex.source(compiled.regex) == expected
+      assert Regex.source(CucumberExpression.regex(compiled)) == expected
     end
   end
 end

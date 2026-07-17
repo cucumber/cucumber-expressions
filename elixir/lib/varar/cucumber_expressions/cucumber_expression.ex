@@ -7,19 +7,21 @@ defmodule Varar.CucumberExpressions.CucumberExpression do
   """
 
   alias Varar.CucumberExpressions.{
+    Argument,
     Error,
     Node,
     ParameterTypeRegistry,
     Parser,
+    TreeRegexp,
     UndefinedParameterTypeError
   }
 
-  @enforce_keys [:source, :regex, :parameter_types]
-  defstruct [:source, :regex, :parameter_types]
+  @enforce_keys [:source, :tree_regexp, :parameter_types]
+  defstruct [:source, :tree_regexp, :parameter_types]
 
   @type t :: %__MODULE__{
           source: String.t(),
-          regex: Regex.t(),
+          tree_regexp: TreeRegexp.t(),
           parameter_types: [Varar.CucumberExpressions.ParameterType.t()]
         }
 
@@ -33,7 +35,7 @@ defmodule Varar.CucumberExpressions.CucumberExpression do
       {:ok,
        %__MODULE__{
          source: expression,
-         regex: Regex.compile!(pattern, "u"),
+         tree_regexp: TreeRegexp.new!(pattern),
          parameter_types: parameter_types
        }}
     end
@@ -46,6 +48,20 @@ defmodule Varar.CucumberExpressions.CucumberExpression do
       {:error, error} -> raise error
     end
   end
+
+  @doc """
+  Matches `text` against the expression. Returns a list of
+  `Varar.CucumberExpressions.Argument`s (get each value with
+  `Argument.value/1`), or `nil` if the text does not match.
+  """
+  @spec match(t(), String.t()) :: [Argument.t()] | nil
+  def match(%__MODULE__{tree_regexp: tree_regexp, parameter_types: parameter_types}, text) do
+    Argument.build(tree_regexp, text, parameter_types)
+  end
+
+  @doc "The compiled `Regex` for this expression."
+  @spec regex(t()) :: Regex.t()
+  def regex(%__MODULE__{tree_regexp: tree_regexp}), do: tree_regexp.regex
 
   # Rewrites an AST node to a regex source string, accumulating the parameter
   # types referenced by the expression in match order.

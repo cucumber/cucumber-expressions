@@ -28,4 +28,21 @@ defmodule Varar.CucumberExpressions.Testdata do
       {Path.basename(path, ".yaml"), YamlElixir.read_from_file!(path)}
     end)
   end
+
+  @doc """
+  Formats a transformed argument value the way the matching fixtures encode
+  it, mirroring the Ruby spec: decimals and integers wider than 64 bits are
+  encoded as strings in the YAML.
+  """
+  def format_value(%Decimal{} = decimal), do: Decimal.to_string(decimal, :normal)
+
+  def format_value(value) when is_integer(value) do
+    if bit_length(value) > 64, do: Integer.to_string(value), else: value
+  end
+
+  def format_value(value), do: value
+
+  defp bit_length(value) when value < 0, do: bit_length(-value - 1)
+  defp bit_length(0), do: 0
+  defp bit_length(value), do: length(Integer.digits(value, 2))
 end

@@ -99,7 +99,9 @@ defmodule Varar.CucumberExpressions.ParameterType do
   """
   def transform(%__MODULE__{transformer: transformer}, group_values) do
     {:arity, arity} = Function.info(transformer, :arity)
-    apply(transformer, Enum.take(group_values, arity))
+    values = group_values || []
+    padded = values ++ List.duplicate(nil, max(arity - length(values), 0))
+    apply(transformer, Enum.take(padded, arity))
   end
 
   @doc """

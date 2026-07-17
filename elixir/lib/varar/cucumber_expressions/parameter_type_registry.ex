@@ -32,7 +32,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "int",
         regexps: @integer_regexps,
         type: :integer,
-        transformer: &String.to_integer/1,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: true,
         prefer_for_regexp_match: true
       ],
@@ -70,7 +70,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "bigdecimal",
         regexps: @float_regexp,
         type: :decimal,
-        transformer: &Decimal.new/1,
+        transformer: &__MODULE__.to_decimal/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -78,7 +78,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "biginteger",
         regexps: @integer_regexps,
         type: :integer,
-        transformer: &String.to_integer/1,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -86,7 +86,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "byte",
         regexps: @integer_regexps,
         type: :integer,
-        transformer: &String.to_integer/1,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -94,7 +94,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "short",
         regexps: @integer_regexps,
         type: :integer,
-        transformer: &String.to_integer/1,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -102,7 +102,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
         name: "long",
         regexps: @integer_regexps,
         type: :integer,
-        transformer: &String.to_integer/1,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -129,6 +129,38 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
   @spec parameter_types(t()) :: [ParameterType.t()]
   def parameter_types(%__MODULE__{by_name: by_name, order: order}) do
     Enum.map(order, &Map.fetch!(by_name, &1))
+  end
+
+  @doc """
+  Looks up the parameter type for a Regular Expression capture group's source.
+
+  Returns `nil` when no type uses that regexp. Raises
+  `Varar.CucumberExpressions.AmbiguousParameterTypeError` when several types
+  use it and none is preferential.
+  """
+  def lookup_by_regexp(%__MODULE__{} = registry, parameter_type_regexp, expression_regexp, text) do
+    case Map.get(registry.by_regexp, parameter_type_regexp, []) do
+      [] ->
+        nil
+
+      [first | rest] = parameter_types ->
+        if rest != [] and not first.prefer_for_regexp_match do
+          # We don't do this check on insertion because we only want to restrict
+          # ambiguity when we look up by regexp. Users of CucumberExpression
+          # should not be restricted.
+          generated_expressions =
+            Varar.CucumberExpressions.Generator.generate_expressions(registry, text)
+
+          raise Varar.CucumberExpressions.AmbiguousParameterTypeError.new(
+                  parameter_type_regexp,
+                  expression_regexp,
+                  parameter_types,
+                  generated_expressions
+                )
+        end
+
+        first
+    end
   end
 
   @doc """
@@ -193,6 +225,12 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
   end
 
   @doc false
+  def to_integer(nil), do: nil
+  def to_integer(string), do: String.to_integer(string)
+
+  @doc false
+  def to_float(nil), do: nil
+
   def to_float(string) do
     normalized = Regex.replace(~r/^([+-]?)\./, string, "\\g{1}0.")
 
@@ -200,6 +238,41 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
       {float, _} -> float
       :error -> 0.0
     end
+  end
+
+  @doc false
+  def to_decimal(nil), do: nil
+
+  # Builds the %Decimal{} directly: Decimal.new/1 caps the number of digits it
+  # parses (a DoS guard added in decimal 3.x), but {bigdecimal} must accept
+  # arbitrary precision.
+  def to_decimal(string) do
+    {sign, rest} =
+      case string do
+        "-" <> rest -> {-1, rest}
+        "+" <> rest -> {1, rest}
+        rest -> {1, rest}
+      end
+
+    {mantissa, exponent} =
+      case String.split(rest, ~r/[eE]/, parts: 2) do
+        [mantissa] -> {mantissa, 0}
+        [mantissa, exponent] -> {mantissa, String.to_integer(exponent)}
+      end
+
+    {int_part, frac_part} =
+      case String.split(mantissa, ".", parts: 2) do
+        [int_part] -> {int_part, ""}
+        [int_part, frac_part] -> {int_part, frac_part}
+      end
+
+    digits = int_part <> frac_part
+
+    %Decimal{
+      sign: sign,
+      coef: String.to_integer(if digits == "", do: "0", else: digits),
+      exp: exponent - String.length(frac_part)
+    }
   end
 
   @doc false
