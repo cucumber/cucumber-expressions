@@ -4,18 +4,40 @@ defmodule Varar.CucumberExpressions.Error do
   is invalid.
 
   Messages are byte-for-byte identical to the other language ports — they are
-  part of the conformance surface verified by the shared testdata.
+  part of the conformance surface verified by the shared testdata. For
+  programmatic handling, match on `type` (a stable atom) rather than the
+  message string: `{:error, %Error{type: :optional_may_not_be_empty}}`.
   """
 
-  defexception [:message]
+  defexception [:message, :type]
 
   alias Varar.CucumberExpressions.Token
 
-  @type t :: %__MODULE__{message: String.t()}
+  @typedoc "A stable identifier for the kind of problem, safe to pattern-match on."
+  @type error_type ::
+          :cant_escape
+          | :end_of_line_cannot_be_escaped
+          | :missing_end_token
+          | :alternation_not_allowed_in_optional
+          | :invalid_parameter_type_name
+          | :optional_may_not_be_empty
+          | :parameter_not_allowed_in_optional
+          | :optional_not_allowed_in_optional
+          | :alternative_may_not_be_empty
+          | :alternative_may_not_exclusively_contain_optionals
+          | :parameter_type_regexps_cannot_use_flags
+          | :duplicate_parameter_type_name
+          | :anonymous_parameter_type_already_defined
+          | :duplicate_preferential_parameter_type
+          | :could_not_parse
+          | :no_eligible_parsers
+
+  @type t :: %__MODULE__{message: String.t(), type: error_type() | nil}
 
   @doc false
   def cant_escape(expression, index) do
     build(
+      :cant_escape,
       index,
       expression,
       point_at(index),
@@ -29,6 +51,7 @@ defmodule Varar.CucumberExpressions.Error do
     index = codepoint_length(expression) - 1
 
     build(
+      :end_of_line_cannot_be_escaped,
       index,
       expression,
       point_at(index),
@@ -40,6 +63,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def missing_end_token(expression, begin_type, end_type, %Token{start: start} = current) do
     build(
+      :missing_end_token,
       start,
       expression,
       point_at_located(current),
@@ -52,6 +76,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def alternation_not_allowed_in_optional(expression, %Token{start: start} = current) do
     build(
+      :alternation_not_allowed_in_optional,
       start,
       expression,
       point_at_located(current),
@@ -64,6 +89,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def invalid_parameter_type_name_in_node(expression, %Token{start: start} = token) do
     build(
+      :invalid_parameter_type_name,
       start,
       expression,
       point_at_located(token),
@@ -75,6 +101,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def optional_may_not_be_empty(expression, node) do
     build_at(
+      :optional_may_not_be_empty,
       expression,
       node,
       "An optional must contain some text",
@@ -85,6 +112,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def parameter_is_not_allowed_in_optional(expression, node) do
     build_at(
+      :parameter_not_allowed_in_optional,
       expression,
       node,
       "An optional may not contain a parameter type",
@@ -95,6 +123,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def optional_is_not_allowed_in_optional(expression, node) do
     build_at(
+      :optional_not_allowed_in_optional,
       expression,
       node,
       "An optional may not contain an other optional",
@@ -106,6 +135,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def alternative_may_not_be_empty(expression, node) do
     build_at(
+      :alternative_may_not_be_empty,
       expression,
       node,
       "Alternative may not be empty",
@@ -116,6 +146,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def alternative_may_not_exclusively_contain_optionals(expression, node) do
     build_at(
+      :alternative_may_not_exclusively_contain_optionals,
       expression,
       node,
       "An alternative may not exclusively contain optionals",
@@ -126,6 +157,7 @@ defmodule Varar.CucumberExpressions.Error do
   @doc false
   def invalid_parameter_type_name(type_name) do
     %__MODULE__{
+      type: :invalid_parameter_type_name,
       message:
         "Illegal character in parameter name {#{type_name}}. " <>
           "Parameter names may not contain '{', '}', '(', ')', '\\' or '/'"
@@ -137,8 +169,8 @@ defmodule Varar.CucumberExpressions.Error do
 
   `located` is anything with `start` and `end` fields (a token or an AST node).
   """
-  def build_at(expression, located, problem, solution) do
-    build(located.start, expression, point_at_located(located), problem, solution)
+  def build_at(type, expression, located, problem, solution) do
+    build(type, located.start, expression, point_at_located(located), problem, solution)
   end
 
   @doc """
@@ -148,8 +180,8 @@ defmodule Varar.CucumberExpressions.Error do
     format(located.start, expression, point_at_located(located), problem, solution)
   end
 
-  defp build(index, expression, pointer, problem, solution) do
-    %__MODULE__{message: format(index, expression, pointer, problem, solution)}
+  defp build(type, index, expression, pointer, problem, solution) do
+    %__MODULE__{type: type, message: format(index, expression, pointer, problem, solution)}
   end
 
   defp format(index, expression, pointer, problem, solution) do

@@ -24,7 +24,7 @@ defmodule Varar.CucumberExpressions.Parser do
 
         {:ok, _, _} ->
           # Can't happen if configured properly
-          {:error, %Error{message: "Could not parse" <> expression}}
+          {:error, %Error{type: :could_not_parse, message: "Could not parse" <> expression}}
       end
     end
   end
@@ -239,7 +239,7 @@ defmodule Varar.CucumberExpressions.Parser do
 
         {:ok, 0, _} ->
           # If configured correctly this will never happen. Keep to avoid infinite loops.
-          {:error, %Error{message: "No eligible parsers"}}
+          {:error, %Error{type: :no_eligible_parsers, message: "No eligible parsers"}}
       end
     end
   end
