@@ -44,7 +44,7 @@ defmodule Varar.CucumberExpressions.Generator do
           |> Enum.uniq()
           |> Enum.sort(&ParameterType.compare/2)
 
-        combinations = combinations ++ [parameter_types]
+        combinations = [parameter_types | combinations]
 
         template =
           template <> escape(binary_part(text, pos, best.match.start - pos)) <> "{%s}"
@@ -67,7 +67,9 @@ defmodule Varar.CucumberExpressions.Generator do
         binary_part(text, pos, byte_size(text) - pos)
       end
 
-    {template <> escape(tail), combinations}
+    # `combinations` is accumulated by prepending, so reverse it back to
+    # left-to-right template order here.
+    {template <> escape(tail), Enum.reverse(combinations)}
   end
 
   defp create_matchers(registry, text) do

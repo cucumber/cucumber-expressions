@@ -118,13 +118,18 @@ defmodule Varar.CucumberExpressions.ParameterType do
   end
 
   defp regexp_sources(regexps) do
-    Enum.reduce_while(regexps, {:ok, []}, fn regexp, {:ok, acc} ->
+    regexps
+    |> Enum.reduce_while({:ok, []}, fn regexp, {:ok, acc} ->
       case regexp_source(regexp) do
-        {:ok, source} -> {:cont, {:ok, acc ++ [source]}}
+        {:ok, source} -> {:cont, {:ok, [source | acc]}}
         {:error, _} = error -> {:halt, error}
       end
     end)
+    |> reverse_sources()
   end
+
+  defp reverse_sources({:ok, sources}), do: {:ok, Enum.reverse(sources)}
+  defp reverse_sources({:error, _} = error), do: error
 
   defp regexp_source(source) when is_binary(source), do: {:ok, source}
 
@@ -132,7 +137,11 @@ defmodule Varar.CucumberExpressions.ParameterType do
     if unicode_only_opts?(Regex.opts(regexp)) do
       {:ok, Regex.source(regexp)}
     else
-      {:error, %Error{message: "ParameterType Regexps can't use flags"}}
+      {:error,
+       %Error{
+         type: :parameter_type_regexps_cannot_use_flags,
+         message: "ParameterType Regexps can't use flags"
+       }}
     end
   end
 

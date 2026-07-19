@@ -128,7 +128,9 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
   @doc "All registered parameter types, in registration order."
   @spec parameter_types(t()) :: [ParameterType.t()]
   def parameter_types(%__MODULE__{by_name: by_name, order: order}) do
-    Enum.map(order, &Map.fetch!(by_name, &1))
+    # `order` holds names in reverse registration order (names are prepended on
+    # add), so reverse it back to registration order here.
+    order |> Enum.reverse() |> Enum.map(&Map.fetch!(by_name, &1))
   end
 
   @doc """
@@ -191,14 +193,22 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
          %{
            registry
            | by_name: Map.put(registry.by_name, name, parameter_type),
-             order: registry.order ++ [name]
+             order: [name | registry.order]
          }}
 
       name == "" ->
-        {:error, %Error{message: "The anonymous parameter type has already been defined"}}
+        {:error,
+         %Error{
+           type: :anonymous_parameter_type_already_defined,
+           message: "The anonymous parameter type has already been defined"
+         }}
 
       true ->
-        {:error, %Error{message: "There is already a parameter with name #{name}"}}
+        {:error,
+         %Error{
+           type: :duplicate_parameter_type_name,
+           message: "There is already a parameter with name #{name}"
+         }}
     end
   end
 
@@ -212,6 +222,7 @@ defmodule Varar.CucumberExpressions.ParameterTypeRegistry do
           {:halt,
            {:error,
             %Error{
+              type: :duplicate_preferential_parameter_type,
               message:
                 "There can only be one preferential parameter type per regexp. " <>
                   "The regexp /#{regexp}/ is used for two: {#{first.name}} and {#{parameter_type.name}}"
