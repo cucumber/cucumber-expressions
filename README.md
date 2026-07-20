@@ -4,12 +4,9 @@
 [![test-python](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yml)
 [![test-ruby](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yml)
 [![test-dotnet](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yml)
-[![test-elixir](https://github.com/oselvar/cucumber-expressions/actions/workflows/test-elixir.yml/badge.svg)](https://github.com/oselvar/cucumber-expressions/actions/workflows/test-elixir.yml)
+[![test-elixir](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-elixir.yml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-elixir.yml)
 
 # Cucumber Expressions
-
-> **This fork** ([oselvar/cucumber-expressions](https://github.com/oselvar/cucumber-expressions))
-> adds an [Elixir port](elixir/) maintained by [Oselvar](https://github.com/oselvar).
 
 Cucumber Expressions is an alternative to [Regular Expressions](https://en.wikipedia.org/wiki/Regular_expression)
 with a more intuitive syntax.

@@ -3,8 +3,8 @@ defmodule Cucumber.CucumberExpressions do
   Cucumber Expressions — a simpler alternative to Regular Expressions.
 
   This is the Elixir port of [Cucumber Expressions](https://github.com/cucumber/cucumber-expressions),
-  maintained by [Oselvar](https://github.com/oselvar) and verified against the
-  upstream language-neutral `testdata` conformance corpus.
+  verified against the language-neutral `testdata` conformance corpus shared by
+  all the ports.
 
       alias Cucumber.CucumberExpressions, as: CE
 

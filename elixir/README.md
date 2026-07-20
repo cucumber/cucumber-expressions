@@ -2,11 +2,8 @@
 
 [The main docs are here](https://github.com/cucumber/cucumber-expressions#readme).
 
-This is the Elixir port of Cucumber Expressions, maintained by
-[Oselvar](https://github.com/oselvar) in a fork of the upstream
-[cucumber/cucumber-expressions](https://github.com/cucumber/cucumber-expressions)
-repository. It is verified against the same language-neutral `testdata`
-conformance corpus as the other ports.
+This is the Elixir port of Cucumber Expressions. It is verified against the
+same language-neutral `testdata` conformance corpus as the other ports.
 
 ## Installation
 

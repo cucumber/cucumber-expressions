@@ -2,7 +2,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
   use Mix.Project
 
   @version "20.0.0"
-  @source_url "https://github.com/oselvar/cucumber-expressions"
+  @source_url "https://github.com/cucumber/cucumber-expressions"
 
   def project do
     [
@@ -13,9 +13,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       name: "Cucumber Expressions",
-      description:
-        "Cucumber Expressions - a simpler alternative to Regular Expressions. " <>
-          "Elixir port maintained by Oselvar.",
+      description: "Cucumber Expressions - a simpler alternative to Regular Expressions.",
       package: package(),
       docs: docs(),
       # Testdata is a test-support helper, not library code.
@@ -48,10 +46,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
   defp package do
     [
       licenses: ["MIT"],
-      links: %{
-        "GitHub" => @source_url,
-        "Upstream" => "https://github.com/cucumber/cucumber-expressions"
-      },
+      links: %{"GitHub" => @source_url},
       files: ["lib", "mix.exs", "README.md", "LICENSE"]
     ]
   end
