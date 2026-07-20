@@ -18,7 +18,7 @@ public static class ParameterTypeConstants
     public const string DoubleParameterName = "double";
     private const string FloatPartSign = "[-+]?";
     private const string FloatPartMustContainNumber = "(?=.*\\d.*)";
-    private const string FloatPartScientificNumber = "(?:\\d+[{exponent}]-?\\d+)?";
+    private const string FloatPartScientificNumber = "(?:\\d+[{exponent}][+-]?\\d+)?";
     private const string FloatPartDecimalFraction = "(?:[{decimal}](?=\\d.*))?\\d*";
     private const string FloatPartInteger = "(?:\\d+(?:[{group}]?\\d+)*)*";
     public const string FloatParameterRegexTemplate = FloatPartMustContainNumber + FloatPartSign + FloatPartInteger + FloatPartDecimalFraction + FloatPartScientificNumber;
