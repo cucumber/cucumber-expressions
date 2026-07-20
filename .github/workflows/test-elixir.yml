@@ -61,4 +61,11 @@ jobs:
         if: ${{ matrix.lint }}
       - run: mix dialyzer
         if: ${{ matrix.lint }}
+      # The full suite runs on every entry; the coverage threshold is only
+      # enforced alongside the other checks. :cover attributes lines
+      # differently on older OTP releases, reporting ~98% for source that is
+      # 100% covered on OTP 27+, so the gate is not portable across the matrix.
       - run: mix test --cover
+        if: ${{ matrix.lint }}
+      - run: mix test
+        if: ${{ !matrix.lint }}
