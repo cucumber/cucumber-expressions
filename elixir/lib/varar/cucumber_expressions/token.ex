@@ -92,7 +92,7 @@ defmodule Varar.CucumberExpressions.Token do
   def purpose(:begin_optional), do: "optional text"
   def purpose(:end_optional), do: "optional text"
   def purpose(:begin_parameter), do: "a parameter"
-  def purpose(:end_parameter), do: "optional text"
+  def purpose(:end_parameter), do: "a parameter"
   def purpose(:alternation), do: "alternation"
   def purpose(_), do: ""
 end
