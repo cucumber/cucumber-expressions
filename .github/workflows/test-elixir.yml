@@ -57,7 +57,7 @@ jobs:
       - run: mix deps.get
       - run: mix compile --warnings-as-errors
       - run: mix format --check-formatted
-      - run: mix credo
+      - run: mix credo --strict
         if: ${{ matrix.lint }}
       - run: mix dialyzer
         if: ${{ matrix.lint }}
@@ -65,7 +65,10 @@ jobs:
       # enforced alongside the other checks. :cover attributes lines
       # differently on older OTP releases, reporting ~98% for source that is
       # 100% covered on OTP 27+, so the gate is not portable across the matrix.
-      - run: mix test --cover
+      - run: mix test --warnings-as-errors --cover
         if: ${{ matrix.lint }}
-      - run: mix test
+      - run: mix test --warnings-as-errors
         if: ${{ !matrix.lint }}
+      # ex_doc warns on broken @doc/@moduledoc references.
+      - run: mix docs
+        if: ${{ matrix.lint }}

@@ -8,7 +8,12 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
   `add/2`, which returns a new registry — thread the value through your code.
   """
 
-  alias Cucumber.CucumberExpressions.{Error, ParameterType}
+  alias Cucumber.CucumberExpressions.{
+    AmbiguousParameterTypeError,
+    CucumberExpressionGenerator,
+    Error,
+    ParameterType
+  }
 
   defstruct by_name: %{}, by_regexp: %{}, order: []
 
@@ -21,7 +26,7 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
   @integer_regexps ["-?\\d+", "\\d+"]
   @float_regexp "(?=.*\\d.*)[-+]?\\d*(?:\\.(?=\\d.*))?\\d*(?:\\d+[E][-+]?\\d+)?"
   @word_regexp "[^\\s]+"
-  @string_regexp "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"|'([^'\\\\]*(\\\\.[^'\\\\]*)*)'"
+  @string_regexp ~S<"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'>
   @anonymous_regexp ".*"
 
   @doc "Creates a registry containing the built-in parameter types."
@@ -151,12 +156,9 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
           # ambiguity when we look up by regexp. Users of CucumberExpression
           # should not be restricted.
           generated_expressions =
-            Cucumber.CucumberExpressions.CucumberExpressionGenerator.generate_expressions(
-              registry,
-              text
-            )
+            CucumberExpressionGenerator.generate_expressions(registry, text)
 
-          raise Cucumber.CucumberExpressions.AmbiguousParameterTypeError.new(
+          raise AmbiguousParameterTypeError.new(
                   parameter_type_regexp,
                   expression_regexp,
                   parameter_types,

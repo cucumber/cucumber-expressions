@@ -5,11 +5,11 @@ defmodule Cucumber.CucumberExpressions.BangFunctionsTest do
 
   alias Cucumber.CucumberExpressions.{
     CucumberExpression,
+    CucumberExpressionParser,
+    CucumberExpressionTokenizer,
     Error,
     ParameterType,
     ParameterTypeRegistry,
-    CucumberExpressionParser,
-    CucumberExpressionTokenizer,
     UndefinedParameterTypeError
   }
 

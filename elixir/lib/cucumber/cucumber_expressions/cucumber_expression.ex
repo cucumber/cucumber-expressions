@@ -8,10 +8,10 @@ defmodule Cucumber.CucumberExpressions.CucumberExpression do
 
   alias Cucumber.CucumberExpressions.{
     Argument,
+    CucumberExpressionParser,
     Error,
     Node,
     ParameterTypeRegistry,
-    CucumberExpressionParser,
     TreeRegexp,
     UndefinedParameterTypeError
   }

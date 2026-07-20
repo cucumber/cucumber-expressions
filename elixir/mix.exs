@@ -12,6 +12,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
+      dialyzer: [flags: [:unmatched_returns, :error_handling, :underspecs]],
       name: "Cucumber Expressions",
       description: "Cucumber Expressions - a simpler alternative to Regular Expressions.",
       package: package(),

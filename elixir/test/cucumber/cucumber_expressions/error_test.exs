@@ -1,8 +1,8 @@
 defmodule Cucumber.CucumberExpressions.ErrorTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Error, ParameterType, ParameterTypeRegistry}
   alias Cucumber.CucumberExpressions.CucumberExpression, as: CE
+  alias Cucumber.CucumberExpressions.{Error, ParameterType, ParameterTypeRegistry}
 
   # These assert on the structured `type` atom, which lets Elixir callers
   # pattern-match on the kind of problem without depending on the (conformance

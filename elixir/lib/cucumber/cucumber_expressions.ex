@@ -6,15 +6,11 @@ defmodule Cucumber.CucumberExpressions do
   verified against the language-neutral `testdata` conformance corpus shared by
   all the ports.
 
-      alias Cucumber.CucumberExpressions, as: CE
-
-      registry = CE.ParameterTypeRegistry.new()
-      {:ok, expression} = CE.compile("I have {int} cuke(s)", registry)
-
-      expression
-      |> CE.Expression.match("I have 7 cukes")
-      |> Enum.map(&CE.Argument.value/1)
-      #=> [7]
+      iex> alias Cucumber.CucumberExpressions, as: CE
+      iex> registry = CE.ParameterTypeRegistry.new()
+      iex> {:ok, expression} = CE.compile("I have {int} cuke(s)", registry)
+      iex> expression |> CE.Expression.match("I have 7 cukes") |> Enum.map(&CE.Argument.value/1)
+      [7]
 
   `compile/2` creates a `CucumberExpression` from a string and a
   `RegularExpression` from a `Regex` — the same dispatch Cucumber applies to

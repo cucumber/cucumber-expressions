@@ -1,8 +1,9 @@
 default: .deps
 	mix format --check-formatted
-	mix credo
+	mix credo --strict
 	mix dialyzer
-	mix test --cover
+	mix test --warnings-as-errors --cover
+	mix docs
 .PHONY: default
 
 .deps: mix.exs

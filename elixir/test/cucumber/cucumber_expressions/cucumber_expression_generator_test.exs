@@ -3,8 +3,8 @@ defmodule Cucumber.CucumberExpressions.CucumberExpressionGeneratorTest do
 
   alias Cucumber.CucumberExpressions.{
     CucumberExpression,
-    GeneratedExpression,
     CucumberExpressionGenerator,
+    GeneratedExpression,
     ParameterType,
     ParameterTypeRegistry
   }

@@ -1,7 +1,7 @@
 defmodule Cucumber.CucumberExpressions.CucumberExpressionParserTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Node, CucumberExpressionParser, Testdata}
+  alias Cucumber.CucumberExpressions.{CucumberExpressionParser, Node, Testdata}
 
   for {name, fixture} <- Testdata.load("cucumber-expression/parser") do
     @fixture fixture

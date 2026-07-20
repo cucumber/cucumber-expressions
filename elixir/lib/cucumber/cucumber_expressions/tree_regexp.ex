@@ -105,6 +105,7 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
   # (?:X), (?idmsuxU-idmsuxU), (?idmsux-idmsux:X), (?=X), (?!X), (?>X)
   defp non_capturing_group?(_after_question), do: true
 
+  @spec raise_named_capture_group() :: no_return()
   defp raise_named_capture_group do
     raise Error,
       message:
