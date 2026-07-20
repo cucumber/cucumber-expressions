@@ -13,12 +13,12 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
     TreeRegexp
   }
 
-  @enforce_keys [:tree_regexp, :registry]
-  defstruct [:tree_regexp, :registry]
+  @enforce_keys [:tree_regexp, :parameter_type_registry]
+  defstruct [:tree_regexp, :parameter_type_registry]
 
   @type t :: %__MODULE__{
           tree_regexp: TreeRegexp.t(),
-          registry: ParameterTypeRegistry.t()
+          parameter_type_registry: ParameterTypeRegistry.t()
         }
 
   @spec compile(Regex.t() | String.t(), ParameterTypeRegistry.t()) ::
@@ -35,7 +35,7 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
 
   @spec compile!(Regex.t() | String.t(), ParameterTypeRegistry.t()) :: t()
   def compile!(regexp, %ParameterTypeRegistry{} = registry) do
-    %__MODULE__{tree_regexp: TreeRegexp.new!(regexp), registry: registry}
+    %__MODULE__{tree_regexp: TreeRegexp.new!(regexp), parameter_type_registry: registry}
   end
 
   @doc """
@@ -45,13 +45,13 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
   regexp is used by several parameter types and none is preferential.
   """
   @spec match(t(), String.t()) :: [Argument.t()] | nil
-  def match(%__MODULE__{tree_regexp: tree_regexp, registry: registry}, text) do
+  def match(%__MODULE__{tree_regexp: tree_regexp, parameter_type_registry: registry}, text) do
     parameter_types =
       Enum.map(tree_regexp.group_builder.children, fn group_builder ->
         ParameterTypeRegistry.lookup_by_regexp(
           registry,
           group_builder.source,
-          Regex.source(tree_regexp.regex),
+          Regex.source(tree_regexp.regexp),
           text
         ) ||
           ParameterType.new!(
@@ -67,10 +67,10 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
   end
 
   @doc "The underlying `Regex`."
-  @spec regex(t()) :: Regex.t()
-  def regex(%__MODULE__{tree_regexp: tree_regexp}), do: tree_regexp.regex
+  @spec regexp(t()) :: Regex.t()
+  def regexp(%__MODULE__{tree_regexp: tree_regexp}), do: tree_regexp.regexp
 
   @doc "The regexp source string."
   @spec source(t()) :: String.t()
-  def source(%__MODULE__{tree_regexp: tree_regexp}), do: Regex.source(tree_regexp.regex)
+  def source(%__MODULE__{tree_regexp: tree_regexp}), do: Regex.source(tree_regexp.regexp)
 end

@@ -8,8 +8,8 @@ defmodule Cucumber.CucumberExpressions.BangFunctionsTest do
     Error,
     ParameterType,
     ParameterTypeRegistry,
-    Parser,
-    Tokenizer,
+    CucumberExpressionParser,
+    CucumberExpressionTokenizer,
     UndefinedParameterTypeError
   }
 
@@ -33,22 +33,22 @@ defmodule Cucumber.CucumberExpressions.BangFunctionsTest do
     end
   end
 
-  test "Tokenizer.tokenize!/1 raises what tokenize/1 returns" do
-    assert {:error, %Error{}} = Tokenizer.tokenize("\\")
-    assert_raise Error, fn -> Tokenizer.tokenize!("\\") end
+  test "CucumberExpressionTokenizer.tokenize!/1 raises what tokenize/1 returns" do
+    assert {:error, %Error{}} = CucumberExpressionTokenizer.tokenize("\\")
+    assert_raise Error, fn -> CucumberExpressionTokenizer.tokenize!("\\") end
   end
 
-  test "Tokenizer.tokenize!/1 returns tokens when there is no error" do
-    assert [_ | _] = Tokenizer.tokenize!("three blind mice")
+  test "CucumberExpressionTokenizer.tokenize!/1 returns tokens when there is no error" do
+    assert [_ | _] = CucumberExpressionTokenizer.tokenize!("three blind mice")
   end
 
-  test "Parser.parse!/1 raises what parse/1 returns" do
-    assert {:error, %Error{}} = Parser.parse("(unclosed")
-    assert_raise Error, fn -> Parser.parse!("(unclosed") end
+  test "CucumberExpressionParser.parse!/1 raises what parse/1 returns" do
+    assert {:error, %Error{}} = CucumberExpressionParser.parse("(unclosed")
+    assert_raise Error, fn -> CucumberExpressionParser.parse!("(unclosed") end
   end
 
-  test "Parser.parse!/1 returns the AST when there is no error" do
-    assert %{type: :expression_node} = Parser.parse!("three blind mice")
+  test "CucumberExpressionParser.parse!/1 returns the AST when there is no error" do
+    assert %{type: :expression_node} = CucumberExpressionParser.parse!("three blind mice")
   end
 
   test "ParameterType.new!/1 raises what new/1 returns" do
@@ -62,7 +62,10 @@ defmodule Cucumber.CucumberExpressions.BangFunctionsTest do
   test "ParameterTypeRegistry.add!/2 raises what add/2 returns" do
     duplicate = ParameterType.new!(name: "int", regexps: "\\d+")
 
-    assert {:error, %Error{}} = ParameterTypeRegistry.add(registry(), duplicate)
-    assert_raise Error, fn -> ParameterTypeRegistry.add!(registry(), duplicate) end
+    assert {:error, %Error{}} = ParameterTypeRegistry.define_parameter_type(registry(), duplicate)
+
+    assert_raise Error, fn ->
+      ParameterTypeRegistry.define_parameter_type!(registry(), duplicate)
+    end
   end
 end

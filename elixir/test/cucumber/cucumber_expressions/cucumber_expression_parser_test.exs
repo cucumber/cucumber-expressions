@@ -1,20 +1,20 @@
-defmodule Cucumber.CucumberExpressions.ParserTest do
+defmodule Cucumber.CucumberExpressions.CucumberExpressionParserTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Node, Parser, Testdata}
+  alias Cucumber.CucumberExpressions.{Node, CucumberExpressionParser, Testdata}
 
   for {name, fixture} <- Testdata.load("cucumber-expression/parser") do
     @fixture fixture
     if Map.has_key?(fixture, "exception") do
       test "rejects #{name}" do
         %{"expression" => expression, "exception" => expected} = @fixture
-        assert {:error, error} = Parser.parse(expression)
+        assert {:error, error} = CucumberExpressionParser.parse(expression)
         assert Exception.message(error) == expected
       end
     else
       test "parses #{name}" do
         %{"expression" => expression, "expected_ast" => expected} = @fixture
-        assert {:ok, ast} = Parser.parse(expression)
+        assert {:ok, ast} = CucumberExpressionParser.parse(expression)
         assert ast == node_from_map(expected)
       end
     end

@@ -5,27 +5,27 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   # the generator. Positions are byte offsets into the text; `advance_to/2`
   # only probes codepoint boundaries.
 
-  defstruct [:parameter_type, :regex, :text, :offsets, :match]
+  defstruct [:parameter_type, :regexp, :text, :offsets, :match]
 
   @word_boundary ~r/\p{Z}|\p{P}|\p{S}/u
 
-  def new(parameter_type, regex, text, position) do
+  def new(parameter_type, regexp, text, match_position) do
     %__MODULE__{
       parameter_type: parameter_type,
-      regex: regex,
+      regexp: regexp,
       text: text,
       offsets: codepoint_offsets(text)
     }
-    |> probe(position)
+    |> probe(match_position)
   end
 
-  # Re-probes an existing matcher at `position`, reusing its cached codepoint
-  # offsets rather than re-scanning the text.
-  defp probe(%__MODULE__{regex: regex, text: text} = matcher, position) do
+  # Re-probes an existing matcher at `match_position`, reusing its cached
+  # codepoint offsets rather than re-scanning the text.
+  defp probe(%__MODULE__{regexp: regexp, text: text} = matcher, match_position) do
     match =
-      with true <- position <= byte_size(text),
+      with true <- match_position <= byte_size(text),
            [{match_start, match_length}, {group_start, group_length} | _] <-
-             Regex.run(regex, text, offset: position, return: :index) do
+             Regex.run(regexp, text, offset: match_position, return: :index) do
         %{
           start: match_start,
           length: match_length,
@@ -42,12 +42,13 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   def find?(%__MODULE__{match: %{group: group}}), do: group != ""
 
   @doc """
-  Returns the first matcher at or after `position` whose match is a full word,
+  Returns the first matcher at or after `new_match_position` whose match is a
+  full word,
   or a matcher positioned at the end of the text.
   """
-  def advance_to(%__MODULE__{text: text, offsets: offsets} = matcher, position) do
+  def advance_to(%__MODULE__{text: text, offsets: offsets} = matcher, new_match_position) do
     offsets
-    |> Enum.drop_while(&(&1 < position))
+    |> Enum.drop_while(&(&1 < new_match_position))
     |> Enum.find_value(fn offset ->
       candidate = probe(matcher, offset)
       if find?(candidate) and full_word?(candidate), do: candidate

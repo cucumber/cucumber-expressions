@@ -29,7 +29,7 @@ defmodule Cucumber.CucumberExpressions.Argument do
         if length(arg_groups) != length(parameter_types) do
           raise Error,
             message:
-              "Expression /#{Regex.source(tree_regexp.regex)}/ has #{length(arg_groups)} " <>
+              "Expression /#{Regex.source(tree_regexp.regexp)}/ has #{length(arg_groups)} " <>
                 "capture groups (#{inspect(Enum.map(arg_groups, & &1.value))}), " <>
                 "but there were #{length(parameter_types)} parameter types " <>
                 "(#{inspect(Enum.map(parameter_types, & &1.name))})"

@@ -1,4 +1,4 @@
-defmodule Cucumber.CucumberExpressions.Tokenizer do
+defmodule Cucumber.CucumberExpressions.CucumberExpressionTokenizer do
   @moduledoc """
   Splits a Cucumber Expression source string into a list of
   `Cucumber.CucumberExpressions.Token`s.
@@ -13,8 +13,8 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
     state = %{
       tokens: initial_tokens(codepoints),
       buffer: [],
-      buffer_start: 0,
-      previous: :start_of_line,
+      buffer_start_index: 0,
+      previous_token_type: :start_of_line,
       treat_as_text: false,
       escaped: 0
     }
@@ -50,12 +50,12 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
       if state.buffer == [] do
         state
       else
-        {token, state} = flush(state, state.previous)
+        {token, state} = convert_buffer_to_token(state, state.previous_token_type)
         %{state | tokens: [token | state.tokens]}
       end
 
     if state.treat_as_text do
-      {:error, Error.end_of_line_can_not_be_escaped(expression)}
+      {:error, Error.end_of_line_cannot_be_escaped(expression)}
     else
       end_of_line = %Token{type: :end_of_line, text: "", start: total, end: total}
       {:ok, Enum.reverse([end_of_line | state.tokens])}
@@ -67,15 +67,21 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
       {:error, _} = error ->
         error
 
-      {:ok, current} ->
+      {:ok, current_token_type} ->
         state = %{state | treat_as_text: false}
 
         state =
-          if new_token?(current, state.previous) do
-            {token, state} = flush(state, state.previous)
-            %{state | tokens: [token | state.tokens], previous: current, buffer: [codepoint]}
+          if should_create_new_token?(current_token_type, state.previous_token_type) do
+            {token, state} = convert_buffer_to_token(state, state.previous_token_type)
+
+            %{
+              state
+              | tokens: [token | state.tokens],
+                previous_token_type: current_token_type,
+                buffer: [codepoint]
+            }
           else
-            %{state | previous: current, buffer: [codepoint | state.buffer]}
+            %{state | previous_token_type: current_token_type, buffer: [codepoint | state.buffer]}
           end
 
         loop(rest, expression, total, state)
@@ -90,27 +96,31 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
     if Token.can_escape?(codepoint) do
       {:ok, :text}
     else
-      index = state.buffer_start + length(state.buffer) + state.escaped
+      index = state.buffer_start_index + length(state.buffer) + state.escaped
       {:error, Error.cant_escape(expression, index)}
     end
   end
 
-  defp new_token?(current, previous) do
-    current != previous or (current != :white_space and current != :text)
+  defp should_create_new_token?(current_token_type, previous_token_type) do
+    current_token_type != previous_token_type or
+      (current_token_type != :white_space and current_token_type != :text)
   end
 
-  defp flush(%{buffer: buffer, buffer_start: start, escaped: escaped} = state, type) do
+  defp convert_buffer_to_token(
+         %{buffer: buffer, buffer_start_index: start, escaped: escaped} = state,
+         type
+       ) do
     escape_tokens = if type == :text, do: escaped, else: 0
-    consumed = start + length(buffer) + escape_tokens
+    consumed_index = start + length(buffer) + escape_tokens
 
     token = %Token{
       type: type,
       text: List.to_string(Enum.reverse(buffer)),
       start: start,
-      end: consumed
+      end: consumed_index
     }
 
     escaped = if type == :text, do: 0, else: escaped
-    {token, %{state | buffer: [], buffer_start: consumed, escaped: escaped}}
+    {token, %{state | buffer: [], buffer_start_index: consumed_index, escaped: escaped}}
   end
 end

@@ -15,22 +15,22 @@ defmodule Cucumber.CucumberExpressions.TokenTest do
   end
 
   test "symbol/1 returns the literal character, or empty for types without one" do
-    assert Token.symbol(:begin_optional) == "("
-    assert Token.symbol(:end_optional) == ")"
-    assert Token.symbol(:begin_parameter) == "{"
-    assert Token.symbol(:end_parameter) == "}"
-    assert Token.symbol(:alternation) == "/"
-    assert Token.symbol(:text) == ""
-    assert Token.symbol(:start_of_line) == ""
+    assert Token.symbol_of(:begin_optional) == "("
+    assert Token.symbol_of(:end_optional) == ")"
+    assert Token.symbol_of(:begin_parameter) == "{"
+    assert Token.symbol_of(:end_parameter) == "}"
+    assert Token.symbol_of(:alternation) == "/"
+    assert Token.symbol_of(:text) == ""
+    assert Token.symbol_of(:start_of_line) == ""
   end
 
   test "purpose/1 describes the construct a token belongs to" do
-    assert Token.purpose(:begin_optional) == "optional text"
-    assert Token.purpose(:end_optional) == "optional text"
-    assert Token.purpose(:begin_parameter) == "a parameter"
-    assert Token.purpose(:end_parameter) == "a parameter"
-    assert Token.purpose(:alternation) == "alternation"
-    assert Token.purpose(:text) == ""
-    assert Token.purpose(:white_space) == ""
+    assert Token.purpose_of(:begin_optional) == "optional text"
+    assert Token.purpose_of(:end_optional) == "optional text"
+    assert Token.purpose_of(:begin_parameter) == "a parameter"
+    assert Token.purpose_of(:end_parameter) == "a parameter"
+    assert Token.purpose_of(:alternation) == "alternation"
+    assert Token.purpose_of(:text) == ""
+    assert Token.purpose_of(:white_space) == ""
   end
 end

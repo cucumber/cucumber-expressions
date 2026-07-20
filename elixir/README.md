@@ -43,12 +43,12 @@ Cucumber applies to step definition patterns. Both results implement the
 
 ### Custom parameter types
 
-The registry is an immutable value — `add/2` returns a new registry that you
-thread through your code:
+The registry is an immutable value — `define_parameter_type/2` returns a new
+registry that you thread through your code:
 
 ```elixir
 {:ok, registry} =
-  CE.ParameterTypeRegistry.add(
+  CE.ParameterTypeRegistry.define_parameter_type(
     registry,
     CE.ParameterType.new!(
       name: "color",

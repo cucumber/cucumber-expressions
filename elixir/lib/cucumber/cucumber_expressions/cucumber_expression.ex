@@ -11,7 +11,7 @@ defmodule Cucumber.CucumberExpressions.CucumberExpression do
     Error,
     Node,
     ParameterTypeRegistry,
-    Parser,
+    CucumberExpressionParser,
     TreeRegexp,
     UndefinedParameterTypeError
   }
@@ -30,7 +30,7 @@ defmodule Cucumber.CucumberExpressions.CucumberExpression do
   @spec compile(String.t(), ParameterTypeRegistry.t()) ::
           {:ok, t()} | {:error, Error.t() | UndefinedParameterTypeError.t()}
   def compile(expression, %ParameterTypeRegistry{} = registry) do
-    with {:ok, ast} <- Parser.parse(expression),
+    with {:ok, ast} <- CucumberExpressionParser.parse(expression),
          {:ok, pattern, parameter_types} <- rewrite_to_regex(ast, expression, registry) do
       {:ok,
        %__MODULE__{
@@ -60,8 +60,8 @@ defmodule Cucumber.CucumberExpressions.CucumberExpression do
   end
 
   @doc "The compiled `Regex` for this expression."
-  @spec regex(t()) :: Regex.t()
-  def regex(%__MODULE__{tree_regexp: tree_regexp}), do: tree_regexp.regex
+  @spec regexp(t()) :: Regex.t()
+  def regexp(%__MODULE__{tree_regexp: tree_regexp}), do: tree_regexp.regexp
 
   # Rewrites an AST node to a regex source string, accumulating the parameter
   # types referenced by the expression in match order.

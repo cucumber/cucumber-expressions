@@ -1,4 +1,4 @@
-defmodule Cucumber.CucumberExpressions.Parser do
+defmodule Cucumber.CucumberExpressions.CucumberExpressionParser do
   @moduledoc """
   Parses a Cucumber Expression source string into an AST of
   `Cucumber.CucumberExpressions.Node`s.
@@ -8,17 +8,17 @@ defmodule Cucumber.CucumberExpressions.Parser do
   parser" — or `{:error, error}`.
   """
 
-  alias Cucumber.CucumberExpressions.{Error, Node, Tokenizer}
+  alias Cucumber.CucumberExpressions.{Error, Node, CucumberExpressionTokenizer}
 
   @spec parse(String.t()) :: {:ok, Node.t()} | {:error, Error.t()}
   def parse(expression) do
-    with {:ok, token_list} <- Tokenizer.tokenize(expression) do
+    with {:ok, token_list} <- CucumberExpressionTokenizer.tokenize(expression) do
       tokens = List.to_tuple(token_list)
 
       # A parse that does not consume every token means this module is
       # misconfigured, not that the expression is invalid. Let it crash rather
       # than return an Error, which callers surface as "your expression is bad".
-      case parse_expression(expression, tokens, 0) do
+      case parse_cucumber_expression(expression, tokens, 0) do
         {:error, _} = error -> error
         {:ok, consumed, ast} when consumed == tuple_size(tokens) -> {:ok, ast}
       end
@@ -34,7 +34,7 @@ defmodule Cucumber.CucumberExpressions.Parser do
   end
 
   # cucumber-expression := ( alternation | optional | parameter | text )*
-  defp parse_expression(expression, tokens, current) do
+  defp parse_cucumber_expression(expression, tokens, current) do
     parse_between(
       :expression_node,
       :start_of_line,
@@ -208,12 +208,12 @@ defmodule Cucumber.CucumberExpressions.Parser do
     end
   end
 
-  defp parse_tokens_until(expression, parsers, tokens, start_at, end_types) do
-    do_parse_until(expression, parsers, tokens, start_at, end_types, start_at, [])
+  defp parse_tokens_until(expression, parsers, tokens, start_at, end_tokens) do
+    do_parse_until(expression, parsers, tokens, start_at, end_tokens, start_at, [])
   end
 
-  defp do_parse_until(expression, parsers, tokens, start_at, end_types, current, acc) do
-    if current >= tuple_size(tokens) or looking_at_any(tokens, current, end_types) do
+  defp do_parse_until(expression, parsers, tokens, start_at, end_tokens, current, acc) do
+    if current >= tuple_size(tokens) or looking_at_any(tokens, current, end_tokens) do
       {:ok, current - start_at, Enum.reverse(acc)}
     else
       case parse_token(expression, parsers, tokens, current) do
@@ -221,7 +221,7 @@ defmodule Cucumber.CucumberExpressions.Parser do
           error
 
         {:ok, consumed, node} when consumed > 0 ->
-          do_parse_until(expression, parsers, tokens, start_at, end_types, current + consumed, [
+          do_parse_until(expression, parsers, tokens, start_at, end_tokens, current + consumed, [
             node | acc
           ])
       end
@@ -237,11 +237,12 @@ defmodule Cucumber.CucumberExpressions.Parser do
   end
 
   # `at` is always in bounds: the tokenizer appends an `:end_of_line` token and
-  # every `end_types` list includes it, so parsing halts before running off the
+  # every `end_tokens` list includes it, so parsing halts before running off the
   # end. `do_parse_until/7` bounds-checks before calling this.
   defp looking_at(tokens, at, type), do: elem(tokens, at).type == type
 
-  defp looking_at_any(tokens, at, types), do: Enum.any?(types, &looking_at(tokens, at, &1))
+  defp looking_at_any(tokens, at, token_types),
+    do: Enum.any?(token_types, &looking_at(tokens, at, &1))
 
   defp split_alternatives(start, end_, nodes) do
     {separators, alternatives, current} =

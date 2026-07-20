@@ -1,6 +1,6 @@
 defmodule Cucumber.CucumberExpressions.GeneratedExpression do
   @moduledoc """
-  A Cucumber Expression suggested by `Cucumber.CucumberExpressions.Generator`,
+  A Cucumber Expression suggested by `Cucumber.CucumberExpressions.CucumberExpressionGenerator`,
   along with the parameter types it references.
   """
 

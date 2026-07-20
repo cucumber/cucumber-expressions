@@ -10,7 +10,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
   }
 
   defp registry_with_color do
-    ParameterTypeRegistry.add!(
+    ParameterTypeRegistry.define_parameter_type!(
       ParameterTypeRegistry.new(),
       ParameterType.new!(
         name: "color",
@@ -39,7 +39,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "matches parameters with multiple capture groups" do
     registry =
-      ParameterTypeRegistry.add!(
+      ParameterTypeRegistry.define_parameter_type!(
         registry_with_color(),
         ParameterType.new!(
           name: "coordinate",
@@ -68,7 +68,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "matches parameters with custom parameter type using multiple regexps" do
     registry =
-      ParameterTypeRegistry.add!(
+      ParameterTypeRegistry.define_parameter_type!(
         ParameterTypeRegistry.new(),
         ParameterType.new!(
           name: "color",
@@ -85,7 +85,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "defers transformation until queried from argument" do
     registry =
-      ParameterTypeRegistry.add!(
+      ParameterTypeRegistry.define_parameter_type!(
         registry_with_color(),
         ParameterType.new!(
           name: "throwing",
@@ -102,7 +102,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "conflicting parameter type is detected for type name" do
     assert {:error, error} =
-             ParameterTypeRegistry.add(
+             ParameterTypeRegistry.define_parameter_type(
                registry_with_color(),
                ParameterType.new!(name: "color", regexps: ".*")
              )
@@ -112,7 +112,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "conflicting parameter type is not detected for regexp" do
     registry =
-      ParameterTypeRegistry.add!(
+      ParameterTypeRegistry.define_parameter_type!(
         registry_with_color(),
         ParameterType.new!(
           name: "css-color",
@@ -133,7 +133,7 @@ defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
 
   test "RegularExpression matches arguments with custom parameter types without a name" do
     registry =
-      ParameterTypeRegistry.add!(
+      ParameterTypeRegistry.define_parameter_type!(
         ParameterTypeRegistry.new(),
         ParameterType.new!(
           name: nil,

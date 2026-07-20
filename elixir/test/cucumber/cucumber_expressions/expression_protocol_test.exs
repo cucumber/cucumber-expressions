@@ -27,8 +27,8 @@ defmodule Cucumber.CucumberExpressions.ExpressionProtocolTest do
     end
 
     test "regex/1 returns the compiled Regex", %{expression: expression} do
-      assert %Regex{} = regex = Expression.regex(expression)
-      assert Regex.source(regex) == Regex.source(CucumberExpression.regex(expression))
+      assert %Regex{} = regex = Expression.regexp(expression)
+      assert Regex.source(regex) == Regex.source(CucumberExpression.regexp(expression))
       assert Regex.match?(regex, "I have 42 cukes")
     end
   end
@@ -50,8 +50,8 @@ defmodule Cucumber.CucumberExpressions.ExpressionProtocolTest do
     end
 
     test "regex/1 returns the compiled Regex", %{expression: expression} do
-      assert %Regex{} = regex = Expression.regex(expression)
-      assert regex == RegularExpression.regex(expression)
+      assert %Regex{} = regex = Expression.regexp(expression)
+      assert regex == RegularExpression.regexp(expression)
       assert Regex.match?(regex, "I have 42 cukes")
     end
   end

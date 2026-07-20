@@ -12,10 +12,10 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
 
   alias Cucumber.CucumberExpressions.{Error, Group, GroupBuilder}
 
-  @enforce_keys [:regex, :group_builder]
-  defstruct [:regex, :group_builder]
+  @enforce_keys [:regexp, :group_builder]
+  defstruct [:regexp, :group_builder]
 
-  @type t :: %__MODULE__{regex: Regex.t(), group_builder: GroupBuilder.t()}
+  @type t :: %__MODULE__{regexp: Regex.t(), group_builder: GroupBuilder.t()}
 
   @doc """
   Builds a TreeRegexp from a `Regex` or a source string. Raises
@@ -26,12 +26,12 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
 
   def new!(%Regex{} = regex) do
     source_chars = String.to_charlist(Regex.source(regex))
-    %__MODULE__{regex: regex, group_builder: create_group_builder(source_chars)}
+    %__MODULE__{regexp: regex, group_builder: create_group_builder(source_chars)}
   end
 
   @doc "Matches `text`, returning the root `Group` (the full match) or `nil`."
   @spec match(t(), String.t()) :: Group.t() | nil
-  def match(%__MODULE__{regex: regex, group_builder: group_builder}, text) do
+  def match(%__MODULE__{regexp: regex, group_builder: group_builder}, text) do
     case Regex.run(regex, text, return: :index) do
       nil ->
         nil

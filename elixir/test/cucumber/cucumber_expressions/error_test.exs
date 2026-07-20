@@ -19,12 +19,12 @@ defmodule Cucumber.CucumberExpressions.ErrorTest do
     assert %Error{type: :optional_may_not_be_empty} = compile_error("three ()")
   end
 
-  test "parameter inside optional carries type :parameter_not_allowed_in_optional" do
-    assert %Error{type: :parameter_not_allowed_in_optional} = compile_error("({int})")
+  test "parameter inside optional carries type :parameter_is_not_allowed_in_optional" do
+    assert %Error{type: :parameter_is_not_allowed_in_optional} = compile_error("({int})")
   end
 
-  test "nested optional carries type :optional_not_allowed_in_optional" do
-    assert %Error{type: :optional_not_allowed_in_optional} = compile_error("a ((b))")
+  test "nested optional carries type :optional_is_not_allowed_in_optional" do
+    assert %Error{type: :optional_is_not_allowed_in_optional} = compile_error("a ((b))")
   end
 
   test "empty alternative carries type :alternative_may_not_be_empty" do
@@ -55,6 +55,6 @@ defmodule Cucumber.CucumberExpressions.ErrorTest do
     duplicate = ParameterType.new!(name: "int", regexps: "\\d+")
 
     assert {:error, %Error{type: :duplicate_parameter_type_name}} =
-             ParameterTypeRegistry.add(registry, duplicate)
+             ParameterTypeRegistry.define_parameter_type(registry, duplicate)
   end
 end

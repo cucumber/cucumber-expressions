@@ -1,6 +1,6 @@
 defmodule Cucumber.CucumberExpressions.Token do
   @moduledoc """
-  A token produced by `Cucumber.CucumberExpressions.Tokenizer`.
+  A token produced by `Cucumber.CucumberExpressions.CucumberExpressionTokenizer`.
 
   `start` and `end` are codepoint offsets into the expression source, matching
   the language-neutral testdata convention.
@@ -81,18 +81,18 @@ defmodule Cucumber.CucumberExpressions.Token do
   end
 
   @doc "The literal character for a token type, used in error messages."
-  def symbol(:begin_optional), do: "("
-  def symbol(:end_optional), do: ")"
-  def symbol(:begin_parameter), do: "{"
-  def symbol(:end_parameter), do: "}"
-  def symbol(:alternation), do: "/"
-  def symbol(_), do: ""
+  def symbol_of(:begin_optional), do: "("
+  def symbol_of(:end_optional), do: ")"
+  def symbol_of(:begin_parameter), do: "{"
+  def symbol_of(:end_parameter), do: "}"
+  def symbol_of(:alternation), do: "/"
+  def symbol_of(_), do: ""
 
   @doc "The human-readable purpose of a token type, used in error messages."
-  def purpose(:begin_optional), do: "optional text"
-  def purpose(:end_optional), do: "optional text"
-  def purpose(:begin_parameter), do: "a parameter"
-  def purpose(:end_parameter), do: "a parameter"
-  def purpose(:alternation), do: "alternation"
-  def purpose(_), do: ""
+  def purpose_of(:begin_optional), do: "optional text"
+  def purpose_of(:end_optional), do: "optional text"
+  def purpose_of(:begin_parameter), do: "a parameter"
+  def purpose_of(:end_parameter), do: "a parameter"
+  def purpose_of(:alternation), do: "alternation"
+  def purpose_of(_), do: ""
 end

@@ -17,10 +17,11 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistryTest do
   test "does not allow more than one preferential parameter type per regexp" do
     registry =
       ParameterTypeRegistry.new()
-      |> ParameterTypeRegistry.add!(type("name", true))
-      |> ParameterTypeRegistry.add!(type("person", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("name", true))
+      |> ParameterTypeRegistry.define_parameter_type!(type("person", false))
 
-    assert {:error, error} = ParameterTypeRegistry.add(registry, type("place", true))
+    assert {:error, error} =
+             ParameterTypeRegistry.define_parameter_type(registry, type("place", true))
 
     assert Exception.message(error) ==
              "There can only be one preferential parameter type per regexp. " <>
@@ -30,9 +31,9 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistryTest do
   test "looks up preferential parameter type by regexp" do
     registry =
       ParameterTypeRegistry.new()
-      |> ParameterTypeRegistry.add!(type("name", false))
-      |> ParameterTypeRegistry.add!(type("person", true))
-      |> ParameterTypeRegistry.add!(type("place", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("name", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("person", true))
+      |> ParameterTypeRegistry.define_parameter_type!(type("place", false))
 
     looked_up =
       ParameterTypeRegistry.lookup_by_regexp(
@@ -48,9 +49,9 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistryTest do
   test "raises ambiguous exception when no parameter types are preferential" do
     registry =
       ParameterTypeRegistry.new()
-      |> ParameterTypeRegistry.add!(type("name", false))
-      |> ParameterTypeRegistry.add!(type("person", false))
-      |> ParameterTypeRegistry.add!(type("place", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("name", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("person", false))
+      |> ParameterTypeRegistry.define_parameter_type!(type("place", false))
 
     error =
       assert_raise Cucumber.CucumberExpressions.AmbiguousParameterTypeError, fn ->

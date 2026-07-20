@@ -21,8 +21,8 @@ defmodule Cucumber.CucumberExpressions.Error do
           | :alternation_not_allowed_in_optional
           | :invalid_parameter_type_name
           | :optional_may_not_be_empty
-          | :parameter_not_allowed_in_optional
-          | :optional_not_allowed_in_optional
+          | :parameter_is_not_allowed_in_optional
+          | :optional_is_not_allowed_in_optional
           | :alternative_may_not_be_empty
           | :alternative_may_not_exclusively_contain_optionals
           | :parameter_type_regexps_cannot_use_flags
@@ -47,7 +47,7 @@ defmodule Cucumber.CucumberExpressions.Error do
   end
 
   @doc false
-  def end_of_line_can_not_be_escaped(expression) do
+  def end_of_line_cannot_be_escaped(expression) do
     index = String.length(expression) - 1
 
     build(
@@ -67,9 +67,9 @@ defmodule Cucumber.CucumberExpressions.Error do
       start,
       expression,
       point_at_located(current),
-      "The '#{Token.symbol(begin_type)}' does not have a matching '#{Token.symbol(end_type)}'",
-      "If you did not intend to use #{Token.purpose(begin_type)} you can use " <>
-        "'\\#{Token.symbol(begin_type)}' to escape the #{Token.purpose(begin_type)}"
+      "The '#{Token.symbol_of(begin_type)}' does not have a matching '#{Token.symbol_of(end_type)}'",
+      "If you did not intend to use #{Token.purpose_of(begin_type)} you can use " <>
+        "'\\#{Token.symbol_of(begin_type)}' to escape the #{Token.purpose_of(begin_type)}"
     )
   end
 
@@ -112,7 +112,7 @@ defmodule Cucumber.CucumberExpressions.Error do
   @doc false
   def parameter_is_not_allowed_in_optional(expression, node) do
     build_at(
-      :parameter_not_allowed_in_optional,
+      :parameter_is_not_allowed_in_optional,
       expression,
       node,
       "An optional may not contain a parameter type",
@@ -123,7 +123,7 @@ defmodule Cucumber.CucumberExpressions.Error do
   @doc false
   def optional_is_not_allowed_in_optional(expression, node) do
     build_at(
-      :optional_not_allowed_in_optional,
+      :optional_is_not_allowed_in_optional,
       expression,
       node,
       "An optional may not contain an other optional",

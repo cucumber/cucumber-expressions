@@ -1,6 +1,6 @@
 defmodule Cucumber.CucumberExpressions.Node do
   @moduledoc """
-  A node in the AST produced by `Cucumber.CucumberExpressions.Parser`.
+  A node in the AST produced by `Cucumber.CucumberExpressions.CucumberExpressionParser`.
 
   Leaf (text) nodes carry a `token` and have `nodes: nil`; container nodes
   carry a (possibly empty) list of child `nodes` and an empty `token`.

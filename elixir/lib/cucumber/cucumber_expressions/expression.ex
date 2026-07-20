@@ -12,7 +12,7 @@ defprotocol Cucumber.CucumberExpressions.Expression do
   def match(expression, text)
 
   @doc "The compiled `Regex`."
-  def regex(expression)
+  def regexp(expression)
 
   @doc "The expression's source string."
   def source(expression)
@@ -23,7 +23,7 @@ defimpl Cucumber.CucumberExpressions.Expression,
   alias Cucumber.CucumberExpressions.CucumberExpression
 
   def match(expression, text), do: CucumberExpression.match(expression, text)
-  def regex(expression), do: CucumberExpression.regex(expression)
+  def regexp(expression), do: CucumberExpression.regexp(expression)
   def source(expression), do: expression.source
 end
 
@@ -32,6 +32,6 @@ defimpl Cucumber.CucumberExpressions.Expression,
   alias Cucumber.CucumberExpressions.RegularExpression
 
   def match(expression, text), do: RegularExpression.match(expression, text)
-  def regex(expression), do: RegularExpression.regex(expression)
+  def regexp(expression), do: RegularExpression.regexp(expression)
   def source(expression), do: RegularExpression.source(expression)
 end

@@ -117,7 +117,7 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
     ]
 
     Enum.reduce(builtins, %__MODULE__{}, fn options, registry ->
-      add!(registry, ParameterType.new!(options))
+      define_parameter_type!(registry, ParameterType.new!(options))
     end)
   end
 
@@ -151,7 +151,10 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
           # ambiguity when we look up by regexp. Users of CucumberExpression
           # should not be restricted.
           generated_expressions =
-            Cucumber.CucumberExpressions.Generator.generate_expressions(registry, text)
+            Cucumber.CucumberExpressions.CucumberExpressionGenerator.generate_expressions(
+              registry,
+              text
+            )
 
           raise Cucumber.CucumberExpressions.AmbiguousParameterTypeError.new(
                   parameter_type_regexp,
@@ -169,16 +172,16 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
   Returns a new registry with `parameter_type` added, or an error if the name
   is taken or another preferential type uses one of the same regexps.
   """
-  @spec add(t(), ParameterType.t()) :: {:ok, t()} | {:error, Error.t()}
-  def add(%__MODULE__{} = registry, %ParameterType{} = parameter_type) do
+  @spec define_parameter_type(t(), ParameterType.t()) :: {:ok, t()} | {:error, Error.t()}
+  def define_parameter_type(%__MODULE__{} = registry, %ParameterType{} = parameter_type) do
     with {:ok, registry} <- add_by_name(registry, parameter_type) do
       add_by_regexps(registry, parameter_type)
     end
   end
 
-  @spec add!(t(), ParameterType.t()) :: t()
-  def add!(%__MODULE__{} = registry, %ParameterType{} = parameter_type) do
-    case add(registry, parameter_type) do
+  @spec define_parameter_type!(t(), ParameterType.t()) :: t()
+  def define_parameter_type!(%__MODULE__{} = registry, %ParameterType{} = parameter_type) do
+    case define_parameter_type(registry, parameter_type) do
       {:ok, registry} -> registry
       {:error, error} -> raise error
     end
