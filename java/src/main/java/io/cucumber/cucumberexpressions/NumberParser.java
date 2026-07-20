@@ -12,15 +12,13 @@ final class NumberParser {
     private final String exponentSeparator;
 
     NumberParser(Locale locale) {
-        numberFormat = DecimalFormat.getNumberInstance(locale);
-        String exponentSeparator = "E";
+        DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
+        this.exponentSeparator = symbols.getExponentSeparator();
+        this.numberFormat = DecimalFormat.getNumberInstance(locale);
         if (numberFormat instanceof DecimalFormat decimalFormat) {
             decimalFormat.setParseBigDecimal(true);
-            DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
             decimalFormat.setDecimalFormatSymbols(symbols);
-            exponentSeparator = symbols.getExponentSeparator();
         }
-        this.exponentSeparator = exponentSeparator;
     }
 
     double parseDouble(String s) {
@@ -41,20 +39,41 @@ final class NumberParser {
     }
 
     private Number parse(String s) {
+        int index = s.indexOf(exponentSeparator);
+        if (index < 0) {
+            return parseSignificand(s);
+        }
+        // DecimalFormat silently ignores a '+' in the exponent, and everything
+        // that follows it. So parse the exponent ourselves and scale accordingly.
+        BigDecimal significand = toBigDecimal(parseSignificand(s.substring(0, index)));
+        return significand.scaleByPowerOfTen(parseExponent(s.substring(index + exponentSeparator.length())));
+    }
+
+    private Number parseSignificand(String s) {
+        // DecimalFormat has no positive prefix, so it can not parse a leading
+        // '+'. It does not change the value, so drop it.
+        String significand = s.startsWith("+") ? s.substring(1) : s;
         try {
-            return numberFormat.parse(removeExponentPlusSign(s));
+            return numberFormat.parse(significand);
         } catch (ParseException e) {
             throw new CucumberExpressionException("Failed to parse number", e);
         }
     }
 
-    private String removeExponentPlusSign(String s) {
-        String exponentPlus = exponentSeparator + "+";
-        int index = s.indexOf(exponentPlus);
-        if (index < 0) {
-            return s;
+    private static int parseExponent(String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            throw new CucumberExpressionException("Failed to parse number", e);
         }
-        return s.substring(0, index + exponentSeparator.length())
-                + s.substring(index + exponentPlus.length());
+    }
+
+    private static BigDecimal toBigDecimal(Number number) {
+        if (number instanceof BigDecimal bigDecimal) {
+            return bigDecimal;
+        }
+        // The locale did not have a DecimalFormat, so we could not
+        // ask it to parse into a BigDecimal.
+        return new BigDecimal(number.toString());
     }
 }

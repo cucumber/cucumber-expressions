@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
-- [.Net] Fix codepoint offsets for tokens ([#440](https://github.com/cucumber/cucumber-expressions/pull/440))
+- Support a positive exponent in scientific notation floats, e.g. `1.5E+3` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
+- [Java] Support a leading `+` sign in `{float}`, `{double}` and `{bigdecimal}` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
 
 ## [20.0.0] - 2026-06-11
 ### Changed

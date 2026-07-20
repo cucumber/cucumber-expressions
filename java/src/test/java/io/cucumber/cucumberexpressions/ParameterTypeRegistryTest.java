@@ -111,9 +111,11 @@ public class ParameterTypeRegistryTest {
         assertThat(expression.match("1,")).isEmpty();
         assertThat(expression.match(",1")).isEmpty();
         assertThat(expression.match("1.")).isEmpty();
+        assertThat(expression.match("+")).isEmpty();
 
         asserThatSingleArgumentValue(expression.match("1")).isEqualTo(BigDecimal.ONE);
         asserThatSingleArgumentValue(expression.match("-1")).isEqualTo(new BigDecimal("-1"));
+        asserThatSingleArgumentValue(expression.match("+1")).isEqualTo(BigDecimal.ONE);
         asserThatSingleArgumentValue(expression.match("1.1")).isEqualTo(new BigDecimal("1.1"));
         asserThatSingleArgumentValue(expression.match("1,000")).isEqualTo(new BigDecimal("1000"));
         asserThatSingleArgumentValue(expression.match("1,000,0")).isEqualTo(new BigDecimal("10000"));
@@ -136,6 +138,11 @@ public class ParameterTypeRegistryTest {
         asserThatSingleArgumentValue(expression.match("-.1E+2")).isEqualTo(new BigDecimal("-1E+1"));
         asserThatSingleArgumentValue(expression.match("-.1E1")).isEqualTo(new BigDecimal("-1"));
         asserThatSingleArgumentValue(expression.match("-.10E2")).isEqualTo(new BigDecimal("-10"));
+
+        asserThatSingleArgumentValue(expression.match("+1.1")).isEqualTo(new BigDecimal("1.1"));
+        asserThatSingleArgumentValue(expression.match("+1,000.1")).isEqualTo(new BigDecimal("1000.1"));
+        asserThatSingleArgumentValue(expression.match("+.1")).isEqualTo(new BigDecimal("0.1"));
+        asserThatSingleArgumentValue(expression.match("+.1E+2")).isEqualTo(new BigDecimal("1E+1"));
     }
 
     @Test
@@ -148,6 +155,8 @@ public class ParameterTypeRegistryTest {
         asserThatSingleArgumentValue(expression.match("-1,1")).isEqualTo(new BigDecimal("-1.1"));
         asserThatSingleArgumentValue(expression.match("-,1E1")).isEqualTo(new BigDecimal("-1"));
         asserThatSingleArgumentValue(expression.match("-,1E+1")).isEqualTo(new BigDecimal("-1"));
+        asserThatSingleArgumentValue(expression.match("+1.000,1")).isEqualTo(new BigDecimal("1000.1"));
+        asserThatSingleArgumentValue(expression.match("+,1E+1")).isEqualTo(BigDecimal.ONE);
     }
 
     @Test
