@@ -105,15 +105,18 @@ func TestCucumberExpression(t *testing.T) {
 		require.Equal(t, MatchCucumberExpression(t, "{float}", ".1"), []interface{}{0.1})
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1"), []interface{}{-0.1})
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10000001"), []interface{}{-0.10000001})
+		// Scientific notation, with an uppercase E as in the other
+		// implementations. strconv.ParseFloat handles every form of it.
+		require.Equal(t, MatchCucumberExpression(t, "{float}", ".1E1"), []interface{}{1.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-1"), []interface{}{-0.01})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-2"), []interface{}{-0.001})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+1"), []interface{}{-1.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+2"), []interface{}{-10.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E1"), []interface{}{-1.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10E2"), []interface{}{-10.0})
+		// A lowercase e is not part of the pattern in any implementation.
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "1e1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", ".1E1"), []interface{}(nil))
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "E1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-2"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+2"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10E2"), []interface{}(nil))
 	})
 
 	t.Run("matches float with zero", func(t *testing.T) {
