@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [Elixir] Add an Elixir port, packaged as `cucumber_cucumber_expressions` and contributed by [Oselvar](https://github.com/oselvar). Verified against the shared `testdata` conformance corpus (tokenizer, parser, transformation, and both matching suites). Requires Elixir 1.17+. `{bigdecimal}` produces a [`Decimal`](https://hex.pm/packages/decimal) struct; `{int}` and `{biginteger}` produce Elixir's arbitrary-precision integers. ([#439](https://github.com/cucumber/cucumber-expressions/pull/439))
 
 ## [20.0.0] - 2026-06-11
 ### Changed
