@@ -1,4 +1,4 @@
-defmodule Varar.CucumberExpressions.MixProject do
+defmodule Cucumber.CucumberExpressions.MixProject do
   use Mix.Project
 
   @version "20.0.0"
@@ -6,7 +6,7 @@ defmodule Varar.CucumberExpressions.MixProject do
 
   def project do
     [
-      app: :varar_cucumber_expressions,
+      app: :cucumber_cucumber_expressions,
       version: @version,
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
@@ -21,7 +21,7 @@ defmodule Varar.CucumberExpressions.MixProject do
       # Testdata is a test-support helper, not library code.
       test_coverage: [
         summary: [threshold: 95],
-        ignore_modules: [Varar.CucumberExpressions.Testdata]
+        ignore_modules: [Cucumber.CucumberExpressions.Testdata]
       ]
     ]
   end

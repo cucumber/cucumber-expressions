@@ -10,12 +10,12 @@ conformance corpus as the other ports.
 
 ## Installation
 
-Add `varar_cucumber_expressions` to your `mix.exs` dependencies:
+Add `cucumber_cucumber_expressions` to your `mix.exs` dependencies:
 
 ```elixir
 def deps do
   [
-    {:varar_cucumber_expressions, "~> 20.0"}
+    {:cucumber_cucumber_expressions, "~> 20.0"}
   ]
 end
 ```
@@ -23,7 +23,7 @@ end
 ## Usage
 
 ```elixir
-alias Varar.CucumberExpressions, as: CE
+alias Cucumber.CucumberExpressions, as: CE
 
 registry = CE.ParameterTypeRegistry.new()
 

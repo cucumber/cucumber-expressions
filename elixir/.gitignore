@@ -4,5 +4,5 @@
 /doc/
 erl_crash.dump
 *.ez
-varar_cucumber_expressions-*.tar
+cucumber_cucumber_expressions-*.tar
 .deps
