@@ -12,4 +12,10 @@ defmodule Varar.CucumberExpressions.ParameterTypeTest do
     assert {:ok, _} = ParameterType.new(name: "plain", regexps: ~r/[a-z]+/)
     assert {:ok, _} = ParameterType.new(name: "unicode", regexps: ~r/[a-z]+/u)
   end
+
+  test "anonymous?/1 is true only for the empty name" do
+    assert ParameterType.new!(name: "", regexps: ".*") |> ParameterType.anonymous?()
+    refute ParameterType.new!(name: "int", regexps: "\\d+") |> ParameterType.anonymous?()
+    refute ParameterType.new!(name: nil, regexps: ".*") |> ParameterType.anonymous?()
+  end
 end
