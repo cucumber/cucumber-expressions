@@ -79,31 +79,14 @@ public abstract class CucumberExpressionTestBase : TestBase
         return s;
     }
 
-    /// <summary>
-    /// Matches <paramref name="text"/> and converts each captured group to the
-    /// CLR type its parameter type declares.
-    /// </summary>
-    /// <remarks>
-    /// This library stops at "here is a regex and here are the parameter types"
-    /// and leaves argument conversion to the consumer, so the conversion has to
-    /// live here. It used to be simulated with string manipulation — a leading
-    /// "." was turned into "0." rather than parsed — which meant the acceptance
-    /// suite never exercised anything a real number parser would do.
-    ///
-    /// Group-to-parameter alignment is 1:1: GetParameterTypeRegexps runs every
-    /// parameter type regexp through RegexCaptureGroupRemover, so a parameter
-    /// contributes exactly one capture group however many its regexp declares.
-    /// </remarks>
     public object[] MatchExpression(IExpression expression, string text)
     {
         var group = new TreeRegexp(expression.Regex).Match(text);
         if (group == null)
             return null;
 
-        // A RegularExpression has no parameter types; its groups stay strings.
         var parameterTypes = (expression as CucumberExpression)?.ParameterTypes;
 
-        // Children is null when the expression captures nothing.
         var argGroups = group.Children ?? new List<Parsing.Group>();
 
         return argGroups

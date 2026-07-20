@@ -133,7 +133,6 @@ public class ParameterTypeRegistryTest {
         asserThatSingleArgumentValue(expression.match("-.1E-1")).isEqualTo(new BigDecimal("-0.01"));
         asserThatSingleArgumentValue(expression.match("-.1E-2")).isEqualTo(new BigDecimal("-0.001"));
         asserThatSingleArgumentValue(expression.match("-.1E+1")).isEqualTo(new BigDecimal("-1"));
-        // precision 1 with scale -1, can not be expressed as a decimal
         asserThatSingleArgumentValue(expression.match("-.1E+2")).isEqualTo(new BigDecimal("-1E+1"));
         asserThatSingleArgumentValue(expression.match("-.1E1")).isEqualTo(new BigDecimal("-1"));
         asserThatSingleArgumentValue(expression.match("-.10E2")).isEqualTo(new BigDecimal("-10"));

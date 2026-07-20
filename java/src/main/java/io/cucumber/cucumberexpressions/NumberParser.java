@@ -48,18 +48,6 @@ final class NumberParser {
         }
     }
 
-    /**
-     * Removes the {@code +} from a positive exponent, if present.
-     * <p>
-     * {@link DecimalFormat} stops parsing when it reaches an explicit {@code +}
-     * in the exponent and silently returns what it has read so far, so
-     * {@code 1.5E+3} parses as {@code 1.5} rather than failing. It handles the
-     * exponent correctly without the sign, and {@code E3} means the same as
-     * {@code E+3}, so dropping the sign is enough.
-     * <p>
-     * Doing it this way rather than delegating to {@link Double#valueOf} keeps
-     * parsing locale aware, and keeps {@code {bigdecimal}} exact.
-     */
     private String removeExponentPlusSign(String s) {
         String exponentPlus = exponentSeparator + "+";
         int index = s.indexOf(exponentPlus);
