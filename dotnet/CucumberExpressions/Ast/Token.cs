@@ -24,9 +24,9 @@ public class Token : ILocated
         End = end;
     }
 
-    public static bool CanEscape(char token)
+    public static bool CanEscape(int token)
     {
-        if (char.IsWhiteSpace(token))
+        if (IsWhiteSpace(token))
         {
             return true;
         }
@@ -45,9 +45,9 @@ public class Token : ILocated
         return false;
     }
 
-    public static TokenType TypeOf(char token)
+    public static TokenType TypeOf(int token)
     {
-        if (char.IsWhiteSpace(token))
+        if (IsWhiteSpace(token))
         {
             return TokenType.WHITE_SPACE;
         }
@@ -72,6 +72,13 @@ public class Token : ILocated
     public static bool IsEscapeCharacter(int token)
     {
         return token == EscapeCharacter;
+    }
+
+    // char.IsWhiteSpace only accepts a UTF-16 code unit. No codepoint outside
+    // the BMP is whitespace, so anything that needs a surrogate pair is not.
+    private static bool IsWhiteSpace(int codePoint)
+    {
+        return codePoint <= char.MaxValue && char.IsWhiteSpace((char)codePoint);
     }
 
     public override string ToString()

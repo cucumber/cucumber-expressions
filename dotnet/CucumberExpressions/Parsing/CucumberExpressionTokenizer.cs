@@ -24,9 +24,10 @@ public class CucumberExpressionTokenizer
     private class TokenIterator
     {
         private readonly string _expression;
-        private readonly IEnumerator<char> _codePoints;
+        private readonly IEnumerator<int> _codePoints;
 
         private StringBuilder _buffer = new();
+        private int _bufferCodePointCount;
         private TokenType _previousTokenType = TokenType.UNKNOWN;
         private TokenType _currentTokenType = TokenType.START_OF_LINE;
         private bool _treatAsText;
@@ -36,7 +37,7 @@ public class CucumberExpressionTokenizer
         public TokenIterator(string expression)
         {
             _expression = expression;
-            _codePoints = expression.GetEnumerator();
+            _codePoints = CodePointsOf(expression).GetEnumerator();
         }
 
         private Token ConvertBufferToToken(TokenType tokenType)
@@ -47,11 +48,18 @@ public class CucumberExpressionTokenizer
                 escapeTokens = _escaped;
                 _escaped = 0;
             }
-            int consumedIndex = _bufferStartIndex + _buffer.Length + escapeTokens;
+            int consumedIndex = _bufferStartIndex + _bufferCodePointCount + escapeTokens;
             Token t = new Token(_buffer.ToString(), tokenType, _bufferStartIndex, consumedIndex);
             _buffer = new StringBuilder();
+            _bufferCodePointCount = 0;
             this._bufferStartIndex = consumedIndex;
             return t;
+        }
+
+        private void AppendCodePoint(int codePoint)
+        {
+            _buffer.Append(char.ConvertFromUtf32(codePoint));
+            _bufferCodePointCount++;
         }
 
         private void AdvanceTokenTypes()
@@ -60,7 +68,7 @@ public class CucumberExpressionTokenizer
             _currentTokenType = TokenType.UNKNOWN;
         }
 
-        private TokenType TokenTypeOf(char token, bool treatAsText)
+        private TokenType TokenTypeOf(int token, bool treatAsText)
         {
             if (!treatAsText)
             {
@@ -70,7 +78,29 @@ public class CucumberExpressionTokenizer
             {
                 return TokenType.TEXT;
             }
-            throw CucumberExpressionException.CreateCantEscape(_expression, _bufferStartIndex + _buffer.Length + _escaped);
+            throw CucumberExpressionException.CreateCantEscape(_expression, _bufferStartIndex + _bufferCodePointCount + _escaped);
+        }
+
+        // Offsets are codepoint offsets, so the expression has to be walked a
+        // codepoint at a time. A plain foreach over a string yields UTF-16 code
+        // units, which counts anything outside the BMP twice. netstandard2.0
+        // has no EnumerateRunes, hence the manual surrogate pairing.
+        private static IEnumerable<int> CodePointsOf(string expression)
+        {
+            for (int i = 0; i < expression.Length; i++)
+            {
+                if (char.IsHighSurrogate(expression[i])
+                    && i + 1 < expression.Length
+                    && char.IsLowSurrogate(expression[i + 1]))
+                {
+                    yield return char.ConvertToUtf32(expression[i], expression[i + 1]);
+                    i++;
+                }
+                else
+                {
+                    yield return expression[i];
+                }
+            }
         }
 
         private bool ShouldContinueTokenType(TokenType? previousTokenType, TokenType? currentTokenType)
@@ -99,7 +129,7 @@ public class CucumberExpressionTokenizer
 
             while (_codePoints.MoveNext())
             {
-                char codePoint = _codePoints.Current;
+                int codePoint = _codePoints.Current;
                 if (!_treatAsText && Token.IsEscapeCharacter(codePoint))
                 {
                     _escaped++;
@@ -113,18 +143,18 @@ public class CucumberExpressionTokenizer
                         ShouldContinueTokenType(_previousTokenType, _currentTokenType))
                 {
                     AdvanceTokenTypes();
-                    _buffer.Append(codePoint);
+                    AppendCodePoint(codePoint);
                 }
                 else
                 {
                     Token t = ConvertBufferToToken(_previousTokenType);
                     AdvanceTokenTypes();
-                    _buffer.Append(codePoint);
+                    AppendCodePoint(codePoint);
                     return t;
                 }
             }
 
-            if (_buffer.Length > 0)
+            if (_bufferCodePointCount > 0)
             {
                 Token previousToken = ConvertBufferToToken(_previousTokenType);
                 AdvanceTokenTypes();
