@@ -14,6 +14,22 @@ defmodule Cucumber.CucumberExpressions.Testdata do
   def dir, do: @testdata_dir
 
   @doc """
+  Every suite present in the shared corpus, discovered from the filesystem —
+  a directory holding at least one fixture. Sorted.
+  """
+  def suites do
+    fixture_paths()
+    |> Enum.map(&(&1 |> Path.dirname() |> Path.relative_to(@testdata_dir)))
+    |> Enum.uniq()
+    |> Enum.sort()
+  end
+
+  @doc "Total number of fixtures in the shared corpus, across every suite."
+  def fixture_count, do: length(fixture_paths())
+
+  defp fixture_paths, do: [@testdata_dir, "**", "*.yaml"] |> Path.join() |> Path.wildcard()
+
+  @doc """
   Loads all fixtures for a suite, e.g. `"cucumber-expression/tokenizer"`.
 
   Returns `[{name, fixture}]` sorted by file name, where `name` is the file
