@@ -26,7 +26,11 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
   def compile(regexp, %ParameterTypeRegistry{} = registry) do
     {:ok, compile!(regexp, registry)}
   rescue
-    error in [Error] -> {:error, error}
+    error in [Error] ->
+      {:error, error}
+
+    error in [Regex.CompileError] ->
+      {:error, %Error{type: :invalid_regexp, message: Exception.message(error)}}
   end
 
   @spec compile!(Regex.t() | String.t(), ParameterTypeRegistry.t()) :: t()

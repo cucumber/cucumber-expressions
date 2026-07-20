@@ -13,6 +13,13 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeTest do
     assert {:ok, _} = ParameterType.new(name: "unicode", regexps: ~r/[a-z]+/u)
   end
 
+  test "rejects a regexp source that does not compile" do
+    assert {:error, error} = ParameterType.new(name: "bad", regexps: "([")
+
+    assert Exception.message(error) ==
+             "ParameterType Regexp /([/ is not a valid regular expression"
+  end
+
   test "anonymous?/1 is true only for the empty name" do
     assert ParameterType.new!(name: "", regexps: ".*") |> ParameterType.anonymous?()
     refute ParameterType.new!(name: "int", regexps: "\\d+") |> ParameterType.anonymous?()

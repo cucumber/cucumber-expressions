@@ -38,7 +38,7 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
 
       indices ->
         total = GroupBuilder.count_groups(group_builder) + 1
-        indices = indices ++ List.duplicate({-1, 0}, total - length(indices))
+        indices = indices ++ List.duplicate({-1, 0}, max(total - length(indices), 0))
         {group, []} = GroupBuilder.build(group_builder, text, indices)
         group
     end
@@ -63,7 +63,7 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
           {stack, group_starts, false}
 
         c == ?( and not escaping and not char_class ->
-          builder = %GroupBuilder{capturing: not non_capturing?(source, i)}
+          builder = %GroupBuilder{capturing: not non_capturing?(rest)}
           {[builder | stack], [i | group_starts], char_class}
 
         c == ?) and not escaping and not char_class ->
@@ -91,27 +91,24 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
     walk(rest, i + 1, source, stack, group_starts, c == ?\\ and not escaping, char_class)
   end
 
-  defp non_capturing?(source, i) do
-    cond do
-      # The regex is valid, so no bounds check is required.
-      Enum.at(source, i + 1) != ?? ->
-        # (X)
-        false
+  # `after_paren` is the source tail immediately following the `(`.
+  defp non_capturing?([?? | after_question]), do: non_capturing_group?(after_question)
+  # (X)
+  defp non_capturing?(_after_paren), do: false
 
-      Enum.at(source, i + 2) != ?< ->
-        # (?:X), (?idmsuxU-idmsuxU), (?idmsux-idmsux:X), (?=X), (?!X), (?>X)
-        true
+  # (?<=X), (?<!X)
+  defp non_capturing_group?([?<, c | _]) when c in [?=, ?!], do: true
+  # (?<name>X), (?P<name>X), (?'name'X) — PCRE accepts all three spellings.
+  defp non_capturing_group?([?< | _]), do: raise_named_capture_group()
+  defp non_capturing_group?([?P, ?< | _]), do: raise_named_capture_group()
+  defp non_capturing_group?([?' | _]), do: raise_named_capture_group()
+  # (?:X), (?idmsuxU-idmsuxU), (?idmsux-idmsux:X), (?=X), (?!X), (?>X)
+  defp non_capturing_group?(_after_question), do: true
 
-      Enum.at(source, i + 3) in [?=, ?!] ->
-        # (?<=X), (?<!X)
-        true
-
-      true ->
-        # (?<name>X)
-        raise Error,
-          message:
-            "Named capture groups are not supported. " <>
-              "See https://github.com/cucumber/cucumber/issues/329"
-    end
+  defp raise_named_capture_group do
+    raise Error,
+      message:
+        "Named capture groups are not supported. " <>
+          "See https://github.com/cucumber/cucumber/issues/329"
   end
 end

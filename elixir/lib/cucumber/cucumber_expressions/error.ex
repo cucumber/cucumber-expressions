@@ -26,6 +26,8 @@ defmodule Cucumber.CucumberExpressions.Error do
           | :alternative_may_not_be_empty
           | :alternative_may_not_exclusively_contain_optionals
           | :parameter_type_regexps_cannot_use_flags
+          | :invalid_parameter_type_regexp
+          | :invalid_regexp
           | :duplicate_parameter_type_name
           | :anonymous_parameter_type_already_defined
           | :duplicate_preferential_parameter_type
@@ -48,7 +50,7 @@ defmodule Cucumber.CucumberExpressions.Error do
 
   @doc false
   def end_of_line_can_not_be_escaped(expression) do
-    index = codepoint_length(expression) - 1
+    index = String.length(expression) - 1
 
     build(
       :end_of_line_cannot_be_escaped,
@@ -207,6 +209,4 @@ defmodule Cucumber.CucumberExpressions.Error do
       pointer
     end
   end
-
-  defp codepoint_length(string), do: length(String.to_charlist(string))
 end

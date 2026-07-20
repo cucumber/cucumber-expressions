@@ -131,7 +131,23 @@ defmodule Cucumber.CucumberExpressions.ParameterType do
   defp reverse_sources({:ok, sources}), do: {:ok, Enum.reverse(sources)}
   defp reverse_sources({:error, _} = error), do: error
 
-  defp regexp_source(source) when is_binary(source), do: {:ok, source}
+  # Each regexp source has to compile on its own — it becomes one alternative of
+  # the parameter's capture group. Rejecting it here keeps the failure attached
+  # to the parameter type instead of surfacing as a Regex.CompileError from a
+  # later CucumberExpression.compile/2, which is spec'd to return {:error, _}.
+  defp regexp_source(source) when is_binary(source) do
+    case Regex.compile(source, "u") do
+      {:ok, _regex} ->
+        {:ok, source}
+
+      {:error, _reason} ->
+        {:error,
+         %Error{
+           type: :invalid_parameter_type_regexp,
+           message: "ParameterType Regexp /#{source}/ is not a valid regular expression"
+         }}
+    end
+  end
 
   defp regexp_source(%Regex{} = regexp) do
     if unicode_only_opts?(Regex.opts(regexp)) do

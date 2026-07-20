@@ -23,6 +23,10 @@ defmodule Cucumber.CucumberExpressions.RegularExpressionTest do
              RegularExpression.compile(~r/I have (\d+) cukes/, registry())
   end
 
+  test "compile/2 returns an error for a source string that does not compile" do
+    assert {:error, %Error{type: :invalid_regexp}} = RegularExpression.compile("([", registry())
+  end
+
   test "compile/2 accepts a regexp source string" do
     assert {:ok, expression} = RegularExpression.compile("I have (\\d+) cukes", registry())
     assert RegularExpression.source(expression) == "I have (\\d+) cukes"

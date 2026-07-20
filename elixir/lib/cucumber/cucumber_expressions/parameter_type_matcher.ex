@@ -5,11 +5,23 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   # the generator. Positions are byte offsets into the text; `advance_to/2`
   # only probes codepoint boundaries.
 
-  defstruct [:parameter_type, :regex, :text, :match]
+  defstruct [:parameter_type, :regex, :text, :offsets, :match]
 
   @word_boundary ~r/\p{Z}|\p{P}|\p{S}/u
 
   def new(parameter_type, regex, text, position) do
+    %__MODULE__{
+      parameter_type: parameter_type,
+      regex: regex,
+      text: text,
+      offsets: codepoint_offsets(text)
+    }
+    |> probe(position)
+  end
+
+  # Re-probes an existing matcher at `position`, reusing its cached codepoint
+  # offsets rather than re-scanning the text.
+  defp probe(%__MODULE__{regex: regex, text: text} = matcher, position) do
     match =
       with true <- position <= byte_size(text),
            [{match_start, match_length}, {group_start, group_length} | _] <-
@@ -23,7 +35,7 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
         _ -> nil
       end
 
-    %__MODULE__{parameter_type: parameter_type, regex: regex, text: text, match: match}
+    %{matcher | match: match}
   end
 
   def find?(%__MODULE__{match: nil}), do: false
@@ -33,15 +45,14 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   Returns the first matcher at or after `position` whose match is a full word,
   or a matcher positioned at the end of the text.
   """
-  def advance_to(%__MODULE__{parameter_type: parameter_type, regex: regex, text: text}, position) do
-    text
-    |> codepoint_offsets()
+  def advance_to(%__MODULE__{text: text, offsets: offsets} = matcher, position) do
+    offsets
     |> Enum.drop_while(&(&1 < position))
-    |> Enum.find_value(fn probe ->
-      candidate = new(parameter_type, regex, text, probe)
+    |> Enum.find_value(fn offset ->
+      candidate = probe(matcher, offset)
       if find?(candidate) and full_word?(candidate), do: candidate
     end)
-    |> Kernel.||(new(parameter_type, regex, text, byte_size(text)))
+    |> Kernel.||(probe(matcher, byte_size(text)))
   end
 
   def sorts_before?(%__MODULE__{match: a}, %__MODULE__{match: b}) do

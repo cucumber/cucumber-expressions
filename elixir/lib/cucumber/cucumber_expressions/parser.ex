@@ -24,7 +24,7 @@ defmodule Cucumber.CucumberExpressions.Parser do
 
         {:ok, _, _} ->
           # Can't happen if configured properly
-          {:error, %Error{type: :could_not_parse, message: "Could not parse" <> expression}}
+          {:error, %Error{type: :could_not_parse, message: "Could not parse " <> expression}}
       end
     end
   end

@@ -33,29 +33,16 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
   defp initial_tokens([]), do: [%Token{type: :start_of_line, text: "", start: 0, end: 0}]
   defp initial_tokens(_), do: []
 
-  defp loop([codepoint | rest], expression, total, %{treat_as_text: false} = state)
-       when codepoint == ?\\ do
-    loop(rest, expression, total, %{state | escaped: state.escaped + 1, treat_as_text: true})
+  defp loop([codepoint | rest], expression, total, %{treat_as_text: false} = state) do
+    if Token.escape_character?(codepoint) do
+      loop(rest, expression, total, %{state | escaped: state.escaped + 1, treat_as_text: true})
+    else
+      consume(codepoint, rest, expression, total, state)
+    end
   end
 
   defp loop([codepoint | rest], expression, total, state) do
-    case token_type_of(codepoint, state, expression) do
-      {:error, _} = error ->
-        error
-
-      {:ok, current} ->
-        state = %{state | treat_as_text: false}
-
-        state =
-          if new_token?(current, state.previous) do
-            {token, state} = flush(state, state.previous)
-            %{state | tokens: [token | state.tokens], previous: current, buffer: [codepoint]}
-          else
-            %{state | previous: current, buffer: [codepoint | state.buffer]}
-          end
-
-        loop(rest, expression, total, state)
-    end
+    consume(codepoint, rest, expression, total, state)
   end
 
   defp loop([], expression, total, state) do
@@ -72,6 +59,26 @@ defmodule Cucumber.CucumberExpressions.Tokenizer do
     else
       end_of_line = %Token{type: :end_of_line, text: "", start: total, end: total}
       {:ok, Enum.reverse([end_of_line | state.tokens])}
+    end
+  end
+
+  defp consume(codepoint, rest, expression, total, state) do
+    case token_type_of(codepoint, state, expression) do
+      {:error, _} = error ->
+        error
+
+      {:ok, current} ->
+        state = %{state | treat_as_text: false}
+
+        state =
+          if new_token?(current, state.previous) do
+            {token, state} = flush(state, state.previous)
+            %{state | tokens: [token | state.tokens], previous: current, buffer: [codepoint]}
+          else
+            %{state | previous: current, buffer: [codepoint | state.buffer]}
+          end
+
+        loop(rest, expression, total, state)
     end
   end
 

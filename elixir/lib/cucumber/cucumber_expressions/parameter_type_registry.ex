@@ -67,18 +67,18 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
         prefer_for_regexp_match: true
       ],
       [
-        name: "bigdecimal",
+        name: "double",
         regexps: @float_regexp,
-        type: :decimal,
-        transformer: &__MODULE__.to_decimal/1,
+        type: :float,
+        transformer: &__MODULE__.to_float/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
       [
-        name: "biginteger",
-        regexps: @integer_regexps,
-        type: :integer,
-        transformer: &__MODULE__.to_integer/1,
+        name: "bigdecimal",
+        regexps: @float_regexp,
+        type: :decimal,
+        transformer: &__MODULE__.to_decimal/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ],
@@ -107,10 +107,10 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
         prefer_for_regexp_match: false
       ],
       [
-        name: "double",
-        regexps: @float_regexp,
-        type: :float,
-        transformer: &__MODULE__.to_float/1,
+        name: "biginteger",
+        regexps: @integer_regexps,
+        type: :integer,
+        transformer: &__MODULE__.to_integer/1,
         use_for_snippets: false,
         prefer_for_regexp_match: false
       ]

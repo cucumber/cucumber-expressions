@@ -63,6 +63,19 @@ defmodule Cucumber.CucumberExpressions.TreeRegexpTest do
     assert group.children == nil
   end
 
+  test "raises for the PCRE named capture group spellings" do
+    for source <- ["(?P<name>.+)", "(?'name'.+)"] do
+      assert_raise Error, ~r/Named capture groups are not supported/, fn ->
+        TreeRegexp.new!(source)
+      end
+    end
+  end
+
+  test "treats lookbehinds as non-capturing" do
+    tr = TreeRegexp.new!("(?<=a)(?:x)?(b)(?<!c)")
+    assert Enum.map(tr.group_builder.children, & &1.source) == ["b"]
+  end
+
   test "raises for named capture groups" do
     assert_raise Error, ~r/Named capture groups are not supported/, fn ->
       TreeRegexp.new!("^I am a person( named \"(?<first_name>.+) (?<last_name>.+)\")?$")
