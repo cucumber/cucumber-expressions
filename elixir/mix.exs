@@ -38,6 +38,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
     [
       {:decimal, "~> 2.0 or ~> 3.0"},
       {:yaml_elixir, "~> 2.9", only: :test},
+      {:stream_data, "~> 1.4", only: [:dev, :test]},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:styler, "~> 1.11", only: [:dev, :test], runtime: false},
