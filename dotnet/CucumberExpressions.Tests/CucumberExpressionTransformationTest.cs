@@ -9,16 +9,12 @@ namespace CucumberExpressions.Tests;
 
 public class CucumberExpressionTransformationTest : CucumberExpressionTestBase
 {
-    private readonly StubParameterTypeRegistry _parameterTypeRegistry = new();
+    private readonly ParameterTypeRegistry _parameterTypeRegistry = new();
     private readonly ITestOutputHelper _testOutputHelper;
 
     public CucumberExpressionTransformationTest(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
-        var oldIntParameterType = _parameterTypeRegistry.LookupByTypeName("int");
-        _parameterTypeRegistry.Remove(oldIntParameterType);
-        _parameterTypeRegistry.DefineParameterType(new StubParameterType<int>(ParameterTypeConstants.IntParameterName, 
-            new []{ ParameterTypeConstants.IntParameterRegex, "\\d+" }, weight: 1000));
     }
 
     public static IEnumerable<object[]> acceptance_tests_pass_data()

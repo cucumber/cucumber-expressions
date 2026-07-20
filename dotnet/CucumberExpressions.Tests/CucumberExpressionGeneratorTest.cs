@@ -9,7 +9,7 @@ namespace CucumberExpressions.Tests;
 public class CucumberExpressionGeneratorTest : CucumberExpressionTestBase
 {
 
-    private readonly StubParameterTypeRegistry _parameterTypeRegistry = new();
+    private readonly ParameterTypeRegistry _parameterTypeRegistry = new();
     private readonly CucumberExpressionGenerator _generator;
 
     public CucumberExpressionGeneratorTest()
