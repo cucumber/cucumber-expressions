@@ -9,9 +9,9 @@ defmodule Cucumber.CucumberExpressions.Error do
   message string: `{:error, %Error{type: :optional_may_not_be_empty}}`.
   """
 
-  defexception [:message, :type]
-
   alias Cucumber.CucumberExpressions.Token
+
+  defexception [:message, :type]
 
   @typedoc "A stable identifier for the kind of problem, safe to pattern-match on."
   @type error_type ::

@@ -2,16 +2,13 @@ defmodule Cucumber.CucumberExpressions.BangFunctionsTest do
   use ExUnit.Case, async: true
 
   alias Cucumber.CucumberExpressions
-
-  alias Cucumber.CucumberExpressions.{
-    CucumberExpression,
-    CucumberExpressionParser,
-    CucumberExpressionTokenizer,
-    Error,
-    ParameterType,
-    ParameterTypeRegistry,
-    UndefinedParameterTypeError
-  }
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.CucumberExpressionParser
+  alias Cucumber.CucumberExpressions.CucumberExpressionTokenizer
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.UndefinedParameterTypeError
 
   defp registry, do: ParameterTypeRegistry.new()
 

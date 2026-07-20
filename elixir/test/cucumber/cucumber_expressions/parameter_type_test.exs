@@ -21,8 +21,8 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeTest do
   end
 
   test "anonymous?/1 is true only for the empty name" do
-    assert ParameterType.new!(name: "", regexps: ".*") |> ParameterType.anonymous?()
-    refute ParameterType.new!(name: "int", regexps: "\\d+") |> ParameterType.anonymous?()
-    refute ParameterType.new!(name: nil, regexps: ".*") |> ParameterType.anonymous?()
+    assert [name: "", regexps: ".*"] |> ParameterType.new!() |> ParameterType.anonymous?()
+    refute [name: "int", regexps: "\\d+"] |> ParameterType.new!() |> ParameterType.anonymous?()
+    refute [name: nil, regexps: ".*"] |> ParameterType.new!() |> ParameterType.anonymous?()
   end
 end

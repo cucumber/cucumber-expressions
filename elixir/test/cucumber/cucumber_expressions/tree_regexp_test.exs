@@ -1,7 +1,8 @@
 defmodule Cucumber.CucumberExpressions.TreeRegexpTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Error, TreeRegexp}
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.TreeRegexp
 
   test "exposes the group source" do
     tr = TreeRegexp.new!(~r/(a(?:b)?)(c)/)

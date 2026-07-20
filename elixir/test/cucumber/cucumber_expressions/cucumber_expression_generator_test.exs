@@ -1,13 +1,11 @@
 defmodule Cucumber.CucumberExpressions.CucumberExpressionGeneratorTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{
-    CucumberExpression,
-    CucumberExpressionGenerator,
-    GeneratedExpression,
-    ParameterType,
-    ParameterTypeRegistry
-  }
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.CucumberExpressionGenerator
+  alias Cucumber.CucumberExpressions.GeneratedExpression
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
 
   defp assert_expression(registry, expected_expression, expected_argument_names, text) do
     generated = hd(CucumberExpressionGenerator.generate_expressions(registry, text))

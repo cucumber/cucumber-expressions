@@ -5,13 +5,11 @@ defmodule Cucumber.CucumberExpressions.RegularExpression do
   Cucumber applies to classic regexp step definitions.
   """
 
-  alias Cucumber.CucumberExpressions.{
-    Argument,
-    Error,
-    ParameterType,
-    ParameterTypeRegistry,
-    TreeRegexp
-  }
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.TreeRegexp
 
   @enforce_keys [:tree_regexp, :parameter_type_registry]
   defstruct [:tree_regexp, :parameter_type_registry]

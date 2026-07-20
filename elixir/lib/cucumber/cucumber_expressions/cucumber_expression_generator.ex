@@ -4,13 +4,11 @@ defmodule Cucumber.CucumberExpressions.CucumberExpressionGenerator do
   behind "undefined step" snippets.
   """
 
-  alias Cucumber.CucumberExpressions.{
-    CombinatorialGeneratedExpressionFactory,
-    GeneratedExpression,
-    ParameterType,
-    ParameterTypeMatcher,
-    ParameterTypeRegistry
-  }
+  alias Cucumber.CucumberExpressions.CombinatorialGeneratedExpressionFactory
+  alias Cucumber.CucumberExpressions.GeneratedExpression
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeMatcher
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
 
   @doc """
   Generates suggested expressions for `text`, most specific first.

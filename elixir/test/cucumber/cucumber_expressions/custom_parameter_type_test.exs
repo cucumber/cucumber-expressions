@@ -1,13 +1,11 @@
 defmodule Cucumber.CucumberExpressions.CustomParameterTypeTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{
-    Argument,
-    CucumberExpression,
-    ParameterType,
-    ParameterTypeRegistry,
-    RegularExpression
-  }
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
 
   defp registry_with_color do
     ParameterTypeRegistry.define_parameter_type!(

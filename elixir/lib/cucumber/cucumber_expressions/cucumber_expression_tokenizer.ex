@@ -4,7 +4,8 @@ defmodule Cucumber.CucumberExpressions.CucumberExpressionTokenizer do
   `Cucumber.CucumberExpressions.Token`s.
   """
 
-  alias Cucumber.CucumberExpressions.{Error, Token}
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.Token
 
   @spec tokenize(String.t()) :: {:ok, [Token.t()]} | {:error, Error.t()}
   def tokenize(expression) do

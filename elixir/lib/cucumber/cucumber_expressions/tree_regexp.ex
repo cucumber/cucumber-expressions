@@ -10,7 +10,9 @@ defmodule Cucumber.CucumberExpressions.TreeRegexp do
   `Cucumber.CucumberExpressions.Error`.
   """
 
-  alias Cucumber.CucumberExpressions.{Error, Group, GroupBuilder}
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.Group
+  alias Cucumber.CucumberExpressions.GroupBuilder
 
   @enforce_keys [:regexp, :group_builder]
   defstruct [:regexp, :group_builder]

@@ -1,13 +1,11 @@
 defmodule Cucumber.CucumberExpressions.ExpressionProtocolTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{
-    Argument,
-    CucumberExpression,
-    Expression,
-    ParameterTypeRegistry,
-    RegularExpression
-  }
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.Expression
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
 
   defp registry, do: ParameterTypeRegistry.new()
 

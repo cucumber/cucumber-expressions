@@ -10,13 +10,15 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   @word_boundary ~r/\p{Z}|\p{P}|\p{S}/u
 
   def new(parameter_type, regexp, text, match_position) do
-    %__MODULE__{
-      parameter_type: parameter_type,
-      regexp: regexp,
-      text: text,
-      offsets: codepoint_offsets(text)
-    }
-    |> probe(match_position)
+    probe(
+      %__MODULE__{
+        parameter_type: parameter_type,
+        regexp: regexp,
+        text: text,
+        offsets: codepoint_offsets(text)
+      },
+      match_position
+    )
   end
 
   # Re-probes an existing matcher at `match_position`, reusing its cached
@@ -57,10 +59,10 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeMatcher do
   end
 
   def sorts_before?(%__MODULE__{match: a}, %__MODULE__{match: b}) do
-    if a.start != b.start do
-      a.start < b.start
-    else
+    if a.start == b.start do
       String.length(a.group) >= String.length(b.group)
+    else
+      a.start < b.start
     end
   end
 

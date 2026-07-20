@@ -8,12 +8,10 @@ defmodule Cucumber.CucumberExpressions.ParameterTypeRegistry do
   `add/2`, which returns a new registry — thread the value through your code.
   """
 
-  alias Cucumber.CucumberExpressions.{
-    AmbiguousParameterTypeError,
-    CucumberExpressionGenerator,
-    Error,
-    ParameterType
-  }
+  alias Cucumber.CucumberExpressions.AmbiguousParameterTypeError
+  alias Cucumber.CucumberExpressions.CucumberExpressionGenerator
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.ParameterType
 
   defstruct by_name: %{}, by_regexp: %{}, order: []
 

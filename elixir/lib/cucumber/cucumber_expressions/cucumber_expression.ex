@@ -6,15 +6,13 @@ defmodule Cucumber.CucumberExpressions.CucumberExpression do
   `Cucumber.CucumberExpressions.ParameterTypeRegistry`; match text with `match/2`.
   """
 
-  alias Cucumber.CucumberExpressions.{
-    Argument,
-    CucumberExpressionParser,
-    Error,
-    Node,
-    ParameterTypeRegistry,
-    TreeRegexp,
-    UndefinedParameterTypeError
-  }
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.CucumberExpressionParser
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.Node
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.TreeRegexp
+  alias Cucumber.CucumberExpressions.UndefinedParameterTypeError
 
   @enforce_keys [:source, :tree_regexp, :parameter_types]
   defstruct [:source, :tree_regexp, :parameter_types]

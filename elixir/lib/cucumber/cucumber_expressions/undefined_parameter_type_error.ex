@@ -4,9 +4,9 @@ defmodule Cucumber.CucumberExpressions.UndefinedParameterTypeError do
   `Cucumber.CucumberExpressions.ParameterTypeRegistry`.
   """
 
-  defexception [:message, :undefined_parameter_type_name]
-
   alias Cucumber.CucumberExpressions.Error
+
+  defexception [:message, :undefined_parameter_type_name]
 
   @type t :: %__MODULE__{message: String.t(), undefined_parameter_type_name: String.t()}
 

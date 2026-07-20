@@ -1,12 +1,10 @@
 defmodule Cucumber.CucumberExpressions.RegularExpressionMatchingTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{
-    Argument,
-    ParameterTypeRegistry,
-    RegularExpression,
-    Testdata
-  }
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
+  alias Cucumber.CucumberExpressions.Testdata
 
   for {name, fixture} <- Testdata.load("regular-expression/matching") do
     @fixture fixture

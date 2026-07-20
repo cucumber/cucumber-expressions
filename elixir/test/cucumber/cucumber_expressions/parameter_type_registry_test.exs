@@ -1,7 +1,8 @@
 defmodule Cucumber.CucumberExpressions.ParameterTypeRegistryTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{ParameterType, ParameterTypeRegistry}
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
 
   @capitalised_word "[A-Z]+\\w+"
 

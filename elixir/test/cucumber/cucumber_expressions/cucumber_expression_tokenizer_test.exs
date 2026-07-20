@@ -1,7 +1,9 @@
 defmodule Cucumber.CucumberExpressions.CucumberExpressionTokenizerTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{CucumberExpressionTokenizer, Testdata, Token}
+  alias Cucumber.CucumberExpressions.CucumberExpressionTokenizer
+  alias Cucumber.CucumberExpressions.Testdata
+  alias Cucumber.CucumberExpressions.Token
 
   for {name, fixture} <- Testdata.load("cucumber-expression/tokenizer") do
     @fixture fixture

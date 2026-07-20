@@ -4,7 +4,10 @@ defmodule Cucumber.CucumberExpressions.Argument do
   transforms it. `value/1` produces the transformed value.
   """
 
-  alias Cucumber.CucumberExpressions.{Error, Group, ParameterType, TreeRegexp}
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.Group
+  alias Cucumber.CucumberExpressions.ParameterType
+  alias Cucumber.CucumberExpressions.TreeRegexp
 
   @enforce_keys [:group, :parameter_type]
   defstruct [:group, :parameter_type]

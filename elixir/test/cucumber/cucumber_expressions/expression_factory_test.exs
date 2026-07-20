@@ -2,12 +2,9 @@ defmodule Cucumber.CucumberExpressions.ExpressionFactoryTest do
   use ExUnit.Case, async: true
 
   alias Cucumber.CucumberExpressions, as: CE
-
-  alias Cucumber.CucumberExpressions.{
-    CucumberExpression,
-    ParameterTypeRegistry,
-    RegularExpression
-  }
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
 
   setup do
     {:ok, registry: ParameterTypeRegistry.new()}

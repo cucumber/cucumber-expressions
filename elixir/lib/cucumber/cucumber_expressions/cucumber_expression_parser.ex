@@ -8,7 +8,9 @@ defmodule Cucumber.CucumberExpressions.CucumberExpressionParser do
   parser" — or `{:error, error}`.
   """
 
-  alias Cucumber.CucumberExpressions.{CucumberExpressionTokenizer, Error, Node}
+  alias Cucumber.CucumberExpressions.CucumberExpressionTokenizer
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.Node
 
   @spec parse(String.t()) :: {:ok, Node.t()} | {:error, Error.t()}
   def parse(expression) do

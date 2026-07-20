@@ -17,11 +17,9 @@ defmodule Cucumber.CucumberExpressions do
   step definition patterns.
   """
 
-  alias Cucumber.CucumberExpressions.{
-    CucumberExpression,
-    ParameterTypeRegistry,
-    RegularExpression
-  }
+  alias Cucumber.CucumberExpressions.CucumberExpression
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
 
   @type expression :: CucumberExpression.t() | RegularExpression.t()
 

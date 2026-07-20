@@ -1,11 +1,13 @@
 defmodule Cucumber.CucumberExpressions.ArgumentTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Argument, Error, ParameterTypeRegistry, TreeRegexp}
+  alias Cucumber.CucumberExpressions.Argument
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.TreeRegexp
 
   defp string_type do
-    ParameterTypeRegistry.new()
-    |> ParameterTypeRegistry.lookup_by_type_name("string")
+    ParameterTypeRegistry.lookup_by_type_name(ParameterTypeRegistry.new(), "string")
   end
 
   test "exposes parameter_type" do

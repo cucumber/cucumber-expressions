@@ -1,7 +1,9 @@
 defmodule Cucumber.CucumberExpressions.RegularExpressionTest do
   use ExUnit.Case, async: true
 
-  alias Cucumber.CucumberExpressions.{Error, ParameterTypeRegistry, RegularExpression}
+  alias Cucumber.CucumberExpressions.Error
+  alias Cucumber.CucumberExpressions.ParameterTypeRegistry
+  alias Cucumber.CucumberExpressions.RegularExpression
 
   defp registry, do: ParameterTypeRegistry.new()
 
