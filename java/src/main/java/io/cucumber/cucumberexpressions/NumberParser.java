@@ -37,7 +37,7 @@ final class NumberParser {
         }
         // Fall back to default big decimal format
         // if the locale does not have a DecimalFormat
-        return new BigDecimal(removeExponentPlusSign(s));
+        return new BigDecimal(s);
     }
 
     private Number parse(String s) {
