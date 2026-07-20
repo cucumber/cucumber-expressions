@@ -15,16 +15,12 @@ defmodule Cucumber.CucumberExpressions.Parser do
     with {:ok, token_list} <- Tokenizer.tokenize(expression) do
       tokens = List.to_tuple(token_list)
 
+      # A parse that does not consume every token means this module is
+      # misconfigured, not that the expression is invalid. Let it crash rather
+      # than return an Error, which callers surface as "your expression is bad".
       case parse_expression(expression, tokens, 0) do
-        {:error, _} = error ->
-          error
-
-        {:ok, consumed, ast} when consumed == tuple_size(tokens) ->
-          {:ok, ast}
-
-        {:ok, _, _} ->
-          # Can't happen if configured properly
-          {:error, %Error{type: :could_not_parse, message: "Could not parse " <> expression}}
+        {:error, _} = error -> error
+        {:ok, consumed, ast} when consumed == tuple_size(tokens) -> {:ok, ast}
       end
     end
   end
@@ -87,10 +83,6 @@ defmodule Cucumber.CucumberExpressions.Parser do
 
       :alternation ->
         {:error, Error.alternation_not_allowed_in_optional(expression, token)}
-
-      _ ->
-        # If configured correctly this will never happen
-        {:ok, 0, nil}
     end
   end
 
@@ -111,10 +103,6 @@ defmodule Cucumber.CucumberExpressions.Parser do
              :alternation
            ] ->
         {:error, Error.invalid_parameter_type_name_in_node(expression, token)}
-
-      _ ->
-        # If configured correctly this will never happen
-        {:ok, 0, nil}
     end
   end
 
@@ -236,17 +224,8 @@ defmodule Cucumber.CucumberExpressions.Parser do
           do_parse_until(expression, parsers, tokens, start_at, end_types, current + consumed, [
             node | acc
           ])
-
-        {:ok, 0, _} ->
-          # If configured correctly this will never happen. Keep to avoid infinite loops.
-          {:error, %Error{type: :no_eligible_parsers, message: "No eligible parsers"}}
       end
     end
-  end
-
-  defp parse_token(_expression, [], _tokens, _current) do
-    # If configured correctly this will never happen
-    {:error, %Error{message: "No eligible parsers"}}
   end
 
   defp parse_token(expression, [parser | rest], tokens, current) do
@@ -257,13 +236,10 @@ defmodule Cucumber.CucumberExpressions.Parser do
     end
   end
 
-  defp looking_at(tokens, at, type) do
-    cond do
-      at < 0 -> type == :start_of_line
-      at >= tuple_size(tokens) -> type == :end_of_line
-      true -> elem(tokens, at).type == type
-    end
-  end
+  # `at` is always in bounds: the tokenizer appends an `:end_of_line` token and
+  # every `end_types` list includes it, so parsing halts before running off the
+  # end. `do_parse_until/7` bounds-checks before calling this.
+  defp looking_at(tokens, at, type), do: elem(tokens, at).type == type
 
   defp looking_at_any(tokens, at, types), do: Enum.any?(types, &looking_at(tokens, at, &1))
 

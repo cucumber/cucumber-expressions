@@ -31,8 +31,6 @@ defmodule Cucumber.CucumberExpressions.Error do
           | :duplicate_parameter_type_name
           | :anonymous_parameter_type_already_defined
           | :duplicate_preferential_parameter_type
-          | :could_not_parse
-          | :no_eligible_parsers
 
   @type t :: %__MODULE__{message: String.t(), type: error_type() | nil}
 

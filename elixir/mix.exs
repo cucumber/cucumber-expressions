@@ -8,7 +8,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
     [
       app: :cucumber_cucumber_expressions,
       version: @version,
-      elixir: "~> 1.15",
+      elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
@@ -20,7 +20,7 @@ defmodule Cucumber.CucumberExpressions.MixProject do
       docs: docs(),
       # Testdata is a test-support helper, not library code.
       test_coverage: [
-        summary: [threshold: 95],
+        summary: [threshold: 100],
         ignore_modules: [Cucumber.CucumberExpressions.Testdata]
       ]
     ]

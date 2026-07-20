@@ -150,7 +150,8 @@ defmodule Cucumber.CucumberExpressions.ParameterType do
   end
 
   defp regexp_source(%Regex{} = regexp) do
-    if unicode_only_opts?(Regex.opts(regexp)) do
+    # Regex.opts/1 returns an atom list as of Elixir 1.17, this project's floor.
+    if Regex.opts(regexp) -- [:unicode, :ucp] == [] do
       {:ok, Regex.source(regexp)}
     else
       {:error,
@@ -160,11 +161,4 @@ defmodule Cucumber.CucumberExpressions.ParameterType do
        }}
     end
   end
-
-  # Regex.opts/1 returns an atom list on recent Elixir versions and a string
-  # of modifiers on older ones; the string clause is unreachable on the
-  # version Dialyzer runs under.
-  @dialyzer {:no_match, unicode_only_opts?: 1}
-  defp unicode_only_opts?(opts) when is_list(opts), do: opts -- [:unicode, :ucp] == []
-  defp unicode_only_opts?(opts) when is_binary(opts), do: opts in ["", "u"]
 end
