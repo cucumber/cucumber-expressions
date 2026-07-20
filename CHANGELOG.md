@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- [.Net] Fix codepoint offsets for tokens ([#440](https://github.com/cucumber/cucumber-expressions/pull/440))
+
 ## [20.0.0] - 2026-06-11
 ### Changed
 - [JavaScript] BREAKING CHANGE: Switch to ESM ([#431](https://github.com/cucumber/cucumber-expressions/pull/431))
