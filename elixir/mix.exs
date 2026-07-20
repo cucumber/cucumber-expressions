@@ -18,7 +18,11 @@ defmodule Varar.CucumberExpressions.MixProject do
           "Elixir port maintained by Oselvar.",
       package: package(),
       docs: docs(),
-      test_coverage: [summary: [threshold: 85]]
+      # Testdata is a test-support helper, not library code.
+      test_coverage: [
+        summary: [threshold: 95],
+        ignore_modules: [Varar.CucumberExpressions.Testdata]
+      ]
     ]
   end
 
