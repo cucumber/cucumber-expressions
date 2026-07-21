@@ -60,14 +60,12 @@ class ParameterTypeRegistry {
   }
 }
 
-/// Lists parameter types for the internal expression implementations.
 Iterable<ParameterType<Object?>> registeredParameterTypes(
   ParameterTypeRegistry registry,
 ) {
   return registry._parameterTypeByName.values;
 }
 
-/// Looks up a parameter type for the internal expression implementations.
 ParameterType<Object?>? registeredParameterTypeByName(
   ParameterTypeRegistry registry,
   String typeName,
@@ -75,7 +73,6 @@ ParameterType<Object?>? registeredParameterTypeByName(
   return registry._parameterTypeByName[typeName];
 }
 
-/// Lists parameter types with a matching regular-expression source.
 List<ParameterType<Object?>>? registeredParameterTypesByRegexp(
   ParameterTypeRegistry registry,
   String parameterTypeRegexp,

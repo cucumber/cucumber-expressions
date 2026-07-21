@@ -25,7 +25,6 @@ class GeneratedExpression {
   }
 }
 
-/// Creates generated expressions for the internal combinatorial generator.
 GeneratedExpression createGeneratedExpression(
   String expressionTemplate,
   List<ParameterType<Object?>> parameterTypes,

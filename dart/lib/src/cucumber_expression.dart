@@ -10,10 +10,7 @@ import 'package:cucumber_expressions/src/tree_regexp.dart';
 
 final RegExp _escapePattern = RegExp(r'([\\^\[({$.|?*+})\]])');
 
-/// A Cucumber Expression: a more intuitive alternative to regular expressions
-/// for matching step text and extracting arguments.
 class CucumberExpression implements Expression {
-  /// Parses [_expression] using types from [_parameterTypeRegistry].
   CucumberExpression(this._expression, this._parameterTypeRegistry) {
     final parser = CucumberExpressionParser();
     final ast = parser.parse(_expression);
@@ -68,7 +65,6 @@ class CucumberExpression implements Expression {
   }
 
   String _rewriteAlternation(Node node) {
-    // Make sure the alternative parts aren't empty and don't contain parameters
     for (final alternative in node.nodes ?? <Node>[]) {
       final altNodes = alternative.nodes;
       if (altNodes == null || altNodes.isEmpty) {
@@ -156,7 +152,6 @@ class CucumberExpression implements Expression {
     return buildArguments(group, _parameterTypes);
   }
 
-  /// The regular expression that this Cucumber Expression compiles to.
   RegExp get regexp => _treeRegexp.regexp;
 
   @override

@@ -14,7 +14,6 @@ class CucumberExpressionException implements Exception {
   String toString() => message;
 }
 
-/// Creates an exception for an alternative that only contains optionals.
 CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(
   Node node,
   String expression,
@@ -30,7 +29,6 @@ CucumberExpressionException createAlternativeMayNotExclusivelyContainOptionals(
   );
 }
 
-/// Creates an exception for an empty alternative.
 CucumberExpressionException createAlternativeMayNotBeEmpty(
   Node node,
   String expression,
@@ -46,7 +44,6 @@ CucumberExpressionException createAlternativeMayNotBeEmpty(
   );
 }
 
-/// Creates an exception for an empty optional.
 CucumberExpressionException createOptionalMayNotBeEmpty(
   Node node,
   String expression,
@@ -62,7 +59,6 @@ CucumberExpressionException createOptionalMayNotBeEmpty(
   );
 }
 
-/// Creates an exception for a parameter type inside an optional.
 CucumberExpressionException createParameterIsNotAllowedInOptional(
   Node node,
   String expression,
@@ -78,7 +74,6 @@ CucumberExpressionException createParameterIsNotAllowedInOptional(
   );
 }
 
-/// Creates an exception for an optional nested inside another optional.
 CucumberExpressionException createOptionalIsNotAllowedInOptional(
   Node node,
   String expression,
@@ -94,7 +89,6 @@ CucumberExpressionException createOptionalIsNotAllowedInOptional(
   );
 }
 
-/// Creates an exception for a trailing escape character at end of line.
 CucumberExpressionException createTheEndOfLineCanNotBeEscaped(
   String expression,
 ) {
@@ -110,7 +104,6 @@ CucumberExpressionException createTheEndOfLineCanNotBeEscaped(
   );
 }
 
-/// Creates an exception for a begin token without a matching end token.
 CucumberExpressionException createMissingEndToken(
   String expression,
   TokenType beginToken,
@@ -131,7 +124,6 @@ CucumberExpressionException createMissingEndToken(
   );
 }
 
-/// Creates an exception for an alternation used inside an optional.
 CucumberExpressionException createAlternationNotAllowedInOptional(
   String expression,
   Token current,
@@ -147,7 +139,6 @@ CucumberExpressionException createAlternationNotAllowedInOptional(
   );
 }
 
-/// Creates an exception for an illegal escape sequence.
 CucumberExpressionException createCantEscaped(String expression, int index) {
   return CucumberExpressionException(
     _message(
@@ -160,7 +151,6 @@ CucumberExpressionException createCantEscaped(String expression, int index) {
   );
 }
 
-/// Creates an exception for an invalid parameter type name.
 CucumberExpressionException createInvalidParameterTypeNameInNode(
   Token token,
   String expression,
@@ -218,7 +208,6 @@ class AmbiguousParameterTypeException extends CucumberExpressionException {
   AmbiguousParameterTypeException(super.message);
 }
 
-/// Creates the internal ambiguity error for a regular-expression match.
 AmbiguousParameterTypeException ambiguousParameterTypeExceptionForRegexp(
   String parameterTypeRegexp,
   RegExp expressionRegexp,
@@ -262,7 +251,6 @@ class UndefinedParameterTypeException extends CucumberExpressionException {
   final String undefinedParameterTypeName;
 }
 
-/// Creates an exception for an undefined parameter type.
 UndefinedParameterTypeException createUndefinedParameterType(
   Node node,
   String expression,

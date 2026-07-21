@@ -56,7 +56,6 @@ class ParameterType<T> {
   }
 }
 
-/// Orders parameter types for the internal registry and generator.
 int compareParameterTypes(
   ParameterType<Object?> pt1,
   ParameterType<Object?> pt2,

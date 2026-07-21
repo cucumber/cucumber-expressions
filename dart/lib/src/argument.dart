@@ -20,7 +20,6 @@ class Argument<T> {
   }
 }
 
-/// Builds arguments for the internal expression implementations.
 List<Argument<Object?>> buildArguments(
   Group group,
   List<ParameterType<Object?>> parameterTypes,

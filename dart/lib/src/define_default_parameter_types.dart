@@ -25,8 +25,6 @@ BigInt? _toBigInt(List<String?> s) {
 
 String? _toStringValue(List<String?> s) => s.first;
 
-/// Registers the built-in parameter types (such as `{int}`, `{float}` and
-/// `{string}`) through [defineParameterType].
 void defineDefaultParameterTypes(
   void Function<T>(ParameterType<T>) defineParameterType,
 ) {

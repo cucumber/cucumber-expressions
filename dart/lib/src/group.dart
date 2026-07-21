@@ -21,7 +21,6 @@ class Group {
   }
 }
 
-/// Creates groups for the internal regular-expression tree builder.
 Group buildGroup(String? value, int? start, int? end, List<Group>? children) {
   return Group._(value, start, end, children);
 }

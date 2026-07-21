@@ -21,7 +21,6 @@ class CucumberExpressionGenerator {
   }
 }
 
-/// Generates expressions for an internal subset of parameter types.
 List<GeneratedExpression> generateExpressionsForParameterTypes(
   String text,
   Iterable<ParameterType<Object?>> Function() parameterTypes,
@@ -49,7 +48,6 @@ List<GeneratedExpression> generateExpressionsForParameterTypes(
       matchingParameterTypeMatchers = matchingParameterTypeMatchers
         ..sort(ParameterTypeMatcher.compare);
 
-      // Find all the best parameter type matchers, they are all candidates.
       final bestParameterTypeMatcher = matchingParameterTypeMatchers[0];
       final bestParameterTypeMatchers = matchingParameterTypeMatchers
           .where(
@@ -58,8 +56,6 @@ List<GeneratedExpression> generateExpressionsForParameterTypes(
           )
           .toList();
 
-      // Build a list of parameter types without duplicates, sorted so
-      // preferential parameter types are listed first.
       var parameterTypes = <ParameterType<Object?>>[];
       for (final parameterTypeMatcher in bestParameterTypeMatchers) {
         if (!parameterTypes.contains(parameterTypeMatcher.parameterType)) {

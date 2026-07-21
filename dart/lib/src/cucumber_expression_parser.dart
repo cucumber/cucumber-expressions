@@ -15,7 +15,6 @@ typedef _Parser = _Result Function(
   int current,
 );
 
-/// text := whitespace | ')' | '}' | .
 _Result _parseText(String expression, List<Token> tokens, int current) {
   final token = tokens[current];
   switch (token.type) {
@@ -32,12 +31,10 @@ _Result _parseText(String expression, List<Token> tokens, int current) {
     case TokenType.endOfLine:
     case TokenType.beginOptional:
     case TokenType.beginParameter:
-      // If configured correctly this will never happen
       return const _Result(0, []);
   }
 }
 
-/// name := whitespace | .
 _Result _parseName(String expression, List<Token> tokens, int current) {
   final token = tokens[current];
   switch (token.type) {
@@ -54,12 +51,10 @@ _Result _parseName(String expression, List<Token> tokens, int current) {
       throw createInvalidParameterTypeNameInNode(token, expression);
     case TokenType.startOfLine:
     case TokenType.endOfLine:
-      // If configured correctly this will never happen
       return const _Result(0, []);
   }
 }
 
-/// parameter := '{' + name* + '}'
 final _Parser _parseParameter = _parseBetween(
   NodeType.parameter,
   TokenType.beginParameter,
@@ -67,8 +62,6 @@ final _Parser _parseParameter = _parseBetween(
   [_parseName],
 );
 
-/// optional := '(' + option* + ')'
-/// option := optional | parameter | text
 final List<_Parser> _optionalSubParsers = [];
 final _Parser _parseOptional = _parseBetween(
   NodeType.optional,
@@ -77,7 +70,6 @@ final _Parser _parseOptional = _parseBetween(
   _optionalSubParsers,
 );
 
-/// alternation := alternative* + ( '/' + alternative* )+
 _Result _parseAlternativeSeparator(
   String expression,
   List<Token> tokens,
@@ -99,11 +91,6 @@ final List<_Parser> _alternativeParsers = [
   _parseText,
 ];
 
-/// alternation := (?<=left-boundary) + alternative* + ( '/' + alternative* )+
-///                + (?=right-boundary)
-/// left-boundary := whitespace | } | ^
-/// right-boundary := whitespace | { | $
-/// alternative := optional | parameter | text
 _Result _parseAlternation(String expression, List<Token> tokens, int current) {
   final previous = current - 1;
   if (!_lookingAtAny(tokens, previous, [
@@ -132,7 +119,6 @@ _Result _parseAlternation(String expression, List<Token> tokens, int current) {
 
   final start = tokens[current].start;
   final end = tokens[subCurrent].start;
-  // Does not consume right hand boundary token
   return _Result(result.consumed, [
     Node(
       NodeType.alternation,
@@ -144,7 +130,6 @@ _Result _parseAlternation(String expression, List<Token> tokens, int current) {
   ]);
 }
 
-/// cucumber-expression := ( alternation | optional | parameter | text )*
 final _Parser _parseCucumberExpression = _parseBetween(
   NodeType.expression,
   TokenType.startOfLine,
@@ -152,16 +137,13 @@ final _Parser _parseCucumberExpression = _parseBetween(
   [_parseAlternation, _parseOptional, _parseParameter, _parseText],
 );
 
-/// Parses a Cucumber Expression string into an abstract syntax tree.
 class CucumberExpressionParser {
-  /// Creates a parser, wiring up the recursive optional sub-parsers.
   CucumberExpressionParser() {
     if (_optionalSubParsers.isEmpty) {
       _optionalSubParsers.addAll([_parseOptional, _parseParameter, _parseText]);
     }
   }
 
-  /// Parses [expression] and returns the root [Node] of the resulting tree.
   Node parse(String expression) {
     final tokenizer = CucumberExpressionTokenizer();
     final tokens = tokenizer.tokenize(expression);
@@ -190,7 +172,6 @@ _Parser _parseBetween(
     );
     subCurrent += result.consumed;
 
-    // endToken not found
     if (!_lookingAt(tokens, subCurrent, endToken)) {
       throw createMissingEndToken(
         expression,
@@ -199,7 +180,6 @@ _Parser _parseBetween(
         tokens[current],
       );
     }
-    // consumes endToken
     final start = tokens[current].start;
     final end = tokens[subCurrent].end;
     final consumed = subCurrent + 1 - current;
@@ -220,7 +200,6 @@ _Result _parseToken(
       return result;
     }
   }
-  // If configured correctly this will never happen
   throw StateError('No eligible parsers for $tokens');
 }
 
@@ -240,8 +219,6 @@ _Result _parseTokensUntil(
     }
     final result = _parseToken(expression, parsers, tokens, current);
     if (result.consumed == 0) {
-      // If configured correctly this will never happen
-      // Keep to avoid infinite loops
       throw StateError('No eligible parsers for $tokens');
     }
     current += result.consumed;
@@ -256,8 +233,6 @@ bool _lookingAtAny(List<Token> tokens, int at, List<TokenType> tokenTypes) {
 
 bool _lookingAt(List<Token> tokens, int at, TokenType token) {
   if (at < 0) {
-    // If configured correctly this will never happen
-    // Keep for completeness
     return token == TokenType.startOfLine;
   }
   if (at >= tokens.length) {
