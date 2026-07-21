@@ -35,7 +35,7 @@ public class CucumberExpressionException : Exception {
     }
 
     internal static CucumberExpressionException CreateTheEndOfLineCanNotBeEscaped(string expression) {
-        int index = expression.Length - 1;
+        int index = CodePointCount(expression) - 1;
         return new CucumberExpressionException(GetMessage(
                 index,
                 expression,
@@ -88,6 +88,19 @@ public class CucumberExpressionException : Exception {
                 PointAt(node),
                 "An alternative may not exclusively contain optionals",
                 "If you did not mean to use an optional you can use '\\(' to escape the '('"));
+    }
+
+    // The caret index is a codepoint offset; string.Length counts UTF-16 code
+    // units, which is one too many for every character outside the BMP.
+    private static int CodePointCount(string expression) {
+        int count = 0;
+        for (int i = 0; i < expression.Length; i++) {
+            if (char.IsHighSurrogate(expression[i]) && i + 1 < expression.Length && char.IsLowSurrogate(expression[i + 1])) {
+                i++;
+            }
+            count++;
+        }
+        return count;
     }
 
     private static string ThisCucumberExpressionHasAProblemAt(int index) {
