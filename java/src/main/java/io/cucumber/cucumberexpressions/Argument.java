@@ -20,7 +20,7 @@ public final class Argument<T> {
 
         if (argGroups.size() != parameterTypes.size()) {
             // This requires regex injection through a Cucumber expression.
-            // Regex injection should be be possible any more.
+            // Regex injection should not be possible anymore.
             throw new IllegalArgumentException("Group has %d capture groups, but there were %d parameter types".formatted(
                     argGroups.size(), 
                     parameterTypes.size()

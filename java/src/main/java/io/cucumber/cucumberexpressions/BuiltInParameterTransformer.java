@@ -16,7 +16,7 @@ final class BuiltInParameterTransformer implements ParameterByTypeTransformer {
     private final NumberParser numberParser;
 
     BuiltInParameterTransformer(Locale locale) {
-        this.numberParser = new NumberParser(locale);
+        this.numberParser = NumberParser.getInstance(locale);
     }
 
     @Override
