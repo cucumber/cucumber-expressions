@@ -1,79 +1,92 @@
 package io.cucumber.cucumberexpressions;
 
+import io.cucumber.cucumberexpressions.NumberParser.Parser.DecimalFormatParser;
+import io.cucumber.cucumberexpressions.NumberParser.Parser.FallbackParser;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
 final class NumberParser {
-    private final NumberFormat numberFormat;
-    private final String exponentSeparator;
+    private final Parser delegate;
 
     NumberParser(Locale locale) {
-        DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
-        this.exponentSeparator = symbols.getExponentSeparator();
-        this.numberFormat = DecimalFormat.getNumberInstance(locale);
+        var numberFormat = DecimalFormat.getNumberInstance(locale);
         if (numberFormat instanceof DecimalFormat decimalFormat) {
             decimalFormat.setParseBigDecimal(true);
+            var symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
             decimalFormat.setDecimalFormatSymbols(symbols);
+            delegate = new DecimalFormatParser(numberFormat);
+        } else {
+            delegate = new FallbackParser();
         }
     }
 
     double parseDouble(String s) {
-        return parse(s).doubleValue();
+        return delegate.parseDouble(s);
     }
 
     float parseFloat(String s) {
-        return parse(s).floatValue();
+        return delegate.parseFloat(s);
     }
 
     BigDecimal parseBigDecimal(String s) {
-        if (numberFormat instanceof DecimalFormat) {
-            return (BigDecimal) parse(s);
-        }
-        // Fall back to default big decimal format
-        // if the locale does not have a DecimalFormat
-        return new BigDecimal(s);
+        return delegate.parseBigDecimal(s);
     }
 
-    private Number parse(String s) {
-        int index = s.indexOf(exponentSeparator);
-        if (index < 0) {
-            return parseSignificand(s);
-        }
-        // DecimalFormat silently ignores a '+' in the exponent, and everything
-        // that follows it. So parse the exponent ourselves and scale accordingly.
-        BigDecimal significand = toBigDecimal(parseSignificand(s.substring(0, index)));
-        return significand.scaleByPowerOfTen(parseExponent(s.substring(index + exponentSeparator.length())));
-    }
+    interface Parser {
+        double parseDouble(String s);
 
-    private Number parseSignificand(String s) {
-        // DecimalFormat has no positive prefix, so it can not parse a leading
-        // '+'. It does not change the value, so drop it.
-        String significand = s.startsWith("+") ? s.substring(1) : s;
-        try {
-            return numberFormat.parse(significand);
-        } catch (ParseException e) {
-            throw new CucumberExpressionException("Failed to parse number", e);
-        }
-    }
+        float parseFloat(String s);
 
-    private static int parseExponent(String s) {
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            throw new CucumberExpressionException("Failed to parse number", e);
-        }
-    }
+        BigDecimal parseBigDecimal(String s);
 
-    private static BigDecimal toBigDecimal(Number number) {
-        if (number instanceof BigDecimal bigDecimal) {
-            return bigDecimal;
+        record DecimalFormatParser(NumberFormat numberFormat) implements Parser {
+
+            @Override
+            public double parseDouble(String s) {
+                return parse(s).doubleValue();
+            }
+
+            @Override
+            public float parseFloat(String s) {
+                return parse(s).floatValue();
+            }
+
+            @Override
+            public BigDecimal parseBigDecimal(String s) {
+                return (BigDecimal) parse(s);
+            }
+
+            private Number parse(String s) {
+                try {
+                    return numberFormat.parse(s);
+                } catch (ParseException e) {
+                    throw new CucumberExpressionException("Failed to parse number", e);
+                }
+            }
         }
+
         // The locale did not have a DecimalFormat, so we could not
-        // ask it to parse into a BigDecimal.
-        return new BigDecimal(number.toString());
+        // ask it to parse decimal numbers. Fall back to the default
+        // number parsing.
+        class FallbackParser implements Parser {
+            @Override
+            public double parseDouble(String s) {
+                return Double.parseDouble(s);
+            }
+
+            @Override
+            public float parseFloat(String s) {
+                return Float.parseFloat(s);
+            }
+
+            @Override
+            public BigDecimal parseBigDecimal(String s) {
+                return new BigDecimal(s);
+            }
+        }
     }
 }
