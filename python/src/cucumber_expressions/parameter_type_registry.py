@@ -10,7 +10,7 @@ from cucumber_expressions.expression_generator import CucumberExpressionGenerato
 from cucumber_expressions.parameter_type import ParameterType
 
 INTEGER_REGEXPS = [re.compile(r"-?\d+"), re.compile(r"\d+")]
-FLOAT_REGEXP = re.compile(r"(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?")
+FLOAT_REGEXP = re.compile(r"[-+]?(?:\d+(?:\.\d+)?|\.\d+)(?:[E][+-]?\d+)?")
 WORD_REGEXP = re.compile(r"[^\s]+")
 STRING_REGEXPS = [
     re.compile(r'"([^\"\\]*(\\.[^\"\\]*)*)"'),
