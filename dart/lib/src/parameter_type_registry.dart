@@ -13,6 +13,10 @@ class ParameterTypeRegistry {
   final Map<String, ParameterType<Object?>> _parameterTypeByName = {};
   final Map<String, List<ParameterType<Object?>>> _parameterTypesByRegexp = {};
 
+  /// Registers [parameterType] for use in expressions.
+  ///
+  /// Throws [CucumberExpressionException] if its name is already registered or
+  /// if it conflicts with another preferential type for the same regexp.
   void defineParameterType<T>(ParameterType<T> parameterType) {
     final name = parameterType.name;
     if (name != null) {

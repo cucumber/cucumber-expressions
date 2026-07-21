@@ -2,6 +2,9 @@ import 'package:cucumber_expressions/src/argument.dart';
 
 /// Something that can match text and produce a list of [Argument]s.
 abstract class Expression {
+  /// Creates an expression.
+  Expression();
+
   /// The original source string or pattern of this expression.
   String get source;
 
