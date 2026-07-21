@@ -22,7 +22,7 @@ public static class ParameterTypeConstants
         // Significant
         "(?:\\d+(?:[{group}]\\d+)*(?:[{decimal}]\\d+)?|[{decimal}]\\d+)" +
         // Exponent
-        "(?:[{exponent}][-]?\\d+)?";
+        "(?:[{exponent}][-+]?\\d+)?";
     public static readonly string FloatParameterRegex = GetGenericFloatParameterRegex();
     public static readonly string[] FloatParameterRegexps = { FloatParameterRegex };
     public static readonly string FloatParameterRegexEn = GetFloatParameterRegex(CultureInfo.InvariantCulture);
