@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
+- Support a positive exponent in scientific notation floats, e.g. `1.5E+3` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
 - Use more efficient regex without lookahead ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
+- [Java] Support a leading `+` sign in `{float}`, `{double}` and `{bigdecimal}` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
 - [Go] Parse floating point numbers with scientific notation ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
 
 ## [20.0.0] - 2026-06-11

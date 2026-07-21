@@ -34,7 +34,7 @@ public final class ParameterTypeRegistry {
                     // Significant
                     "(?:\\d+(?:[{group}]\\d+)*(?:[{decimal}]\\d+)?|[{decimal}]\\d+)" +
                     // Exponent
-                    "(?:[{exponent}][-]?\\d+)?")
+                    "(?:[{exponent}][-+]?\\d+)?")
                     .pattern();
     private static final List<String> WORD_REGEXPS = singletonList(
             Pattern.compile("[^\\s]+").pattern()
@@ -48,7 +48,7 @@ public final class ParameterTypeRegistry {
     private final Map<String, SortedSet<ParameterType<?>>> parameterTypesByRegexp = new HashMap<>();
     /**
      * To maintain consistency with `datatable` we don't use the mutable default
-     * transformer to handle build in in conversions yet.
+     * transformer to handle built-in in conversions yet.
      */
     private final ParameterByTypeTransformer internalParameterTransformer;
     private ParameterByTypeTransformer defaultParameterTransformer;
