@@ -35,7 +35,7 @@ class CombinatorialGeneratedExpressionFactory {
 
     if (depth == _parameterTypeCombinations.length) {
       generatedExpressions.add(
-        GeneratedExpression(_expressionTemplate, currentParameterTypes),
+        createGeneratedExpression(_expressionTemplate, currentParameterTypes),
       );
       return;
     }

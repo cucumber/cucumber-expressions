@@ -1,4 +1,3 @@
-import 'package:cucumber_expressions/src/cucumber_expression_generator.dart';
 import 'package:cucumber_expressions/src/define_default_parameter_types.dart';
 import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
@@ -13,45 +12,6 @@ class ParameterTypeRegistry {
 
   final Map<String, ParameterType<Object?>> _parameterTypeByName = {};
   final Map<String, List<ParameterType<Object?>>> _parameterTypesByRegexp = {};
-
-  /// All registered parameter types.
-  Iterable<ParameterType<Object?>> get parameterTypes =>
-      _parameterTypeByName.values;
-
-  /// Looks up a parameter type by its [typeName], or `null` if not registered.
-  ParameterType<Object?>? lookupByTypeName(String typeName) {
-    return _parameterTypeByName[typeName];
-  }
-
-  /// Looks up the parameter type for [parameterTypeRegexp].
-  ///
-  /// Throws an [AmbiguousParameterTypeException] if multiple non-preferential
-  /// types share the regexp.
-  ParameterType<Object?>? lookupByRegexp(
-    String parameterTypeRegexp,
-    RegExp expressionRegexp,
-    String text,
-  ) {
-    final parameterTypes = _parameterTypesByRegexp[parameterTypeRegexp];
-    if (parameterTypes == null) {
-      return null;
-    }
-    if (parameterTypes.length > 1 && !parameterTypes[0].preferForRegexpMatch) {
-      // We don't do this check on insertion because we only want to restrict
-      // ambiguity when we look up by Regexp. Users of CucumberExpression should
-      // not be restricted.
-      final generatedExpressions =
-          CucumberExpressionGenerator(parameterTypes.cast)
-              .generateExpressions(text);
-      throw AmbiguousParameterTypeException.forRegExp(
-        parameterTypeRegexp,
-        expressionRegexp,
-        parameterTypes,
-        generatedExpressions,
-      );
-    }
-    return parameterTypes[0];
-  }
 
   void defineParameterType<T>(ParameterType<T> parameterType) {
     final name = parameterType.name;
@@ -90,8 +50,31 @@ class ParameterTypeRegistry {
       if (!parameterTypes.contains(parameterType)) {
         parameterTypes
           ..add(parameterType)
-          ..sort(ParameterType.compare);
+          ..sort(compareParameterTypes);
       }
     }
   }
+}
+
+/// Lists parameter types for the internal expression implementations.
+Iterable<ParameterType<Object?>> registeredParameterTypes(
+  ParameterTypeRegistry registry,
+) {
+  return registry._parameterTypeByName.values;
+}
+
+/// Looks up a parameter type for the internal expression implementations.
+ParameterType<Object?>? registeredParameterTypeByName(
+  ParameterTypeRegistry registry,
+  String typeName,
+) {
+  return registry._parameterTypeByName[typeName];
+}
+
+/// Lists parameter types with a matching regular-expression source.
+List<ParameterType<Object?>>? registeredParameterTypesByRegexp(
+  ParameterTypeRegistry registry,
+  String parameterTypeRegexp,
+) {
+  return registry._parameterTypesByRegexp[parameterTypeRegexp];
 }

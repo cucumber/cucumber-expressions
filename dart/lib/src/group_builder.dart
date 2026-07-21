@@ -28,7 +28,7 @@ class GroupBuilder {
       start = match.start;
       end = match.end;
     }
-    return Group(
+    return buildGroup(
       value,
       groupIndex == 0 ? start : null,
       groupIndex == 0 ? end : null,

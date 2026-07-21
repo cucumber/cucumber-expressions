@@ -28,7 +28,7 @@ class ParameterType<T> {
         regexpStrings = _stringArray(regexps),
         _transformFn = transform ?? ((List<String?> s) => s.first as T) {
     if (name != null) {
-      checkParameterTypeName(name!);
+      _checkParameterTypeName(name!);
     }
   }
 
@@ -50,43 +50,39 @@ class ParameterType<T> {
   final List<String> regexpStrings;
   final Transformer<T> _transformFn;
 
-  /// Orders parameter types, preferring [preferForRegexpMatch] types and then
-  /// sorting by name.
-  static int compare(
-    ParameterType<Object?> pt1,
-    ParameterType<Object?> pt2,
-  ) {
-    if (pt1.preferForRegexpMatch && !pt2.preferForRegexpMatch) {
-      return -1;
-    }
-    if (pt2.preferForRegexpMatch && !pt1.preferForRegexpMatch) {
-      return 1;
-    }
-    return (pt1.name ?? '').compareTo(pt2.name ?? '');
-  }
-
-  /// Throws a [CucumberExpressionException] if [typeName] is not a valid
-  /// parameter type name.
-  static void checkParameterTypeName(String typeName) {
-    if (!isValidParameterTypeName(typeName)) {
-      throw CucumberExpressionException(
-        'Illegal character in parameter name {$typeName}. '
-        r"Parameter names may not contain '{', '}', '(', ')', '\' or '/'",
-      );
-    }
-  }
-
-  /// Whether [typeName] is a valid parameter type name.
-  static bool isValidParameterTypeName(String typeName) {
-    final unescapedTypeName =
-        typeName.replaceAllMapped(_unescapePattern(), (m) => m.group(2)!);
-    return !_illegalParameterNamePattern.hasMatch(unescapedTypeName);
-  }
-
   /// Transforms the captured [groupValues] into a value of type [T].
   T transform(List<String?> groupValues) {
     return _transformFn(groupValues);
   }
+}
+
+/// Orders parameter types for the internal registry and generator.
+int compareParameterTypes(
+  ParameterType<Object?> pt1,
+  ParameterType<Object?> pt2,
+) {
+  if (pt1.preferForRegexpMatch && !pt2.preferForRegexpMatch) {
+    return -1;
+  }
+  if (pt2.preferForRegexpMatch && !pt1.preferForRegexpMatch) {
+    return 1;
+  }
+  return (pt1.name ?? '').compareTo(pt2.name ?? '');
+}
+
+void _checkParameterTypeName(String typeName) {
+  if (!_isValidParameterTypeName(typeName)) {
+    throw CucumberExpressionException(
+      'Illegal character in parameter name {$typeName}. '
+      r"Parameter names may not contain '{', '}', '(', ')', '\' or '/'",
+    );
+  }
+}
+
+bool _isValidParameterTypeName(String typeName) {
+  final unescapedTypeName =
+      typeName.replaceAllMapped(_unescapePattern(), (m) => m.group(2)!);
+  return !_illegalParameterNamePattern.hasMatch(unescapedTypeName);
 }
 
 List<String> _stringArray(Object regexps) {

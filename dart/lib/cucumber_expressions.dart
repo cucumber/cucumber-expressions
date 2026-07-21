@@ -8,18 +8,17 @@
 /// parameter type matching, and expression generation.
 library;
 
-export 'src/argument.dart';
-export 'src/cucumber_expression.dart';
-export 'src/cucumber_expression_generator.dart';
+export 'src/argument.dart' show Argument;
+export 'src/cucumber_expression_generator.dart'
+    show CucumberExpressionGenerator;
 export 'src/errors.dart'
     show
         AmbiguousParameterTypeException,
         CucumberExpressionException,
         UndefinedParameterTypeException;
-export 'src/expression.dart' show Expression;
+export 'src/expression.dart';
 export 'src/expression_factory.dart';
-export 'src/generated_expression.dart';
-export 'src/group.dart';
-export 'src/parameter_type.dart';
-export 'src/parameter_type_registry.dart';
-export 'src/regular_expression.dart';
+export 'src/generated_expression.dart' show GeneratedExpression;
+export 'src/group.dart' show Group;
+export 'src/parameter_type.dart' show ParameterType, Transformer;
+export 'src/parameter_type_registry.dart' show ParameterTypeRegistry;

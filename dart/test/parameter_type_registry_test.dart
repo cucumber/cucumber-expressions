@@ -1,5 +1,6 @@
 import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_lookup.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
 
@@ -108,7 +109,8 @@ void main() {
         ..defineParameterType(place);
 
       expect(
-        registry.lookupByRegexp(
+        lookupParameterTypeByRegexp(
+          registry,
           r'[A-Z]+\w+',
           RegExp(r'([A-Z]+\w+) and ([A-Z]+\w+)'),
           'Lisa and Bob',

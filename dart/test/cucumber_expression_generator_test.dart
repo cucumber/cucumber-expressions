@@ -11,26 +11,19 @@ void main() {
 
     setUp(() {
       parameterTypeRegistry = ParameterTypeRegistry();
-      generator = CucumberExpressionGenerator(
-        () => parameterTypeRegistry.parameterTypes,
-      );
+      generator = CucumberExpressionGenerator(parameterTypeRegistry);
     });
-
-    Map<String, Object?> info(String? type, String name, int count) =>
-        {'type': type, 'name': name, 'count': count};
 
     void assertExpression(
       String expectedExpression,
-      List<Map<String, Object?>> expectedParameterInfo,
+      List<String> expectedParameterNames,
       String text,
     ) {
       final generatedExpression = generator.generateExpressions(text)[0];
-      final actualInfos = generatedExpression.parameterInfos
-          .map(
-            (i) => {'type': i.type, 'name': i.name, 'count': i.count},
-          )
-          .toList();
-      expect(actualInfos, equals(expectedParameterInfo));
+      expect(
+        generatedExpression.parameterNames,
+        equals(expectedParameterNames),
+      );
       expect(generatedExpression.source, equals(expectedExpression));
 
       final cucumberExpression =
@@ -42,7 +35,7 @@ void main() {
         reason: "Expected text '$text' to match generated expression "
             "'${generatedExpression.source}'",
       );
-      expect(match!.length, equals(expectedParameterInfo.length));
+      expect(match!.length, equals(expectedParameterNames.length));
     }
 
     test('documents expression generation', () {
@@ -73,9 +66,9 @@ void main() {
       assertExpression(
         r'The {int}\/{int}\/{int} hey',
         [
-          info('int', 'int', 1),
-          info('int', 'int', 2),
-          info('int', 'int', 3),
+          'int',
+          'int2',
+          'int3',
         ],
         'The 1814/05/17 hey',
       );
@@ -84,7 +77,7 @@ void main() {
     test('generates expression for int float arg', () {
       assertExpression(
         'I have {int} cukes and {float} euro',
-        [info('int', 'int', 1), info('double', 'float', 1)],
+        ['int', 'float'],
         'I have 2 cukes and 1.5 euro',
       );
     });
@@ -92,7 +85,7 @@ void main() {
     test('generates expression for strings', () {
       assertExpression(
         'I like {string} and {string}',
-        [info('String', 'string', 1), info('String', 'string', 2)],
+        ['string', 'string2'],
         'I like "bangers" and \'mash\'',
       );
     });
@@ -100,13 +93,13 @@ void main() {
     test('generates expression with percent sign', () {
       assertExpression(
         'I am {int}%% foobar',
-        [info('int', 'int', 1)],
+        ['int'],
         'I am 20%% foobar',
       );
     });
 
     test('generates expression for just int', () {
-      assertExpression('{int}', [info('int', 'int', 1)], '99999');
+      assertExpression('{int}', ['int'], '99999');
     });
 
     test('generates all combinations when several parameter types match', () {

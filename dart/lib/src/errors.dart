@@ -216,41 +216,37 @@ String _pointAtLocated(Located node) {
 class AmbiguousParameterTypeException extends CucumberExpressionException {
   /// Creates an exception with the given human readable [message].
   AmbiguousParameterTypeException(super.message);
+}
 
-  /// Creates an exception describing that [expressionRegexp] matches multiple
-  /// [parameterTypes] via [parameterTypeRegexp], suggesting the
-  /// [generatedExpressions] as alternatives.
-  factory AmbiguousParameterTypeException.forRegExp(
-    String parameterTypeRegexp,
-    RegExp expressionRegexp,
-    List<ParameterType<Object?>> parameterTypes,
-    List<GeneratedExpression> generatedExpressions,
-  ) {
-    return AmbiguousParameterTypeException(
-      'Your Regular Expression /${expressionRegexp.pattern}/\n'
-      'matches multiple parameter types with regexp $parameterTypeRegexp:\n'
-      '   ${_parameterTypeNames(parameterTypes)}\n'
-      '\n'
-      "I couldn't decide which one to use. You have two options:\n"
-      '\n'
-      '1) Use a Cucumber Expression instead of a Regular Expression. '
-      'Try one of these:\n'
-      '   ${_expressions(generatedExpressions)}\n'
-      '\n'
-      '2) Make one of the parameter types preferential and continue to use '
-      'a Regular Expression.\n',
-    );
-  }
+/// Creates the internal ambiguity error for a regular-expression match.
+AmbiguousParameterTypeException ambiguousParameterTypeExceptionForRegexp(
+  String parameterTypeRegexp,
+  RegExp expressionRegexp,
+  List<ParameterType<Object?>> parameterTypes,
+  List<GeneratedExpression> generatedExpressions,
+) {
+  return AmbiguousParameterTypeException(
+    'Your Regular Expression /${expressionRegexp.pattern}/\n'
+    'matches multiple parameter types with regexp $parameterTypeRegexp:\n'
+    '   ${_parameterTypeNames(parameterTypes)}\n'
+    '\n'
+    "I couldn't decide which one to use. You have two options:\n"
+    '\n'
+    '1) Use a Cucumber Expression instead of a Regular Expression. '
+    'Try one of these:\n'
+    '   ${_expressions(generatedExpressions)}\n'
+    '\n'
+    '2) Make one of the parameter types preferential and continue to use '
+    'a Regular Expression.\n',
+  );
+}
 
-  static String _parameterTypeNames(
-    List<ParameterType<Object?>> parameterTypes,
-  ) {
-    return parameterTypes.map((p) => '{${p.name}}').join('\n   ');
-  }
+String _parameterTypeNames(List<ParameterType<Object?>> parameterTypes) {
+  return parameterTypes.map((p) => '{${p.name}}').join('\n   ');
+}
 
-  static String _expressions(List<GeneratedExpression> generatedExpressions) {
-    return generatedExpressions.map((e) => e.source).join('\n   ');
-  }
+String _expressions(List<GeneratedExpression> generatedExpressions) {
+  return generatedExpressions.map((e) => e.source).join('\n   ');
 }
 
 /// Thrown when an expression references a parameter type that has not been

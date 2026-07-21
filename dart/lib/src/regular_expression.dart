@@ -1,6 +1,7 @@
 import 'package:cucumber_expressions/src/argument.dart';
 import 'package:cucumber_expressions/src/expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_lookup.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:cucumber_expressions/src/tree_regexp.dart';
 
@@ -28,7 +29,8 @@ class RegularExpression implements Expression {
         _treeRegexp.groupBuilder.children.map((groupBuilder) {
       final parameterTypeRegexp = groupBuilder.source;
 
-      final parameterType = _parameterTypeRegistry.lookupByRegexp(
+      final parameterType = lookupParameterTypeByRegexp(
+        _parameterTypeRegistry,
         parameterTypeRegexp,
         regexp,
         text,
@@ -44,7 +46,7 @@ class RegularExpression implements Expression {
           );
     }).toList();
 
-    return Argument.build(group, parameterTypes);
+    return buildArguments(group, parameterTypes);
   }
 
   @override

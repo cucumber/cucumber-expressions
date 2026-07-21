@@ -4,6 +4,7 @@ import 'package:cucumber_expressions/src/cucumber_expression_parser.dart';
 import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/expression.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_lookup.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:cucumber_expressions/src/tree_regexp.dart';
 
@@ -91,7 +92,10 @@ class CucumberExpression implements Expression {
 
   String _rewriteParameter(Node node) {
     final name = node.text();
-    final parameterType = _parameterTypeRegistry.lookupByTypeName(name);
+    final parameterType = lookupParameterTypeByName(
+      _parameterTypeRegistry,
+      name,
+    );
     if (parameterType == null) {
       throw createUndefinedParameterType(node, _expression, name);
     }
@@ -149,7 +153,7 @@ class CucumberExpression implements Expression {
     if (group == null) {
       return null;
     }
-    return Argument.build(group, _parameterTypes);
+    return buildArguments(group, _parameterTypes);
   }
 
   /// The regular expression that this Cucumber Expression compiles to.

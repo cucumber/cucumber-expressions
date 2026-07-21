@@ -1,27 +1,9 @@
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
-/// Describes a parameter within a generated expression, used when building
-/// function or method signatures for snippets.
-class ParameterInfo {
-  /// Creates parameter info with the given [type], [name] and [count].
-  ParameterInfo({required this.type, required this.name, required this.count});
-
-  /// The string representation of the original ParameterType type property.
-  final String? type;
-
-  /// The parameter type name.
-  final String name;
-
-  /// The number of times this name has been used so far.
-  final int count;
-}
-
 /// A Cucumber Expression generated from step text, together with the parameter
 /// types that fill its placeholders.
 class GeneratedExpression {
-  /// Creates a generated expression from [_expressionTemplate] and its
-  /// [parameterTypes].
-  GeneratedExpression(this._expressionTemplate, this.parameterTypes);
+  GeneratedExpression._(this._expressionTemplate, this.parameterTypes);
 
   final String _expressionTemplate;
 
@@ -35,20 +17,23 @@ class GeneratedExpression {
       );
 
   /// Parameter names to use in generated function/method signatures.
-  List<String> get parameterNames => parameterInfos
-      .map((i) => '${i.name}${i.count == 1 ? '' : i.count}')
-      .toList();
-
-  /// ParameterInfo to use in generated function/method signatures.
-  List<ParameterInfo> get parameterInfos {
+  List<String> get parameterNames {
     final usageByTypeName = <String, int>{};
     return parameterTypes
-        .map((t) => _getParameterInfo(t, usageByTypeName))
+        .map((t) => _parameterName(t, usageByTypeName))
         .toList();
   }
 }
 
-ParameterInfo _getParameterInfo(
+/// Creates generated expressions for the internal combinatorial generator.
+GeneratedExpression createGeneratedExpression(
+  String expressionTemplate,
+  List<ParameterType<Object?>> parameterTypes,
+) {
+  return GeneratedExpression._(expressionTemplate, parameterTypes);
+}
+
+String _parameterName(
   ParameterType<Object?> parameterType,
   Map<String, int> usageByName,
 ) {
@@ -56,7 +41,7 @@ ParameterInfo _getParameterInfo(
   var counter = usageByName[name];
   counter = counter != null ? counter + 1 : 1;
   usageByName[name] = counter;
-  return ParameterInfo(type: parameterType.type, name: name, count: counter);
+  return '$name${counter == 1 ? '' : counter}';
 }
 
 final RegExp _placeholder = RegExp(r'{(\d+)}');

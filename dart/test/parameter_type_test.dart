@@ -1,5 +1,6 @@
 import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
+import 'package:cucumber_expressions/src/parameter_type_lookup.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
 
@@ -27,19 +28,19 @@ void main() {
 
     test('has a type name for {int}', () {
       final r = ParameterTypeRegistry();
-      final t = r.lookupByTypeName('int')!;
+      final t = lookupParameterTypeByName(r, 'int')!;
       expect(t.type, equals('int'));
     });
 
     test('has a type name for {biginteger}', () {
       final r = ParameterTypeRegistry();
-      final t = r.lookupByTypeName('biginteger')!;
+      final t = lookupParameterTypeByName(r, 'biginteger')!;
       expect(t.type, equals('BigInt'));
     });
 
     test('has a type name for {word}', () {
       final r = ParameterTypeRegistry();
-      final t = r.lookupByTypeName('word')!;
+      final t = lookupParameterTypeByName(r, 'word')!;
       expect(t.type, equals('String'));
     });
   });

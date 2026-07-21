@@ -42,15 +42,17 @@ implementation details and may change without notice.
 
 ## Matching
 
-Create a `ParameterTypeRegistry`, build a `CucumberExpression`, then call `match`.
-`match` returns `null` when the text does not match, or a list of `Argument`s. Call
-`getValue()` on each argument to run its parameter type transformer.
+Create a `ParameterTypeRegistry` and an `ExpressionFactory`, then use the factory
+to build an expression. `match` returns `null` when the text does not match, or a
+list of `Argument`s. Call `getValue()` on each argument to run its parameter type
+transformer.
 
 ```dart
 import 'package:cucumber_expressions/cucumber_expressions.dart';
 
 final registry = ParameterTypeRegistry();
-final expression = CucumberExpression('I have {int} cukes', registry);
+final expression = ExpressionFactory(registry)
+    .createExpression('I have {int} cukes');
 
 final args = expression.match('I have 42 cukes');
 if (args != null) {
@@ -83,7 +85,8 @@ registry.defineParameterType(
   ),
 );
 
-final expression = CucumberExpression('I have a {color} ball', registry);
+final expression = ExpressionFactory(registry)
+    .createExpression('I have a {color} ball');
 final color = expression.match('I have a red ball')?[0].getValue() as Color?;
 ```
 
@@ -91,9 +94,8 @@ final color = expression.match('I have a red ball')?[0].getValue() as Color?;
 
 ## Regular expressions
 
-`RegularExpression` matches against a `RegExp` and produces the same `Argument` list.
-Use `ExpressionFactory` to build a `CucumberExpression` or `RegularExpression` from a
-`String` or `RegExp`.
+`ExpressionFactory` builds an expression from either a Cucumber Expression `String`
+or a regular-expression `RegExp`; both produce the same `Argument` list when matched.
 
 ```dart
 import 'package:cucumber_expressions/cucumber_expressions.dart';

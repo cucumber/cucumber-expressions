@@ -1,8 +1,7 @@
 /// A captured group from a regular expression match, possibly with nested
 /// child groups.
 class Group {
-  /// Creates a group with the given [value], [start], [end] and [children].
-  Group(this.value, this.start, this.end, this.children);
+  Group._(this.value, this.start, this.end, this.children);
 
   /// The captured text, or `null` if the group did not participate.
   final String? value;
@@ -20,4 +19,9 @@ class Group {
   List<String?>? get values {
     return (children ?? <Group>[this]).map((g) => g.value).toList();
   }
+}
+
+/// Creates groups for the internal regular-expression tree builder.
+Group buildGroup(String? value, int? start, int? end, List<Group>? children) {
+  return Group._(value, start, end, children);
 }
