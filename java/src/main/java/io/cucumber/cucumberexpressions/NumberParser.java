@@ -5,6 +5,7 @@ import io.cucumber.cucumberexpressions.NumberParser.Parser.FallbackParser;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -18,7 +19,7 @@ final class NumberParser {
             decimalFormat.setParseBigDecimal(true);
             var symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
             decimalFormat.setDecimalFormatSymbols(symbols);
-            delegate = new DecimalFormatParser(numberFormat);
+            delegate = new DecimalFormatParser(symbols, numberFormat);
         } else {
             delegate = new FallbackParser();
         }
@@ -43,7 +44,7 @@ final class NumberParser {
 
         BigDecimal parseBigDecimal(String s);
 
-        record DecimalFormatParser(NumberFormat numberFormat) implements Parser {
+        record DecimalFormatParser(DecimalFormatSymbols symbols, NumberFormat numberFormat) implements Parser {
 
             @Override
             public double parseDouble(String s) {
@@ -62,10 +63,24 @@ final class NumberParser {
 
             private Number parse(String s) {
                 try {
-                    return numberFormat.parse(s);
-                } catch (ParseException e) {
-                    throw new CucumberExpressionException("Failed to parse number", e);
+                    var exponentSeparator = symbols.getExponentSeparator();
+                    var index = s.indexOf(exponentSeparator);
+                    if (index < 0) {
+                        return parseWithoutPlus(s);
+                    }
+                    var significant = parseWithoutPlus(s.substring(0, index));
+                    int exponent = Integer.parseInt(s.substring(index + exponentSeparator.length()));
+                    return significant.scaleByPowerOfTen(exponent);
+                } catch (ParseException | NumberFormatException e) {
+                    throw new CucumberExpressionException("Failed to parse number %s".formatted(s), e);
                 }
+            }
+
+            private BigDecimal parseWithoutPlus(String s) throws ParseException {
+                if (s.startsWith("+")) {
+                    s = s.substring(1);
+                }
+                return (BigDecimal) numberFormat.parse(s);
             }
         }
 
