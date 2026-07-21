@@ -62,25 +62,33 @@ final class NumberParser {
             }
 
             private Number parse(String s) {
+                // s will either match ParameterTypeRegistry.FLOAT_REGEXPS or .INTEGER_REGEXPS
                 try {
                     var exponentSeparator = symbols.getExponentSeparator();
                     var index = s.indexOf(exponentSeparator);
                     if (index < 0) {
-                        return parseWithoutPlus(s);
+                        return parseSignificant(s);
                     }
-                    var significant = parseWithoutPlus(s.substring(0, index));
-                    int exponent = Integer.parseInt(s.substring(index + exponentSeparator.length()));
+                    var significant = parseSignificant(s.substring(0, index));
+                    var exponent = parseExponent(s.substring( index + exponentSeparator.length()));
                     return significant.scaleByPowerOfTen(exponent);
                 } catch (ParseException | NumberFormatException e) {
                     throw new CucumberExpressionException("Failed to parse number %s".formatted(s), e);
                 }
             }
 
-            private BigDecimal parseWithoutPlus(String s) throws ParseException {
+            private BigDecimal parseSignificant(String s) throws ParseException {
+                // The significant may start with + but number format doesn't support it.
                 if (s.startsWith("+")) {
                     s = s.substring(1);
                 }
                 return (BigDecimal) numberFormat.parse(s);
+            }
+
+            private int parseExponent(String s) {
+                // The exponent is always an integer
+                // The exponent may start with + and parseInt supports that.
+                return Integer.parseInt(s);
             }
         }
 
@@ -104,4 +112,6 @@ final class NumberParser {
             }
         }
     }
+
+
 }
