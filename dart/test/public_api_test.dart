@@ -6,10 +6,10 @@ void main() {
     final expression = ExpressionFactory(ParameterTypeRegistry())
         .createExpression('I have {int} cukes');
 
-    final arguments = expression.match('I have 42 cukes');
+    final arguments = expression.match('I have 24 cukes');
 
     expect(arguments, isNotNull);
-    expect(arguments![0].getValue(), equals(42));
+    expect(arguments![0].getValue(), equals(24));
   });
 
   test('creates regular expressions through the public factory', () {
@@ -18,9 +18,9 @@ void main() {
       RegExp(r'I have (\d+) cukes'),
     );
 
-    final arguments = expression.match('I have 42 cukes');
+    final arguments = expression.match('I have 24 cukes');
 
     expect(arguments, isNotNull);
-    expect(arguments![0].getValue(), equals(42));
+    expect(arguments![0].getValue(), equals(24));
   });
 }

@@ -7,7 +7,7 @@ import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 /// Generates candidate Cucumber Expressions for a piece of step text based on
 /// the available parameter types.
 class CucumberExpressionGenerator {
-  /// Creates a generator using the parameter types in [parameterTypeRegistry].
+  /// Creates a generator using the supplied parameter type registry.
   CucumberExpressionGenerator(this._parameterTypeRegistry);
 
   final ParameterTypeRegistry _parameterTypeRegistry;
