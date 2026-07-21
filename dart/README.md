@@ -10,7 +10,7 @@ parameter type matching, and expression generation.
 
 ## Requirements
 
-* Dart SDK `^3.5.0`
+* Dart SDK `^3.3.0`
 
 ## Installation
 

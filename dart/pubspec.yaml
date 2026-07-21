@@ -14,7 +14,7 @@ funding:
   - https://github.com/sponsors/cucumber
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.3.0
 
 topics:
   - cucumber
