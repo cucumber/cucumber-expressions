@@ -102,6 +102,21 @@ void main() {
       assertExpression('{int}', ['int'], '99999');
     });
 
+    test('does not generate types excluded from snippets', () {
+      parameterTypeRegistry.defineParameterType(
+        ParameterType<String?>(
+          'internal-id',
+          'reference',
+          null,
+          (s) => s.first,
+          useForSnippets: false,
+          preferForRegexpMatch: false,
+        ),
+      );
+
+      expect(generator.generateExpressions('reference').single.source, 'reference');
+    });
+
     test('generates all combinations when several parameter types match', () {
       parameterTypeRegistry
         ..defineParameterType(

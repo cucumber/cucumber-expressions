@@ -3,7 +3,7 @@ import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
-import 'test_data_dir.dart';
+import '../../support/test_data_dir.dart';
 
 void main() {
   group('CucumberExpression transformation', () {

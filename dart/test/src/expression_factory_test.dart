@@ -25,5 +25,13 @@ void main() {
         isA<CucumberExpression>(),
       );
     });
+
+    test('rejects values that are neither expressions nor regular expressions',
+        () {
+      expect(
+        () => expressionFactory.createExpression(42),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
   });
 }

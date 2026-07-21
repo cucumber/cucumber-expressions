@@ -15,9 +15,15 @@ void main() {
       final tr = TreeRegexp(RegExp('(a(?:b)?)(c)'));
       final group = tr.match('ac')!;
       expect(group.value, equals('ac'));
+      expect(group.start, equals(0));
+      expect(group.end, equals(2));
       expect(group.children![0].value, equals('a'));
       expect(group.children![0].children, isNull);
       expect(group.children![1].value, equals('c'));
+    });
+
+    test('returns null when the regexp does not match', () {
+      expect(TreeRegexp(RegExp(r'\d+')).match('no number'), isNull);
     });
 
     test('ignores ?: as a non-capturing group', () {
