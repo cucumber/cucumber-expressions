@@ -2,14 +2,15 @@ package cucumberexpressions
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"math/big"
 	"reflect"
 	"regexp"
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+	"gopkg.in/yaml.v3"
 )
 
 type CucumberExpressionMatchingExpectation struct {
@@ -106,14 +107,14 @@ func TestCucumberExpression(t *testing.T) {
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1"), []interface{}{-0.1})
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10000001"), []interface{}{-0.10000001})
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "1e1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", ".1E1"), []interface{}(nil))
+		require.Equal(t, MatchCucumberExpression(t, "{float}", ".1E1"), []interface{}{1.0})
 		require.Equal(t, MatchCucumberExpression(t, "{float}", "E1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-2"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+2"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E1"), []interface{}(nil))
-		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10E2"), []interface{}(nil))
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-1"), []interface{}{-0.01})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E-2"), []interface{}{-0.001})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+1"), []interface{}{-1.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E+2"), []interface{}{-10.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.1E1"), []interface{}{-1.0})
+		require.Equal(t, MatchCucumberExpression(t, "{float}", "-.10E2"), []interface{}{-10.0})
 	})
 
 	t.Run("matches float with zero", func(t *testing.T) {

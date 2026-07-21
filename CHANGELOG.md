@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Use more efficient regex without lookahead ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
+- [Go] Parse floating point numbers with scientific notation ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
+
 ## [20.0.0] - 2026-06-11
 ### Changed
 - [JavaScript] BREAKING CHANGE: Switch to ESM ([#431](https://github.com/cucumber/cucumber-expressions/pull/431))

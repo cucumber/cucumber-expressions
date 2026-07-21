@@ -109,7 +109,7 @@ func createInvalidParameterTypeName(typeName string) error {
 	return NewCucumberExpressionError("Illegal character in parameter name {" + typeName + "}. Parameter names may not contain '{', '}', '(', ')', '\\' or '/'")
 }
 
-//  Not very clear, but this message has to be language independent
+// Not very clear, but this message has to be language independent
 func createInvalidParameterTypeNameInNode(token token, expression string) error {
 	return NewCucumberExpressionError(message(
 		token.Start,
