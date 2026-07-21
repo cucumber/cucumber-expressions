@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using CucumberExpressions.Parsing;
 
 namespace CucumberExpressions.Tests;
 
@@ -77,17 +79,35 @@ public abstract class CucumberExpressionTestBase : TestBase
         return s;
     }
 
-    public string[] MatchExpression(IExpression expression, string text)
+    public object[] MatchExpression(IExpression expression, string text)
     {
-        var match = expression.Regex.Match(text);
-        if (!match.Success)
+        var group = new TreeRegexp(expression.Regex).Match(text);
+        if (group == null)
             return null;
-        return match.Groups.OfType<System.Text.RegularExpressions.Group>().Skip(1)
-            .Where(g => g.Success)
-            .Select(c => c.Value)
-            .Select(v => v.StartsWith(".") ? "0" + v : v) // simulate float parsing with leading dot (.123)
-            .Select(v => v.Replace(@"\""", @"""").Replace(@"\'", @"'")) // simulate quote masking
-            .Select(TrimQuotes)
+
+        var parameterTypes = (expression as CucumberExpression)?.ParameterTypes;
+
+        var argGroups = group.Children ?? new List<Parsing.Group>();
+
+        return argGroups
+            .Select((g, i) => ConvertGroup(g, i < (parameterTypes?.Length ?? 0) ? parameterTypes[i] : null))
             .ToArray();
+    }
+
+    private object ConvertGroup(Parsing.Group group, IParameterType parameterType)
+    {
+        var value = group.Value;
+        if (value == null)
+            return null;
+
+        var targetType = parameterType?.ParameterType;
+        if (targetType == typeof(int))
+            return int.Parse(value, CultureInfo.InvariantCulture);
+        if (targetType == typeof(float))
+            return float.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
+        if (targetType == typeof(double))
+            return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
+
+        return TrimQuotes(value.Replace(@"\""", @"""").Replace(@"\'", @"'"));
     }
 }
