@@ -9,7 +9,7 @@ module Cucumber
   module CucumberExpressions
     class ParameterTypeRegistry
       INTEGER_REGEXPS = [/-?\d+/, /\d+/].freeze
-      FLOAT_REGEXP = /(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][-+]?\d+)?/.freeze
+      FLOAT_REGEXP = /[-+]?(?:\d+(?:\.\d+)?|\.\d+)(?:[E][+-]?\d+)?/.freeze
       WORD_REGEXP = /[^\s]+/.freeze
       STRING_REGEXP = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/.freeze
       ANONYMOUS_REGEXP = /.*/.freeze
