@@ -1,8 +1,7 @@
 import 'package:cucumber_expressions/src/parameter_type.dart';
 
 const List<String> _integerRegexps = [r'-?\d+', r'\d+'];
-const String _floatRegexp =
-    r'(?=.*\d.*)[-+]?\d*(?:\.(?=\d.*))?\d*(?:\d+[E][+-]?\d+)?';
+const String _floatRegexp = r'[-+]?(?:\d+(?:\.\d+)?|\.\d+)(?:[E][+-]?\d+)?';
 const String _wordRegexp = r'[^\s]+';
 const String _stringRegexp = r'"([^"\\]*(\\.[^"\\]*)*)"'
     r"|'([^'\\]*(\\.[^'\\]*)*)'";

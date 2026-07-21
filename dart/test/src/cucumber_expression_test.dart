@@ -20,6 +20,12 @@ void main() {
       expect(match('{float}', '1,000.1'), isNull);
     });
 
+    test('rejects incomplete floats', () {
+      for (final text in ['+', '-', '.', '1.', '1E', '1E+']) {
+        expect(match('{float}', text), isNull);
+      }
+    });
+
     test('exposes its source', () {
       const source = 'I have {int} cuke(s)';
       expect(
