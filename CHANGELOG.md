@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [Dart] Add a Dart implementation of Cucumber Expressions
+- [Dart] Add a Dart implementation of Cucumber Expressions ([#444](https://github.com/cucumber/cucumber-expressions/pull/444))
 
 ## [20.0.0] - 2026-06-11
 ### Changed
