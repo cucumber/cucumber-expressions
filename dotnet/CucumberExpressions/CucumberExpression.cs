@@ -19,6 +19,22 @@ public class CucumberExpression : IExpression
     public Regex Regex => _treeRegexp.Regex;
     public IParameterType[] ParameterTypes => _parameterTypes.ToArray();
 
+    public virtual Argument[] Match(string text)
+    {
+        var group = _treeRegexp.Match(text);
+        if (group == null)
+            return null;
+
+        var argumentGroups = group.Children ?? new List<Parsing.Group>();
+        if (argumentGroups.Count != _parameterTypes.Count)
+            throw new CucumberExpressionException(
+                $"Expression {Source} has {argumentGroups.Count} capture groups, but there were {_parameterTypes.Count} parameter types");
+
+        return argumentGroups
+            .Select((argumentGroup, i) => new Argument(argumentGroup, _parameterTypes[i]))
+            .ToArray();
+    }
+
     public CucumberExpression(string expression, IParameterTypeRegistry parameterTypeRegistry)
     {
         Source = expression;

@@ -103,6 +103,6 @@ public class ExpressionFactoryTest : CucumberExpressionTestBase
 
     private IExpression CreateExpression(string expressionString)
     {
-        return new ExpressionFactory(new StubParameterTypeRegistry()).CreateExpression(expressionString);
+        return new ExpressionFactory(new ParameterTypeRegistry()).CreateExpression(expressionString);
     }
 }
