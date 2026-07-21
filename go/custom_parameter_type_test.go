@@ -10,6 +10,7 @@ import (
 )
 
 /// [color-constructor]
+
 type Color struct {
 	name string
 }

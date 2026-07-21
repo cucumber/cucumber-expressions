@@ -27,13 +27,15 @@ public final class ParameterTypeRegistry {
             Pattern.compile("-?\\d+").pattern(),
             Pattern.compile("\\d+").pattern()
     );
-    private static final String SIGN = "[-+]?";
-    private static final String MUST_CONTAIN_NUMBER = "(?=\\S*\\d\\S*)";
-    private static final String SCIENTIFIC_NUMBER = "(?:\\d+[{expnt}][+-]?\\d+)?";
-    private static final String DECIMAL_FRACTION = "(?:[{decimal}](?=\\d.*))?\\d*";
-    private static final String INTEGER = "(?:\\d+(?:[{group}]?\\d+)*)*";
     private static final String FLOAT_REGEXPS =
-            Pattern.compile(MUST_CONTAIN_NUMBER + SIGN + INTEGER + DECIMAL_FRACTION + SCIENTIFIC_NUMBER).pattern();
+            Pattern.compile(
+                    // Sign
+                    "[-+]?" +
+                    // Significant
+                    "(?:\\d+(?:[{group}]\\d+)*(?:[{decimal}]\\d+)?|[{decimal}]\\d+)" +
+                    // Exponent
+                    "(?:[{exponent}][-+]?\\d+)?")
+                    .pattern();
     private static final List<String> WORD_REGEXPS = singletonList(
             Pattern.compile("[^\\s]+").pattern()
     );
@@ -64,7 +66,7 @@ public final class ParameterTypeRegistry {
         List<String> localizedFloatRegexp = singletonList(FLOAT_REGEXPS
                 .replace("{decimal}", "" + numberFormat.getDecimalSeparator())
                 .replace("{group}", "" + numberFormat.getGroupingSeparator())
-                .replace("{expnt}", "" + numberFormat.getExponentSeparator())
+                .replace("{exponent}", "" + numberFormat.getExponentSeparator())
         );
 
         defineParameterType(new ParameterType<>("biginteger", INTEGER_REGEXPS, BigInteger.class, new Transformer<>() {
