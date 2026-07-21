@@ -1,0 +1,74 @@
+name: test-elixir
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+      - renovate/**
+    paths:
+      - elixir/**
+      - testdata/**
+      - .github/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - elixir/**
+      - testdata/**
+      - .github/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - elixir: '1.17'
+            otp: '26'
+            lint: false
+          - elixir: '1.18'
+            otp: '27'
+            lint: true
+    defaults:
+      run:
+        working-directory: elixir
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24.1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+          version-type: loose
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        if: ${{ matrix.lint }}
+        with:
+          path: |
+            ~/.cache/dialyxir
+            elixir/_build/dev/*.plt
+            elixir/_build/dev/*.plt.hash
+          key: plt-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('elixir/mix.lock') }}
+          restore-keys: |
+            plt-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
+      - run: mix deps.get
+      - run: mix compile --warnings-as-errors
+      - run: mix format --check-formatted
+      - run: mix credo --strict
+        if: ${{ matrix.lint }}
+      - run: mix dialyzer
+        if: ${{ matrix.lint }}
+      # The full suite runs on every entry; the coverage threshold is only
+      # enforced alongside the other checks. :cover attributes lines
+      # differently on older OTP releases, reporting ~98% for source that is
+      # 100% covered on OTP 27+, so the gate is not portable across the matrix.
+      - run: mix test --warnings-as-errors --cover
+        if: ${{ matrix.lint }}
+      - run: mix test --warnings-as-errors
+        if: ${{ !matrix.lint }}
+      # ex_doc warns on broken @doc/@moduledoc references.
+      - run: mix docs
+        if: ${{ matrix.lint }}
