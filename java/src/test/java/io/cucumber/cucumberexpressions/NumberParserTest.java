@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NumberParserTest {
 
-    private final NumberParser english = new NumberParser(Locale.ENGLISH);
-    private final NumberParser german = new NumberParser(Locale.GERMAN);
-    private final NumberParser canadianFrench = new NumberParser(Locale.CANADA_FRENCH);
-    private final NumberParser norwegian = new NumberParser(forLanguageTag("no"));
-    private final NumberParser canadian = new NumberParser(Locale.CANADA);
+    private final NumberParser english = NumberParser.getInstance(Locale.ENGLISH);
+    private final NumberParser german = NumberParser.getInstance(Locale.GERMAN);
+    private final NumberParser canadianFrench = NumberParser.getInstance(Locale.CANADA_FRENCH);
+    private final NumberParser norwegian = NumberParser.getInstance(forLanguageTag("no"));
+    private final NumberParser canadian = NumberParser.getInstance(Locale.CANADA);
 
     @Test
     void can_parse_float() {
