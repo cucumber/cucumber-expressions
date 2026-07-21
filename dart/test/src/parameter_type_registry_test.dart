@@ -122,29 +122,46 @@ void main() {
     test('rejects duplicate names and preserves non-preferential types', () {
       registry.defineParameterType(
         ParameterType<Name>(
-            'name', 'name', 'Name', (values) => Name(values.first!)),
+          'name',
+          'name',
+          'Name',
+          (values) => Name(values.first!),
+        ),
       );
       expect(
         () => registry.defineParameterType(
           ParameterType<Person>(
-              'name', 'person', 'Person', (values) => Person(values.first!)),
+            'name',
+            'person',
+            'Person',
+            (values) => Person(values.first!),
+          ),
         ),
         throwsA(isA<CucumberExpressionException>()),
       );
 
       registry
         ..defineParameterType(
-          ParameterType<Person>('person', 'identity', 'Person',
-              (values) => Person(values.first!)),
+          ParameterType<Person>(
+            'person',
+            'identity',
+            'Person',
+            (values) => Person(values.first!),
+          ),
         )
         ..defineParameterType(
           ParameterType<Place>(
-              'place', 'identity', 'Place', (values) => Place(values.first!)),
+            'place',
+            'identity',
+            'Place',
+            (values) => Place(values.first!),
+          ),
         );
       expect(
-          registeredParameterTypesByRegexp(registry, 'identity')!
-              .map((type) => type.name),
-          ['person', 'place']);
+        registeredParameterTypesByRegexp(registry, 'identity')!
+            .map((type) => type.name),
+        ['person', 'place'],
+      );
     });
 
     test('contains the complete built-in registry contract', () {
@@ -165,10 +182,13 @@ void main() {
         ]),
       );
       expect(
-          registeredParameterTypeByName(registry, '')!.useForSnippets, isFalse);
+        registeredParameterTypeByName(registry, '')!.useForSnippets,
+        isFalse,
+      );
       expect(
-          registeredParameterTypeByName(registry, 'int')!.preferForRegexpMatch,
-          isTrue);
+        registeredParameterTypeByName(registry, 'int')!.preferForRegexpMatch,
+        isTrue,
+      );
     });
   });
 }

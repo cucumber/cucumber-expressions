@@ -23,7 +23,9 @@ void main() {
     test('exposes its source', () {
       const source = 'I have {int} cuke(s)';
       expect(
-          CucumberExpression(source, ParameterTypeRegistry()).source, source);
+        CucumberExpression(source, ParameterTypeRegistry()).source,
+        source,
+      );
     });
 
     test('passes unmatched nested capture groups to transformers', () {
@@ -31,7 +33,7 @@ void main() {
         ..defineParameterType(
           ParameterType<List<String?>>(
             'textOrNumber',
-            RegExp(r'([A-Z]+)?(?: )?([0-9]+)?'),
+            RegExp('([A-Z]+)?(?: )?([0-9]+)?'),
             'List<String?>',
             (values) => values,
             useForSnippets: false,

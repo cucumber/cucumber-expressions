@@ -3,16 +3,23 @@ import 'package:cucumber_expressions/src/parameter_type_matcher.dart';
 import 'package:test/test.dart';
 
 final type = ParameterType<String?>(
-    'direction', 'up|down', 'String', (values) => values.first);
+  'direction',
+  'up|down',
+  'String',
+  (values) => values.first,
+);
 
 void main() {
   group('ParameterTypeMatcher', () {
     test('requires a non-empty full-word match', () {
       expect(
-          ParameterTypeMatcher(type, 'up|down', 'go down!').advanceTo(0).group,
-          'down');
-      expect(ParameterTypeMatcher(type, 'up|down', 'setup').advanceTo(0).find,
-          isFalse);
+        ParameterTypeMatcher(type, 'up|down', 'go down!').advanceTo(0).group,
+        'down',
+      );
+      expect(
+        ParameterTypeMatcher(type, 'up|down', 'setup').advanceTo(0).find,
+        isFalse,
+      );
       expect(ParameterTypeMatcher(type, 'a*', 'a').find, isTrue);
       expect(ParameterTypeMatcher(type, 'a*', '').find, isFalse);
     });

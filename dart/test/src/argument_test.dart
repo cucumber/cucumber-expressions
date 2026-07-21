@@ -10,7 +10,11 @@ void main() {
       final group =
           buildGroup('12', 0, 2, [buildGroup('12', null, null, null)]);
       final type = ParameterType<int?>(
-          'int', r'\d+', 'int', (values) => int.parse(values.single!));
+        'int',
+        r'\d+',
+        'int',
+        (values) => int.parse(values.single!),
+      );
 
       expect(buildArguments(group, [type]).single.getValue(), 12);
     });
@@ -20,7 +24,11 @@ void main() {
       expect(
         () => buildArguments(group, [
           ParameterType<String?>(
-              'text', '.*', 'String', (values) => values.first)
+            'text',
+            '.*',
+            'String',
+            (values) => values.first,
+          ),
         ]),
         throwsA(isA<CucumberExpressionException>()),
       );

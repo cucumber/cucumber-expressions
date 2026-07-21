@@ -4,8 +4,11 @@ import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:cucumber_expressions/src/regular_expression.dart';
 import 'package:test/test.dart';
 
-List<Object?>? match(RegExp regexp, String text,
-        [ParameterTypeRegistry? registry]) =>
+List<Object?>? match(
+  RegExp regexp,
+  String text, [
+  ParameterTypeRegistry? registry,
+]) =>
     RegularExpression(regexp, registry ?? ParameterTypeRegistry())
         .match(text)
         ?.map((argument) => argument.getValue())
@@ -23,8 +26,9 @@ void main() {
 
     test('preserves empty captures and returns null when unmatched', () {
       expect(
-          match(RegExp(r'^The value equals "([^"]*)"$'), 'The value equals ""'),
-          ['']);
+        match(RegExp(r'^The value equals "([^"]*)"$'), 'The value equals ""'),
+        [''],
+      );
       expect(match(RegExp(r'(\d+)'), 'no number'), isNull);
     });
 
@@ -41,28 +45,46 @@ void main() {
           ),
         );
       expect(
-          match(RegExp(r'I have a (red|blue|yellow) ball'), 'I have a red ball',
-              registry),
-          ['color:red']);
+        match(
+          RegExp('I have a (red|blue|yellow) ball'),
+          'I have a red ball',
+          registry,
+        ),
+        ['color:red'],
+      );
     });
 
     test('reports ambiguous non-preferential parameter types', () {
       final registry = ParameterTypeRegistry()
-        ..defineParameterType(ParameterType<String?>(
-            'color', 'red|blue', 'Color', (v) => v.first))
-        ..defineParameterType(ParameterType<String?>(
-            'shade', 'red|blue', 'Shade', (v) => v.first));
+        ..defineParameterType(
+          ParameterType<String?>(
+            'color',
+            'red|blue',
+            'Color',
+            (v) => v.first,
+          ),
+        )
+        ..defineParameterType(
+          ParameterType<String?>(
+            'shade',
+            'red|blue',
+            'Shade',
+            (v) => v.first,
+          ),
+        );
 
       expect(
-        () => match(RegExp(r'(red|blue)'), 'red', registry),
+        () => match(RegExp('(red|blue)'), 'red', registry),
         throwsA(isA<AmbiguousParameterTypeException>()),
       );
     });
 
     test('exposes its source', () {
       const source = r'I have (\d+) cukes?';
-      expect(RegularExpression(RegExp(source), ParameterTypeRegistry()).source,
-          source);
+      expect(
+        RegularExpression(RegExp(source), ParameterTypeRegistry()).source,
+        source,
+      );
     });
   });
 }

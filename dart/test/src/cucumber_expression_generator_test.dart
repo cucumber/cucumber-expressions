@@ -114,7 +114,10 @@ void main() {
         ),
       );
 
-      expect(generator.generateExpressions('reference').single.source, 'reference');
+      expect(
+        generator.generateExpressions('reference').single.source,
+        'reference',
+      );
     });
 
     test('generates all combinations when several parameter types match', () {

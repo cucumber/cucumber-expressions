@@ -47,7 +47,11 @@ void main() {
     test('normalizes string, regexp, and list regexp definitions', () {
       expect(
         ParameterType<String?>(
-            'word', r'\w+', 'String', (values) => values.first).regexpStrings,
+          'word',
+          r'\w+',
+          'String',
+          (values) => values.first,
+        ).regexpStrings,
         [r'\w+'],
       );
       expect(
@@ -65,7 +69,11 @@ void main() {
       for (final name in ['[word]', 'word.name', 'word(name)']) {
         expect(
           () => ParameterType<String?>(
-              name, '.*', 'String', (values) => values.first),
+            name,
+            '.*',
+            'String',
+            (values) => values.first,
+          ),
           throwsA(isA<CucumberExpressionException>()),
         );
       }
