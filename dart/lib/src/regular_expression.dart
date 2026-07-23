@@ -9,6 +9,7 @@ class RegularExpression implements Expression {
   RegularExpression(this.regexp, this._parameterTypeRegistry)
       : _treeRegexp = TreeRegexp(regexp);
 
+  @override
   final RegExp regexp;
   final ParameterTypeRegistry _parameterTypeRegistry;
   final TreeRegexp _treeRegexp;

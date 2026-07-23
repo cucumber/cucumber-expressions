@@ -8,6 +8,9 @@ abstract class Expression {
   /// The original source string or pattern of this expression.
   String get source;
 
+  /// The compiled regular expression this expression matches against.
+  RegExp get regexp;
+
   /// Matches [text] against this expression.
   ///
   /// Returns the matched arguments, or `null` if the text does not match.

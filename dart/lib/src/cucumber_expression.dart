@@ -152,6 +152,7 @@ class CucumberExpression implements Expression {
     return buildArguments(group, _parameterTypes);
   }
 
+  @override
   RegExp get regexp => _treeRegexp.regexp;
 
   @override
