@@ -1,5 +1,4 @@
-import 'package:cucumber_expressions/src/cucumber_expression.dart';
-import 'package:cucumber_expressions/src/parameter_type_registry.dart';
+import 'package:cucumber_expressions/cucumber_expressions.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -13,8 +12,8 @@ void main() {
       test('transforms ${file.path}', () {
         final expression = expectation['expression'] as String;
         final expected = expectation['expected_regex'] as String;
-        final cucumberExpression =
-            CucumberExpression(expression, ParameterTypeRegistry());
+        final cucumberExpression = ExpressionFactory(ParameterTypeRegistry())
+            .createExpression(expression);
         expect(cucumberExpression.regexp.pattern, equals(expected));
       });
     }
