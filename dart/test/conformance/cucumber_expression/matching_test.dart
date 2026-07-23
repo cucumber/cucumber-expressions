@@ -1,6 +1,4 @@
-import 'package:cucumber_expressions/src/cucumber_expression.dart';
-import 'package:cucumber_expressions/src/errors.dart';
-import 'package:cucumber_expressions/src/parameter_type_registry.dart';
+import 'package:cucumber_expressions/cucumber_expressions.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -16,10 +14,9 @@ void main() {
         final expression = expectation['expression'] as String;
         final text = expectation['text'] as String? ?? '';
         if (expectation.containsKey('expected_args')) {
-          final arguments = CucumberExpression(
-            expression,
-            ParameterTypeRegistry(),
-          ).match(text);
+          final arguments = ExpressionFactory(ParameterTypeRegistry())
+              .createExpression(expression)
+              .match(text);
           expect(
             arguments
                 ?.map((argument) => normalizeFixtureValue(argument.getValue()))
@@ -28,10 +25,9 @@ void main() {
           );
         } else if (expectation['exception'] != null) {
           expect(
-            () => CucumberExpression(
-              expression,
-              ParameterTypeRegistry(),
-            ).match(text),
+            () => ExpressionFactory(ParameterTypeRegistry())
+                .createExpression(expression)
+                .match(text),
             throwsA(
               isA<CucumberExpressionException>().having(
                 (error) => error.message,
