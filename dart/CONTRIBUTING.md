@@ -1,8 +1,5 @@
 # Contributing to Cucumber Expressions for Dart
 
-Read the repository root [CONTRIBUTING.md](../CONTRIBUTING.md) before making a
-change.
-
 ## Setup
 
 Install the supported [Dart SDK](https://dart.dev/get-dart) and fetch the
