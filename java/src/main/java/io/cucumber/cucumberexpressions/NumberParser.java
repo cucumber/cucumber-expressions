@@ -7,40 +7,90 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
-final class NumberParser {
-    private final NumberFormat numberFormat;
+interface NumberParser {
 
-    NumberParser(Locale locale) {
-        numberFormat = DecimalFormat.getNumberInstance(locale);
+    static NumberParser getInstance(Locale locale) {
+        var numberFormat = DecimalFormat.getNumberInstance(locale);
         if (numberFormat instanceof DecimalFormat decimalFormat) {
             decimalFormat.setParseBigDecimal(true);
-            DecimalFormatSymbols symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
+            var symbols = KeyboardFriendlyDecimalFormatSymbols.getInstance(locale);
             decimalFormat.setDecimalFormatSymbols(symbols);
+            return new DecimalFormatParser(symbols, numberFormat);
         }
+        return new FallbackParser();
     }
 
-    double parseDouble(String s) {
-        return parse(s).doubleValue();
-    }
+    double parseDouble(String s);
 
-    float parseFloat(String s) {
-        return parse(s).floatValue();
-    }
+    float parseFloat(String s);
 
-    BigDecimal parseBigDecimal(String s) {
-        if (numberFormat instanceof DecimalFormat) {
+    BigDecimal parseBigDecimal(String s);
+
+    record DecimalFormatParser(DecimalFormatSymbols symbols, NumberFormat numberFormat) implements NumberParser {
+
+        @Override
+        public double parseDouble(String s) {
+            return parse(s).doubleValue();
+        }
+
+        @Override
+        public float parseFloat(String s) {
+            return parse(s).floatValue();
+        }
+
+        @Override
+        public BigDecimal parseBigDecimal(String s) {
             return (BigDecimal) parse(s);
         }
-        // Fall back to default big decimal format
-        // if the locale does not have a DecimalFormat
-        return new BigDecimal(s);
+
+        private Number parse(String s) {
+            // s will either match ParameterTypeRegistry.FLOAT_REGEXPS or .INTEGER_REGEXPS
+            try {
+                var exponentSeparator = symbols.getExponentSeparator();
+                var index = s.indexOf(exponentSeparator);
+                if (index < 0) {
+                    return parseSignificant(s);
+                }
+                var significant = parseSignificant(s.substring(0, index));
+                var exponent = parseExponent(s.substring(index + exponentSeparator.length()));
+                return significant.scaleByPowerOfTen(exponent);
+            } catch (ParseException | NumberFormatException e) {
+                throw new CucumberExpressionException("Failed to parse number %s".formatted(s), e);
+            }
+        }
+
+        private BigDecimal parseSignificant(String s) throws ParseException {
+            // The significant may start with + but number format doesn't support it.
+            if (s.startsWith("+")) {
+                s = s.substring(1);
+            }
+            return (BigDecimal) numberFormat.parse(s);
+        }
+
+        private int parseExponent(String s) {
+            // The exponent is always an integer
+            // The exponent may start with + and parseInt supports that.
+            return Integer.parseInt(s);
+        }
     }
 
-    private Number parse(String s) {
-        try {
-            return numberFormat.parse(s);
-        } catch (ParseException e) {
-            throw new CucumberExpressionException("Failed to parse number", e);
+    // The locale did not have a DecimalFormat, so we could not
+    // ask it to parse decimal numbers. Fall back to the default
+    // number parsing.
+    class FallbackParser implements NumberParser {
+        @Override
+        public double parseDouble(String s) {
+            return parseBigDecimal(s).doubleValue();
+        }
+
+        @Override
+        public float parseFloat(String s) {
+            return parseBigDecimal(s).floatValue();
+        }
+
+        @Override
+        public BigDecimal parseBigDecimal(String s) {
+            return new BigDecimal(s);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using AwesomeAssertions;
 using Xunit;
@@ -40,10 +41,9 @@ public class CucumberExpressionTest : CucumberExpressionTestBase
             _testOutputHelper.WriteLine(expression.Regex.ToString());
             var match = MatchExpression(expression, expectation.text);
 
-            var values = match == null ? null : match
-                .ToList();
+            var values = match?.Select(Canonical).ToList();
 
-            Assert.Equal(expectation.expected_args, values);
+            Assert.Equal(expectation.expected_args?.Select(Canonical).ToList(), values);
         }
         else
         {
@@ -55,6 +55,22 @@ public class CucumberExpressionTest : CucumberExpressionTestBase
                 .Should().Throw<CucumberExpressionException>().WithMessage(expectation.exception);
         }
     }
+
+    // expected_args arrive from YAML as strings. Round both sides through the
+    // same numeric normalisation so 1500.0 and 1500 are not spuriously unequal.
+    private static string Canonical(object value)
+        => value switch
+        {
+            null => null,
+            double d => d.ToString("R", CultureInfo.InvariantCulture),
+            // Format the float directly; widening to double would expose
+            // single-precision noise (3.141593f becomes 3.1415929794311523).
+            float f => f.ToString("R", CultureInfo.InvariantCulture),
+            int i => i.ToString(CultureInfo.InvariantCulture),
+            string s when double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed)
+                => parsed.ToString("R", CultureInfo.InvariantCulture),
+            _ => value.ToString()
+        };
 
     public class Expectation
     {

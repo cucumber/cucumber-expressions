@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NumberParserTest {
 
-    private final NumberParser english = new NumberParser(Locale.ENGLISH);
-    private final NumberParser german = new NumberParser(Locale.GERMAN);
-    private final NumberParser canadianFrench = new NumberParser(Locale.CANADA_FRENCH);
-    private final NumberParser norwegian = new NumberParser(forLanguageTag("no"));
-    private final NumberParser canadian = new NumberParser(Locale.CANADA);
+    private final NumberParser english = NumberParser.getInstance(Locale.ENGLISH);
+    private final NumberParser german = NumberParser.getInstance(Locale.GERMAN);
+    private final NumberParser canadianFrench = NumberParser.getInstance(Locale.CANADA_FRENCH);
+    private final NumberParser norwegian = NumberParser.getInstance(forLanguageTag("no"));
+    private final NumberParser canadian = NumberParser.getInstance(Locale.CANADA);
 
     @Test
     void can_parse_float() {
@@ -67,6 +67,32 @@ class NumberParserTest {
         assertEquals(new BigDecimal("0.01"), german.parseBigDecimal("1E-2"));
         assertEquals(new BigDecimal("0.01"), canadianFrench.parseBigDecimal("1E-2"));
         assertEquals(new BigDecimal("0.01"), norwegian.parseBigDecimal("1E-2"));
+    }
+
+    @Test
+    void can_parse_positive_exponents() {
+        assertEquals(new BigDecimal("100"), english.parseBigDecimal("1.00E+2"));
+        assertEquals(new BigDecimal("100"), german.parseBigDecimal("1,00E+2"));
+        assertEquals(new BigDecimal("100"), canadianFrench.parseBigDecimal("1,00E+2"));
+        assertEquals(new BigDecimal("100"), norwegian.parseBigDecimal("1,00E+2"));
+
+        assertEquals(1500.0, english.parseDouble("1.5E+3"), 0);
+        assertEquals(1500.0f, english.parseFloat("1.5E+3"), 0);
+    }
+
+    @Test
+    void can_parse_leading_plus_sign() {
+        assertEquals(new BigDecimal("1.5"), english.parseBigDecimal("+1.5"));
+        assertEquals(new BigDecimal("1.5"), german.parseBigDecimal("+1,5"));
+        assertEquals(new BigDecimal("1.5"), canadianFrench.parseBigDecimal("+1,5"));
+        assertEquals(new BigDecimal("1.5"), norwegian.parseBigDecimal("+1,5"));
+
+        assertEquals(1042.2f, english.parseFloat("+1,042.2"), 0);
+        assertEquals(1042.2f, german.parseFloat("+1.042,2"), 0);
+
+        // A leading plus sign combined with an exponent
+        assertEquals(new BigDecimal("1.5E+3"), english.parseBigDecimal("+1.5E+3"));
+        assertEquals(1500.0, english.parseDouble("+1.5E+3"), 0);
     }
 
     @Test
