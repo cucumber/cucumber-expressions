@@ -1,0 +1,18 @@
+import 'package:cucumber_expressions/src/argument.dart';
+
+/// Something that can match text and produce a list of [Argument]s.
+abstract class Expression {
+  /// Creates an expression.
+  Expression();
+
+  /// The original source string or pattern of this expression.
+  String get source;
+
+  /// The compiled regular expression this expression matches against.
+  RegExp get regexp;
+
+  /// Matches [text] against this expression.
+  ///
+  /// Returns the matched arguments, or `null` if the text does not match.
+  List<Argument<Object?>>? match(String text);
+}
