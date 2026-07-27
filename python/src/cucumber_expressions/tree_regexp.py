@@ -38,7 +38,7 @@ class TreeRegexp:
             elif char == ")" and not escaping and not char_class:
                 group_builder = stack.pop()
                 if not group_builder:
-                    raise Exception("Empty stack!")
+                    raise ValueError("Empty stack!")
                 group_start = group_start_stack.pop()
                 group_start = group_start or 0
                 if group_builder.capturing:

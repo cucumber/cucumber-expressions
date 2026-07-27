@@ -216,7 +216,7 @@ class CucumberExpressionParser:
             if consumed:
                 return Result(consumed, ast)
         # If configured correctly this will never happen
-        raise Exception("No eligible parsers for " + str(tokens))
+        raise ValueError("No eligible parsers for " + str(tokens))
 
     def parse_tokens_until(
         self,
@@ -236,7 +236,7 @@ class CucumberExpressionParser:
             if result.consumed == 0:
                 # If configured correctly this will never happen
                 # Keep in order to avoid infinite loops
-                raise Exception("No eligible parsers for " + str(tokens))
+                raise ValueError("No eligible parsers for " + str(tokens))
             current += result.consumed
             ast.append(result.ast_node)
         return current - start_at, ast
