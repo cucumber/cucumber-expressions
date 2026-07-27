@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from enum import Enum
 
+from cucumber_expressions.errors import CucumberExpressionError
+
 
 class NodeType(Enum):
     TEXT = "TEXT_NODE"
@@ -46,7 +48,7 @@ class Node:
         end: int,
     ):
         if nodes is None and token is None:
-            raise Exception("Either nodes or token must be defined")
+            raise CucumberExpressionError("Either nodes or token must be defined")
         self._ast_type = ast_type
         self._nodes = nodes
         self._token = token

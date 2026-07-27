@@ -1,6 +1,7 @@
 import re
 
 from cucumber_expressions.ast import EscapeCharacters
+from cucumber_expressions.errors import CucumberExpressionError
 from cucumber_expressions.group_builder import GroupBuilder
 
 
@@ -38,7 +39,7 @@ class TreeRegexp:
             elif char == ")" and not escaping and not char_class:
                 group_builder = stack.pop()
                 if not group_builder:
-                    raise Exception("Empty stack!")
+                    raise CucumberExpressionError("Empty stack!")
                 group_start = group_start_stack.pop()
                 group_start = group_start or 0
                 if group_builder.capturing:
