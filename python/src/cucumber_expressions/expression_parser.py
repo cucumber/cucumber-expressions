@@ -2,9 +2,9 @@ from collections.abc import Callable
 from typing import NamedTuple
 
 from cucumber_expressions.ast import Node, NodeType, Token, TokenType
+from cucumber_expressions.cucumber_expression_error import CucumberExpressionError
 from cucumber_expressions.errors import (
     AlternationNotAllowedInOptional,
-    CucumberExpressionError,
     InvalidParameterTypeNameInNode,
     MissingEndToken,
 )

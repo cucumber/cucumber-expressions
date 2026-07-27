@@ -1,9 +1,9 @@
 from cucumber_expressions.argument import Argument
 from cucumber_expressions.ast import Node, NodeType
+from cucumber_expressions.cucumber_expression_error import CucumberExpressionError
 from cucumber_expressions.errors import (
     AlternativeMayNotBeEmpty,
     AlternativeMayNotExclusivelyContainOptionals,
-    CucumberExpressionError,
     OptionalIsNotAllowedInOptional,
     OptionalMayNotBeEmpty,
     ParameterIsNotAllowedInOptional,

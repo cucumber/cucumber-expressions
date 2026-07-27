@@ -1,4 +1,5 @@
 from cucumber_expressions.ast import Token
+from cucumber_expressions.cucumber_expression_error import CucumberExpressionError
 
 
 def generate_message(
@@ -31,11 +32,6 @@ def point_at_located(node):
             pointer.append("-")
         pointer.append("^")
     return "".join(pointer)
-
-
-class CucumberExpressionError(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
 
 
 class AlternativeMayNotExclusivelyContainOptionals(CucumberExpressionError):

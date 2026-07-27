@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from cucumber_expressions.errors import CucumberExpressionError
+from cucumber_expressions.cucumber_expression_error import CucumberExpressionError
 
 
 class NodeType(Enum):

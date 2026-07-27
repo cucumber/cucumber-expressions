@@ -2,10 +2,8 @@ import functools
 import re
 from decimal import Decimal
 
-from cucumber_expressions.errors import (
-    AmbiguousParameterTypeError,
-    CucumberExpressionError,
-)
+from cucumber_expressions.cucumber_expression_error import CucumberExpressionError
+from cucumber_expressions.errors import AmbiguousParameterTypeError
 from cucumber_expressions.expression_generator import CucumberExpressionGenerator
 from cucumber_expressions.parameter_type import ParameterType
 
