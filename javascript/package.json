@@ -48,7 +48,7 @@
     "glob": "13.0.6",
     "js-yaml": "5.2.3",
     "mocha": "11.8.0",
-    "ts-node": "10.9.2",
+    "tsx": "^4.23.5",
     "typescript": "7.0.2"
   },
   "dependencies": {
