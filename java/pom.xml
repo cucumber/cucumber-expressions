@@ -57,9 +57,8 @@
         <dependency>
             <groupId>org.jspecify</groupId>
             <artifactId>jspecify</artifactId>
-            <version>1.0.1</version>
+            <version>[1.0.0,2.0.0)</version>
         </dependency>
-
         <dependency>
             <groupId>org.apiguardian</groupId>
             <artifactId>apiguardian-api</artifactId>

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - [.Net] Fix codepoint offsets for tokens ([#440](https://github.com/cucumber/cucumber-expressions/pull/440))
+- [Java] Use version range for `org.jspecify:jspecify`
 
 ### Added
 - Support a positive exponent in scientific notation floats, e.g. `1.5E+3` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
