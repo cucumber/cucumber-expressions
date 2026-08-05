@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>Cucumber Expressions</name>
     <description>Cucumber Expressions are simple patterns for matching Step Definitions with Gherkin steps</description>
-    <url>https://github.com/cucumber/cucumber-expressions-java</url>
+    <url>https://github.com/cucumber/cucumber-expressions</url>
 
     <properties>
         <project.build.outputTimestamp>1785960988</project.build.outputTimestamp>
