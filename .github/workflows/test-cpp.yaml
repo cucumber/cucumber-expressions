@@ -1,0 +1,180 @@
+name: test-cpp
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+      - renovate/**
+    paths:
+      - cpp/**
+      - testdata/**
+      - .github/**
+  pull_request:
+    paths:
+      - cpp/**
+      - testdata/**
+      - .github/**
+
+jobs:
+  test-cpp-system-packages-linux:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { os: ubuntu-24.04, cxx: g++, version: 12 }
+          - { os: ubuntu-24.04, cxx: g++, version: 13 }
+          - { os: ubuntu-24.04, cxx: clang++, version: 16 }
+          - { os: ubuntu-24.04, cxx: clang++, version: 17 }
+          - { os: ubuntu-26.04, cxx: g++, version: 14 }
+          - { os: ubuntu-26.04, cxx: g++, version: 15 }
+          - { os: ubuntu-26.04, cxx: clang++, version: 21 }
+          - { os: ubuntu-26.04, cxx: clang++, version: 22 }
+    env:
+      CXX: ${{ matrix.config.cxx }}-${{ matrix.config.version }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ github.job }}-${{ matrix.config.os }}-${{ matrix.config.cxx }}-${{ matrix.config.version }}-${{ github.ref }}
+          append-timestamp: false
+          save: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtest-dev libgmock-dev libyaml-cpp-dev libabsl-dev libre2-dev
+
+      # Ubuntu 24.04 ships fmt 9; newer runners provide fmt 10+ via apt.
+      - name: Install libfmt (apt)
+        if: matrix.config.os != 'ubuntu-24.04'
+        run: sudo apt-get install -y libfmt-dev
+
+      - name: Checkout libfmt
+        if: matrix.config.os == 'ubuntu-24.04'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: fmtlib/fmt
+          ref: 10.2.1
+          path: fmt-src
+          persist-credentials: false
+
+      - name: Install libfmt (from source)
+        if: matrix.config.os == 'ubuntu-24.04'
+        run: |
+          cmake -S fmt-src -B fmt-src/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DFMT_TEST=OFF -DFMT_DOC=OFF \
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake --build fmt-src/build
+          sudo cmake --install fmt-src/build
+
+      - name: Build and unit test
+        working-directory: cpp
+        run: cmake --workflow --preset test-system
+
+  test-cpp-system-packages-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ github.job }}-${{ github.ref }}
+          append-timestamp: false
+          save: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Install dependencies
+        run: brew install googletest yaml-cpp abseil re2 fmt
+
+      - name: Build and unit test
+        working-directory: cpp
+        run: cmake --workflow --preset test-system
+
+  test-cpp-system-packages-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install build tools
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          vcpkg install gtest yaml-cpp abseil re2 fmt --triplet x64-windows
+          # Expose the vcpkg toolchain so find_package() locates the packages.
+          echo "CMAKE_TOOLCHAIN_FILE=$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" >> $env:GITHUB_ENV
+
+      - name: Build and unit test
+        working-directory: cpp
+        run: cmake --workflow --preset test-system
+
+  test-cpp-coverage:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtest-dev libgmock-dev libyaml-cpp-dev libfmt-dev libabsl-dev libre2-dev
+          python -m pip install gcovr==8.6
+          gcovr --version
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ github.job }}-${{ github.ref }}
+          append-timestamp: false
+          save: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Coverage
+        working-directory: cpp
+        run: cmake --workflow --preset coverage
+
+      - name: Show coverage summary
+        working-directory: cpp
+        run: cat build/coverage/coverage-summary.md
+
+  test-cpp-lint:
+    runs-on: ubuntu-26.04
+    env:
+      CXX: clang++
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang clang-tidy libgtest-dev libgmock-dev libyaml-cpp-dev libfmt-dev libabsl-dev libre2-dev
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ github.job }}-${{ github.ref }}
+          append-timestamp: false
+          save: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Lint
+        working-directory: cpp
+        run: cmake --workflow --preset tidy

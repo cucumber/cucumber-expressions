@@ -1,0 +1,33 @@
+#include "YamlTestData.hpp"
+#include "cucumber/cucumber-expressions/Expression.hpp"
+#include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
+#include "yaml-cpp/node/node.h"
+#include "gmock/gmock.h"
+#include <filesystem>
+#include <gtest/gtest.h>
+#include <string>
+
+namespace cucumber_cpp::library::cucumber_expression
+{
+    namespace
+    {
+        struct TestTransformation : testing::TestWithParam<YamlTestCase>
+        {
+            ParameterRegistry parameterRegistry{ {} };
+        };
+    }
+
+    TEST_P(TestTransformation, ProducesExpectedRegex)
+    {
+        const auto& testdata = GetParam().testdata;
+
+        const auto expression = Expression{ testdata["expression"].as<std::string>(), parameterRegistry };
+        const auto actualRegex = expression.Pattern();
+
+        EXPECT_THAT(actualRegex, testing::StrEq(testdata["expected_regex"].as<std::string>()));
+    }
+
+    INSTANTIATE_TEST_SUITE_P(FromTestData, TestTransformation,
+        testing::ValuesIn(LoadYamlTestCases(std::filesystem::path{ TESTDATA_SRC } / "cucumber-expression" / "transformation")),
+        YamlTestCaseName);
+}

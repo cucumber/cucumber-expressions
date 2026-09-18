@@ -1,0 +1,20 @@
+---
+Checks:          '
+    bugprone-*,
+    clang-analyzer-*,
+    cppcoreguidelines*,
+    -cppcoreguidelines-non-private-member-variables-in-classes,
+    misc-*,
+    -misc-non-private-member-variables-in-classes,
+    modernize*,
+    -modernize-use-trailing-return-type,
+    performance*,
+    readability*,
+    '
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+FormatStyle: file
+CheckOptions:
+    AllowSoleDefaultDtor: true
+...
