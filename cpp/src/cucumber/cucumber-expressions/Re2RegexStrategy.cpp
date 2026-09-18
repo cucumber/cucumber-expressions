@@ -9,7 +9,7 @@
 #include <string_view>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     Re2RegexStrategy::Re2RegexStrategy(std::string_view pattern)
         : pattern{ pattern }

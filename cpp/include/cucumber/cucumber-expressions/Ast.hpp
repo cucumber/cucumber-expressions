@@ -7,7 +7,7 @@
 #include <variant>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     enum class NodeType : std::uint8_t
     {

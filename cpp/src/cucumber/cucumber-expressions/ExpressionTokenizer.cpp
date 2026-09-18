@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     std::vector<Token> ExpressionTokenizer::Tokenize(std::string_view expressionToTokenize)
     {

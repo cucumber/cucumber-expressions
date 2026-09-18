@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     RegularExpression::RegularExpression(std::string expression, const ParameterRegistry& parameterRegistry)
         : expression{ std::move(expression) }

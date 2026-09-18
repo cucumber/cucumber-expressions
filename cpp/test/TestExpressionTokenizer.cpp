@@ -7,12 +7,20 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <map>
+#include <ostream>
 #include <string>
 #include <string_view>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
+    // Must live directly in this namespace (not a nested anonymous one) so gtest's ADL-based lookup finds it.
+    void PrintTo(const Token& token, std::ostream* ostream)
+    {
+        *ostream << "{type:" << Token::NameOf(token.Type()) << " text:\"" << token.Text() << "\" start:" << token.Start()
+                 << " end:" << token.End() << "}";
+    }
+
     namespace
     {
         const std::map<std::string_view, TokenType> tokenTypeMap = { { "START_OF_LINE", TokenType::startOfLine },

@@ -10,7 +10,7 @@
 #include <memory>
 #include <string_view>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     std::unique_ptr<RegexStrategy> CreateRegexStrategy(std::string_view pattern)
     {

@@ -9,7 +9,7 @@
 #include <tuple>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     struct ExpressionParser
     {

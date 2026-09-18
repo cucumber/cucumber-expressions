@@ -20,7 +20,7 @@
 #include <utility>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     using namespace std::literals;
 
@@ -250,12 +250,12 @@ namespace cucumber_cpp::library::cucumber_expression
     };
 }
 
-namespace cucumber_cpp::library::plugin
+namespace cucumber::cucumber_expressions::plugin
 {
     struct ParameterLoader;
 }
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     struct ParameterRegistry
     {

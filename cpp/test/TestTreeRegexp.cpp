@@ -5,7 +5,7 @@
 #include <iterator>
 #include <string_view>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     using namespace std::string_view_literals;
 

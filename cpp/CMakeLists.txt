@@ -138,7 +138,6 @@ target_sources(
         src/cucumber/cucumber-expressions/ExpressionTokenizer.cpp
         src/cucumber/cucumber-expressions/ExpressionTokenizer.hpp
         src/cucumber/cucumber-expressions/Group.cpp
-        src/cucumber/cucumber-expressions/Matcher.hpp
         src/cucumber/cucumber-expressions/MatchRange.cpp
         src/cucumber/cucumber-expressions/MatchRange.hpp
         src/cucumber/cucumber-expressions/ParameterRegistry.cpp

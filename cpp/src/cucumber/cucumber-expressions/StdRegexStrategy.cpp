@@ -6,7 +6,7 @@
 #include <string>
 #include <string_view>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     StdRegexStrategy::StdRegexStrategy(std::string_view pattern)
         : regex{ std::string(pattern) }

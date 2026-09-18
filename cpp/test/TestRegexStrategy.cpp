@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     namespace
     {

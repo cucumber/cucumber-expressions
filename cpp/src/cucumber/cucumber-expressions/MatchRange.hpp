@@ -7,15 +7,14 @@
 #include <regex>
 #include <utility>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     struct MatchRange : std::pair<std::smatch::const_iterator, std::smatch::const_iterator>
     {
         using std::pair<std::smatch::const_iterator, std::smatch::const_iterator>::pair;
         using diff_t = std::smatch::const_iterator::difference_type;
 
-        [[nodiscard]] std::smatch::const_iterator
-        begin() const;
+        [[nodiscard]] std::smatch::const_iterator begin() const;
         [[nodiscard]] std::smatch::const_iterator end() const;
 
         [[nodiscard]] const std::ssub_match& operator[](diff_t index) const;

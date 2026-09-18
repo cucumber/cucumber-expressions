@@ -14,7 +14,7 @@
 #include <variant>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     namespace
     {
@@ -58,37 +58,41 @@ namespace cucumber_cpp::library::cucumber_expression
         {
             return CreateNode(yaml);
         }
+    }
 
-        void PrintTo(const Node& node, std::ostream* ostream)
-        {
-            std::visit(
-                [&node, &ostream](const auto& arg)
+    // Must live directly in this namespace (not a nested anonymous one) so gtest's ADL-based lookup finds it.
+    void PrintTo(const Node& node, std::ostream* ostream)
+    {
+        std::visit(
+            [&node, &ostream](const auto& arg)
+            {
+                if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>)
                 {
-                    if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::string>)
+                    *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
+                             << " text: " << arg << "}";
+                }
+                else if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::vector<Node>>)
+                {
+                    *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
+                             << " children: [";
+                    for (const auto& child : arg)
                     {
-                        *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
-                                 << " text: " << arg << "}";
+                        PrintTo(child, ostream);
+                        *ostream << ", ";
                     }
-                    else if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, std::vector<Node>>)
-                    {
-                        *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
-                                 << " children: [";
-                        for (const auto& child : arg)
-                        {
-                            PrintTo(child, ostream);
-                            *ostream << ", ";
-                        }
-                        *ostream << "]}";
-                    }
-                    else
-                    {
-                        *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
-                                 << "}";
-                    }
-                },
-                node.GetLeafNodes());
-        }
+                    *ostream << "]}";
+                }
+                else
+                {
+                    *ostream << "{type:" << static_cast<std::size_t>(node.Type()) << " start:" << node.Start() << " end:" << node.End()
+                             << "}";
+                }
+            },
+            node.GetLeafNodes());
+    }
 
+    namespace
+    {
         struct TestExpressionParser : testing::TestWithParam<YamlTestCase>
         {};
     }

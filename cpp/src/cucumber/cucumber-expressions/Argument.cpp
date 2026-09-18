@@ -12,7 +12,7 @@
 #include <utility>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     Argument::Argument(ArgumentGroup group, const ParameterType& parameter)
         : group{ std::move(group) }

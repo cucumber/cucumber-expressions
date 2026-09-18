@@ -8,17 +8,16 @@
 #include <string>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     template<class T>
-    T TransformArg([[maybe_unused]] const T& _, const std::string& name, const cucumber_expression::ConvertFunctionArg& match)
+    T TransformArg([[maybe_unused]] const T& _, const std::string& name, const ConvertFunctionArg& match)
     {
         return ConverterTypeMap<std::optional<T>>::Instance().At(name)(match).value();
     }
 
     template<class T>
-    std::optional<T> TransformArg([[maybe_unused]] const std::optional<T>& _, const std::string& name,
-        const cucumber_expression::ConvertFunctionArg& match)
+    std::optional<T> TransformArg([[maybe_unused]] const std::optional<T>& _, const std::string& name, const ConvertFunctionArg& match)
     {
         return ConverterTypeMap<std::optional<T>>::Instance().At(name)(match);
     }

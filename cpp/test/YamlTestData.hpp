@@ -13,7 +13,7 @@
 #include <string_view>
 #include <vector>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     // One test case sourced from a single YAML file; the file stem is used as the parameterized-test name.
     struct YamlTestCase

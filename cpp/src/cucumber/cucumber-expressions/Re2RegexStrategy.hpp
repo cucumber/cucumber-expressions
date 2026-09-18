@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 
-namespace cucumber_cpp::library::cucumber_expression
+namespace cucumber::cucumber_expressions
 {
     struct Re2RegexStrategy : RegexStrategy
     {
