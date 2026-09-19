@@ -48,23 +48,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtest-dev libgmock-dev libyaml-cpp-dev libabsl-dev libre2-dev
 
-      - name: Checkout libfmt
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          repository: fmtlib/fmt
-          ref: 10.2.1
-          path: fmt-src
-          persist-credentials: false
-
-      - name: Install libfmt (from source)
-        run: |
-          cmake -S fmt-src -B fmt-src/build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DFMT_TEST=OFF -DFMT_DOC=OFF \
-            -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-          cmake --build fmt-src/build
-          sudo cmake --install fmt-src/build
-
       - uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
         with:
           languages: c-cpp
