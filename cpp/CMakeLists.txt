@@ -80,9 +80,17 @@ endif()
 # Debian/Ubuntu's libre2-dev only ships a pkg-config file, not a CMake config, so fall back to pkg-config.
 find_package(re2 QUIET)
 if(NOT TARGET re2::re2)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(RE2 REQUIRED IMPORTED_TARGET re2)
-    add_library(re2::re2 ALIAS PkgConfig::RE2)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(RE2 QUIET IMPORTED_TARGET re2)
+        if(TARGET PkgConfig::RE2)
+            add_library(re2::re2 ALIAS PkgConfig::RE2)
+        endif()
+    endif()
+endif()
+
+if(NOT TARGET re2::re2)
+    message(STATUS "re2 not found, falling back to std::regex")
 endif()
 
 # Target options
