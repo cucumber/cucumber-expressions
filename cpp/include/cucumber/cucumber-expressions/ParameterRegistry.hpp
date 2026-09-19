@@ -2,13 +2,13 @@
 #define CUCUMBER_EXPRESSION_PARAMETERREGISTRY_HPP
 
 #include "cucumber/cucumber-expressions/SourceLocation.hpp"
-#include "fmt/format.h"
 #include <algorithm>
 #include <any>
 #include <cctype>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
+#include <fmt/core.h>
 #include <functional>
 #include <map>
 #include <optional>
@@ -33,10 +33,10 @@ namespace cucumber::cucumber_expressions
 
     struct CustomParameterEntry
     {
+        CustomParameterEntry(CustomParameterEntryParams params, std::size_t localId, SourceLocation location);
+
         CustomParameterEntryParams params;
-
-        std::size_t localId{};
-
+        std::size_t localId;
         SourceLocation location;
 
         bool operator==(const CustomParameterEntry& other) const;
@@ -53,55 +53,61 @@ namespace cucumber::cucumber_expressions
     };
 
     template<class To>
-    inline To StringTo(const std::string& s)
+    inline To StringTo(const std::string& str)
     {
-        if (s.empty())
+        if (str.empty())
+        {
             return {};
+        }
 
-        std::istringstream stream{ s };
-        To to{};
-        stream >> to;
+        std::istringstream stream{ str };
+
+        To convertTo{};
+        stream >> convertTo;
+
         if (stream.fail())
-            throw ConversionError{ fmt::format("Cannot convert parameter {} in to {}", s, typeid(To).name()) };
+        {
+            throw ConversionError{ fmt::format("Cannot convert parameter {} in to {}", str, typeid(To).name()) };
+        }
 
-        return to;
+        return convertTo;
     }
 
     template<>
-    inline std::string StringTo<std::string>(const std::string& s)
+    inline std::string StringTo<std::string>(const std::string& str)
     {
-        return s;
+        return str;
     }
 
     template<>
-    inline int32_t StringTo<std::int32_t>(const std::string& s)
+    inline int32_t StringTo<std::int32_t>(const std::string& str)
     {
-        return std::stoi(s);
+        return std::stoi(str);
     }
 
     template<>
-    inline int64_t StringTo<std::int64_t>(const std::string& s)
+    inline int64_t StringTo<std::int64_t>(const std::string& str)
     {
-        return std::stoll(s);
+        return std::stoll(str);
     }
 
     template<>
-    inline float StringTo<float>(const std::string& s)
+    inline float StringTo<float>(const std::string& str)
     {
-        return std::stof(s);
+        return std::stof(str);
     }
 
     template<>
-    inline double StringTo<double>(const std::string& s)
+    inline double StringTo<double>(const std::string& str)
     {
-        return std::stod(s);
+        return std::stod(str);
     }
 
     namespace details
     {
-        inline bool ichar_equals(char a, char b)
+        inline bool ichar_equals(char lhs, char rhs)
         {
-            return std::tolower(static_cast<unsigned char>(a)) == std::tolower(static_cast<unsigned char>(b));
+            return std::tolower(static_cast<unsigned char>(lhs)) == std::tolower(static_cast<unsigned char>(rhs));
         }
 
         inline bool iequals(std::string_view lhs, std::string_view rhs)
@@ -111,12 +117,12 @@ namespace cucumber::cucumber_expressions
     }
 
     template<>
-    inline bool StringTo<bool>(const std::string& s)
+    inline bool StringTo<bool>(const std::string& str)
     {
         using details::iequals;
 
-        return iequals(s, "true") || iequals(s, "1") || iequals(s, "yes") || iequals(s, "on") || iequals(s, "enabled") ||
-               iequals(s, "active");
+        return iequals(str, "true") || iequals(str, "1") || iequals(str, "yes") || iequals(str, "on") || iequals(str, "enabled") ||
+               iequals(str, "active");
     }
 
     struct ParameterType
@@ -199,21 +205,21 @@ namespace cucumber::cucumber_expressions
         {
             ConverterMap& map;
 
-            void Emplace(const std::string& name, ConverterFunction<T> fn)
+            void Emplace(const std::string& name, ConverterFunction<T> func)
             {
-                map[name] = [fn = std::move(fn)](const ConvertFunctionArg& args)
+                map[name] = [func = std::move(func)](const ConvertFunctionArg& args)
                 {
-                    return std::any{ fn(args) };
+                    return std::any{ func(args) };
                 };
             }
 
             struct TypedAccessor
             {
-                AnyConverterFunction& fn;
+                AnyConverterFunction& func;
 
                 T operator()(const ConvertFunctionArg& args) const
                 {
-                    return std::any_cast<T>(fn(args));
+                    return std::any_cast<T>(func(args));
                 }
             };
 
@@ -227,11 +233,11 @@ namespace cucumber::cucumber_expressions
                 ConverterMap& map;
                 std::string name;
 
-                Assigner& operator=(ConverterFunction<T> fn)
+                Assigner& operator=(ConverterFunction<T> func)
                 {
-                    map[name] = [fn = std::move(fn)](const ConvertFunctionArg& args)
+                    map[name] = [func = std::move(func)](const ConvertFunctionArg& args)
                     {
-                        return std::any{ fn(args) };
+                        return std::any{ func(args) };
                     };
                     return *this;
                 }
@@ -260,8 +266,12 @@ namespace cucumber::cucumber_expressions
     struct ParameterRegistry
     {
         explicit ParameterRegistry(const std::set<CustomParameterEntry, std::less<>>& customParameters);
-
         virtual ~ParameterRegistry() = default;
+
+        ParameterRegistry(const ParameterRegistry&) = delete;
+        ParameterRegistry(ParameterRegistry&&) = delete;
+        ParameterRegistry& operator=(const ParameterRegistry&) = delete;
+        ParameterRegistry& operator=(ParameterRegistry&&) = delete;
 
         [[nodiscard]] const std::map<std::string, const ParameterType, std::less<>>& GetParameters() const;
 

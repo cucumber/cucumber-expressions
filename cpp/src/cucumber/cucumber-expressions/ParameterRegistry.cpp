@@ -1,10 +1,12 @@
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
 #include "cucumber/cucumber-expressions/Errors.hpp"
+#include "cucumber/cucumber-expressions/SourceLocation.hpp"
 #include "fmt/format.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdint>
 #include <cstdlib>
+#include <fmt/core.h>
 #include <functional>
 #include <map>
 #include <optional>
@@ -12,6 +14,7 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 namespace cucumber::cucumber_expressions
@@ -73,6 +76,12 @@ namespace cucumber::cucumber_expressions
             return lhs->name < rhs->name;
         }
     }
+
+    CustomParameterEntry::CustomParameterEntry(CustomParameterEntryParams params, std::size_t localId, SourceLocation location)
+        : params{ std::move(params) }
+        , localId{ localId }
+        , location{ location }
+    {}
 
     bool CustomParameterEntry::operator==(const CustomParameterEntry& other) const
     {
@@ -197,7 +206,7 @@ namespace cucumber::cucumber_expressions
     {
         AssertParameterIsUnique(parameter.name);
 
-        const auto& [iter, _] = parameterTypesByName.try_emplace(parameter.name, parameter);
+        const auto& [iter, _temp] = parameterTypesByName.try_emplace(parameter.name, parameter);
         const auto& [key, value] = *iter;
 
         for (const auto& regex : parameter.regex)

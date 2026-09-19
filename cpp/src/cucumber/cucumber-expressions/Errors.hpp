@@ -3,7 +3,6 @@
 
 #include "cucumber/cucumber-expressions/Ast.hpp"
 #include <cstddef>
-#include <span>
 #include <stdexcept>
 #include <string>
 #include <string_view>

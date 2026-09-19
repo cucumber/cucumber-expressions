@@ -4,20 +4,19 @@
 #include "cucumber/cucumber-expressions/Group.hpp"
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
 #include <optional>
-#include <span>
 #include <string>
 #include <vector>
 
 namespace cucumber::cucumber_expressions
 {
     template<class T>
-    T TransformArg([[maybe_unused]] const T& _, const std::string& name, const ConvertFunctionArg& match)
+    T TransformArg([[maybe_unused]] const T& _val, const std::string& name, const ConvertFunctionArg& match)
     {
         return ConverterTypeMap<std::optional<T>>::Instance().At(name)(match).value();
     }
 
     template<class T>
-    std::optional<T> TransformArg([[maybe_unused]] const std::optional<T>& _, const std::string& name, const ConvertFunctionArg& match)
+    std::optional<T> TransformArg([[maybe_unused]] const std::optional<T>& _opt, const std::string& name, const ConvertFunctionArg& match)
     {
         return ConverterTypeMap<std::optional<T>>::Instance().At(name)(match);
     }
@@ -41,7 +40,7 @@ namespace cucumber::cucumber_expressions
 
     private:
         ArgumentGroup group;
-        const ParameterType& parameter;
+        const ParameterType* parameter;
     };
 }
 

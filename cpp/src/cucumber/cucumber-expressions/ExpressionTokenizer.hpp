@@ -14,7 +14,7 @@ namespace cucumber::cucumber_expressions
         std::vector<Token> Tokenize(std::string_view expressionToTokenize);
 
     private:
-        [[nodiscard]] TokenType TokenTypeOf(char ch, bool treatAsText) const;
+        [[nodiscard]] TokenType TokenTypeOf(char chr, bool treatAsText) const;
         [[nodiscard]] static bool ShouldCreateNewToken(TokenType previousTokenType, TokenType currentTokenType);
         [[nodiscard]] Token CreateToken(TokenType type);
 

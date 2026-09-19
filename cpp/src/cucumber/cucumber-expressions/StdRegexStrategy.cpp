@@ -1,5 +1,6 @@
 #include "cucumber/cucumber-expressions/StdRegexStrategy.hpp"
 #include "cucumber/cucumber-expressions/RegexStrategy.hpp"
+#include "cucumber/cucumber-expressions/Utils.hpp"
 #include <cstddef>
 #include <optional>
 #include <regex>
@@ -14,24 +15,30 @@ namespace cucumber::cucumber_expressions
 
     std::optional<Matches> StdRegexStrategy::Match(std::string_view text) const
     {
-        std::smatch match;
+        std::smatch matches;
         const std::string textStr(text);
-        if (!std::regex_search(textStr, match, regex))
+        if (!std::regex_search(textStr, matches, regex))
+        {
             return std::nullopt;
+        }
 
         Matches result;
-        result.reserve(match.size());
-        for (std::smatch::size_type i = 0; i < match.size(); ++i)
+        result.reserve(matches.size());
+        for (std::smatch::size_type i = 0; i < matches.size(); ++i)
         {
-            if (const auto& m = match[i]; !m.matched)
+            if (const auto& match = matches[i]; !match.matched)
+            {
                 result.emplace_back(std::nullopt);
+            }
             else
             {
-                const auto start = static_cast<std::size_t>(match.position(i));
+                const auto startByte = static_cast<std::size_t>(matches.position(i));
+                const auto start = CodepointCount(std::string_view{ textStr.data(), startByte });
+                const auto value = match.str();
                 result.emplace_back(MatchGroup{
-                    .value = m.str(),
+                    .value = value,
                     .start = start,
-                    .end = start + static_cast<std::size_t>(m.length()),
+                    .end = start + CodepointCount(value),
                 });
             }
         }

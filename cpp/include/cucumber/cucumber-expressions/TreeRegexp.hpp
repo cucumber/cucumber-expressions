@@ -38,14 +38,14 @@ namespace cucumber::cucumber_expressions
     struct TreeRegexp
     {
         explicit TreeRegexp(std::string_view pattern);
+        ~TreeRegexp() = default;
+
         TreeRegexp(const TreeRegexp& other);
         TreeRegexp& operator=(const TreeRegexp& other);
         TreeRegexp(TreeRegexp&&) = default;
         TreeRegexp& operator=(TreeRegexp&&) = default;
-        ~TreeRegexp() = default;
 
         [[nodiscard]] const GroupBuilder& RootBuilder() const;
-
         [[nodiscard]] std::optional<ArgumentGroup> MatchToGroup(const std::string& text) const;
 
     private:

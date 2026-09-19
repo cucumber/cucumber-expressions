@@ -151,6 +151,8 @@ target_sources(
         src/cucumber/cucumber-expressions/StdRegexStrategy.cpp
         src/cucumber/cucumber-expressions/StdRegexStrategy.hpp
         src/cucumber/cucumber-expressions/TreeRegexp.cpp
+        src/cucumber/cucumber-expressions/Utils.cpp
+        src/cucumber/cucumber-expressions/Utils.hpp
 )
 
 target_include_directories(

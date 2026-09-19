@@ -6,6 +6,7 @@
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
 #include "fmt/format.h"
 #include <algorithm>
+#include <fmt/core.h>
 #include <iterator>
 #include <optional>
 #include <stdexcept>
@@ -156,16 +157,22 @@ namespace cucumber::cucumber_expressions
         for (const auto& child : node.Children())
         {
             if (child.Children().empty())
+            {
                 throw AlternativeMayNotBeEmpty(node, expression);
+            }
 
             if (NodesAreEmpty(child))
+            {
                 throw AlternativeMayNotExclusivelyContainOptionals(node, expression);
+            }
         }
 
         std::string partialRegex{ CreateEmptyRegexString(node) };
         partialRegex += RewriteToRegex(node.Children().front());
         for (auto child = std::next(node.Children().begin()); child != node.Children().end(); ++child)
+        {
             partialRegex += '|' + RewriteToRegex(*child);
+        }
 
         return fmt::format(R"((?:{}))", partialRegex);
     }
@@ -175,7 +182,9 @@ namespace cucumber::cucumber_expressions
         std::string partialRegex{ CreateEmptyRegexString(node) };
 
         for (const auto& child : node.Children())
+        {
             partialRegex += RewriteToRegex(child);
+        }
 
         return partialRegex;
     }
@@ -186,18 +195,24 @@ namespace cucumber::cucumber_expressions
         {
             auto parameter = parameterRegistry.Lookup(node.Text());
             if (parameter.regex.empty())
+            {
                 throw UndefinedParameterTypeError(node, expression, node.Text());
+            }
 
             parameters.push_back(parameter);
 
             std::string partialRegex{};
             if (parameter.regex.size() == 1)
+            {
                 partialRegex = fmt::format(R"(({}))", parameter.regex.front());
+            }
             else
             {
                 partialRegex = { parameter.regex.front() };
                 for (auto parameterRegex = std::next(parameter.regex.begin()); parameterRegex != parameter.regex.end(); ++parameterRegex)
+                {
                     partialRegex += R"()|(?:)" + *parameterRegex;
+                }
                 partialRegex = fmt::format(R"(((?:{})))", partialRegex);
             }
             return partialRegex;
@@ -213,7 +228,9 @@ namespace cucumber::cucumber_expressions
         std::string partialRegex{ CreateEmptyRegexString(node) };
 
         for (const auto& child : node.Children())
+        {
             partialRegex += RewriteToRegex(child);
+        }
 
         return fmt::format("^{}$", partialRegex);
     }

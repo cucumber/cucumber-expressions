@@ -1,6 +1,7 @@
 #include "cucumber/cucumber-expressions/ExpressionTokenizer.hpp"
 #include "cucumber/cucumber-expressions/Ast.hpp"
 #include "cucumber/cucumber-expressions/Errors.hpp"
+#include "cucumber/cucumber-expressions/Utils.hpp"
 #include <cstddef>
 #include <string>
 #include <string_view>
@@ -18,47 +19,59 @@ namespace cucumber::cucumber_expressions
         auto treatAsText = false;
 
         if (expression.empty())
-            tokens.emplace_back(TokenType::startOfLine, "", 0, 0);
-
-        for (const auto ch : expression)
         {
-            if (Token::IsEscapeCharacter(ch) && !treatAsText)
+            tokens.emplace_back(TokenType::startOfLine, "", 0, 0);
+        }
+
+        for (const auto chr : expression)
+        {
+            if (Token::IsEscapeCharacter(chr) && !treatAsText)
             {
                 ++escapedCharacters;
                 treatAsText = true;
                 continue;
             }
 
-            auto currentTokenType = TokenTypeOf(ch, treatAsText);
+            auto currentTokenType = TokenTypeOf(chr, treatAsText);
             treatAsText = false;
 
             if (ShouldCreateNewToken(previousTokenType, currentTokenType))
+            {
                 tokens.push_back(CreateToken(previousTokenType));
+            }
 
             previousTokenType = currentTokenType;
-            buffer += ch;
+            buffer += chr;
         }
 
         if (!buffer.empty())
+        {
             tokens.push_back(CreateToken(previousTokenType));
+        }
 
         if (treatAsText)
+        {
             throw TheEndOfLineCannotBeEscaped(expression);
+        }
 
-        tokens.emplace_back(TokenType::endOfLine, "", expression.length(), expression.length());
+        tokens.emplace_back(TokenType::endOfLine, "", startIndex, startIndex);
 
         return tokens;
     }
 
-    [[nodiscard]] TokenType ExpressionTokenizer::TokenTypeOf(char ch, bool treatAsText) const
+    [[nodiscard]] TokenType ExpressionTokenizer::TokenTypeOf(char chr, bool treatAsText) const
     {
         if (!treatAsText)
-            return Token::TypeOf(ch);
+        {
+            return Token::TypeOf(chr);
+        }
 
-        if (Token::CanEscape(ch))
+        if (Token::CanEscape(chr))
+        {
             return TokenType::text;
+        }
 
-        throw CantEscape(expression, startIndex + buffer.length() + escapedCharacters);
+        throw CantEscape(expression, startIndex + CodepointCount(buffer) + escapedCharacters);
     }
 
     [[nodiscard]] bool ExpressionTokenizer::ShouldCreateNewToken(TokenType previousTokenType, TokenType currentTokenType)
@@ -71,10 +84,12 @@ namespace cucumber::cucumber_expressions
         std::size_t escapedCount = 0;
 
         if (type == TokenType::text)
+        {
             escapedCount = std::exchange(this->escapedCharacters, 0);
+        }
 
         auto start = startIndex;
-        auto end = startIndex + buffer.length() + escapedCount;
+        auto end = startIndex + CodepointCount(buffer) + escapedCount;
         auto text = std::string{};
         std::swap(text, buffer);
         startIndex = end;

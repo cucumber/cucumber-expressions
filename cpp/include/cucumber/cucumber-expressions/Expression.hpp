@@ -17,6 +17,12 @@ namespace cucumber::cucumber_expressions
     struct Expression
     {
         Expression(std::string expression, ParameterRegistry& parameterRegistry);
+        ~Expression() = default;
+
+        Expression(const Expression&) = delete;
+        Expression(Expression&&) = delete;
+        Expression& operator=(const Expression&) = delete;
+        Expression& operator=(Expression&&) = delete;
 
         [[nodiscard]] std::string_view Source() const;
         [[nodiscard]] std::string_view Pattern() const;

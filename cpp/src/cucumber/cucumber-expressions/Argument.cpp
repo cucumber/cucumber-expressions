@@ -4,9 +4,8 @@
 #include "fmt/format.h"
 #include <algorithm>
 #include <cstddef>
+#include <fmt/core.h>
 #include <iterator>
-#include <ranges>
-#include <span>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -16,7 +15,7 @@ namespace cucumber::cucumber_expressions
 {
     Argument::Argument(ArgumentGroup group, const ParameterType& parameter)
         : group{ std::move(group) }
-        , parameter{ parameter }
+        , parameter{ &parameter }
     {}
 
     std::vector<Argument> Argument::BuildArguments(const ArgumentGroup& group, const std::vector<ParameterType>& parameters)
@@ -48,7 +47,7 @@ namespace cucumber::cucumber_expressions
 
     std::string Argument::Name() const
     {
-        return parameter.name;
+        return parameter->name;
     }
 
 }

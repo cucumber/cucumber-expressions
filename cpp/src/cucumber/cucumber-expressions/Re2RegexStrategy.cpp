@@ -1,5 +1,6 @@
 #include "cucumber/cucumber-expressions/Re2RegexStrategy.hpp"
 #include "cucumber/cucumber-expressions/RegexStrategy.hpp"
+#include "cucumber/cucumber-expressions/Utils.hpp"
 #include <cstddef>
 #include <optional>
 #include <re2/re2.h>
@@ -42,11 +43,12 @@ namespace cucumber::cucumber_expressions
             }
             else
             {
-                const auto start = static_cast<std::size_t>(piece.data() - text.data());
+                const auto startByte = static_cast<std::size_t>(piece.data() - text.data());
+                const auto start = CodepointCount(text.substr(0, startByte));
                 result.emplace_back(MatchGroup{
                     .value = std::string(piece),
                     .start = start,
-                    .end = start + piece.size(),
+                    .end = start + CodepointCount(std::string_view{ piece.data(), piece.size() }),
                 });
             }
         }

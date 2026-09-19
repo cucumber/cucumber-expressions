@@ -9,8 +9,6 @@
 #include <iterator>
 #include <list>
 #include <optional>
-#include <ranges>
-#include <span>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -24,9 +22,14 @@ namespace cucumber::cucumber_expressions
         bool IsNonCapturing(std::string_view pattern, std::size_t pos)
         {
             if (pattern[pos + 1] != '?')
+            {
                 return false;
+            }
+
             if (pattern[pos + 2] != '<')
+            {
                 return true;
+            }
 
             return pattern[pos + 3] == '=' || pattern[pos + 3] == '!';
         }
@@ -37,14 +40,18 @@ namespace cucumber::cucumber_expressions
             groupStartStack.emplace_back(patternIndex);
             auto& groupBuilder = stack.emplace_back();
             if (IsNonCapturing(pattern, patternIndex))
+            {
                 groupBuilder.SetNonCapturing();
+            }
         }
 
         void FinalizeGroup(std::deque<GroupBuilder>& stack, std::deque<std::size_t>& groupStartStack, std::string_view pattern,
             std::size_t patternIndex)
         {
             if (stack.empty())
+            {
                 throw std::runtime_error("Empty stack");
+            }
 
             auto groupBuilder = stack.back();
             stack.pop_back();
@@ -53,7 +60,9 @@ namespace cucumber::cucumber_expressions
             groupStart += 1;
 
             if (!groupStartStack.empty())
+            {
                 groupStartStack.pop_back();
+            }
 
             if (groupBuilder.IsCapturing())
             {
@@ -61,7 +70,9 @@ namespace cucumber::cucumber_expressions
                 stack.back().Add(groupBuilder);
             }
             else
+            {
                 groupBuilder.MoveChildrenTo(stack.back());
+            }
         }
 
         struct PatternGroupParser
@@ -73,20 +84,28 @@ namespace cucumber::cucumber_expressions
                 groupClose
             };
 
-            State Parse(char c)
+            State Parse(char chr)
             {
                 State state{};
 
-                if (c == '[' && !escaping)
+                if (chr == '[' && !escaping)
+                {
                     charClass = true;
-                else if (c == ']' && !escaping)
+                }
+                else if (chr == ']' && !escaping)
+                {
                     charClass = false;
-                else if (c == '(' && !escaping && !charClass)
+                }
+                else if (chr == '(' && !escaping && !charClass)
+                {
                     state = State::groupStart;
-                else if (c == ')' && !escaping && !charClass)
+                }
+                else if (chr == ')' && !escaping && !charClass)
+                {
                     state = State::groupClose;
+                }
 
-                escaping = (c == '\\' && !escaping);
+                escaping = (chr == '\\' && !escaping);
 
                 return state;
             }
@@ -106,9 +125,9 @@ namespace cucumber::cucumber_expressions
 
             for (std::size_t i = 0; i < pattern.size(); ++i)
             {
-                const char c = pattern[i];
+                const char chr = pattern[i];
 
-                switch (patternParser.Parse(c))
+                switch (patternParser.Parse(chr))
                 {
                     case PatternGroupParser::State::groupStart:
                         StartGroup(stack, groupStartStack, pattern, i);
@@ -124,7 +143,9 @@ namespace cucumber::cucumber_expressions
             }
 
             if (stack.empty())
+            {
                 throw std::runtime_error("Empty stack");
+            }
 
             return stack.back();
         }
@@ -153,7 +174,10 @@ namespace cucumber::cucumber_expressions
     void GroupBuilder::MoveChildrenTo(GroupBuilder& target)
     {
         for (auto& child : children)
+        {
             target.Add(std::move(child));
+        }
+
         children.clear();
     }
 
@@ -218,7 +242,9 @@ namespace cucumber::cucumber_expressions
     {
         const auto matchResult = regexStrategy->Match(text);
         if (!matchResult)
+        {
             return std::nullopt;
+        }
 
         std::size_t index = 0;
         return rootGroupBuilder.Build(*matchResult, index);
