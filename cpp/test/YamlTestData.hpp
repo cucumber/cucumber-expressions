@@ -54,11 +54,11 @@ namespace cucumber::cucumber_expressions
             }
         }
 
-        std::sort(params.begin(), params.end(),
-            [](const auto& lhs, const auto& rhs)
-            {
-                return lhs.name < rhs.name;
-            });
+        // std::sort(params.begin(), params.end(),
+        //     [](const auto& lhs, const auto& rhs)
+        //     {
+        //         return lhs.name < rhs.name;
+        //     });
 
         return params;
     }
