@@ -1,12 +1,10 @@
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
 #include "cucumber/cucumber-expressions/Errors.hpp"
 #include "cucumber/cucumber-expressions/SourceLocation.hpp"
-#include "fmt/format.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdint>
 #include <cstdlib>
-#include <fmt/core.h>
 #include <functional>
 #include <map>
 #include <optional>
@@ -74,6 +72,20 @@ namespace cucumber::cucumber_expressions
             }
 
             return lhs->name < rhs->name;
+        }
+
+        std::string Join(const std::vector<std::string>& values, const std::string& separator)
+        {
+            std::string result;
+            for (std::size_t index = 0; index < values.size(); ++index)
+            {
+                if (index > 0)
+                {
+                    result += separator;
+                }
+                result += values[index];
+            }
+            return result;
         }
     }
 
@@ -177,8 +189,8 @@ namespace cucumber::cucumber_expressions
                 parameterNames.push_back(parameter->name);
             }
 
-            throw CucumberExpressionError{ fmt::format("There are multiple parameter types but none are prefered for the regexp \"{}\": {}",
-                regex, fmt::join(parameterNames, ", ")) };
+            throw CucumberExpressionError{ "There are multiple parameter types but none are prefered for the regexp \"" + regex +
+                                           "\": " + Join(parameterNames, ", ") };
         }
 
         return parameters[0];
@@ -194,7 +206,7 @@ namespace cucumber::cucumber_expressions
             }
             else
             {
-                throw CucumberExpressionError{ fmt::format("There is already a parameter with name {}", name) };
+                throw CucumberExpressionError{ "There is already a parameter with name " + name };
             }
         }
     }
@@ -211,9 +223,9 @@ namespace cucumber::cucumber_expressions
             auto& existingParametersByRegex = parameterTypesByRegex[regex];
             if (existingParametersByRegex.size() > 0 && existingParametersByRegex[0]->preferForRegexMatch && parameter.preferForRegexMatch)
             {
-                throw CucumberExpressionError{ fmt::format("There can only be one preferential parameter type per regexp.\nThe regexp "
-                                                           "\"{}\" is used for two preferential parameter types, {} and {}",
-                    regex, existingParametersByRegex[0]->name, parameter.name) };
+                throw CucumberExpressionError{ "There can only be one preferential parameter type per regexp.\nThe regexp \"" + regex +
+                                               "\" is used for two preferential parameter types, " + existingParametersByRegex[0]->name +
+                                               " and " + parameter.name };
             }
 
             existingParametersByRegex.push_back(&value);

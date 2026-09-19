@@ -1,10 +1,8 @@
 #include "cucumber/cucumber-expressions/Argument.hpp"
 #include "cucumber/cucumber-expressions/Group.hpp"
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
-#include "fmt/format.h"
 #include <algorithm>
 #include <cstddef>
-#include <fmt/core.h>
 #include <iterator>
 #include <stdexcept>
 #include <string>
@@ -22,8 +20,8 @@ namespace cucumber::cucumber_expressions
     {
         if (group.children.size() != parameters.size())
         {
-            throw std::runtime_error(
-                fmt::format("Mismatch between number of groups ({}) and parameters ({})", group.children.size(), parameters.size()));
+            throw std::runtime_error("Mismatch between number of groups (" + std::to_string(group.children.size()) + ") and parameters (" +
+                                     std::to_string(parameters.size()) + ")");
         }
 
         std::size_t index{ 0 };

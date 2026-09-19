@@ -4,9 +4,7 @@
 #include "cucumber/cucumber-expressions/Errors.hpp"
 #include "cucumber/cucumber-expressions/ExpressionParser.hpp"
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
-#include "fmt/format.h"
 #include <algorithm>
-#include <fmt/core.h>
 #include <iterator>
 #include <optional>
 #include <stdexcept>
@@ -149,7 +147,7 @@ namespace cucumber::cucumber_expressions
             partialRegex += RewriteToRegex(child);
         }
 
-        return fmt::format(R"((?:{})?)", partialRegex);
+        return "(?:" + partialRegex + ")?";
     }
 
     std::string Expression::RewriteAlternation(const Node& node)
@@ -174,7 +172,7 @@ namespace cucumber::cucumber_expressions
             partialRegex += '|' + RewriteToRegex(*child);
         }
 
-        return fmt::format(R"((?:{}))", partialRegex);
+        return "(?:" + partialRegex + ")";
     }
 
     std::string Expression::RewriteAlternative(const Node& node)
@@ -204,7 +202,7 @@ namespace cucumber::cucumber_expressions
             std::string partialRegex{};
             if (parameter.regex.size() == 1)
             {
-                partialRegex = fmt::format(R"(({}))", parameter.regex.front());
+                partialRegex = "(" + parameter.regex.front() + ")";
             }
             else
             {
@@ -213,7 +211,7 @@ namespace cucumber::cucumber_expressions
                 {
                     partialRegex += R"()|(?:)" + *parameterRegex;
                 }
-                partialRegex = fmt::format(R"(((?:{})))", partialRegex);
+                partialRegex = "((?:" + partialRegex + "))";
             }
             return partialRegex;
         }
@@ -232,6 +230,6 @@ namespace cucumber::cucumber_expressions
             partialRegex += RewriteToRegex(child);
         }
 
-        return fmt::format("^{}$", partialRegex);
+        return "^" + partialRegex + "$";
     }
 }

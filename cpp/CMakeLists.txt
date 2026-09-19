@@ -77,9 +77,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
 endif()
 
-# CMake dependencies
-find_package(fmt 10 REQUIRED) # version 10 or higher has fmt::println
-
 # Debian/Ubuntu's libre2-dev only ships a pkg-config file, not a CMake config, so fall back to pkg-config.
 find_package(re2 QUIET)
 if(NOT TARGET re2::re2)
@@ -162,12 +159,6 @@ target_include_directories(
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/src/
-)
-
-target_link_libraries(
-    cucumber_cucumber_expressions_lib
-    PUBLIC
-        fmt::fmt
 )
 
 if (TARGET re2::re2)

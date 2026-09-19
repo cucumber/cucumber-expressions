@@ -9,7 +9,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
-#include <fmt/core.h>
 #include <functional>
 #include <gtest/gtest.h>
 #include <limits>
@@ -24,11 +23,8 @@ namespace cucumber::cucumber_expressions
     {
         std::string FormatTestFailureMessage(const std::string& file, const YAML::Node& node, const Expression& expression)
         {
-            return fmt::format("file:           {}\n"
-                               "failed to match {}\n"
-                               "regex           {}\n"
-                               "against         {}",
-                file, node["expression"].as<std::string>(), expression.Pattern(), node["text"].as<std::string>());
+            return "file:           " + file + "\nfailed to match " + node["expression"].as<std::string>() + "\nregex           " +
+                   std::string(expression.Pattern()) + "\nagainst         " + node["text"].as<std::string>();
         }
 
         using ArgumentChecker =
@@ -95,8 +91,7 @@ namespace cucumber::cucumber_expressions
         {
             const auto expr = testdata["expression"].as<std::string>();
             const auto text = testdata["text"].as<std::string>();
-            ASSERT_ANY_THROW((void)Expression(expr, parameterRegistry).MatchToArguments(text))
-                << fmt::format("Test failed for file: {}", param.name);
+            ASSERT_ANY_THROW((void)Expression(expr, parameterRegistry).MatchToArguments(text)) << "Test failed for file: " + param.name;
         }
         else
         {

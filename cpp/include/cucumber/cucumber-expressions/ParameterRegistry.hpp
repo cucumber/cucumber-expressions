@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include <fmt/core.h>
 #include <functional>
 #include <map>
 #include <optional>
@@ -17,6 +16,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <typeinfo>
 #include <utility>
 #include <vector>
 
@@ -67,7 +67,7 @@ namespace cucumber::cucumber_expressions
 
         if (stream.fail())
         {
-            throw ConversionError{ fmt::format("Cannot convert parameter {} in to {}", str, typeid(To).name()) };
+            throw ConversionError{ "Cannot convert parameter " + str + " in to " + typeid(To).name() };
         }
 
         return convertTo;

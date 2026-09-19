@@ -1,7 +1,6 @@
 #include "cucumber/cucumber-expressions/Errors.hpp"
 #include "cucumber/cucumber-expressions/Ast.hpp"
 #include <cstddef>
-#include <fmt/core.h>
 #include <numeric>
 #include <stdexcept>
 #include <string>
@@ -33,13 +32,9 @@ namespace cucumber::cucumber_expressions
 
     Error::Error(std::size_t column, std::string_view expression, std::string_view pointer, std::string_view problem,
         std::string_view solution)
-        : std::runtime_error{ fmt::format("This Cucumber Expression has a problem at column {}:\n"
-                                          "\n"
-                                          "{}\n"
-                                          "{}\n"
-                                          "{}\n"
-                                          "{}\n",
-              column + 1, expression, pointer, problem, solution) }
+        : std::runtime_error{ "This Cucumber Expression has a problem at column " + std::to_string(column + 1) + ":\n\n" +
+                              std::string(expression) + "\n" + std::string(pointer) + "\n" + std::string(problem) + "\n" +
+                              std::string(solution) + "\n" }
     {}
 
     CantEscape::CantEscape(std::string_view expression, std::size_t column)
@@ -78,20 +73,21 @@ Otherwise rephrase your expression or consider using a regular expression instea
             token.Start(),
             expression,
             PointAtLocated(token),
-            fmt::format(R"(The '{}' does not have a matching '{}')", Token::SymbolOf(beginToken), Token::SymbolOf(endToken)),
-            fmt::format(R"(If you did not intend to use {} you can use '\\{}' to escape the {})", Token::PurposeOf(beginToken),
-                Token::SymbolOf(beginToken), Token::PurposeOf(beginToken)),
+            std::string("The '") + Token::SymbolOf(beginToken) + "' does not have a matching '" + Token::SymbolOf(endToken) + "'",
+            std::string("If you did not intend to use ") + Token::PurposeOf(beginToken) + " you can use '\\\\" +
+                Token::SymbolOf(beginToken) + "' to escape the " + Token::PurposeOf(beginToken),
         }
     {}
 
     NoEligibleParsers::NoEligibleParsers(const std::vector<Token>& tokens)
         : std::runtime_error{
-            fmt::format("No eligible parsers for [{}]",
+            "No eligible parsers for [" +
                 std::accumulate(tokens.begin() + 1, tokens.end(), Token::NameOf(tokens.begin()->Type()),
                     [](const auto& acc, const auto& token) -> std::string
                     {
                         return acc + ", " + Token::NameOf(token.Type());
-                    })),
+                    }) +
+                "]",
         }
     {}
 
@@ -152,8 +148,8 @@ For more complicated expressions consider using a regular expression instead.)",
             node.Start(),
             expression,
             PointAtLocated(node),
-            fmt::format(R"(Undefined parameter type '{}')", undefinedParameterName),
-            fmt::format(R"(Please register a ParameterType for '{}')", undefinedParameterName),
+            "Undefined parameter type '" + undefinedParameterName + "'",
+            "Please register a ParameterType for '" + undefinedParameterName + "'",
         }
         , expression{ std::move(expression) }
         , undefinedParameterName{ std::move(undefinedParameterName) }
