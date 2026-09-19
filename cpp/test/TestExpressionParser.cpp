@@ -14,6 +14,8 @@
 #include <type_traits>
 #include <variant>
 #include <vector>
+#include <yaml-cpp/node/emit.h>
+#include <yaml-cpp/node/parse.h>
 
 namespace cucumber::cucumber_expressions
 {
@@ -100,11 +102,11 @@ namespace cucumber::cucumber_expressions
 
     TEST_P(TestExpressionParser, ParsesToExpectedAst)
     {
-        const auto& testdata = GetParam().testdata;
+        const auto& testdata = YAML::Load(GetParam().content);
 
         std::cout << "Running test: " << GetParam().name << std::endl;
         std::cout << "Test content: " << GetParam().content << std::endl;
-        std::cout << "YAML parsed: " << YAML::Dump(GetParam().testdata);
+        std::cout << "YAML parsed: " << YAML::Dump(testdata);
 
         if (testdata["exception"])
         {

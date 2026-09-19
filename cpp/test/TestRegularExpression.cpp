@@ -16,6 +16,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <yaml-cpp/node/parse.h>
 
 namespace cucumber::cucumber_expressions
 {
@@ -24,9 +25,6 @@ namespace cucumber::cucumber_expressions
         struct TestRegularExpressionMatching : testing::TestWithParam<YamlTestCase>
         {
             ParameterRegistry parameterRegistry{ {} };
-            const YAML::Node& testdata{ GetParam().testdata };
-
-            RegularExpression expression{ testdata["expression"].as<std::string>(), parameterRegistry };
         };
 
         struct TestRegularExpression : testing::Test
@@ -49,6 +47,9 @@ namespace cucumber::cucumber_expressions
 
     TEST_P(TestRegularExpressionMatching, MatchesExpectedArguments)
     {
+        const auto& testdata = YAML::Load(GetParam().content);
+        RegularExpression expression{ testdata["expression"].as<std::string>(), parameterRegistry };
+
         const auto matches = expression.MatchToArguments(testdata["text"].as<std::string>());
         ASSERT_THAT(matches, testing::IsTrue());
 

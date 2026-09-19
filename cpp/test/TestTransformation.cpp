@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <string>
+#include <yaml-cpp/node/parse.h>
 
 namespace cucumber::cucumber_expressions
 {
@@ -19,7 +20,7 @@ namespace cucumber::cucumber_expressions
 
     TEST_P(TestTransformation, ProducesExpectedRegex)
     {
-        const auto& testdata = GetParam().testdata;
+        const auto& testdata = YAML::Load(GetParam().content);
 
         const auto expression = Expression{ testdata["expression"].as<std::string>(), parameterRegistry };
         const auto actualRegex = expression.Pattern();

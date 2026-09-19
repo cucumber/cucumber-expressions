@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <yaml-cpp/node/parse.h>
 
 namespace cucumber::cucumber_expressions
 {
@@ -47,7 +48,7 @@ namespace cucumber::cucumber_expressions
 
     TEST_P(TestExpressionTokenizerFromFile, MatchesExpectedTokens)
     {
-        const auto& testdata = GetParam().testdata;
+        const auto& testdata = YAML::Load(GetParam().content);
 
         if (testdata["exception"])
         {

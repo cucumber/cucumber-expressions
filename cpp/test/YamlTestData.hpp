@@ -22,7 +22,6 @@ namespace cucumber::cucumber_expressions
     {
         std::string name;
         std::string content;
-        YAML::Node testdata;
     };
 
     inline void PrintTo(const YamlTestCase& param, std::ostream* stream)
@@ -50,15 +49,15 @@ namespace cucumber::cucumber_expressions
             {
                 std::ifstream file_stream(file.path());
                 std::string content((std::istreambuf_iterator<char>(file_stream)), std::istreambuf_iterator<char>());
-                params.push_back(YamlTestCase{ file.path().stem().string(), content, YAML::Load(content) });
+                params.push_back(YamlTestCase{ file.path().stem().string(), content });
             }
         }
 
-        // std::sort(params.begin(), params.end(),
-        //     [](const auto& lhs, const auto& rhs)
-        //     {
-        //         return lhs.name < rhs.name;
-        //     });
+        std::sort(params.begin(), params.end(),
+            [](const auto& lhs, const auto& rhs)
+            {
+                return lhs.name < rhs.name;
+            });
 
         return params;
     }

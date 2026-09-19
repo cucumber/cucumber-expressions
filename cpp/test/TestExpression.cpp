@@ -16,6 +16,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <yaml-cpp/node/parse.h>
 
 namespace cucumber::cucumber_expressions
 {
@@ -85,7 +86,7 @@ namespace cucumber::cucumber_expressions
     TEST_P(TestExpressionMatching, MatchesExpectedArguments)
     {
         const auto& param = GetParam();
-        const auto& testdata = param.testdata;
+        const auto& testdata = YAML::Load(param.content);
 
         if (testdata["exception"] && !testdata["text"])
         {
