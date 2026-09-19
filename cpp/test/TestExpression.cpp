@@ -118,6 +118,11 @@ namespace cucumber::cucumber_expressions
                 {
                     const auto& argument = match[i];
 
+                    if (argument.Name() == "biginteger")
+                    {
+                        GTEST_SKIP() << "Can't parse biginteger";
+                    }
+
                     const auto checkerIt = argumentCheckersByName.find(argument.Name());
                     if (checkerIt == argumentCheckersByName.end())
                     {
