@@ -50,7 +50,7 @@ namespace cucumber::cucumber_expressions
             {
                 std::ifstream file_stream(file.path());
                 std::string content((std::istreambuf_iterator<char>(file_stream)), std::istreambuf_iterator<char>());
-                params.push_back({ file.path().stem().string(), content, YAML::LoadFile(file.path().string()) });
+                params.push_back(YamlTestCase{ file.path().stem().string(), content, YAML::Load(content) });
             }
         }
 
