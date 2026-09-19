@@ -119,16 +119,20 @@ target_sources(
     PRIVATE
         include/cucumber/cucumber-expressions/Argument.hpp
         include/cucumber/cucumber-expressions/Ast.hpp
+        include/cucumber/cucumber-expressions/Errors.hpp
         include/cucumber/cucumber-expressions/Expression.hpp
         include/cucumber/cucumber-expressions/Group.hpp
+        include/cucumber/cucumber-expressions/MatchRange.hpp
+        include/cucumber/cucumber-expressions/Matcher.hpp
         include/cucumber/cucumber-expressions/ParameterRegistry.hpp
+        include/cucumber/cucumber-expressions/RegexStrategy.hpp
+        include/cucumber/cucumber-expressions/RegularExpression.hpp
         include/cucumber/cucumber-expressions/SourceLocation.hpp
         include/cucumber/cucumber-expressions/TreeRegexp.hpp
 
         src/cucumber/cucumber-expressions/Argument.cpp
         src/cucumber/cucumber-expressions/Ast.cpp
         src/cucumber/cucumber-expressions/Errors.cpp
-        src/cucumber/cucumber-expressions/Errors.hpp
         src/cucumber/cucumber-expressions/Expression.cpp
         src/cucumber/cucumber-expressions/ExpressionParser.cpp
         src/cucumber/cucumber-expressions/ExpressionParser.hpp
@@ -136,15 +140,12 @@ target_sources(
         src/cucumber/cucumber-expressions/ExpressionTokenizer.hpp
         src/cucumber/cucumber-expressions/Group.cpp
         src/cucumber/cucumber-expressions/MatchRange.cpp
-        src/cucumber/cucumber-expressions/MatchRange.hpp
         src/cucumber/cucumber-expressions/ParameterRegistry.cpp
         src/cucumber/cucumber-expressions/Re2RegexStrategy.cpp
         src/cucumber/cucumber-expressions/Re2RegexStrategy.hpp
-        src/cucumber/cucumber-expressions/RegexStrategy.hpp
         src/cucumber/cucumber-expressions/RegexStrategyFactory.cpp
         src/cucumber/cucumber-expressions/RegexStrategyFactory.hpp
         src/cucumber/cucumber-expressions/RegularExpression.cpp
-        src/cucumber/cucumber-expressions/RegularExpression.hpp
         src/cucumber/cucumber-expressions/StdRegexStrategy.cpp
         src/cucumber/cucumber-expressions/StdRegexStrategy.hpp
         src/cucumber/cucumber-expressions/TreeRegexp.cpp

@@ -256,11 +256,6 @@ namespace cucumber::cucumber_expressions
     };
 }
 
-namespace cucumber::cucumber_expressions::plugin
-{
-    struct ParameterLoader;
-}
-
 namespace cucumber::cucumber_expressions
 {
     struct ParameterRegistry
@@ -282,12 +277,11 @@ namespace cucumber::cucumber_expressions
         void AddParameter(std::string name, std::vector<std::string> regex, ConverterFunction<T> converter,
             SourceLocation location = SourceLocation::current());
 
-    private:
-        friend struct plugin::ParameterLoader;
-
-        void AssertParameterIsUnique(const std::string& name) const;
-
+        // Used to register parameter types that were discovered without a converter attached (e.g. loaded from a plugin).
         void AddParameter(ParameterType parameter);
+
+    private:
+        void AssertParameterIsUnique(const std::string& name) const;
 
         template<class T>
         void AddBuiltinParameter(std::string name, std::vector<std::string> regex, ConverterFunction<T> converter,
