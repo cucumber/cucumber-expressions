@@ -196,21 +196,6 @@ namespace cucumber::cucumber_expressions
         return parameters[0];
     }
 
-    void ParameterRegistry::AssertParameterIsUnique(const std::string& name) const
-    {
-        if (parameterTypesByName.find(name) != parameterTypesByName.end())
-        {
-            if (name.empty())
-            {
-                throw CucumberExpressionError{ "The anonymous parameter type has already been defined" };
-            }
-            else
-            {
-                throw CucumberExpressionError{ "There is already a parameter with name " + name };
-            }
-        }
-    }
-
     void ParameterRegistry::AddParameter(ParameterType parameter)
     {
         AssertParameterIsUnique(parameter.name);
@@ -230,6 +215,21 @@ namespace cucumber::cucumber_expressions
 
             existingParametersByRegex.push_back(&value);
             std::sort(existingParametersByRegex.begin(), existingParametersByRegex.end(), SortMappedByRegex);
+        }
+    }
+
+    void ParameterRegistry::AssertParameterIsUnique(const std::string& name) const
+    {
+        if (parameterTypesByName.find(name) != parameterTypesByName.end())
+        {
+            if (name.empty())
+            {
+                throw CucumberExpressionError{ "The anonymous parameter type has already been defined" };
+            }
+            else
+            {
+                throw CucumberExpressionError{ "There is already a parameter with name " + name };
+            }
         }
     }
 }

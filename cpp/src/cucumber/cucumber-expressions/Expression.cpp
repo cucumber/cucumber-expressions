@@ -76,7 +76,7 @@ namespace cucumber::cucumber_expressions
 
     Expression::Expression(std::string expression, ParameterRegistry& parameterRegistry)
         : expression{ std::move(expression) }
-        , parameterRegistry{ parameterRegistry }
+        , parameterRegistry{ &parameterRegistry }
         , pattern{ RewriteToRegex(ExpressionParser{}.Parse(this->expression)) }
         , treeRegexp{ pattern }
     {}
@@ -191,7 +191,7 @@ namespace cucumber::cucumber_expressions
     {
         try
         {
-            auto parameter = parameterRegistry.Lookup(node.Text());
+            auto parameter = parameterRegistry->Lookup(node.Text());
             if (parameter.regex.empty())
             {
                 throw UndefinedParameterTypeError(node, expression, node.Text());

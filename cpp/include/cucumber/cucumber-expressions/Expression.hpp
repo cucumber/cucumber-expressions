@@ -17,12 +17,6 @@ namespace cucumber::cucumber_expressions
     struct Expression
     {
         Expression(std::string expression, ParameterRegistry& parameterRegistry);
-        ~Expression() = default;
-
-        Expression(const Expression&) = delete;
-        Expression(Expression&&) = delete;
-        Expression& operator=(const Expression&) = delete;
-        Expression& operator=(Expression&&) = delete;
 
         [[nodiscard]] std::string_view Source() const;
         [[nodiscard]] std::string_view Pattern() const;
@@ -38,7 +32,7 @@ namespace cucumber::cucumber_expressions
         std::string RewriteExpression(const Node& node);
 
         std::string expression;
-        ParameterRegistry& parameterRegistry;
+        ParameterRegistry* parameterRegistry;
         std::vector<ParameterType> parameters;
         std::string pattern;
 

@@ -140,17 +140,14 @@ namespace cucumber::cucumber_expressions
     template<class T>
     using ConverterFunction = std::function<T(const ConvertFunctionArg&)>;
 
-    // Type-erased converter used at the host/plugin ABI boundary. The stored
+    // Type-erased converter. The stored
     // std::function returns std::any so a single non-templated map can hold
     // converters for all return types. std::any_cast is performed at the call
-    // site (host or plugin), while the underlying storage can be shared.
+    // site, while the underlying storage can be shared.
     using AnyConverterFunction = std::function<std::any(const ConvertFunctionArg&)>;
 
     using ConverterMap = std::map<std::string, AnyConverterFunction, std::less<>>;
 
-    // Central converter registry. Each DLL has its own default map, but the
-    // active pointer can be redirected to a shared (host-owned) map so
-    // registrations and lookups cross DLL boundaries safely.
     struct ConverterRegistry
     {
         static ConverterMap& Instance()
@@ -263,10 +260,10 @@ namespace cucumber::cucumber_expressions
         explicit ParameterRegistry(const std::set<CustomParameterEntry, std::less<>>& customParameters);
         virtual ~ParameterRegistry() = default;
 
-        ParameterRegistry(const ParameterRegistry&) = delete;
-        ParameterRegistry(ParameterRegistry&&) = delete;
-        ParameterRegistry& operator=(const ParameterRegistry&) = delete;
-        ParameterRegistry& operator=(ParameterRegistry&&) = delete;
+        ParameterRegistry(const ParameterRegistry&) = default;
+        ParameterRegistry(ParameterRegistry&&) = default;
+        ParameterRegistry& operator=(const ParameterRegistry&) = default;
+        ParameterRegistry& operator=(ParameterRegistry&&) = default;
 
         [[nodiscard]] const std::map<std::string, const ParameterType, std::less<>>& GetParameters() const;
 
