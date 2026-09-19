@@ -208,7 +208,7 @@ namespace cucumber::cucumber_expressions
                 std::optional<std::string> text{ matches[0] };
                 std::optional<std::int64_t> number{ matches[1].has_value() ? StringTo<std::int64_t>(matches[1].value())
                                                                            : std::optional<std::int64_t>{ std::nullopt } };
-                return CustomType{ .text = text, .number = number };
+                return CustomType{ text, number };
             });
 
         auto matchString{ Match<CustomType>(R"__({textAndOrNumber})__", R"__(ABC)__") };

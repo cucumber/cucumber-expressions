@@ -304,25 +304,14 @@ namespace cucumber::cucumber_expressions
     void ParameterRegistry::AddParameter(std::string name, std::vector<std::string> regex, ConverterFunction<T> converter,
         SourceLocation location)
     {
-        AddParameter(ParameterType{ .name = std::move(name),
-                         .regex = std::move(regex),
-                         .isBuiltin = false,
-                         .useForSnippets = false,
-                         .location = location },
-            converter);
+        AddParameter(ParameterType{ std::move(name), std::move(regex), false, false, false, location }, converter);
     }
 
     template<class T>
     void ParameterRegistry::AddBuiltinParameter(std::string name, std::vector<std::string> regex, ConverterFunction<T> converter,
         bool preferForRegexMatch, SourceLocation location)
     {
-        AddParameter(ParameterType{ .name = std::move(name),
-                         .regex = std::move(regex),
-                         .isBuiltin = true,
-                         .useForSnippets = false,
-                         .preferForRegexMatch = preferForRegexMatch,
-                         .location = location },
-            converter);
+        AddParameter(ParameterType{ std::move(name), std::move(regex), true, false, preferForRegexMatch, location }, converter);
     }
 
     template<class T>

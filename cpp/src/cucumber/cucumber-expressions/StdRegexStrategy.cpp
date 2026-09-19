@@ -35,11 +35,7 @@ namespace cucumber::cucumber_expressions
                 const auto startByte = static_cast<std::size_t>(matches.position(i));
                 const auto start = CodepointCount(std::string_view{ textStr.data(), startByte });
                 const auto value = match.str();
-                result.emplace_back(MatchGroup{
-                    .value = value,
-                    .start = start,
-                    .end = start + CodepointCount(value),
-                });
+                result.emplace_back(MatchGroup{ value, start, start + CodepointCount(value) });
             }
         }
         return result;

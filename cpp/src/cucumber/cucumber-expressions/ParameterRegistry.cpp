@@ -139,11 +139,8 @@ namespace cucumber::cucumber_expressions
 
         for (const auto& parameter : customParameters)
         {
-            AddParameter(ParameterType{ .name = parameter.params.name,
-                .regex = { std::string(parameter.params.regex) },
-                .isBuiltin = false,
-                .useForSnippets = parameter.params.useForSnippets,
-                .location = parameter.location });
+            AddParameter(ParameterType{ parameter.params.name, { std::string(parameter.params.regex) }, false,
+                parameter.params.useForSnippets, false, parameter.location });
         }
     }
 
