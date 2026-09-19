@@ -149,8 +149,6 @@ target_sources(
         src/cucumber/cucumber-expressions/Group.cpp
         src/cucumber/cucumber-expressions/MatchRange.cpp
         src/cucumber/cucumber-expressions/ParameterRegistry.cpp
-        src/cucumber/cucumber-expressions/Re2RegexStrategy.cpp
-        src/cucumber/cucumber-expressions/Re2RegexStrategy.hpp
         src/cucumber/cucumber-expressions/RegexStrategyFactory.cpp
         src/cucumber/cucumber-expressions/RegexStrategyFactory.hpp
         src/cucumber/cucumber-expressions/RegularExpression.cpp
