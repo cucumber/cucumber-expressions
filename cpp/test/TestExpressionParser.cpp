@@ -104,6 +104,7 @@ namespace cucumber::cucumber_expressions
 
         std::cout << "Running test: " << GetParam().name << std::endl;
         std::cout << "Test content: " << GetParam().content << std::endl;
+        std::cout << "YAML parsed: " << YAML::Dump(GetParam().testdata);
 
         if (testdata["exception"])
         {
