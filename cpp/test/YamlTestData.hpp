@@ -7,7 +7,9 @@
 #include <algorithm>
 #include <cctype>
 #include <filesystem>
+#include <fstream>
 #include <gtest/gtest.h>
+#include <iterator>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -19,6 +21,7 @@ namespace cucumber::cucumber_expressions
     struct YamlTestCase
     {
         std::string name;
+        std::string content;
         YAML::Node testdata;
     };
 
@@ -45,7 +48,9 @@ namespace cucumber::cucumber_expressions
         {
             if (file.is_regular_file() && file.path().extension() == ".yaml")
             {
-                params.push_back({ file.path().stem().string(), YAML::LoadFile(file.path().string()) });
+                std::ifstream file_stream(file.path());
+                std::string content((std::istreambuf_iterator<char>(file_stream)), std::istreambuf_iterator<char>());
+                params.push_back({ file.path().stem().string(), content, YAML::LoadFile(file.path().string()) });
             }
         }
 

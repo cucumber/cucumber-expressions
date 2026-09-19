@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <map>
 #include <ostream>
 #include <string>
@@ -100,6 +101,9 @@ namespace cucumber::cucumber_expressions
     TEST_P(TestExpressionParser, ParsesToExpectedAst)
     {
         const auto& testdata = GetParam().testdata;
+
+        std::cout << "Running test: " << GetParam().name << std::endl;
+        std::cout << "Test content: " << GetParam().content << std::endl;
 
         if (testdata["exception"])
         {
