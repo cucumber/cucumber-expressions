@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 project(cucumber_cucumber_expressions VERSION 20.1.0 LANGUAGES CXX)
 
 # Options
-if (POLICY CMP0077)
+if(POLICY CMP0077)
     # Allow CMake 3.13+ to override options when using FetchContent / add_subdirectory.
     cmake_policy(SET CMP0077 NEW)
-endif ()
+endif()
 
 option(CUCUMBER_CUCUMBER_EXPRESSIONS_BUILD_TESTS "Build the unit tests." Off)
 option(CUCUMBER_CUCUMBER_EXPRESSIONS_ENABLE_CLANG_TIDY "Run clang-tidy as part of the build." Off)
@@ -56,7 +56,7 @@ endif()
 # Configuration
 include(GNUInstallDirs)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
 endif()
 
@@ -92,7 +92,7 @@ if(CUCUMBER_CUCUMBER_EXPRESSIONS_ENABLE_COVERAGE)
         $<$<COMPILE_LANGUAGE:CXX>:-fno-elide-constructors>
     )
 
-    if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
         link_libraries(gcov)
     else()
         add_link_options(--coverage)
@@ -156,7 +156,7 @@ target_include_directories(
         ${CMAKE_CURRENT_LIST_DIR}/src/
 )
 
-if (TARGET re2::re2)
+if(TARGET re2::re2)
     target_sources(cucumber_cucumber_expressions_lib PRIVATE
         src/cucumber/cucumber-expressions/Re2RegexStrategy.cpp
         src/cucumber/cucumber-expressions/Re2RegexStrategy.hpp

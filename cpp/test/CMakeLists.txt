@@ -27,7 +27,7 @@ target_compile_definitions(cucumber_cucumber_expressions_lib.test
         TESTDATA_SRC="${PROJECT_SOURCE_DIR}/../testdata/"
 )
 
-if (TARGET re2::re2)
+if(TARGET re2::re2)
     target_compile_definitions(cucumber_cucumber_expressions_lib.test
         PRIVATE
             CCR_HAS_RE2
