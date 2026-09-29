@@ -11,32 +11,30 @@ module Cucumber
       attr_reader :name, :type, :transformer, :use_for_snippets, :prefer_for_regexp_match, :regexps
 
       def self.check_parameter_type_name(type_name)
-        raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'") unless is_valid_parameter_type_name(type_name)
+        raise CucumberExpressionError.new("Illegal character in parameter name {#{type_name}}. Parameter names may not contain '[]()$.|?*+'") unless valid_parameter_type_name?(type_name)
       end
 
-      def self.is_valid_parameter_type_name(type_name)
+      def self.valid_parameter_type_name?(type_name)
         unescaped_type_name = type_name.gsub(UNESCAPE_PATTERN) { Regexp.last_match(2) }
-        !(ILLEGAL_PARAMETER_NAME_PATTERN =~ unescaped_type_name)
+        !(ILLEGAL_PARAMETER_NAME_PATTERN.match?(unescaped_type_name))
       end
 
-      # Create a new Parameter
+      # Create a new ParameterType
       #
-      # @param name the name of the parameter type
-      # @param regexp [Array] list of regexps for capture groups. A single regexp can also be used
-      # @param type the return type of the transformed
-      # @param transformer lambda that transforms a String to (possibly) another type
-      # @param use_for_snippets true if this should be used for snippet generation
-      # @param prefer_for_regexp_match true if this should be preferred over similar types
+      # @param name [String] the name of the parameter type
+      # @param regexp [Array, Regexp] list of regexps for capture groups. A single regexp can also be used
+      # @param type [Object] the return type of the transformed
+      # @param transformer [Proc] lambda that transforms a String to (possibly) another type
+      # @param use_for_snippets [Boolean] true if this should be used for snippet generation
+      # @param prefer_for_regexp_match [Boolean] true if this should be preferred over similar types
       #
-      def initialize(name, regexp, type, transformer, use_for_snippets, prefer_for_regexp_match)
-        raise "regexp can't be nil" if regexp.nil?
-        raise "type can't be nil" if type.nil?
-        raise "transformer can't be nil" if transformer.nil?
-        raise "use_for_snippets can't be nil" if use_for_snippets.nil?
-        raise "prefer_for_regexp_match can't be nil" if prefer_for_regexp_match.nil?
-
+      def initialize(name, regexp, type, transformer, use_for_snippets = false, prefer_for_regexp_match = false)
         self.class.check_parameter_type_name(name) unless name.nil?
-        @name, @type, @transformer, @use_for_snippets, @prefer_for_regexp_match = name, type, transformer, use_for_snippets, prefer_for_regexp_match
+        @name = name
+        @type = type
+        @transformer = transformer
+        @use_for_snippets = use_for_snippets
+        @prefer_for_regexp_match = prefer_for_regexp_match
         @regexps = string_array(regexp)
       end
 
@@ -48,7 +46,7 @@ module Cucumber
         return -1 if prefer_for_regexp_match && !other.prefer_for_regexp_match
         return 1 if other.prefer_for_regexp_match && !prefer_for_regexp_match
 
-        return name <=> other.name
+        name <=> other.name
       end
 
       private
