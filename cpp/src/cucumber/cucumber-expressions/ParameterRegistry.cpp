@@ -175,7 +175,7 @@ namespace cucumber::cucumber_expressions
 
         const auto& parameters = parameterTypesByRegex.at(regex);
 
-        if (parameters.size() == 0)
+        if (parameters.empty())
         {
             return nullptr;
         }
@@ -226,10 +226,8 @@ namespace cucumber::cucumber_expressions
             {
                 throw CucumberExpressionError{ "The anonymous parameter type has already been defined" };
             }
-            else
-            {
-                throw CucumberExpressionError{ "There is already a parameter with name " + name };
-            }
+
+            throw CucumberExpressionError{ "There is already a parameter with name " + name };
         }
     }
 }

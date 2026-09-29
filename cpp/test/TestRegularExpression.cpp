@@ -1,4 +1,3 @@
-
 #include "YamlTestData.hpp"
 #include "cucumber/cucumber-expressions/Argument.hpp"
 #include "cucumber/cucumber-expressions/ParameterRegistry.hpp"
@@ -38,7 +37,7 @@ namespace cucumber::cucumber_expressions
 
                 const auto matches = expression.MatchToArguments(text);
 
-                ASSERT_THAT(matches, testing::IsTrue());
+                ASSERT_THAT(matches.has_value(), testing::IsTrue());
                 ASSERT_THAT(matches->size(), testing::Eq(1));
                 EXPECT_THAT(matches->at(0).GetValue<T>(), testing::Eq(expected));
             }
@@ -51,7 +50,7 @@ namespace cucumber::cucumber_expressions
         RegularExpression expression{ testdata["expression"].as<std::string>(), parameterRegistry };
 
         const auto matches = expression.MatchToArguments(testdata["text"].as<std::string>());
-        ASSERT_THAT(matches, testing::IsTrue());
+        ASSERT_THAT(matches.has_value(), testing::IsTrue());
 
         const auto& expectedArgs = testdata["expected_args"];
         ASSERT_THAT(matches->size(), testing::Eq(expectedArgs.size()));
@@ -100,7 +99,7 @@ namespace cucumber::cucumber_expressions
 
         const auto matches = expression.MatchToArguments("world");
 
-        ASSERT_THAT(matches, testing::IsFalse());
+        ASSERT_THAT(matches.has_value(), testing::IsFalse());
     }
 
     TEST_F(TestRegularExpression, MatchesEmptyString)
@@ -114,7 +113,7 @@ namespace cucumber::cucumber_expressions
 
         const auto matches = expression.MatchToArguments("a user");
 
-        ASSERT_THAT(matches, testing::IsTrue());
+        ASSERT_THAT(matches.has_value(), testing::IsTrue());
         ASSERT_THAT(matches->size(), testing::Eq(1));
         EXPECT_THAT(matches->at(0).GetValue<std::optional<std::string>>(), testing::IsFalse());
     }
@@ -130,19 +129,19 @@ namespace cucumber::cucumber_expressions
             parameterRegistry };
 
         const auto matches1 = expression.MatchToArguments("a purchase");
-        ASSERT_THAT(matches1, testing::IsTrue());
+        ASSERT_THAT(matches1.has_value(), testing::IsTrue());
         ASSERT_THAT(matches1->size(), testing::Eq(2));
         EXPECT_THAT(matches1->at(0).GetValue<std::optional<std::string>>(), testing::IsFalse());
         EXPECT_THAT(matches1->at(1).GetValue<std::optional<std::int32_t>>(), testing::IsFalse());
 
         const auto matches2 = expression.MatchToArguments("a purchase for $33");
-        ASSERT_THAT(matches2, testing::IsTrue());
+        ASSERT_THAT(matches2.has_value(), testing::IsTrue());
         ASSERT_THAT(matches2->size(), testing::Eq(2));
         EXPECT_THAT(matches2->at(0).GetValue<std::optional<std::string>>(), testing::IsFalse());
         EXPECT_THAT(matches2->at(1).GetValue<std::optional<std::int32_t>>(), testing::Eq(33));
 
         const auto matches3 = expression.MatchToArguments("a pre buyer fee model purchase");
-        ASSERT_THAT(matches3, testing::IsTrue());
+        ASSERT_THAT(matches3.has_value(), testing::IsTrue());
         ASSERT_THAT(matches3->size(), testing::Eq(2));
         EXPECT_THAT(matches3->at(0).GetValue<std::optional<std::string>>(), testing::Eq("pre buyer fee model "));
         EXPECT_THAT(matches3->at(1).GetValue<std::optional<std::int32_t>>(), testing::IsFalse());
@@ -155,7 +154,7 @@ namespace cucumber::cucumber_expressions
         };
 
         const auto matches = expression.MatchToArguments("I can cancel the 1st slide upload");
-        ASSERT_THAT(matches, testing::IsTrue());
+        ASSERT_THAT(matches.has_value(), testing::IsTrue());
         ASSERT_THAT(matches->size(), testing::Eq(4));
         EXPECT_THAT(matches->at(0).GetValue<std::string>(), testing::Eq("I"));
         EXPECT_THAT(matches->at(1).GetValue<std::string>(), testing::Eq("can"));
