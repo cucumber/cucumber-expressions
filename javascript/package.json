@@ -9,11 +9,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && cp ../README.md dist",
+    "build": "tsc --project tsconfig.build.json",
     "postbuild": "node -e \"require('.')\"",
     "test": "mocha",
     "stryker": "cross-env CUCUMBER_EXPRESSIONS_TEST_DATA_DIR=$(pwd)/../testdata stryker run",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && cp ../README.md dist",
     "fix": "biome check --fix --error-on-warnings",
     "lint": "biome check --error-on-warnings"
   },
@@ -39,7 +39,6 @@
     "@stryker-mutator/core": "10.0.0",
     "@stryker-mutator/mocha-runner": "10.0.0",
     "@tsconfig/recommended": "^1.0.13",
-    "@types/glob": "9.0.0",
     "@types/js-yaml": "4.0.9",
     "@types/mocha": "10.0.10",
     "@types/node": "^22.19.19",
@@ -47,9 +46,9 @@
     "esbuild": "0.28.2",
     "glob": "13.0.6",
     "js-yaml": "5.4.2",
-    "mocha": "12.0.2",
+    "mocha": "11.8.0",
     "tsx": "^4.23.5",
-    "typescript": "7.0.2"
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "regexp-match-indices": "1.0.2"
