@@ -9,9 +9,10 @@
   ],
   "testRunner": "mocha",
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/mocha-runner for information about the mocha plugin.",
-  "mochaOptions": {
-    "spec": ["test/**/*.ts"]
-  },
+  "testRunnerNodeArgs_comment": "Must match node-option from .mocharc.json",
+  "testRunnerNodeArgs": [
+    "--import=tsx"
+  ],
   "coverageAnalysis": "perTest",
   "buildCommand": "npm run build"
 }
