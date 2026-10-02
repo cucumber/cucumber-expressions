@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- [CPP] initial C++ implementation. [#468](https://github.com/cucumber/cucumber-expressions/pull/468)
+
 ### Fixed
 - [Java] Fix project url
 
