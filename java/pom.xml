@@ -21,9 +21,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/cucumber/cucumber-expressions.git</connection>
+        <connection>scm:git:https://github.com/cucumber/cucumber-expressions.git</connection>
         <developerConnection>scm:git:git@github.com:cucumber/cucumber-expressions.git</developerConnection>
-        <url>git://github.com/cucumber/cucumber-expressions.git</url>
+        <url>https://github.com/cucumber/cucumber-expressions.git</url>
         <tag>HEAD</tag>
     </scm>
 
