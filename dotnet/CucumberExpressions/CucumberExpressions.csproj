@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Version">
-		<VersionNumber>20.0.0</VersionNumber>
+		<VersionNumber>20.1.0</VersionNumber>
 		<Version Condition="'$(SnapshotSuffix)' != ''">$(VersionNumber)-$(SnapshotSuffix)</Version>
 		<Version Condition="'$(SnapshotSuffix)' == ''">$(VersionNumber)</Version>
 	</PropertyGroup>
@@ -26,6 +26,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageIcon>cucumber-mark-green-128.png</PackageIcon>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageOutputPath>bin/$(Configuration)/NuGet</PackageOutputPath>
@@ -37,6 +38,7 @@
 			<PackagePath>.</PackagePath>
 			<Visible>true</Visible>
 		</None>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>

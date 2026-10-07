@@ -46,7 +46,7 @@ class Node:
         end: int,
     ):
         if nodes is None and token is None:
-            raise Exception("Either nodes or token must be defined")
+            raise ValueError("Either nodes or token must be defined")
         self._ast_type = ast_type
         self._nodes = nodes
         self._token = token
