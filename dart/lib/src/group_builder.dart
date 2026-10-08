@@ -14,16 +14,12 @@ class GroupBuilder {
     final groupIndex = nextGroupIndex();
     final children =
         _groupBuilders.map((gb) => gb.build(match, nextGroupIndex)).toList();
-    final value = match.group(2 * groupIndex);
-    final start = value == null
-        ? null
-        : groupIndex == 0
-            ? match.start
-            : match.group(2 * groupIndex - 1)!.length;
+    // RegExpMatch only exposes the indices of the overall match.
+    final isRoot = groupIndex == 0;
     return buildGroup(
-      value,
-      start,
-      start == null ? null : start + value!.length,
+      match.group(groupIndex),
+      isRoot ? match.start : null,
+      isRoot ? match.end : null,
       children.isEmpty ? null : children,
     );
   }
