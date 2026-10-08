@@ -6,10 +6,12 @@ class Group {
   /// The captured text, or `null` if the group did not participate.
   final String? value;
 
-  /// The start index of the match, or `null` for non-root groups.
+  /// The start index of the captured text, or `null` if the group did not
+  /// participate.
   final int? start;
 
-  /// The end index of the match, or `null` for non-root groups.
+  /// The end index (exclusive) of the captured text, or `null` if the group
+  /// did not participate.
   final int? end;
 
   /// A group's children. Either one or more children, or `null`.

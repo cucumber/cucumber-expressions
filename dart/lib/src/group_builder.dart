@@ -14,17 +14,16 @@ class GroupBuilder {
     final groupIndex = nextGroupIndex();
     final children =
         _groupBuilders.map((gb) => gb.build(match, nextGroupIndex)).toList();
-    final value = match.group(groupIndex);
-    int? start;
-    int? end;
-    if (value != null) {
-      start = match.start;
-      end = match.end;
-    }
+    final value = match.group(2 * groupIndex);
+    final start = value == null
+        ? null
+        : groupIndex == 0
+            ? match.start
+            : match.group(2 * groupIndex - 1)!.length;
     return buildGroup(
       value,
-      groupIndex == 0 ? start : null,
-      groupIndex == 0 ? end : null,
+      start,
+      start == null ? null : start + value!.length,
       children.isEmpty ? null : children,
     );
   }
