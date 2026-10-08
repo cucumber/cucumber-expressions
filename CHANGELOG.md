@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - [CPP] initial C++ implementation. [#468](https://github.com/cucumber/cucumber-expressions/pull/468)
+- [Dart] Add a Dart implementation of Cucumber Expressions ([#444](https://github.com/cucumber/cucumber-expressions/pull/444))
 
 ### Fixed
 - [Java] Fix project url
@@ -18,7 +19,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use more efficient regex without lookahead ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
 - [Java] Support a leading `+` sign in `{float}`, `{double}` and `{bigdecimal}` ([#441](https://github.com/cucumber/cucumber-expressions/pull/441))
 - [Go] Parse floating point numbers with scientific notation ([#443](https://github.com/cucumber/cucumber-expressions/pull/443))
-- [Dart] Add a Dart implementation of Cucumber Expressions ([#444](https://github.com/cucumber/cucumber-expressions/pull/444))
 
 ### Fixed
 - [.Net] Fix codepoint offsets for tokens ([#440](https://github.com/cucumber/cucumber-expressions/pull/440))
