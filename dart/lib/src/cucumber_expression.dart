@@ -10,8 +10,11 @@ import 'package:cucumber_expressions/src/tree_regexp.dart';
 
 final RegExp _escapePattern = RegExp(r'([\\^\[({$.|?*+})\]])');
 
-class CucumberExpression implements Expression {
-  CucumberExpression(this._expression, this._parameterTypeRegistry) {
+/// An [Expression] written in the Cucumber Expression syntax.
+///
+/// Create instances with `ExpressionFactory.createExpression`.
+final class CucumberExpression implements Expression {
+  CucumberExpression._(this._expression, this._parameterTypeRegistry) {
     final parser = CucumberExpressionParser();
     final ast = parser.parse(_expression);
     final pattern = _rewriteToRegex(ast);
@@ -157,4 +160,11 @@ class CucumberExpression implements Expression {
 
   @override
   String get source => _expression;
+}
+
+CucumberExpression createCucumberExpression(
+  String expression,
+  ParameterTypeRegistry parameterTypeRegistry,
+) {
+  return CucumberExpression._(expression, parameterTypeRegistry);
 }

@@ -26,8 +26,10 @@ void main() {
       );
       expect(generatedExpression.source, equals(expectedExpression));
 
-      final cucumberExpression =
-          CucumberExpression(generatedExpression.source, parameterTypeRegistry);
+      final cucumberExpression = createCucumberExpression(
+        generatedExpression.source,
+        parameterTypeRegistry,
+      );
       final match = cucumberExpression.match(text);
       expect(
         match,

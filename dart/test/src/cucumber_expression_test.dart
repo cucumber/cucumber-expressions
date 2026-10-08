@@ -3,7 +3,8 @@ import 'package:cucumber_expressions/src/parameter_type.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
 
-List<Object?>? match(String expression, String text) => CucumberExpression(
+List<Object?>? match(String expression, String text) =>
+    createCucumberExpression(
       expression,
       ParameterTypeRegistry(),
     ).match(text)?.map((argument) => argument.getValue()).toList();
@@ -29,7 +30,7 @@ void main() {
     test('exposes its source', () {
       const source = 'I have {int} cuke(s)';
       expect(
-        CucumberExpression(source, ParameterTypeRegistry()).source,
+        createCucumberExpression(source, ParameterTypeRegistry()).source,
         source,
       );
     });
@@ -46,7 +47,7 @@ void main() {
             preferForRegexpMatch: true,
           ),
         );
-      final expression = CucumberExpression('{textOrNumber}', registry);
+      final expression = createCucumberExpression('{textOrNumber}', registry);
 
       expect(expression.match('TLA')!.single.getValue(), ['TLA', null]);
       expect(expression.match('123')!.single.getValue(), [null, '123']);
@@ -65,7 +66,7 @@ void main() {
           ),
         );
       final arguments =
-          CucumberExpression('{throwing}', registry).match('bad')!;
+          createCucumberExpression('{throwing}', registry).match('bad')!;
 
       expect(() => arguments.single.getValue(), throwsStateError);
     });

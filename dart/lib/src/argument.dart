@@ -4,7 +4,7 @@ import 'package:cucumber_expressions/src/parameter_type.dart';
 
 /// A single matched argument, pairing a captured [Group] with the
 /// [ParameterType] that describes how to transform it into a value.
-class Argument<T> {
+final class Argument<T> {
   Argument._(this.group, this.parameterType);
 
   /// The captured group this argument was matched from.

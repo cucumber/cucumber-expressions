@@ -20,6 +20,7 @@
 library;
 
 export 'src/argument.dart' show Argument;
+export 'src/cucumber_expression.dart' show CucumberExpression;
 export 'src/cucumber_expression_generator.dart'
     show CucumberExpressionGenerator;
 export 'src/errors.dart'
@@ -27,9 +28,10 @@ export 'src/errors.dart'
         AmbiguousParameterTypeException,
         CucumberExpressionException,
         UndefinedParameterTypeException;
-export 'src/expression.dart';
-export 'src/expression_factory.dart';
+export 'src/expression.dart' show Expression;
+export 'src/expression_factory.dart' show ExpressionFactory;
 export 'src/generated_expression.dart' show GeneratedExpression;
 export 'src/group.dart' show Group;
 export 'src/parameter_type.dart' show ParameterType, Transformer;
 export 'src/parameter_type_registry.dart' show ParameterTypeRegistry;
+export 'src/regular_expression.dart' show RegularExpression;

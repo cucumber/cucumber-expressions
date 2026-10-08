@@ -17,10 +17,10 @@ class ExpressionFactory {
   /// [ArgumentError] is thrown.
   Expression createExpression(Object expression) {
     if (expression is RegExp) {
-      return RegularExpression(expression, _parameterTypeRegistry);
+      return createRegularExpression(expression, _parameterTypeRegistry);
     }
     if (expression is String) {
-      return CucumberExpression(expression, _parameterTypeRegistry);
+      return createCucumberExpression(expression, _parameterTypeRegistry);
     }
     throw ArgumentError(
       'Expression must be a String or a RegExp, was ${expression.runtimeType}',

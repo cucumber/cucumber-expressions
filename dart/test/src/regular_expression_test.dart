@@ -9,7 +9,7 @@ List<Object?>? match(
   String text, [
   ParameterTypeRegistry? registry,
 ]) =>
-    RegularExpression(regexp, registry ?? ParameterTypeRegistry())
+    createRegularExpression(regexp, registry ?? ParameterTypeRegistry())
         .match(text)
         ?.map((argument) => argument.getValue())
         .toList();
@@ -82,7 +82,7 @@ void main() {
     test('exposes its source', () {
       const source = r'I have (\d+) cukes?';
       expect(
-        RegularExpression(RegExp(source), ParameterTypeRegistry()).source,
+        createRegularExpression(RegExp(source), ParameterTypeRegistry()).source,
         source,
       );
     });

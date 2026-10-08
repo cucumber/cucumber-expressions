@@ -5,8 +5,11 @@ import 'package:cucumber_expressions/src/parameter_type_lookup.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:cucumber_expressions/src/tree_regexp.dart';
 
-class RegularExpression implements Expression {
-  RegularExpression(this.regexp, this._parameterTypeRegistry)
+/// An [Expression] backed by a regular expression.
+///
+/// Create instances with `ExpressionFactory.createExpression`.
+final class RegularExpression implements Expression {
+  RegularExpression._(this.regexp, this._parameterTypeRegistry)
       : _treeRegexp = TreeRegexp(regexp);
 
   @override
@@ -47,4 +50,11 @@ class RegularExpression implements Expression {
 
   @override
   String get source => regexp.pattern;
+}
+
+RegularExpression createRegularExpression(
+  RegExp regexp,
+  ParameterTypeRegistry parameterTypeRegistry,
+) {
+  return RegularExpression._(regexp, parameterTypeRegistry);
 }

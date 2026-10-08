@@ -8,8 +8,10 @@ void main() {
 
     final arguments = expression.match('I have 24 cukes');
 
+    expect(expression, isA<CucumberExpression>());
     expect(arguments, isNotNull);
-    expect(arguments![0].getValue(), equals(24));
+    expect(arguments![0], isA<Argument<Object?>>());
+    expect(arguments[0].getValue(), equals(24));
   });
 
   test('creates regular expressions through the public factory', () {
@@ -20,6 +22,7 @@ void main() {
 
     final arguments = expression.match('I have 24 cukes');
 
+    expect(expression, isA<RegularExpression>());
     expect(arguments, isNotNull);
     expect(arguments![0].getValue(), equals(24));
   });
