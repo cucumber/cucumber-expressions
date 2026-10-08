@@ -6,8 +6,6 @@ on:
   push:
     branches-ignore:
       - renovate/**
-    branches:
-      - main
     paths:
       - javascript/**
       - testdata/**

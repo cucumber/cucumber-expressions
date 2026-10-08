@@ -93,7 +93,7 @@ class ParameterType:
             )
             if invalid_flag.real in _regexp_flags:
                 raise CucumberExpressionError(
-                    f"ParameterType Regexps can't use flag: {str(invalid_flag)}",
+                    f"ParameterType Regexps can't use flag: {invalid_flag!s}",
                 )
         return regexp_pattern.pattern
 

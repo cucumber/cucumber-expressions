@@ -49,7 +49,7 @@ class CucumberExpression:
         if node.ast_type == NodeType.EXPRESSION:
             return self.rewrite_expression(node)
         # Can't happen as long as the switch case is exhaustive
-        raise Exception(node.ast_type)
+        raise ValueError(node.ast_type)
 
     @staticmethod
     def escape_regex(expression) -> str:
