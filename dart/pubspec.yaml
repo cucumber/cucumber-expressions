@@ -1,0 +1,28 @@
+name: cucumber_expressions
+description: >-
+  Cucumber Expressions for Dart. A simpler alternative to Regular Expressions
+  with a more intuitive syntax, plus parameter type matching and expression
+  generation.
+version: 0.0.1
+homepage: https://github.com/cucumber/cucumber-expressions
+repository: https://github.com/cucumber/cucumber-expressions
+issue_tracker: https://github.com/cucumber/cucumber-expressions/issues
+documentation: https://github.com/cucumber/cucumber-expressions/tree/main/dart
+
+funding:
+  - https://opencollective.com/cucumber
+  - https://github.com/sponsors/cucumber
+
+environment:
+  sdk: ^3.3.0
+
+topics:
+  - cucumber
+  - expressions
+  - testing
+  - parser
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0
+  yaml: ^3.1.2

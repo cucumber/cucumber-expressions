@@ -3,6 +3,7 @@
 [![test-javascript](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yaml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-javascript.yaml)
 [![test-python](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yaml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-python.yaml)
 [![test-ruby](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yaml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-ruby.yaml)
+[![test-dart](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dart.yaml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dart.yaml)
 [![test-dotnet](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yaml/badge.svg)](https://github.com/cucumber/cucumber-expressions/actions/workflows/test-dotnet.yaml)
 
 # Cucumber Expressions

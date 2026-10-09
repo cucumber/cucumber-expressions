@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - [CPP] initial C++ implementation. [#468](https://github.com/cucumber/cucumber-expressions/pull/468)
+- [Dart] Add a Dart implementation of Cucumber Expressions ([#444](https://github.com/cucumber/cucumber-expressions/pull/444))
 
 ### Fixed
 - [Java] Fix project url
