@@ -3,7 +3,7 @@ description: >-
   Cucumber Expressions for Dart. A simpler alternative to Regular Expressions
   with a more intuitive syntax, plus parameter type matching and expression
   generation.
-version: 0.0.1
+version: 20.1.0
 homepage: https://github.com/cucumber/cucumber-expressions
 repository: https://github.com/cucumber/cucumber-expressions
 issue_tracker: https://github.com/cucumber/cucumber-expressions/issues
