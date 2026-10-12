@@ -40,9 +40,9 @@ class CombinatorialGeneratedExpressionFactory {
         return;
       }
 
-      final newCurrentParameterTypes =
-          List<ParameterType<Object?>>.from(currentParameterTypes)
-            ..add(_parameterTypeCombinations[depth][i]);
+      final newCurrentParameterTypes = List<ParameterType<Object?>>.from(
+        currentParameterTypes,
+      )..add(_parameterTypeCombinations[depth][i]);
       _generatePermutations(
         generatedExpressions,
         depth + 1,

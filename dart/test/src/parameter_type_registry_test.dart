@@ -29,53 +29,55 @@ void main() {
       registry = ParameterTypeRegistry();
     });
 
-    test('does not allow more than one preferential parameter type per regexp',
-        () {
-      registry
-        ..defineParameterType(
-          ParameterType<Name>(
-            'name',
-            capitalisedWord,
-            'Name',
-            (s) => Name(s.first!),
-            useForSnippets: true,
-            preferForRegexpMatch: true,
-          ),
-        )
-        ..defineParameterType(
-          ParameterType<Person>(
-            'person',
-            capitalisedWord,
-            'Person',
-            (s) => Person(s.first!),
-            useForSnippets: true,
-            preferForRegexpMatch: false,
-          ),
-        );
-      expect(
-        () => registry.defineParameterType(
-          ParameterType<Place>(
-            'place',
-            capitalisedWord,
-            'Place',
-            (s) => Place(s.first!),
-            useForSnippets: true,
-            preferForRegexpMatch: true,
-          ),
-        ),
-        throwsA(
-          isA<CucumberExpressionException>().having(
-            (e) => e.message,
-            'message',
-            equals(
-              'There can only be one preferential parameter type per regexp. '
-              'The regexp /${capitalisedWord.pattern}/ is used for two '
-              'preferential parameter types, {name} and {place}',
+    test(
+      'does not allow more than one preferential parameter type per regexp',
+      () {
+        registry
+          ..defineParameterType(
+            ParameterType<Name>(
+              'name',
+              capitalisedWord,
+              'Name',
+              (s) => Name(s.first!),
+              useForSnippets: true,
+              preferForRegexpMatch: true,
+            ),
+          )
+          ..defineParameterType(
+            ParameterType<Person>(
+              'person',
+              capitalisedWord,
+              'Person',
+              (s) => Person(s.first!),
+              useForSnippets: true,
+              preferForRegexpMatch: false,
+            ),
+          );
+        expect(
+          () => registry.defineParameterType(
+            ParameterType<Place>(
+              'place',
+              capitalisedWord,
+              'Place',
+              (s) => Place(s.first!),
+              useForSnippets: true,
+              preferForRegexpMatch: true,
             ),
           ),
-        ),
-      );
-    });
+          throwsA(
+            isA<CucumberExpressionException>().having(
+              (e) => e.message,
+              'message',
+              equals(
+                'There can only be one preferential parameter type per regexp. '
+                'The regexp /${capitalisedWord.pattern}/ is used for two '
+                'preferential parameter types, {name} and {place}',
+              ),
+            ),
+          ),
+        );
+      },
+    );
 
     test('looks up preferential parameter type by regexp', () {
       final name = ParameterType<Name>(
@@ -158,8 +160,10 @@ void main() {
           ),
         );
       expect(
-        registeredParameterTypesByRegexp(registry, 'identity')!
-            .map((type) => type.name),
+        registeredParameterTypesByRegexp(
+          registry,
+          'identity',
+        )!.map((type) => type.name),
         ['person', 'place'],
       );
     });

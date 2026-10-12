@@ -7,8 +7,9 @@ import '../../support/test_data_dir.dart';
 
 void main() {
   group('Regular expression conformance', () {
-    for (final file
-        in yamlFilesIn('$testDataDir/regular-expression/matching')) {
+    for (final file in yamlFilesIn(
+      '$testDataDir/regular-expression/matching',
+    )) {
       final expectation = loadYaml(file.readAsStringSync()) as YamlMap;
       test('matches ${file.path}', () {
         final arguments = ExpressionFactory(ParameterTypeRegistry())

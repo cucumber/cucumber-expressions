@@ -3,8 +3,9 @@ import 'package:test/test.dart';
 
 void main() {
   test('creates and matches expressions through the public factory', () {
-    final expression = ExpressionFactory(ParameterTypeRegistry())
-        .createExpression('I have {int} cukes');
+    final expression = ExpressionFactory(
+      ParameterTypeRegistry(),
+    ).createExpression('I have {int} cukes');
 
     final arguments = expression.match('I have 24 cukes');
 
@@ -15,10 +16,9 @@ void main() {
   });
 
   test('creates regular expressions through the public factory', () {
-    final expression =
-        ExpressionFactory(ParameterTypeRegistry()).createExpression(
-      RegExp(r'I have (\d+) cukes'),
-    );
+    final expression = ExpressionFactory(
+      ParameterTypeRegistry(),
+    ).createExpression(RegExp(r'I have (\d+) cukes'));
 
     final arguments = expression.match('I have 24 cukes');
 

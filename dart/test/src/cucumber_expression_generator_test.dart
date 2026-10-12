@@ -34,7 +34,8 @@ void main() {
       expect(
         match,
         isNotNull,
-        reason: "Expected text '$text' to match generated expression "
+        reason:
+            "Expected text '$text' to match generated expression "
             "'${generatedExpression.source}'",
       );
       expect(match!.length, equals(expectedParameterNames.length));
@@ -42,8 +43,9 @@ void main() {
 
     test('documents expression generation', () {
       const undefinedStepText = 'I have 2 cucumbers and 1.5 tomato';
-      final generatedExpression =
-          generator.generateExpressions(undefinedStepText)[0];
+      final generatedExpression = generator.generateExpressions(
+        undefinedStepText,
+      )[0];
       expect(
         generatedExpression.source,
         equals('I have {int} cucumbers and {float} tomato'),
@@ -65,39 +67,29 @@ void main() {
     });
 
     test('generates expression with escaped slashes', () {
-      assertExpression(
-        r'The {int}\/{int}\/{int} hey',
-        [
-          'int',
-          'int2',
-          'int3',
-        ],
-        'The 1814/05/17 hey',
-      );
+      assertExpression(r'The {int}\/{int}\/{int} hey', [
+        'int',
+        'int2',
+        'int3',
+      ], 'The 1814/05/17 hey');
     });
 
     test('generates expression for int float arg', () {
-      assertExpression(
-        'I have {int} cukes and {float} euro',
-        ['int', 'float'],
-        'I have 2 cukes and 1.5 euro',
-      );
+      assertExpression('I have {int} cukes and {float} euro', [
+        'int',
+        'float',
+      ], 'I have 2 cukes and 1.5 euro');
     });
 
     test('generates expression for strings', () {
-      assertExpression(
-        'I like {string} and {string}',
-        ['string', 'string2'],
-        'I like "bangers" and \'mash\'',
-      );
+      assertExpression('I like {string} and {string}', [
+        'string',
+        'string2',
+      ], 'I like "bangers" and \'mash\'');
     });
 
     test('generates expression with percent sign', () {
-      assertExpression(
-        'I am {int}%% foobar',
-        ['int'],
-        'I am 20%% foobar',
-      );
+      assertExpression('I am {int}%% foobar', ['int'], 'I am 20%% foobar');
     });
 
     test('generates expression for just int', () {
@@ -145,8 +137,9 @@ void main() {
           ),
         );
 
-      final generatedExpressions =
-          generator.generateExpressions('I have x and x and another x');
+      final generatedExpressions = generator.generateExpressions(
+        'I have x and x and another x',
+      );
       final expressions = generatedExpressions.map((e) => e.source).toList();
       expect(
         expressions,
@@ -164,8 +157,9 @@ void main() {
     });
 
     test('exposes parameter type names in generated expression', () {
-      final expression =
-          generator.generateExpressions('I have 2 cukes and 1.5 euro')[0];
+      final expression = generator.generateExpressions(
+        'I have 2 cukes and 1.5 euro',
+      )[0];
       final typeNames = expression.parameterTypes.map((p) => p.name).toList();
       expect(typeNames, equals(['int', 'float']));
     });
@@ -183,8 +177,9 @@ void main() {
           ),
         );
       }
-      final expressions =
-          generator.generateExpressions('a s i m p l e s t e p');
+      final expressions = generator.generateExpressions(
+        'a s i m p l e s t e p',
+      );
       expect(expressions.length, equals(256));
     });
 

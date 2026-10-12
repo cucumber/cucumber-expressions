@@ -56,8 +56,10 @@ void main() {
         'I bought a {{0}} ball on {{1}}',
         parameterTypeCombinations,
       );
-      final expressions =
-          factory.generateExpressions().map((ge) => ge.source).toList();
+      final expressions = factory
+          .generateExpressions()
+          .map((ge) => ge.source)
+          .toList();
       expect(
         expressions,
         equals([

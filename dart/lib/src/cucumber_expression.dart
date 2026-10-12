@@ -115,8 +115,9 @@ final class CucumberExpression implements Expression {
     Node node,
     CucumberExpressionException Function(Node astNode) createException,
   ) {
-    final textNodes =
-        (node.nodes ?? []).where((astNode) => NodeType.text == astNode.type);
+    final textNodes = (node.nodes ?? []).where(
+      (astNode) => NodeType.text == astNode.type,
+    );
     if (textNodes.isEmpty) {
       throw createException(node);
     }

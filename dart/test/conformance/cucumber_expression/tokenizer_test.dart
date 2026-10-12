@@ -7,8 +7,9 @@ import '../../support/test_data_dir.dart';
 
 void main() {
   group('CucumberExpressionTokenizer', () {
-    for (final file
-        in yamlFilesIn('$testDataDir/cucumber-expression/tokenizer')) {
+    for (final file in yamlFilesIn(
+      '$testDataDir/cucumber-expression/tokenizer',
+    )) {
       final expectation = loadYaml(file.readAsStringSync()) as YamlMap;
       test('tokenizes ${file.path}', () {
         final expression = expectation['expression'] as String;

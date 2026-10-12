@@ -10,7 +10,7 @@ import 'package:cucumber_expressions/src/tree_regexp.dart';
 /// Create instances with `ExpressionFactory.createExpression`.
 final class RegularExpression implements Expression {
   RegularExpression._(this.regexp, this._parameterTypeRegistry)
-      : _treeRegexp = TreeRegexp(regexp);
+    : _treeRegexp = TreeRegexp(regexp);
 
   @override
   final RegExp regexp;
@@ -24,8 +24,9 @@ final class RegularExpression implements Expression {
       return null;
     }
 
-    final parameterTypes =
-        _treeRegexp.groupBuilder.children.map((groupBuilder) {
+    final parameterTypes = _treeRegexp.groupBuilder.children.map((
+      groupBuilder,
+    ) {
       final parameterTypeRegexp = groupBuilder.source;
 
       final parameterType = lookupParameterTypeByRegexp(

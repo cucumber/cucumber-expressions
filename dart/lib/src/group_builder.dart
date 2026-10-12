@@ -12,8 +12,9 @@ class GroupBuilder {
 
   Group build(RegExpMatch match, int Function() nextGroupIndex) {
     final groupIndex = nextGroupIndex();
-    final children =
-        _groupBuilders.map((gb) => gb.build(match, nextGroupIndex)).toList();
+    final children = _groupBuilders
+        .map((gb) => gb.build(match, nextGroupIndex))
+        .toList();
     // RegExpMatch only exposes the indices of the overall match.
     final isRoot = groupIndex == 0;
     return buildGroup(

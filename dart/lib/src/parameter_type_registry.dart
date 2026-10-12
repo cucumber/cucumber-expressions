@@ -39,8 +39,9 @@ class ParameterTypeRegistry {
         parameterTypeRegexp,
         () => <ParameterType<Object?>>[],
       );
-      final existingParameterType =
-          parameterTypes.isNotEmpty ? parameterTypes[0] : null;
+      final existingParameterType = parameterTypes.isNotEmpty
+          ? parameterTypes[0]
+          : null;
       if (parameterTypes.isNotEmpty &&
           existingParameterType!.preferForRegexpMatch &&
           parameterType.preferForRegexpMatch) {

@@ -8,11 +8,10 @@ List<Object?>? match(
   RegExp regexp,
   String text, [
   ParameterTypeRegistry? registry,
-]) =>
-    createRegularExpression(regexp, registry ?? ParameterTypeRegistry())
-        .match(text)
-        ?.map((argument) => argument.getValue())
-        .toList();
+]) => createRegularExpression(
+  regexp,
+  registry ?? ParameterTypeRegistry(),
+).match(text)?.map((argument) => argument.getValue()).toList();
 
 void main() {
   group('RegularExpression', () {
@@ -57,20 +56,10 @@ void main() {
     test('reports ambiguous non-preferential parameter types', () {
       final registry = ParameterTypeRegistry()
         ..defineParameterType(
-          ParameterType<String?>(
-            'color',
-            'red|blue',
-            'Color',
-            (v) => v.first,
-          ),
+          ParameterType<String?>('color', 'red|blue', 'Color', (v) => v.first),
         )
         ..defineParameterType(
-          ParameterType<String?>(
-            'shade',
-            'red|blue',
-            'Shade',
-            (v) => v.first,
-          ),
+          ParameterType<String?>('shade', 'red|blue', 'Shade', (v) => v.first),
         );
 
       expect(
