@@ -7,16 +7,17 @@ import '../../support/test_data_dir.dart';
 
 void main() {
   group('Cucumber expression conformance', () {
-    for (final file
-        in yamlFilesIn('$testDataDir/cucumber-expression/matching')) {
+    for (final file in yamlFilesIn(
+      '$testDataDir/cucumber-expression/matching',
+    )) {
       final expectation = loadYaml(file.readAsStringSync()) as YamlMap;
       test('matches ${file.path}', () {
         final expression = expectation['expression'] as String;
         final text = expectation['text'] as String? ?? '';
         if (expectation.containsKey('expected_args')) {
-          final arguments = ExpressionFactory(ParameterTypeRegistry())
-              .createExpression(expression)
-              .match(text);
+          final arguments = ExpressionFactory(
+            ParameterTypeRegistry(),
+          ).createExpression(expression).match(text);
           expect(
             arguments
                 ?.map((argument) => normalizeFixtureValue(argument.getValue()))
@@ -25,9 +26,9 @@ void main() {
           );
         } else if (expectation['exception'] != null) {
           expect(
-            () => ExpressionFactory(ParameterTypeRegistry())
-                .createExpression(expression)
-                .match(text),
+            () => ExpressionFactory(
+              ParameterTypeRegistry(),
+            ).createExpression(expression).match(text),
             throwsA(
               isA<CucumberExpressionException>().having(
                 (error) => error.message,

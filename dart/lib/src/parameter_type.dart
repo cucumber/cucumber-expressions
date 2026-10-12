@@ -23,10 +23,10 @@ class ParameterType<T> {
     Transformer<T>? transform, {
     bool? useForSnippets,
     bool? preferForRegexpMatch,
-  })  : useForSnippets = useForSnippets ?? true,
-        preferForRegexpMatch = preferForRegexpMatch ?? false,
-        regexpStrings = _stringArray(regexps),
-        _transformFn = transform ?? ((List<String?> s) => s.first as T) {
+  }) : useForSnippets = useForSnippets ?? true,
+       preferForRegexpMatch = preferForRegexpMatch ?? false,
+       regexpStrings = _stringArray(regexps),
+       _transformFn = transform ?? ((List<String?> s) => s.first as T) {
     if (name != null) {
       _checkParameterTypeName(name!);
     }
@@ -79,8 +79,10 @@ void _checkParameterTypeName(String typeName) {
 }
 
 bool _isValidParameterTypeName(String typeName) {
-  final unescapedTypeName =
-      typeName.replaceAllMapped(_unescapePattern(), (m) => m.group(2)!);
+  final unescapedTypeName = typeName.replaceAllMapped(
+    _unescapePattern(),
+    (m) => m.group(2)!,
+  );
   return !_illegalParameterNamePattern.hasMatch(unescapedTypeName);
 }
 

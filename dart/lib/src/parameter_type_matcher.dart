@@ -8,9 +8,9 @@ class ParameterTypeMatcher {
     this._regexpString,
     this._text, [
     this._matchPosition = 0,
-  ]) : _match = RegExp('($_regexpString)').firstMatch(
-          _text.substring(_matchPosition),
-        );
+  ]) : _match = RegExp(
+         '($_regexpString)',
+       ).firstMatch(_text.substring(_matchPosition));
 
   final ParameterType<Object?> parameterType;
   final String _regexpString;
@@ -19,9 +19,11 @@ class ParameterTypeMatcher {
   final RegExpMatch? _match;
 
   ParameterTypeMatcher advanceTo(int newMatchPosition) {
-    for (var advancedPos = newMatchPosition;
-        advancedPos < _text.length;
-        advancedPos++) {
+    for (
+      var advancedPos = newMatchPosition;
+      advancedPos < _text.length;
+      advancedPos++
+    ) {
       final matcher = ParameterTypeMatcher(
         parameterType,
         _regexpString,

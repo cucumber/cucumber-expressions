@@ -26,12 +26,14 @@ void main() {
       );
     });
 
-    test('rejects values that are neither expressions nor regular expressions',
-        () {
-      expect(
-        () => expressionFactory.createExpression(42),
-        throwsA(isA<ArgumentError>()),
-      );
-    });
+    test(
+      'rejects values that are neither expressions nor regular expressions',
+      () {
+        expect(
+          () => expressionFactory.createExpression(42),
+          throwsA(isA<ArgumentError>()),
+        );
+      },
+    );
   });
 }

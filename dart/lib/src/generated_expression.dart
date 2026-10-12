@@ -12,9 +12,9 @@ class GeneratedExpression {
 
   /// The rendered Cucumber Expression source with placeholders filled in.
   String get source => _format(
-        _expressionTemplate,
-        parameterTypes.map((t) => t.name ?? '').toList(),
-      );
+    _expressionTemplate,
+    parameterTypes.map((t) => t.name ?? '').toList(),
+  );
 
   /// Parameter names to use in generated function/method signatures.
   List<String> get parameterNames {

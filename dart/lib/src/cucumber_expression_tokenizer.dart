@@ -19,8 +19,12 @@ class CucumberExpressionTokenizer {
       }
 
       final consumedIndex = bufferStartIndex + buffer.length + escapeTokens;
-      final t =
-          Token(tokenType, buffer.join(), bufferStartIndex, consumedIndex);
+      final t = Token(
+        tokenType,
+        buffer.join(),
+        bufferStartIndex,
+        consumedIndex,
+      );
       buffer = <String>[];
       bufferStartIndex = consumedIndex;
       return t;

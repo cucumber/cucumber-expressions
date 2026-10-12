@@ -7,8 +7,9 @@ import 'package:test/test.dart';
 void main() {
   group('buildArguments', () {
     test('pairs capture groups with parameter types in order', () {
-      final group =
-          buildGroup('12', 0, 2, [buildGroup('12', null, null, null)]);
+      final group = buildGroup('12', 0, 2, [
+        buildGroup('12', null, null, null),
+      ]);
       final type = ParameterType<int?>(
         'int',
         r'\d+',

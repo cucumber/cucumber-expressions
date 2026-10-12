@@ -9,11 +9,8 @@ class _Result {
   final List<Node> ast;
 }
 
-typedef _Parser = _Result Function(
-  String expression,
-  List<Token> tokens,
-  int current,
-);
+typedef _Parser =
+    _Result Function(String expression, List<Token> tokens, int current);
 
 _Result _parseText(String expression, List<Token> tokens, int current) {
   final token = tokens[current];
@@ -106,11 +103,7 @@ _Result _parseAlternation(String expression, List<Token> tokens, int current) {
     _alternativeParsers,
     tokens,
     current,
-    [
-      TokenType.whiteSpace,
-      TokenType.endOfLine,
-      TokenType.beginParameter,
-    ],
+    [TokenType.whiteSpace, TokenType.endOfLine, TokenType.beginParameter],
   );
   final subCurrent = current + result.consumed;
   if (!result.ast.any((astNode) => astNode.type == NodeType.alternative)) {
@@ -163,13 +156,10 @@ _Parser _parseBetween(
       return const _Result(0, []);
     }
     var subCurrent = current + 1;
-    final result = _parseTokensUntil(
-      expression,
-      parsers,
-      tokens,
-      subCurrent,
-      [endToken, TokenType.endOfLine],
-    );
+    final result = _parseTokensUntil(expression, parsers, tokens, subCurrent, [
+      endToken,
+      TokenType.endOfLine,
+    ]);
     subCurrent += result.consumed;
 
     if (!_lookingAt(tokens, subCurrent, endToken)) {

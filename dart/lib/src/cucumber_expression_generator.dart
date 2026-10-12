@@ -66,11 +66,13 @@ List<GeneratedExpression> generateExpressionsForParameterTypes(
 
       parameterTypeCombinations.add(parameterTypes);
 
-      expressionTemplate +=
-          _escapeText(text.substring(pos, bestParameterTypeMatcher.start));
+      expressionTemplate += _escapeText(
+        text.substring(pos, bestParameterTypeMatcher.start),
+      );
       expressionTemplate += '{{${counter++}}}';
 
-      pos = bestParameterTypeMatcher.start +
+      pos =
+          bestParameterTypeMatcher.start +
           bestParameterTypeMatcher.group.length;
     } else {
       break;

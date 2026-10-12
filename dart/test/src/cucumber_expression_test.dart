@@ -65,8 +65,10 @@ void main() {
             preferForRegexpMatch: true,
           ),
         );
-      final arguments =
-          createCucumberExpression('{throwing}', registry).match('bad')!;
+      final arguments = createCucumberExpression(
+        '{throwing}',
+        registry,
+      ).match('bad')!;
 
       expect(() => arguments.single.getValue(), throwsStateError);
     });
