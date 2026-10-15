@@ -122,6 +122,7 @@ target_sources(
         include/cucumber/cucumber-expressions/Matcher.hpp
         include/cucumber/cucumber-expressions/ParameterRegistry.hpp
         include/cucumber/cucumber-expressions/RegexStrategy.hpp
+        include/cucumber/cucumber-expressions/RegexStrategyFactory.hpp
         include/cucumber/cucumber-expressions/RegularExpression.hpp
         include/cucumber/cucumber-expressions/SourceLocation.hpp
         include/cucumber/cucumber-expressions/TreeRegexp.hpp
@@ -138,7 +139,6 @@ target_sources(
         src/cucumber/cucumber-expressions/MatchRange.cpp
         src/cucumber/cucumber-expressions/ParameterRegistry.cpp
         src/cucumber/cucumber-expressions/RegexStrategyFactory.cpp
-        src/cucumber/cucumber-expressions/RegexStrategyFactory.hpp
         src/cucumber/cucumber-expressions/RegularExpression.cpp
         src/cucumber/cucumber-expressions/StdRegexStrategy.cpp
         src/cucumber/cucumber-expressions/StdRegexStrategy.hpp
