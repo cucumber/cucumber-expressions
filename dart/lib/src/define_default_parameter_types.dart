@@ -25,11 +25,6 @@ BigInt? _toBigInt(List<String?> s) {
 
 String? _toStringValue(List<String?> s) => s.first;
 
-/// Registers the built-in parameter types by calling [defineParameterType]
-/// once for each.
-///
-/// The built-in types are `int`, `float`, `word`, `string`, the anonymous
-/// type, `double`, `bigdecimal`, `byte`, `short`, `long`, and `biginteger`.
 void defineDefaultParameterTypes(
   void Function<T>(ParameterType<T>) defineParameterType,
 ) {

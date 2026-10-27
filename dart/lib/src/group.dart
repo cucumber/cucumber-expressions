@@ -21,8 +21,6 @@ class Group {
   }
 }
 
-/// Creates a [Group] with the given captured [value], match bounds, and
-/// [children].
 Group buildGroup(String? value, int? start, int? end, List<Group>? children) {
   return Group._(value, start, end, children);
 }

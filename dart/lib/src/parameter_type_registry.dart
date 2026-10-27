@@ -61,15 +61,12 @@ class ParameterTypeRegistry {
   }
 }
 
-/// The named parameter types registered in [registry].
 Iterable<ParameterType<Object?>> registeredParameterTypes(
   ParameterTypeRegistry registry,
 ) {
   return registry._parameterTypeByName.values;
 }
 
-/// The parameter type registered in [registry] as [typeName], or `null` if
-/// there is none.
 ParameterType<Object?>? registeredParameterTypeByName(
   ParameterTypeRegistry registry,
   String typeName,
@@ -77,9 +74,6 @@ ParameterType<Object?>? registeredParameterTypeByName(
   return registry._parameterTypeByName[typeName];
 }
 
-/// The parameter types registered in [registry] that use
-/// [parameterTypeRegexp], sorted by [compareParameterTypes], or `null` if
-/// there are none.
 List<ParameterType<Object?>>? registeredParameterTypesByRegexp(
   ParameterTypeRegistry registry,
   String parameterTypeRegexp,

@@ -20,11 +20,6 @@ final class Argument<T> {
   }
 }
 
-/// Pairs each child of [group] with the parameter type at the same position
-/// in [parameterTypes].
-///
-/// Throws a [CucumberExpressionException] when the number of child groups
-/// differs from the number of parameter types.
 List<Argument<Object?>> buildArguments(
   Group group,
   List<ParameterType<Object?>> parameterTypes,

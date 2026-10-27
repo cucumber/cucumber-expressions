@@ -1,13 +1,7 @@
 import 'package:cucumber_expressions/src/ast.dart';
 import 'package:cucumber_expressions/src/errors.dart';
 
-/// Splits Cucumber Expressions into [Token]s.
 class CucumberExpressionTokenizer {
-  /// The tokens in [expression], bracketed by [TokenType.startOfLine] and
-  /// [TokenType.endOfLine] tokens.
-  ///
-  /// Throws a [CucumberExpressionException] when [expression] contains an
-  /// invalid escape sequence or ends with an escape character.
   List<Token> tokenize(String expression) {
     final codePoints = expression.runes.map(String.fromCharCode).toList();
     final tokens = <Token>[];
