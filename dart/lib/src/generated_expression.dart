@@ -25,6 +25,8 @@ class GeneratedExpression {
   }
 }
 
+/// Creates a [GeneratedExpression] that fills the numbered placeholders in
+/// [expressionTemplate] with the names of [parameterTypes].
 GeneratedExpression createGeneratedExpression(
   String expressionTemplate,
   List<ParameterType<Object?>> parameterTypes,

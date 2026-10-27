@@ -1,13 +1,19 @@
 import 'package:cucumber_expressions/src/group.dart';
 import 'package:cucumber_expressions/src/group_builder.dart';
 
+/// A regular expression whose matches are returned as a tree of nested
+/// capture groups.
 class TreeRegexp {
+  /// Creates a tree regexp for [regexp].
   TreeRegexp(this.regexp) : groupBuilder = _createGroupBuilder(regexp);
 
+  /// Creates a tree regexp from the regular expression [pattern].
   TreeRegexp.fromString(String pattern) : this(RegExp(pattern));
 
+  /// The underlying regular expression.
   final RegExp regexp;
 
+  /// The root of the capture group tree, representing the whole match.
   final GroupBuilder groupBuilder;
 
   static GroupBuilder _createGroupBuilder(RegExp regexp) {
@@ -55,6 +61,8 @@ class TreeRegexp {
     return source[i + 3] == '=' || source[i + 3] == '!';
   }
 
+  /// The capture group tree for the first match in [s], or `null` if
+  /// [regexp] does not match.
   Group? match(String s) {
     final match = regexp.firstMatch(s);
     if (match == null) {

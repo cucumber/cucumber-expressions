@@ -53,6 +53,8 @@ final class RegularExpression implements Expression {
   String get source => regexp.pattern;
 }
 
+/// Creates a [RegularExpression] for [regexp], resolving parameter types
+/// from [parameterTypeRegistry].
 RegularExpression createRegularExpression(
   RegExp regexp,
   ParameterTypeRegistry parameterTypeRegistry,

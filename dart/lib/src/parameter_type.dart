@@ -56,6 +56,10 @@ class ParameterType<T> {
   }
 }
 
+/// Orders parameter types with preferential types first, then by name.
+///
+/// Returns a negative number when [pt1] sorts before [pt2], a positive
+/// number when it sorts after, and zero otherwise.
 int compareParameterTypes(
   ParameterType<Object?> pt1,
   ParameterType<Object?> pt2,

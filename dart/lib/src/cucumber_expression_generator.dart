@@ -21,6 +21,10 @@ class CucumberExpressionGenerator {
   }
 }
 
+/// Generates candidate expressions that would match [text] using the
+/// parameter types returned by [parameterTypes].
+///
+/// Only parameter types with [ParameterType.useForSnippets] set are used.
 List<GeneratedExpression> generateExpressionsForParameterTypes(
   String text,
   Iterable<ParameterType<Object?>> Function() parameterTypes,

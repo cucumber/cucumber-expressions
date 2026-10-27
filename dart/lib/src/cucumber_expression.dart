@@ -163,6 +163,11 @@ final class CucumberExpression implements Expression {
   String get source => _expression;
 }
 
+/// Creates a [CucumberExpression] for [expression], resolving parameter types
+/// from [parameterTypeRegistry].
+///
+/// Throws a [CucumberExpressionException] when [expression] is malformed or
+/// references an undefined parameter type.
 CucumberExpression createCucumberExpression(
   String expression,
   ParameterTypeRegistry parameterTypeRegistry,

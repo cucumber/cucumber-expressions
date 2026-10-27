@@ -130,13 +130,18 @@ final _Parser _parseCucumberExpression = _parseBetween(
   [_parseAlternation, _parseOptional, _parseParameter, _parseText],
 );
 
+/// Parses Cucumber Expressions into an abstract syntax tree.
 class CucumberExpressionParser {
+  /// Creates a parser.
   CucumberExpressionParser() {
     if (_optionalSubParsers.isEmpty) {
       _optionalSubParsers.addAll([_parseOptional, _parseParameter, _parseText]);
     }
   }
 
+  /// Parses [expression] and returns its root [NodeType.expression] node.
+  ///
+  /// Throws a [CucumberExpressionException] when [expression] is malformed.
   Node parse(String expression) {
     final tokenizer = CucumberExpressionTokenizer();
     final tokens = tokenizer.tokenize(expression);
