@@ -168,6 +168,21 @@ void main() {
       );
     });
 
+    test('does not allow the anonymous parameter type to be redefined', () {
+      expect(
+        () => registry.defineParameterType(
+          ParameterType<String?>('', '.*', 'String', (values) => values.first),
+        ),
+        throwsA(
+          isA<CucumberExpressionException>().having(
+            (e) => e.message,
+            'message',
+            equals('The anonymous parameter type has already been defined'),
+          ),
+        ),
+      );
+    });
+
     test('contains the complete built-in registry contract', () {
       expect(
         registeredParameterTypes(registry).map((type) => type.name),

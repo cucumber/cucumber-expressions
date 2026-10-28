@@ -66,7 +66,7 @@ void main() {
     });
 
     test('rejects illegal parameter-name syntax', () {
-      for (final name in ['[word]', 'word.name', 'word(name)']) {
+      for (final name in ['[word]', 'word.name', 'word(name)', r'word\.name']) {
         expect(
           () => ParameterType<String?>(
             name,
@@ -77,6 +77,16 @@ void main() {
           throwsA(isA<CucumberExpressionException>()),
         );
       }
+    });
+
+    test('transforms to the first group value by default', () {
+      final parameterType = ParameterType<String?>(
+        'word',
+        r'\w+',
+        'String',
+        null,
+      );
+      expect(parameterType.transform(['first', 'second']), 'first');
     });
 
     test('preserves registered type names', () {

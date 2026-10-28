@@ -1,4 +1,5 @@
 import 'package:cucumber_expressions/src/cucumber_expression.dart';
+import 'package:cucumber_expressions/src/errors.dart';
 import 'package:cucumber_expressions/src/parameter_type.dart';
 import 'package:cucumber_expressions/src/parameter_type_registry.dart';
 import 'package:test/test.dart';
@@ -32,6 +33,22 @@ void main() {
       expect(
         createCucumberExpression(source, ParameterTypeRegistry()).source,
         source,
+      );
+    });
+
+    test('rejects an alternation inside a parameter name', () {
+      expect(
+        () => createCucumberExpression('{a/b}', ParameterTypeRegistry()),
+        throwsA(
+          isA<CucumberExpressionException>().having(
+            (e) => e.toString(),
+            'toString()',
+            allOf(
+              contains("Parameter names may not contain '{', '}', '(', ')', "),
+              contains('{a/b}'),
+            ),
+          ),
+        ),
       );
     });
 

@@ -208,9 +208,6 @@ _Result _parseTokensUntil(
       break;
     }
     final result = _parseToken(expression, parsers, tokens, current);
-    if (result.consumed == 0) {
-      throw StateError('No eligible parsers for $tokens');
-    }
     current += result.consumed;
     ast.addAll(result.ast);
   }
