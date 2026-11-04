@@ -48,7 +48,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtest-dev libgmock-dev libyaml-cpp-dev libabsl-dev libre2-dev
 
-      - uses: github/codeql-action/init@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+      - uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           languages: c-cpp
           build-mode: manual
@@ -58,6 +58,6 @@ jobs:
         working-directory: cpp
         run: cmake --workflow --preset host-system
 
-      - uses: github/codeql-action/analyze@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+      - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           category: "/language:cpp"
