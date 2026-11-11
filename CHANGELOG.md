@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [20.2.0] - 2026-11-11
 ### Added
 - [CPP] initial C++ implementation. [#468](https://github.com/cucumber/cucumber-expressions/pull/468)
 - [Dart] Add a Dart implementation of Cucumber Expressions ([#444](https://github.com/cucumber/cucumber-expressions/pull/444))
@@ -818,7 +820,8 @@ by [brasmusson](https://github.com/brasmusson))
 ### Added
 - First stable release!
 
-[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v20.1.0...HEAD
+[Unreleased]: https://github.com/cucumber/cucumber-expressions/compare/v20.2.0...HEAD
+[20.2.0]: https://github.com/cucumber/cucumber-expressions/compare/v20.1.0...v20.2.0
 [20.1.0]: https://github.com/cucumber/cucumber-expressions/compare/v20.0.0...v20.1.0
 [20.0.0]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.1...v20.0.0
 [19.0.1]: https://github.com/cucumber/cucumber-expressions/compare/v19.0.0...v19.0.1

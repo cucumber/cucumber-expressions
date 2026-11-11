@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Version">
-		<VersionNumber>20.1.0</VersionNumber>
+		<VersionNumber>20.2.0</VersionNumber>
 		<Version Condition="'$(SnapshotSuffix)' != ''">$(VersionNumber)-$(SnapshotSuffix)</Version>
 		<Version Condition="'$(SnapshotSuffix)' == ''">$(VersionNumber)</Version>
 	</PropertyGroup>
@@ -38,7 +38,7 @@
 			<PackagePath>.</PackagePath>
 			<Visible>true</Visible>
 		</None>
-		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 </Project>

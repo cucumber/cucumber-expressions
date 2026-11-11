@@ -1,6 +1,6 @@
 # Changelog
 
-## 20.1.0
+## 20.2.0
 
 See the repository root [CHANGELOG.md](https://github.com/cucumber/cucumber-expressions/blob/main/CHANGELOG.md).
 
