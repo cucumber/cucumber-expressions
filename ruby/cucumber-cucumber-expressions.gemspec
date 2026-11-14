@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop', '~> 1.92.0'
   s.add_development_dependency 'rubocop-performance', '~> 1.27.0'
   s.add_development_dependency 'rubocop-rake', '~> 0.7.1'
-  s.add_development_dependency 'rubocop-rspec', '~> 3.6.0'
+  s.add_development_dependency 'rubocop-rspec', '~> 3.10.0'
 
   s.files            = Dir['lib/**/*', 'CHANGELOG.md', 'CONTRIBUTING.md', 'LICENSE', 'README.md']
   s.rdoc_options     = ['--charset=UTF-8']
