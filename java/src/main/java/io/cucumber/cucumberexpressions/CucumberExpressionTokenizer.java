@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.PrimitiveIterator.OfInt;
+import java.util.PrimitiveIterator;
 
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createCantEscape;
 import static io.cucumber.cucumberexpressions.CucumberExpressionException.createTheEndOfLineCanNotBeEscaped;
@@ -27,7 +27,7 @@ final class CucumberExpressionTokenizer {
     private static class TokenIterator implements Iterator<Token> {
 
         private final String expression;
-        private final OfInt codePoints;
+        private final PrimitiveIterator.OfInt codePoints;
 
         private StringBuilder buffer = new StringBuilder();
         private Token.@Nullable Type previousTokenType = null;
