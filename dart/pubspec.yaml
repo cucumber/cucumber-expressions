@@ -18,9 +18,10 @@ environment:
 
 topics:
   - cucumber
-  - expressions
+  - bdd
+  - gherkin
   - testing
-  - parser
+  - regex
 
 dev_dependencies:
   lints: ^6.0.0
